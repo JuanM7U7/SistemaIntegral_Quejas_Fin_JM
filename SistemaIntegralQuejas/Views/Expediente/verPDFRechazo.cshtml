@@ -1,0 +1,103 @@
+﻿@model List<SistemaIntegralQuejas.Models.PDF_Formato_Rechazo>
+
+@{
+    Layout = null;
+}
+
+
+@foreach (var item in Model)
+{
+
+    <html>
+
+    <head>
+        <title>Escrito Inicial de Queja</title>
+        <link href="~/css/pdfescritoinicial.css" rel="stylesheet" />
+    </head>
+
+
+    <body>
+        <div class="row">
+            <p align="right">
+                <b>@item.Visitaduría</b><br>
+                <b>Asunto:</b>Rechazo de ID´S<br>
+                <b>
+                    <script>
+                        var fecha = new Date();
+                        var meses = new Array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+                        document.write("Puebla, Puebla a " + fecha.getDate() + " de " + meses[fecha.getMonth()] + " de " + fecha.getFullYear());
+                    </script>
+                 </b>
+                <br>
+                <b>Memorándum No. @item.Memorandum </b><br>
+                <br>
+        </div>
+
+        <div>
+            <p>
+                <b>
+                    <br>Lic.Mario Octavio Meléndez López<br>
+                </b>
+                Director de Quejas, Orientación y Transparencia.
+            </p>
+        </div>
+
+        <div class="row">
+            <p align="justify">
+
+                @item.PrimeraParte
+            </p>
+        </div>
+
+        <div class="row" style="align-items:center;">
+            <p align="justify">
+
+                @item.SegundaParte
+            </p>
+
+
+            <table id="tablaJustificaciones" style="position:center; border:1px solid black;border-collapse: collapse; margin: auto;padding-left:5px;font-size:15px">
+               <thead>
+                <th style="position:center; border:1px solid black "> Id queja </th>
+                <th style="position:center; border:1px solid black "> Justificación del Rechazo de ID´S</th>
+               </thead>
+                @foreach (var item1 in item.listado)
+                {
+                    <tr>
+                        <td style="position:center; border:1px solid black;padding-left:5px;font-size:15px ">@item1.idExpediente</td>
+                        <td style="position:center; border:1px solid black;padding-left:5px;font-size:15px ">@item1.justificacion</td>
+                    </tr>
+                }
+
+            </table>
+
+
+        </div>
+
+        <div class="row">
+
+            <p align="justify">
+
+                @item.TerceraParte
+            </p>
+
+
+
+        </div>
+
+        <div class="row">
+            <p align="center" style="font-size:16px;">
+                <b>
+                    <br><br><br><br>
+                    A T E N T A M E N T E
+                    <br><br><br><br> @item.Firma_Parte
+                </b>
+            </p>
+        </div>
+
+
+    </body>
+
+    </html>
+
+}

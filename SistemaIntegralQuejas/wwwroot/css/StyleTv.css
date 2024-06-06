@@ -1,0 +1,596 @@
+﻿
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #6C757D;
+}
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody + tbody {
+        border-top: 2px solid #dee2e6;
+    }
+
+.table-sm th,
+.table-sm td {
+    padding: 0.3rem;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid #dee2e6;
+    }
+
+    .table-bordered thead th,
+    .table-bordered thead td {
+        border-bottom-width: 2px;
+    }
+
+.table-borderless th,
+.table-borderless td,
+.table-borderless thead th,
+.table-borderless tbody + tbody {
+    border: 0;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    color: #6C757D;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.table-primary,
+.table-primary > th,
+.table-primary > td {
+    background-color: #b8e8f5;
+}
+
+    .table-primary th,
+    .table-primary td,
+    .table-primary thead th,
+    .table-primary tbody + tbody {
+        border-color: #7ad4ec;
+    }
+
+.table-hover .table-primary:hover {
+    background-color: #a2e1f2;
+}
+
+    .table-hover .table-primary:hover > td,
+    .table-hover .table-primary:hover > th {
+        background-color: #a2e1f2;
+    }
+
+.table-secondary,
+.table-secondary > th,
+.table-secondary > td {
+    background-color: #fcfcfc;
+}
+
+    .table-secondary th,
+    .table-secondary td,
+    .table-secondary thead th,
+    .table-secondary tbody + tbody {
+        border-color: #fafafa;
+    }
+
+.table-hover .table-secondary:hover {
+    background-color: #efefef;
+}
+
+    .table-hover .table-secondary:hover > td,
+    .table-hover .table-secondary:hover > th {
+        background-color: #efefef;
+    }
+
+.table-success,
+.table-success > th,
+.table-success > td {
+    background-color: #c3e6cb;
+}
+
+    .table-success th,
+    .table-success td,
+    .table-success thead th,
+    .table-success tbody + tbody {
+        border-color: #8fd19e;
+    }
+
+.table-hover .table-success:hover {
+    background-color: #b1dfbb;
+}
+
+    .table-hover .table-success:hover > td,
+    .table-hover .table-success:hover > th {
+        background-color: #b1dfbb;
+    }
+
+.table-info,
+.table-info > th,
+.table-info > td {
+    background-color: #bee5eb;
+}
+
+    .table-info th,
+    .table-info td,
+    .table-info thead th,
+    .table-info tbody + tbody {
+        border-color: #86cfda;
+    }
+
+.table-hover .table-info:hover {
+    background-color: #abdde5;
+}
+
+    .table-hover .table-info:hover > td,
+    .table-hover .table-info:hover > th {
+        background-color: #abdde5;
+    }
+
+.table-warning,
+.table-warning > th,
+.table-warning > td {
+    background-color: #ffeeba;
+}
+
+    .table-warning th,
+    .table-warning td,
+    .table-warning thead th,
+    .table-warning tbody + tbody {
+        border-color: #ffdf7e;
+    }
+
+.table-hover .table-warning:hover {
+    background-color: #ffe8a1;
+}
+
+    .table-hover .table-warning:hover > td,
+    .table-hover .table-warning:hover > th {
+        background-color: #ffe8a1;
+    }
+
+.table-danger,
+.table-danger > th,
+.table-danger > td {
+    background-color: #f5c6cb;
+}
+
+    .table-danger th,
+    .table-danger td,
+    .table-danger thead th,
+    .table-danger tbody + tbody {
+        border-color: #ed969e;
+    }
+
+.table-hover .table-danger:hover {
+    background-color: #f1b0b7;
+}
+
+    .table-hover .table-danger:hover > td,
+    .table-hover .table-danger:hover > th {
+        background-color: #f1b0b7;
+    }
+
+.table-light,
+.table-light > th,
+.table-light > td {
+    background-color: white;
+}
+
+    .table-light th,
+    .table-light td,
+    .table-light thead th,
+    .table-light tbody + tbody {
+        border-color: white;
+    }
+
+.table-hover .table-light:hover {
+    background-color: #f2f2f2;
+}
+
+    .table-hover .table-light:hover > td,
+    .table-hover .table-light:hover > th {
+        background-color: #f2f2f2;
+    }
+
+.table-dark,
+.table-dark > th,
+.table-dark > td {
+    background-color: #c9cbcd;
+}
+
+    .table-dark th,
+    .table-dark td,
+    .table-dark thead th,
+    .table-dark tbody + tbody {
+        border-color: #9a9fa2;
+    }
+
+.table-hover .table-dark:hover {
+    background-color: #bcbec1;
+}
+
+    .table-hover .table-dark:hover > td,
+    .table-hover .table-dark:hover > th {
+        background-color: #bcbec1;
+    }
+
+.table-active,
+.table-active > th,
+.table-active > td {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.table-hover .table-active:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+    .table-hover .table-active:hover > td,
+    .table-hover .table-active:hover > th {
+        background-color: rgba(0, 0, 0, 0.075);
+    }
+
+.table .thead-dark th {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+}
+
+.table .thead-light th {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.table-dark {
+    color: #fff;
+    background-color: #343a40;
+}
+
+    .table-dark th,
+    .table-dark td,
+    .table-dark thead th {
+        border-color: #454d55;
+    }
+
+    .table-dark.table-bordered {
+        border: 0;
+    }
+
+    .table-dark.table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .table-dark.table-hover tbody tr:hover {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.075);
+    }
+
+@media (max-width: 575.98px) {
+    .table-responsive-sm {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+        .table-responsive-sm > .table-bordered {
+            border: 0;
+        }
+}
+
+@media (max-width: 767.98px) {
+    .table-responsive-md {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+        .table-responsive-md > .table-bordered {
+            border: 0;
+        }
+}
+
+@media (max-width: 991.98px) {
+    .table-responsive-lg {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+        .table-responsive-lg > .table-bordered {
+            border: 0;
+        }
+}
+
+@media (max-width: 1199.98px) {
+    .table-responsive-xl {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+        .table-responsive-xl > .table-bordered {
+            border: 0;
+        }
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive > .table-bordered {
+    border: 0;
+}
+
+
+.checkin {
+    margin-left: -50%;
+    font-size: 1.5em;
+}
+
+.form-check-input[type=radio] {
+    appearance: none;
+    background-color: white;
+}
+
+    .form-check-input[type=radio]:focus {
+        border-color: red;
+    }
+
+    .form-check-input[type=radio]:checked {
+        border-color: deepskyblue;
+        background-color: #17a2b8;
+    }
+
+.img_logo {
+    width: 150%;
+}
+
+.title1 {
+    margin-top: 5%;
+}
+
+.recepcion1 {
+    margin-top: 5%;
+    margin-bottom: 10%;
+    margin-left: 40%;
+    background-color: transparent !important;
+    border: 0;
+}
+
+    .recepcion1 :hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+
+.huella form-contro {
+    color: white;
+    border-radius: 15px !important;
+}
+
+.recepcion2 {
+    margin-top: 5%;
+    margin-bottom: 10%;
+    margin-left: 50%;
+    background-color: transparent !important;
+    border: 0;
+}
+
+    .recepcion2 :hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+
+.registro_boton {
+    width: 150%;
+}
+
+.huella_boton {
+    width: 150%;
+    border-radius: 50% !important;
+}
+
+
+
+
+/*----------------------RELOJ------------------*/
+.widget {
+    margin-top: 5%;
+}
+
+    .widget p {
+        display: inline-block;
+        line-height: 1em;
+        color: black !important;
+    }
+
+.fecha {
+    font-family: arial;
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    background: rgba(0,140,186,.2);
+    padding: 20px;
+    width: 100%;
+}
+
+.reloj {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    width: 100%;
+    padding: 20px;
+    font-size: 4em;
+    text-align: center;
+    background: rgba(0,140,186,.2);
+}
+
+    .reloj .cajaSegundos {
+        display: inline-block;
+    }
+
+    .reloj .ampm, .reloj .segundos {
+        display: block;
+        font-size: 2rem;
+    }
+
+/*-----------------------------------------------*/
+
+/*---------------------TARJETAS-----------------*/
+.cards {
+    margin-top: 5% !important;
+    margin: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #CFCCCD;
+}
+
+.cardsR {
+    width: 100%;
+    margin: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-left: -5%;
+    border-radius: 3px;
+}
+
+/* CARDS STYLYING*/
+
+.cards_item {
+    background: #fff;
+    padding: 20px;
+    margin-top: 10%;
+    border-radius: 5px;
+    position: relative;
+    width: 40%;
+    margin-bottom: 10%;
+}
+
+.cards_item2 {
+    background: #fff;
+    margin-top: 5%;
+    position: relative;
+    margin-bottom: 10%;
+}
+
+.cards_item_title {
+    margin-bottom: 5%;
+    letter-spacing: .5px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.cards_item_title1 {
+    margin-bottom: 5%;
+    letter-spacing: .5px;
+    font-weight: 700;
+    color: #000000;
+    margin-left: 15%;
+    margin-left: 15%;
+}
+
+.cards_item_title2 {
+    margin-top: 5%;
+    letter-spacing: .5px;
+    font-weight: 700;
+    color: #000000;
+    margin-left: -10%;
+}
+
+.cards_item_description {
+    line-height: 110%;
+    font-weight: 700;
+    font-size: 60px;
+    color: #133384;
+}
+
+.subti {
+    font-style: italic;
+}
+
+/* READ MORE */
+.read {
+    position: relative;
+    top: 30px;
+    left: 30px;
+    text-align: right;
+    font-size: 0.85em;
+    letter-spacing: .3px;
+    transition: all .5s;
+}
+
+/*------------------------------------*/
+
+
+/*--------------ANIMACION DE TURNOS EN CURSO--------------------------*/
+.parpadea {
+    animation: parpadea-animation 0.7s steps(5, start) infinite;
+    -webkit-animation: parpadea-animation 0.7s steps(5, start) infinite;
+    animation-duration: 2s; /*cada cuantos segundos se muestra*/
+    animation-iteration-count: 10; /*cuantas veces se muestra*/
+}
+
+@keyframes parpadea-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+@-webkit-keyframes parpadea-animation {
+    to {
+        visibility: hidden;
+    }
+}
+/*----------------------------------------------------------------------*/
+
+
+/*-----------------------TABLA--------------------------------------------*/
+.content {
+    padding: 40px 0;
+}
+/*
+.filter-wrapper{
+  padding: 30px 0;
+}*/
+
+.filter-checkbox {
+    margin-left: 30px
+}
+
+    .filter-checkbox:first-child {
+        margin-left: 0
+    }
+

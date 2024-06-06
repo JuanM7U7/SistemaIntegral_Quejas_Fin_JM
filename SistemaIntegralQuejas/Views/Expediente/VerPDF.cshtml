@@ -1,0 +1,107 @@
+﻿@model List<SistemaIntegralQuejas.Models.PDF_Escrito_Inical>
+
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+
+    <html>
+
+    <head>
+        <title>Escrito Inicial de Queja</title>
+        <link href="~/css/pdfescritoinicial.css" rel="stylesheet" />
+    </head>
+
+
+    <body>
+        <div class="row">
+            <p align="right">
+                <b>ID: @item.Id </b><br>
+                @foreach (var item_rr in item.reg_recepcion)
+                {
+                    <b>Peticionaria/o: @item_rr.Nombre @item_rr.ApellidoPat @item_rr.ApellidoMat</b>
+                }
+                <br>
+                <b>
+                    <script>
+                        var fecha = new Date();
+                        var meses = new Array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+                        document.write("Puebla, Puebla a " + fecha.getDate() + " de " + meses[fecha.getMonth()] + " de " + fecha.getFullYear());
+                    </script>
+                </b>
+            </p>
+        </div>
+
+        <div>
+            <p>
+                <b>
+                    <br>DR. JOSÉ FELIX CEREZO VÉLEZ.<br>
+                    PRESIDENTE DE LA COMISIÓN DE DERECHOS<br>
+                    HUMANOS DEL ESTADO DE PUEBLA.
+                </b>
+            </p>
+        </div>
+
+        <div class="row">
+            <p align="justify">
+                Con fundamento en los artículos 2, 4, 5, 13 fracciones I, II, III, IV y V, 25, 28 y demás relativos y aplicables de la Ley de la Comisión de Derechos Humanos del Estado, ante personal de este organismo y por mi propio derecho, acudo a denunciar actos u omisiones que a mi juicio constituyen violación a mis derechos humanos, en los términos que a continuación se expresan:
+            </p>
+        </div>
+
+        <div class="row">
+            <p align="justify">
+                <b>FECHA EN QUE OCURRIERON LOS HECHOS: </b> @item.FechaHechos<br>
+                <b><br>LUGAR EN QUE SE SUSCITARON LOS HECHOS: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                @if (@item.lugar_hechos.Count > 0)
+                {
+                    @foreach (var item_lh in item.lugar_hechos)
+                    {
+                    <p> Municipio: @(item_lh.municipio != "" ? item_lh.municipio : "No proporcionado"), Estado: @(item_lh.estado != "" ? item_lh.estado : "No proporcionjado"), calle @(item_lh.calle != "" ? item_lh.calle : "no proporcionado") colonia @(item_lh.colonia != "" ? item_lh.colonia : "no proporcionado"), num.ext: @(item_lh.num_ext != "" ? item_lh.num_ext : "No proporcionado") num.int: @(item_lh.num_int != "" ? item_lh.num_int : "No proporcionado") cp @(item_lh.cp != 0 ? item_lh.cp : "no proporcionado") </p>
+                    }
+                }
+            <b><br>CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS: <br></b> "@item.CircuntanciasHechos"
+            </p>
+            <p>
+                @if (item.uploadsei.Count > 0)
+                {
+                    @foreach (var item_up in item.uploadsei)
+                    {
+                    <p> Nombre archivo adjunto: @item_up.RutaArchivo </p>
+                    }
+                }
+            </p>
+        </div>
+
+        <div class="row">
+            <p>
+                <b><br>AUTORIDAD(ES) INVOLUCRADA(S): <br><br> </b>
+                @foreach (var item_au in item.enlace_ea)
+                {
+                    <b> Nombre autoridad: </b> @(item_au.nombre_persona != "" ? item_au.nombre_persona : "No proporcionado") <b>Cargo Autoridad: </b> @(item_au.cargo_persona != "" ? item_au.cargo_persona : "No proporcionado") <b> Autoridad: </b> @(item_au.autoridad != "" ? item_au.autoridad : "No proporcionado") <br>
+                }
+            </p>
+        </div>
+        <div class="row">
+            <p align="center" style="font-size:16px;">
+                <b>
+                    <br><br><br><br> C.
+                    @foreach (var item_rr in item.reg_recepcion)
+                    {
+                        @item_rr.Nombre @item_rr.ApellidoPat @item_rr.ApellidoMat
+                    }
+                    <br><br><br><br><br>
+                    ----------------------------------------------------------<br>NOMBRE Y FIRMA
+                </b>
+            </p>
+        </div>
+
+        <div class="row"><p align="center" style="font-size:16px;"><b><br><br>NOTA: LOS DATOS PERSONALES SE PRECISAN EN HOJA ANEXA.</b></p></div>
+        <div class="row"><p align="center" style="font-size:16px;">@item.fechactual</p></div>
+
+    </body>
+
+    </html>
+
+}

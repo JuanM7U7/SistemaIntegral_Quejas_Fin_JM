@@ -1,0 +1,34 @@
+﻿
+<!-- Contact Start -->
+<div class="fondo text-center">
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card" id="formularioaltaescritodqot">
+                <iframe id="frame"
+                        style="width: 100%; border: 0px; height: 0px;"
+                        src="./PlantillaDPeticionario"></iframe>
+        </div>
+
+    </div>
+    <!-- Segundo -->
+
+
+
+        </div>
+    </div>
+<!-- Contact End -->
+<!-- container -->
+<script>
+    var ExportaDocumento = '@Url.Action("VerPDF", "Expediente")';
+    var ExportaDocumentoacta = '@Url.Action("ActaPDF", "Expediente")';
+
+</script>
+
+@section Scripts
+{
+
+    <script src="~/js/FunctionModificaEscritoDqot.js"></script>
+}
+

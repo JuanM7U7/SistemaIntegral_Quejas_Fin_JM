@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>IniciarSesion</title>
+        <link href="~/css/StyleLogin.css" rel="stylesheet" />
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <div class="parent clearfix">
+            <div class="bg-illustration">
+                <img src="~/img/logo_cdh.png" alt="logo">
+
+                <div class="burger-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </div>
+
+            <div class="login">
+                <div class="container">
+                    <h1>SISTEMA INTEGRAL DE<br />QUEJAS</h1>
+
+                    <div class="login-form">
+                        <authentication mode="Forms">
+                        <form id="formLogin" name="formLogin">
+                            @*<h3 class="errorLogin">@ViewBag.Error</h3>*@
+                                <input type="text" placeholder="Usuario" name="username" autocomplete="off" id="username" required>
+                                <input type="password" placeholder="Contraseña" name="password" id="password" required>
+                                <div class="remember-form">
+                                    <input type="checkbox">
+                                    <span>Recuerdame</span>
+                                </div>
+                                <div class="forget-pass">
+                                </div>
+
+                                <button type="submit" id="ingresa">INGRESAR</button>
+                            </form>
+                        </authentication>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </head>
+    <body>
+    </body>
+    </html>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/plugins/popper.js"></script>
+    <script src="~/js/functionlogin.js"></script>
+
+

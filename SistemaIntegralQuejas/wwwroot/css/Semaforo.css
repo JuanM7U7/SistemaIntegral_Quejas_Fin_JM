@@ -1,0 +1,48 @@
+﻿.contenedor-semaforo {
+    display: grid;
+    place-items: center;
+}
+
+.semaforo {
+    width: 20px;
+    height: 40px;
+    border-radius: 30px;
+    display: grid;
+    place-items: center;
+    background-color: #2c3e50;
+}
+
+.luces-circulo {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgb(0,0,0,0.3);
+}
+
+.rojo {
+    background-color: red;
+    box-shadow: 0 0 2px 2px #ff0000;
+}
+
+.amarillo {
+    background-color: yellow;
+    box-shadow: 0 0 2px 2px #ffd800;
+}
+
+.verde {
+    background-color: #2ecc71;
+    box-shadow: 0 0 2px 2px #2ecc71;
+}
+
+.cd7cd7f {
+    background-color: #d7cd7f;
+}
+
+.c58aab9 {
+    background-color: #58aab9;
+}
+
+.c2c3e50 {
+    background-color: #2c3e50;
+}

@@ -1,0 +1,91 @@
+﻿@model List<SistemaIntegralQuejas.Models.MemorandumModificado>
+
+@{
+    Layout = null;
+}
+<html>
+
+<head>
+    <title>Acta Circunstanciada</title>
+    <link href="~/lib/bootstrap/dist/css/twitter-bootstrap.css" rel="stylesheet" />
+    <link href="~/css/pdf.css" rel="stylesheet" />
+</head>
+
+<body>
+
+@foreach (var itemp in Model)
+{
+        var temp_fecha = @itemp.FechaDeCreacion.ToString().Split(' ');
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h6 class="font-weight-bold text-right mr-4">COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA</h6>
+            <h6 class="font-weight-bold text-right mr-4">DIRECCIÓN DE QUEJAS ORIENTACIÓN Y TRANSPARENCIA  </h6>
+                <h6 class="font-weight-bold text-right mr-4">MEMORANDUM: @itemp.NumMemorandum</h6>
+                <h6 class="font-weight-bold text-right mr-4">H. PUEBLA DE ZARAGOZA, @temp_fecha[0] </h6>
+            <h6 class="font-weight-bold text-right mr-4 mb-3">REMISIÓN DE ESCRITOS INICIALES DE QUEJAS</h6>
+        </div>
+
+    </div>
+    
+    @foreach (var itemuser in @itemp.lstUsuario)
+    {
+    <div class="row">
+        <div class="col-xs-12">
+                    <h6 class="font-weight-bold text-left ml-4">@itemuser.GradoAcademico @itemuser.Nombre @itemuser.Ap @itemuser.Am</h6>
+                    <h6 class="font-weight-bold text-left ml-4">@itemuser.CargoDocumentos</h6>
+            <h6 class="font-weight-bold text-left ml-4 mb-3">PRESENTE:</h6>
+        </div>
+    </div>
+    }
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="text-justify font-weight-normal mr-5 ml-4">
+                Por este medio del presente le envió un cordial saludo, asimismo con fundamento en los artículos 2,4,5, de la Ley de la Comisión de Derechos Humanos del Estado de Puebla; 39, fracción I, VIII, del Reglamento Interno de la Comisión de Derechos Humanos, le remito los siguientes Escritos Iniciales de Quejas, para su valoración y tramite correspondiente.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-bordered mr-5 ml-4">
+          <thead>
+            <tr>
+              <th scope="col">N°</th>
+              <th scope="col">ID</th>
+              <th scope="col">NO. DE FOJAS</th>
+              <th scope="col">OBSERVACIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var itemexp in @itemp.lstExpturnados)
+            {
+                <tr>
+                  <th scope="row">1</th>
+                  <td>@itemexp.IdExpediente</td>
+                  <td>@itemexp.NumFojas</td>
+                  <td>@itemexp.Observaciones</td>
+                </tr>
+            }
+          </tbody>
+        </table>
+    </div>
+    <div>
+        <section class="content">
+        </section>
+    </div>
+    <div>
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="font-weight-bold text-center mb-2 attem">ATENTAMENTE.</p>
+            <h6 class="footer__p mt-5">
+                LIC. MARIO OCTAVIO MELÉNDEZ LÓPEZ
+            </h6>
+            <h6 class="footer__p">
+                DIRECTOR DE QUEJAS ORIENTACIÓN Y TRANSPARENCIA
+            </h6>
+        </footer>
+    </div>
+}
+</body>
+</html>

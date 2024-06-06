@@ -1,0 +1,139 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccesor
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="fondo text-center">
+
+    <div class="row">
+        <div class="col-4" style="margin-top:2%; margin-left:2%;">
+            <img src="~/img/logo_horizontal-cdhp.png" width="100%" />
+        </div>
+        <div class="col-6">
+            <h1 class="cards_item_title1" style="margin-top:5%;">VISUALIZACIÓN DE TURNOS</h1>
+        </div>
+        <div class="container mt-5">
+            <div class="content">
+                <div class="row mb-4">
+@*                    <div class="col-5">
+                        <div class="selectgroup selectgroup-pills">
+                            <label class="selectgroup-item">
+                                <input type="checkbox" name="value" value="HTML" class="selectgroup-input">
+                                <span class="selectgroup-button">Queja</span>
+                            </label>
+                            <label class="selectgroup-item">
+                                <input type="checkbox" name="value" value="CSS" class="selectgroup-input">
+                                <span class="selectgroup-button">Orientación</span>
+                            </label>
+                            <label class="selectgroup-item">
+                                <input type="checkbox" name="value" value="PHP" class="selectgroup-input">
+                                <span class="selectgroup-button">Canalización</span>
+                            </label>
+                            <label class="selectgroup-item">
+                                <input type="checkbox" name="value" value="JavaScript" class="selectgroup-input">
+                                <span class="selectgroup-button">Sin definir</span>
+                            </label>
+                        </div>
+
+                    </div>*@
+                    <div class="col-4">
+                        <div class="example">
+                            <input class="form-control btn-rounded input-daterange-datepicker" type="text" name="daterange">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="btn-group submitter-group float-left">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Status</div>
+                            </div>
+                            <div id="selectStatus">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4" style="text-align: end;">
+                        <input type="button" name="btnTurnoAle" id="btnTurnoAle" value="Asignar Turno" onclick="generaTurnoAleatorio();" class="btn btn-info">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inicio Tabla turnos --> 
+            <div class="table-responsive">
+                <table id="tblTurnosPendientesVAQ" class="display" style="min-width: 845px">
+                    <thead>
+                        <tr>
+                            <th>TURNO</th>
+						    <th>FECHA SOLICITUD</th>
+						    <th>HORA SOLICITUD</th>
+						    <th>HORA FINALIZADO</th>
+						    <th>DURACIÓN DE ATENCIÓN</th>
+						    <th>TIPO</th>
+						    <th>PETICIONARIO</th>
+						    <th>STATUS</th>
+						    <th>ATENDER</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @* <tr>
+                            <td>1</td>
+                            <td>14/05/2023 09:31:00</td>
+                            <td>09:31:00</td>
+                            <td>09:31:00</td>
+                            <td>10 minutos 5 segundos</td>
+                            <td>Queja</td>
+                            <td><img alt="image" src="~/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-html="true" data-toggle="tooltip"></td>
+                            <td>En curso</td>
+                            <td><button type="button" class="btn btn-rounded btn-primary">Tomar turno</button></td>
+                        </tr>*@
+                    </tbody>
+                </table>
+            </div>
+            <!-- Fin tabla turnos-->
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="~/js/function_vadqot.js"></script>
+    <script src="~/js/turnoclient.js"></script>
+}
+
+<!-- *******************************************   MODALES  ************************************************** -->
+
+<!-- Modal Selección Módulos-->
+
+<!-- Scrollable modal -->
+<div class="modal fade " id="modal_atender" role="dialog">
+	<div class="modal-dialog ">
+		<div class="modal-content registro">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Selecciona Módulo de Atención
+				<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true" onclick="CierraPopup()">×</span>
+					<span class="sr-only">Close</span>
+				</button>
+				</h4>
+			</div>
+
+			<!-- Modal Body -->
+			<div class="modal-body">
+				<p class="statusMsg"></p>
+					<input id="idturno" hidden/>
+				<form class="checkin" role="form" id="formModulos">
+
+
+				</form>
+			</div>
+
+			<!-- Modal Footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" onclick="CierraPopup()">Cerrar</button>
+				<button type="button" class="btn btn-primary submitBtn" onclick="updateStatusModulosDqot()" id="save">Aceptar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  FIN Modal Selección Módulos-->

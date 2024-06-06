@@ -1,0 +1,279 @@
+﻿body {
+    margin-top: 40px;
+    font-size: 22px;
+}
+
+#ignore {
+    background-color: #eee;
+}
+
+#btn {
+    margin-top: 20px;
+}
+
+#content img {
+    max-width: 200px;
+}
+
+
+/*# sourceMappingURL=custom.css.map */
+
+.rectangulo {
+    width: 100%;
+    height: 80%;
+    border: 1px solid #000000;
+    background: #d4d4d5;
+    text-align: left;
+}
+
+.txtencabezado {
+    font-family: arial;
+    font-weight: bolder;
+    font-size: 20px;
+    margin-bottom: 0%;
+}
+
+.txtencabezadochk {
+    font-family: arial;
+    font-weight: bolder;
+    font-size: 17px;
+    margin-bottom: 0%;
+    margin-right: 0px;
+}
+
+.divchkenc {
+    margin-top: 9px;
+}
+
+.lablchk {
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.rectTexenc {
+    margin-top: -7px;
+}
+
+.rectTexenchk {
+    margin-top: -31px;
+}
+
+.receipt-main {
+    background: #ffffff none repeat scroll 0 0 !important;
+    /* border-bottom: 12px solid #333333 !important; */
+    /* border-right: 1px solid #ccc !important;
+    border-left: 1px solid #ccc !important; */
+    /* border-top: 12px solid #006fb3 !important; */
+    margin-top: 0px !important;
+    /* margin-bottom: 50px !important; */
+    padding: 15px 25px !important;
+    position: relative !important;
+    color: #333333 !important;
+    font-family: open sans !important;
+}
+
+.txt8px {
+    font-size: 12px;
+    margin-left: 14px;
+}
+
+.container {
+    width: 100% !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+.linesolidtop {
+    border-top: 1px solid black;
+    /* background-color: gold; */
+    height: 100px;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+}
+
+.hdiv {
+    height: 18px;
+}
+
+.rowpapa {
+    margin-top: -35px;
+}
+
+.lblchk {
+    font-size: 12px;
+}
+
+.frmcheck-flex {
+    position: relative;
+    display: flex;
+    padding-left: 1.25rem;
+    margin-top: -3px !important;
+}
+
+.txt-justificado {
+    text-align: justify;
+}
+
+.txt-justificado {
+    text-align: justify;
+}
+
+.txt-subrayado {
+    text-decoration: underline;
+}
+
+.titulodoc {
+    font-size: 20px !important;
+    font-family: arial !important;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1440px !important;
+    }
+}
+
+/*Custom 2*/
+
+body,
+* {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+.text-danger strong {
+    color: #006fb3;
+}
+
+
+/* .receipt-main {
+    background: #ffffff none repeat scroll 0 0;
+    border-bottom: 12px solid #333333;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-top: 12px solid #006fb3;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 40px 30px !important;
+    position: relative;
+    color: #333333;
+    font-family: open sans;
+} */
+
+.receipt-main p {
+    color: #333333;
+    font-family: open sans;
+    line-height: 1.42857;
+}
+
+.receipt-footer h1 {
+    font-size: 15px;
+    font-weight: 400 !important;
+    margin: 0 !important;
+}
+
+.receipt-main::after {
+    background: #414143 none repeat scroll 0 0;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -13px;
+}
+
+.receipt-main thead {
+    background: #414143 none repeat scroll 0 0;
+}
+
+    .receipt-main th,
+    .receipt-main thead tr {
+        background-color: #414143;
+    }
+
+    .receipt-main thead th {
+        color: #fff;
+    }
+
+.receipt-right h5 {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 0 0px 0;
+}
+
+.receipt-rightnormal h5 {
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0 0 0px 0;
+}
+
+.receipt-right p {
+    font-size: 10px;
+    margin: 0px;
+}
+
+    .receipt-right p i {
+        text-align: center;
+        width: 18px;
+    }
+
+.title-aviso {
+    font-size: 10px;
+}
+
+.receipt-main td {
+    padding: 9px 20px !important;
+}
+
+.receipt-main th {
+    padding: 13px 20px !important;
+}
+
+.receipt-main td {
+    font-size: 14px;
+    font-weight: initial !important;
+}
+
+    .receipt-main td p:last-child {
+        margin: 0;
+        padding: 0;
+    }
+
+    .receipt-main td h2 {
+        font-size: 20px;
+        font-weight: 900;
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+.receipt-header-mid .receipt-left h1 {
+    font-weight: 100;
+    margin: 34px 0 0;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.receipt-header-mid {
+    margin: 24px 0;
+    overflow: hidden;
+}
+
+#container {
+    background-color: #dcdcdc;
+}
+
+.txtOverline {
+    text-decoration: overline;
+}
+
+.topmen {
+    margin-top: -10px;
+}
+
+@media print {
+    .receipt-main thead th {
+        color: #333;
+    }
+}

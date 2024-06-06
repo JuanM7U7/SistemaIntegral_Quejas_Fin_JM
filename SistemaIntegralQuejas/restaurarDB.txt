@@ -1,0 +1,1 @@
+Scaffold-Dbcontext "Server=192.168.1.50; Database=DB_SistemaIntegralQuejasQA; TrustServerCertificate=True; User Id=CDHDPITQA; Password=Cdhp2022*-+;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -f

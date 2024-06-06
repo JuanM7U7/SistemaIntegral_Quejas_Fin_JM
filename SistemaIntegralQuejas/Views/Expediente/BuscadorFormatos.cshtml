@@ -1,0 +1,499 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccesor
+@*@{
+    ViewData["Title"] = "Admin DQOT";
+}*@
+
+<div class="fondo text-center">
+
+    <div class="row col-12" style="margin-top:2%;">
+        <div class="col-3"><img src="~/img/logo_horizontal-cdhp.png" width="100%" /></div>
+        <div class="col-9"><h1 style="margin-top:5%;">Escritos Iniciales de Queja</h1></div>
+    </div>
+
+    <form class="row col-12" id="frm_busquedaFormatos" name="frm_busquedaFormatos" style="width:100%">
+
+        <div class="col-1">
+            @* <div class="collapse multi-collapse ard card-body search" id="multiCollapseExample1"> *@
+            <div class="card-body search" id="multiCollapseExample1">
+                <input type="text" id="txt_idqueja" name="txt_idqueja" style="border-color: gray" class="searchTerm" placeholder="Ingresa ID">
+
+
+            </div>
+        </div>
+
+        <div class="col-2">
+            @*  <div class="collapse multi-collapse ard card-body search" id="multiCollapseExample2"> *@
+            <div class="card-body search" id="multiCollapseExample2">
+                <input type="text" id="txt_idpet" name="txt_idpet" style="border-color: gray" class="searchTerm" placeholder="Ingresa CURP">
+                @*   <button id="buscar_idpet" type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+                </button>*@
+            </div>
+        </div>
+
+        <div class="col-2">
+            @* <div class="collapse multi-collapse ard card-body search" id="multiCollapseExample3"> *@
+            <div class="card-body search" id="multiCollapseExample3">
+                <input id="txt_nombrepet" name="txt_nombrepet" type="text" style="border-color: gray" class="searchTerm" placeholder="Ingresa Nombre">
+                @*                         <input id="txt_appet" name="txt_appet" type="text" class="searchTerm" placeholder="APELLIDO PATERNO">
+                <input id="txt_ampet" name="txt_ampet" type="text" class="searchTerm" placeholder="APELLIDO MATERNO"> *@
+                @*  <button id="buscar_nompet" type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+                </button>*@
+
+            </div>
+        </div>
+
+        <div class="col-2">
+            @* <div class="collapse multi-collapse ard card-body search" id="multiCollapseExample4"> *@
+            <div class=" card-body search" id="multiCollapseExample4">
+                <input type="text" id="txt_EstQueja" name="txt_EstQueja" style="border-color: gray" class="searchTerm" placeholder="Ingresa Status">
+                @*   <button id="buscar_idpet" type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+                </button>*@
+            </div>
+        </div>
+        <div class="col-2">
+            @* <div class="collapse multi-collapse ard card-body search" id="multiCollapseExample5"> *@
+            <div class="ard card-body search" id="multiCollapseExample5">
+                <input type="text" id="txt_via" name="txt_via" style="border-color: gray" class="searchTerm" placeholder="Ingresa Vía de Interposición">
+                @*   <button id="buscar_idpet" type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+                </button>*@
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="ard card-body search" id="fechaRegistro" name="fechaRegistro" data-provide="datepicker">
+                <input id="txt_fecha" name="txt_fecha" type="date" style="border-color: gray" class="form-control searchTerm">
+            </div>
+        </div>
+
+        <div class="col-1">
+            <div class="ard card-body search">
+                <button id="buscar_idqueja" type="submit" class="searchButton--tit col-.5">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+        <div class="col-lg-12">
+        <form id="frmTurnarpexp" name="frmTurnarpexp">
+            <button id="btnTurnapexp" disabled name="btnTurnapexp" type="submit" class="btn btn-primary mt-3">
+                Turno preeliminar
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+
+        <!-- Inicio Tabla turnos -->
+        <div class="col-lg-12 table-responsive">
+            <table id="tableEditFormatosDqot" class="table table-striped" style="min-width:100%">
+                <thead style="background:white !important; border-bottom:1px solid gray">
+                    <tr>
+                        <th></th>
+                        <th>ID QUEJA</th>
+                        <th>FORMATO DATOS PERSONALES</th>
+                        <th>ESCRITO INICIAL</th>
+                        <th>ACTA CIRCUNSTANCIADA</th>
+                        <th>FECHA REGISTRO</th>
+                        <th>VÍA INTERPOSICIÓN</th>
+                        <th>STATUS</th>
+                        <th>DATOS COMPLEMENTARIOS</th>
+                        <th>TURNO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- Fin tabla turnos-->
+        <iframe id="frame"
+                style="width: 100%; border: 0px; height: 0px;"
+                src="./PlantillaDPeticionario"></iframe>
+    </div>
+
+
+</div>
+
+
+</div>
+
+<style>
+
+    .search {
+        width: 100%;
+        position: relative;
+        display: flex;
+    }
+
+    .searchTerm {
+        width: 100%;
+        border: solid 2px gray;
+   
+        padding: 5px;
+        height: 40px;
+        
+        outline: none;
+        color: #9DBFAF;
+    }
+
+        .searchTerm:focus {
+            color: #0E3083;
+        }
+
+    .searchButton {
+        width: 40px;
+        height: 36px;
+        border: 1px solid #0E3083;
+        background: #0E3083;
+        text-align: center;
+        color: #fff;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    /*Resize the wrap to see the search bar change!*/
+    .wrap {
+        width: 30%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #frm_altaqueja input, select, textarea {
+        width: 100%;
+        border-radius: 5px;
+        border: solid .5px lightgray;
+    }
+
+        #frm_altaqueja input:focus {
+            border: solid .5px lightgray;
+        }
+
+    #contenedor_Usuarios {
+        width: 100%;
+        border: solid .5px lightgray;
+        min-height: 15%;
+        background: white;
+        border-radius: 7px;
+    }
+
+    #Divpequenios {
+        float: left;
+        width: 95%;
+        border: solid .5px lightgray;
+        min-height: 10%;
+        background: white;
+        border-radius: 7px;
+        margin-bottom: 2px;
+    }
+
+    .tooltipbloated {
+        display: inline;
+        position: relative;
+        z-index: 999;
+    }
+
+    .tooltipbloated-content {
+        position: absolute;
+        background: url('https://iborra.es/web/wp-content/themes/dfd-ronneby_child/img/tooltipbloated.png') no-repeat center bottom;
+        background-size: 100% 100%;
+        z-index: 9999;
+        width: 140px;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -100px;
+        padding: 50px 30px;
+        text-align: center;
+        color: #fff;
+        opacity: 0;
+        cursor: default;
+        font-size: 0.75em;
+        line-height: 1.4;
+        pointer-events: none;
+        font-family: 'Kalam', cursive;
+        -webkit-transform: scale3d(0.1,0.2,1);
+        transform: scale3d(0.1,0.2,1);
+        -webkit-transform-origin: 50% 120%;
+        transform-origin: 50% 120%;
+        -webkit-transition: opacity 0.4s, -webkit-transform 0.4s;
+        transition: opacity 0.4s, transform 0.4s;
+        -webkit-transition-timing-function: ease, cubic-bezier(0.6,0,0.4,1);
+        transition-timing-function: ease, cubic-bezier(0.6,0,0.4,1);
+    }
+
+    .tooltipbloated:hover .tooltipbloated-content {
+        opacity: 1;
+        pointer-events: auto;
+        -webkit-transform: scale3d(1,1,1);
+        transform: scale3d(1,1,1);
+    }
+    /***  TOOLTIP BOX  ***/
+    .tooltipbox {
+        display: inline;
+        position: relative;
+        z-index: 999;
+    }
+
+    /* Trigger text */
+
+    .tooltipbox-item {
+        color: black;
+        cursor: pointer;
+        z-index: 100;
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+        -webkit-transition: background-color 0.3s, color 0.3s, -webkit-transform 0.3s;
+        transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    .tooltipbox:hover .tooltipbox-item {
+        color: black;
+        -webkit-transform: translate3d(0,-0.5em,0);
+        transform: translate3d(0,-0.5em,0);
+    }
+
+    /* Tooltip */
+
+    .tooltipbox-content {
+        position: absolute;
+        z-index: 99;
+        width: 230%;
+        left: 50%;
+        margin-left: -180px;
+        bottom: -5px;
+        text-align: left;
+        background: #17a2b8;
+        opacity: 0;
+        font-size: 0.75em;
+        text-align: center;
+        line-height: 1.5;
+        padding: 1.5em;
+        color: black;
+        border-bottom: 50px solid lightgray;
+        cursor: default;
+        pointer-events: none;
+        border-radius: 5px;
+        font-family: 'Kalam', cursive;
+        -webkit-transform: translate3d(0,-0.5em,0);
+        transform: translate3d(0,-0.5em,0);
+        -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+        .tooltipbox-content a {
+            color: lightgray;
+        }
+
+            .tooltipbox-content a:hover {
+                color: lightgray;
+            }
+
+    .tooltipbox-text {
+        opacity: 0;
+        -webkit-transform: translate3d(0,1.5em,0);
+        transform: translate3d(0,1.5em,0);
+        -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .tooltipbox:hover .tooltipbox-content,
+    .tooltipbox:hover .tooltipbox-text {
+        pointer-events: auto;
+        opacity: 1;
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+    }
+
+    .dummy-text {
+        max-width: 1000px;
+        font-size: 17px !Important;
+    }
+
+    .dummy {
+        font-weight: 300;
+    }
+
+    .dummy-text p {
+        margin-top: 0;
+        text-align: center !Important;
+        margin-bottom: 0 !important;
+    }
+
+    #tableEditFormatosDqot thead
+    {
+        background:white !important;
+    }
+
+    table.dataTable tbody tr.selected {
+        color: black;
+        background-color: #f5b8b5 !important;
+    }
+
+</style>
+
+<script>
+    var idescritopdf = 0;
+    var ExportaDocumento = '@Url.Action("VerPDF", "Expediente")?idescrito=';
+    var ExportaDocumentoacta = '@Url.Action("ActaPDF", "Expediente")?idactac=';
+    var Memorandumdqot = '@Url.Action("MemorandumdqotPDF", "Expediente")?idmemorandum=';
+</script>
+
+@section Scripts
+{
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <!-- (Optional) Latest compiled and minified JavaScript translation files
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-es_ES.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script src="~/js/buscadortabla.js"></script>
+}
+
+@* MODALES EDITAR *@
+
+<div class="modal fade" id="modalFormPeticionario" name="modalFormPeticionario" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header headerUpdate">
+                <h5 class="modal-title" id="titleModal">Actualizar Datos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body frmEditDatosPersonales">
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal de Edición del Escrito Inicial de una Queja *@
+<div class="modal fade" id="modalformularioEscritoInicial" name="modalformularioEscritoInicial" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header headerUpdate">
+                <h5 class="modal-title" id="titleModal">Actualizar Datos - Escrito Inicial</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body formularioEscritoInicial">
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal de Edición del Acta Circunstanciada *@
+
+<div class="modal fade" id="modalformularioActaCircunstanciada" name="modalformularioActaCircunstanciada" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header headerUpdate">
+                <h5 class="modal-title" id="titleModal">Actualizar Datos - Acta Circunstanciada</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body formularioActaCircunstanciada">
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal ver memo *@
+
+<div class="modal fade" id="modalMemorandumdqotsendexp" name="modalMemorandumdqotsendexp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header headerUpdate">
+                <h5 class="modal-title" id="titleModalmemo"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body formularioMemodqot">
+                <div id="headerMemo"></div>
+                <div id="cuerpoMemo">
+                    <div class="col-lg-12 table-responsive">
+                        <input id="idMemoupdate" name="idMemoupdate" hidden />
+                        <table id="tableMemoDqot" class="table table-striped" style="min-width:100%">
+                            <thead style="background:white !important; border-bottom:1px solid gray">
+                                <tr>
+                                    <th>N°</th>
+                                    <th>ID EXPEDIENTE</th>
+                                    <th>NO. DE FOJAS</th>
+                                    <th>FECHA REGISTRO</th>
+                                    <th>OBSERVACIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="footerMemo" class="row"></div>
+            </div>
+            <div class="modal-footer row">
+                <div class="col-md-6 eliminaformaes" style="display: contents;">
+                    <label for="gpdfForm" class="eliminaformaes  labelt"></label> <br>
+                    <button type="button" onclick="btnGenerapdfmemo(this)" name="gpdfFormmemo" id="gpdfFormmemo" data-idform="1" class="eliminaformaes btn btn-pinterest eliminaformaes">
+                        Imprimir PDF <span class="btn-icon-right eliminaformaes"><i class="far fa-file-pdf eliminaformaes"></i></span>
+                    </button>
+                </div>
+                <div class="col-md-6 eliminaformaes" style="display: flex;">
+                    <label for="submitFormMemo" class="eliminaformaes labelt"></label> <br>
+                    <button type="submit" name="submitFormMemo" id="submitFormMemo" onclick="btnUpdatememo(this)" class="eliminaformaes eliminaformaes btn btn-success">
+                        Guardar <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal de Edición datos complementarios del alta de una queja *@
+
+<div class="modal fade" id="modaldatoscomplementariosqueja" name="modaldatoscomplementariosqueja" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header headerUpdate">
+                <h5 class="modal-title" id="titleModal">Datos Complementarios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body formulariodatoscomplementariosqueja">
+                <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+                    <div id="izquierda" class="row col-6"></div>
+                    <div id="derecha" class="row col-6"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal de Edición datos complementarios del alta de una queja *@
+<div class="modal fade" id="modalArchivoadj" name="modalArchivoadj" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header headerUpdate">
+                <h5 class="modal-title" id="titleModaladei"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bodyarchivoadj">
+                <iframe id="pdfuploadei" width="100%" height="900" style="visibility:visible" src=""></iframe>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccesor
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index_TV_DQOT</title>
+    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+    <link href="~/css/styletv.css" rel="stylesheet" />
+</head>
+<body>
+    <input id="idusuario" value="@HttpContextAccesor.HttpContext?.Session.GetInt32("IdUsuario")" hidden />
+    <input id="usuario" value="@HttpContextAccesor.HttpContext?.Session.GetString("Username")" hidden />
+    <input id="grupohub" value="@HttpContextAccesor.HttpContext?.Session.GetString("Grupo")" hidden />
+    <button id="click" hidden></button>
+    <div class="fondo text-center">
+        <div class="row" style="margin-left:10%">
+            <div class="col-5" style="margin-top:5%">
+                <img class="cdh" src="~/img/logo_horizontal-cdhp.png" width="100%" />
+            </div>
+            <div class="col-6">
+                <table id="example" class="table table-striped" style="width:100%; margin-top:10%;">
+                    <thead>
+                        <tr style="background-color:#6F6D6D; color:white;">
+                            <th>TURNO</th>
+                            <th>ATIENDE</th>
+                            <th>MÓDULO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="widget col-5">
+                <div class="fecha">
+                    <p id="diaSemana" class="diaSemana"></p>
+                    <p id="dia" class="dia"></p>
+                    <p>de</p>
+                    <p id="mes" class="mes"></p>
+                    <p>del</p>
+                    <p id="anio" class="anio"></p>
+                </div>
+                <div class="reloj">
+                    <p id="horas" class="horas"></p>
+                    <p>:</p>
+                    <p id="minutos" class="minutos"></p>
+                    <p>:</p>
+                    <div class="cajaSegundos">
+                        <p id="ampm" class="ampm"></p>
+                        <p id="segundos" class="segundos"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6" style="margin-bottom:5%">
+                <div class="cards">
+                    <div id="card_one" class=" cards_item  " >
+                        <h3 class="cards_item_title">TURNO</h3>
+                        <p class="parpadea cards_item_description" id="Id_Turno">  </p>
+                    </div>
+                    <div id="card_two" class="cards_item">
+                        <h3 class="cards_item_title">MÓDULO</h3>
+                        <p class="cards_item_description" id="id_Modulo"> </p>
+                    </div>
+                </div><!-- .cards -->
+            </div>
+        </div>
+    </div>
+
+<!-- Jquery -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/plugins/popper.js"></script>
+<script src="~/js/plugins/tooltip.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/js/umd/util.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- Signalr -->
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<!-- Mis Scripts -->
+    <script src="~/js/general.js"></script>
+<script src="~/js/functiontv.js"></script>
+<script src="~/js/turnoclient.js"></script>
+</body>
+
+ 
+</html>

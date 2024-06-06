@@ -1,0 +1,998 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>WebStylePress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link href="~/css/plantilladpeticionario.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container receipt-wrap" id="receipt-wrap">
+        <div class="row rowpapa">
+            <div class="receipt-main col-xs-12 col-sm-12 col-md-12">
+                <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-2">
+                        <div class="receipt-left">
+                            <img class="img-responsive" alt="iamgurdeeposahan" src="~/img/logo_cdh.png" style="width: 71px; border-radius: 0px" />
+                        </div>
+                    </div>
+                    <div style="margin-top: -30px;" class="col-xs-10 col-sm-10 col-md-10 text-right">
+                        <div class="receipt-right">
+                            <h5 class="titulodoc">Constancia de Datos Personales</h5>
+                            <h5 class="titulodoc">de los/as ususarios/as</h5>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 text-right">
+                        <div class="receipt-right rectangulo">
+                            <div class="receipt-right rectTexenc">
+                                <label class="txtencabezado">DATOS PERSONALES</label>
+                            </div>
+                        </div>
+                        <div class="receipt-right">
+                            <div class="receipt-right rectTexenchk">
+                                <label class="txtencabezadochk">Tipo de usuario: </label>
+                                <div class="form-check form-check-inline divchkenc">
+                                    <input class="form-check-input" type="checkbox" name="chkTipoaq" id="chkTipoaq" value="Quejoso">
+                                    <label class="form-check-label lablchk" for="chkTipoaq">Quejoso/a</label>
+                                </div>
+                                <div class="form-check form-check-inline divchkenc">
+                                    <input class="form-check-input" type="checkbox" name="chkTipoaq" id="chkTipoaq" value="Agraviado">
+                                    <label class="form-check-label lablchk" for="chkTipoaq">Agraviado/a</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 text-right txt8px mt-1">
+                    <label class="">*OBLIGATORIOS</label>
+                </div>
+
+                <div class="row">
+                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center">
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtNombre">Apellido Paterno</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtApaterno">Apellido Paterno</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtAmaterno">Apellido Paterno</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center hdiv">
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Nombre</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Apellido Paterno</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Apellido Materno</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center">
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtCalle">Calle Gan Bang</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="numExt">15</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="numInt">1</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtColonia">Colonia Valle</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center hdiv">
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Calle</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>No.Exterior</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>No.Interior</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Colonia</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center">
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtCiudadloc">Zacatecas</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtMunicipio">Zacatecas</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtEstado">Baja California</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtCp">Colonia Valle</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtTelefono">Colonia Valle</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 col-sm-1 col-md-1 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtEdad">365</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center hdiv">
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Ciudad/Localidad</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Municipio</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Estado</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Código Postal</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Teléfono</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 col-sm-1 col-md-1 text-center linesolidtop">
+                            <div class="receipt-right">
+                                <h5>Edad</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center">
+                        <div class="col-xs-3 col-sm-3 col-md-3 text-center">
+                            <div class="receipt-rightnormal">
+                                <h5 id="txtEmail">Correo electrónico</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                            <div class="receipt-rightnormal">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkSexo" value="1">
+                                    <label class="form-check-label lblchk" for="chkSexo">Masculino</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkSexo" value="2">
+                                    <label class="form-check-label lblchk" for="chkSexo">Femenino</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-5 col-sm-5 col-md-5 text-center">
+                            <div class="receipt-rightnormal">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkGenero" value="Hombre">
+                                    <label class="form-check-label lblchk" for="chkGenero">Hombre</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkGenero" value="Mujer">
+                                    <label class="form-check-label lblchk" for="chkGenero">Mujer</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkGenero" value="Otro">
+                                    <label class="form-check-label lblchk" for="chkGenero">
+                                        Otro: <label class="txt-subrayado" name="txtOtroGenero" id="txtOtroGenero"></label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center hdiv">
+                    <div class="col-xs-3 col-sm-3 col-md-3 text-center linesolidtop topmen">
+                        <div class="receipt-right">
+                            <h5>Correo electrónico</h5>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 text-center topmen">
+                        <div class="receipt-right">
+                            <h5>Sexo</h5>
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-sm-5 col-md-5 text-center topmen">
+                        <div class="receipt-right">
+                            <h5>Género</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- checkbox -->
+                <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center">
+                    <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                        <div class="receipt-right">
+                            <h5>014 Escolaridad</h5>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="1" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck1">
+                                    Sin escolaridad
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="2" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Preescolar
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="3" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Primaria
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="4" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Secundaria
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="5" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Preparatoria o Bachillerato
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="6" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Normal Básica
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="7" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Profesional
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="8" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Maestría
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="9" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Doctorado
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                        <div class="receipt-right">
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="10" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck1">
+                                    No especificado
+                                </label>
+                            </div>
+                            <h5>Estudios técnico o comerciales con:</h5>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="11" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Primaria terminada
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="12" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Secundaria terminada
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="13" name="chkEscolaridad" id="chkEscolaridad">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    Preparatoria terminada
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                        <div class="receipt-right">
+                            <h5>010 Estado conyugal</h5>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="1" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Casado
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="2" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Soltero
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="3" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Viudo
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="4" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Divorciado
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="5" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Unión libre
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="6" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Sociedad en convivencia
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="7" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Separado
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="8" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    No especificado
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="9" name="chkEstadocon" id="chkEstadocon">
+                                <label class="form-check-label lblchk" for="chkEstadocon">
+                                    Se desconoce
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                        <div class="receipt-right">
+                            <h5>0121 Ocupación</h5>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="1" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Trabajador(a) doméstico
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="2" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Comerciante
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="3" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Desempleado(a)
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="4" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Empleado(a) de comercio
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="5" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Estudiante
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="6" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Funcionario(a) del sector público
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="7" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Periodista
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="8" name="chkOcupacion" id="chkOcupacion">
+                                <label class="form-check-label lblchk" for="chkOcupacion">
+                                    Otro: <label class="txt-subrayado" name="chkOtraocupacion" id="chkOtraocupacion">Aqui esta el otro</label>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- checkbox segunda linea -->
+                <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center">
+                    <div class="col-xs-4 col-sm-4 col-md-4 text-left">
+                        <div class="receipt-right">
+                            <h5>045 Nacionalidad</h5>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="Mexicano" name="chkNacionalidad" id="chkNacionalidad">
+                                <label class="form-check-label lblchk" for="chkNacionalidad">
+                                    Mexicano/a
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="Extranjero" name="chkNacionalidad" id="chkNacionalidad">
+                                <label class="form-check-label lblchk" for="chkNacionalidad">
+                                    Extranjero/a
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 text-left">
+                        <div class="receipt-right">
+                            <h5>012 ¿Sabe leer y</h5>
+                            <h5>013 Escribir?</h5>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="Si" name="chkSabeleer" id="chkSabeleer">
+                                <label class="form-check-label lblchk" for="chkSabeleer">
+                                    Si
+                                </label>
+                            </div>
+                            <div class="frmcheck-flex">
+                                <input class="form-check-input" type="checkbox" value="No" name="chkSabeleer" id="chkSabeleer">
+                                <label class="form-check-label lblchk" for="chkSabeleer">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 text-left">
+                        <div class="receipt-right">
+                            <h5>015 ¿Tiene alguna discapacidad?</h5>
+                            <div class="row">
+                                <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-left">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="1" name="chkDispacacidad" id="chkDispacacidad">
+                                            <label class="form-check-label lblchk" for="defaultCheck1">
+                                                Visual
+                                            </label>
+                                        </div>
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="3" name="chkDispacacidad" id="chkDispacacidad">
+                                            <label class="form-check-label lblchk" for="defaultCheck2">
+                                                Para hablar
+                                            </label>
+                                        </div>
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="5" name="chkDispacacidad" id="chkDispacacidad">
+                                            <label class="form-check-label lblchk" for="defaultCheck2">
+                                                Motriz
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="2" name="chkDispacacidad" id="chkDispacacidad">
+                                            <label class="form-check-label lblchk" for="defaultCheck1">
+                                                Auditiva
+                                            </label>
+                                        </div>
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="4" name="chkDispacacidad" id="chkDispacacidad">
+                                            <label class="form-check-label lblchk" for="defaultCheck2">
+                                                Mental
+                                            </label>
+                                        </div>
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="6" name="chkDispacacidad" id="chkDispacacidad">
+                                            <label class="form-check-label lblchk" for="defaultCheck2">
+                                                Ninguna
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN checkbox segunda linea -->
+                <!-- Tercera linea checkbox -->
+                <div class="col-xs-12 col-sm-12 col-md-12 text-center" style="margin-top: 7px;">
+                    <div class="row">
+                        <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center" style="margin-top: 7px;">
+                            <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                <div class="receipt-right">
+                                    <h5>¿Pertenece algún grupo social específico?</h5>
+                                    <div class="row">
+                                        <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-left">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 text-left">
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        <input type="text" hidden>
+                                                        Indígena
+                                                    </label>
+                                                </div>
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="2" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        VIH/Sida
+                                                    </label>
+                                                </div>
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="3" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        Internos en reclusorios
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="4" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        Migrante
+                                                    </label>
+                                                </div>
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="5" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        No Heterosexual
+                                                    </label>
+                                                </div>
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="6" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        Personas con discapacidad
+                                                    </label>
+                                                </div>
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="7" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        No pertence
+                                                    </label>
+                                                </div>
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="8" name="chkGsocial" id="chkGsocial">
+                                                    <label class="form-check-label lblchk" for="chkGsocial">
+                                                        Otro: <label class="txt-subrayado" name="txtOtroGsoc" id="txtOtroGsoc">Totonadfgd</label>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                                <div class="receipt-right">
+                                    <h5>019 ¿Habla alguna lengua indígena?</h5>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="Si" name="chkHablali" id="chkHablali">
+                                        <label class="form-check-label lblchk" for="chkHablali">
+                                            Si: <label class="txt-subrayado" id="txtOtraLengiai"></label>
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="No" name="chkHablali" id="chkHablali">
+                                        <label class="form-check-label lblchk" for="chkHablali">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 text-center">
+                                <div class="receipt-right">
+                                    <div class="frmcheck-flex text-center">
+                                        <label class="form-check-label lblchk" id="txtFechaNaci" name="txtFechaNaci" for="defaultCheck2" style="margin-left: 100px; margin-bottom: 0px !important;">
+                                            31/12/1999
+                                        </label>
+                                    </div>
+                                    <h5 class="txtOverline">007 Fecha de Nacimiento</h5>
+                                    <h5>(Día/Mes/Año)</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN Tercera linea checkbox -->
+            <!-- Cuarta linea checkbox -->
+            <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-left">
+                <div class="col-xs-12 col-sm-12 col-md-12 text-left">
+                    <div class="receipt-right">
+                        <h5>Solo para personas migrantes</h5>
+                        <div class="row">
+                            <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-left">
+                                <div class="col-xs-4 col-sm-4 col-md-4 text-left">
+                                    <div class="frmcheck-flex">
+                                        <label class="form-check-label lblchk" for="defaultCheck2">
+                                            Origen: <label class="txt-subrayado" id="txtOrigenmig">Aquitestaghg vfvfvfvf</label>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 text-left">
+                                    <div class="frmcheck-flex">
+                                        <label class="form-check-label lblchk" for="defaultCheck2">
+                                            Destino: <label class="txt-subrayado" id="txtDestinomig">Aquitestaghg vfvfvfvf</label>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 text-left d-flex">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 text-left frmcheck-flex">
+                                            <div class="col-xs-9 col-sm-9 col-md-9 text-left frmcheck-flex">
+                                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                                    ¿Primera vez en México?:
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 text-left frmcheck-flex">
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="Si" name="chkPrimeravm" id="chkPrimeravm">
+                                                    <label class="form-check-label lblchk" style="font-size: 15px; margin-right: 12px;" for="defaultCheck1">
+                                                        Si
+                                                    </label>
+                                                </div>
+                                                <div class="frmcheck-flex">
+                                                    <input class="form-check-input" type="checkbox" value="No" name="chkPrimeravm" id="chkPrimeravm">
+                                                    <label class="form-check-label lblchk" style="font-size: 15px;" for="defaultCheck1">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN Cuarta linea checkbox -->
+            <!-- Caso contra mujeres-->
+            <div class="col-xs-12 col-sm-12 col-md-12 text-right">
+                <div class="receipt-right rectangulo">
+                    <div class="receipt-right rectTexenc">
+                        <label class="txtencabezado">PARA CASOS DE VIOLENCIA CONTRA LAS MUJERES</label>
+                    </div>
+                </div>
+                <div class="receipt-right">
+                    <div class="receipt-right rectTexenchk">
+                        <label class="txtencabezadochk"></label>
+                        <div class="form-check form-check-inline divchkenc">
+                            <input class="form-check-input" type="checkbox" name="chkViolenmuj" id="chkViolenmuj" value="1">
+                            <label class="form-check-label lablchk" for="inlineCheckbox1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline divchkenc">
+                            <input class="form-check-input" type="checkbox" name="chkViolenmuj" id="chkViolenmuj" value="0">
+                            <label class="form-check-label lablchk" for="inlineCheckbox2">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN Caso contra mujeres -->
+            <!-- 1er bloque contra mujeres -->
+            <div class="col-xs-12 col-sm-12 col-md-12 text-left" style="margin-top: 6px;">
+                <div class="row">
+                    <div class="d-flex col-sm-12 col-md-12 text-left">
+                        <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                            <div class="frmcheck-flex">
+                                <label class="form-check-label lblchk" for="defaultCheck2">
+                                    018 <b>Canalización del caso a otra dependencia:</b> <label class="txt-subrayado" id="txtCanalizacionvm"></label>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-left frmcheck-flex">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 text-left frmcheck-flex">
+                                        <label class="form-check-label lblchk" for="defaultCheck2">
+                                            016 <b>Está embarazada:</b>
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 text-left frmcheck-flex">
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="Si" name="chkEmbarazada" id="chkEmbarazada">
+                                            <label class="form-check-label lblchk" style="font-size: 15px; margin-right: 12px;" for="defaultCheck1">
+                                                Si
+                                            </label>
+                                        </div>
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="No" name="chkEmbarazada" id="chkEmbarazada">
+                                            <label class="form-check-label lblchk" style="font-size: 15px; margin-right: 12px;" for="defaultCheck1">
+                                                No
+                                            </label>
+                                        </div>
+                                        <div class="frmcheck-flex">
+                                            <input class="form-check-input" type="checkbox" value="No sabe" name="chkEmbarazada" id="chkEmbarazada">
+                                            <label class="form-check-label lblchk" style="font-size: 15px; margin-right: 12px;" for="defaultCheck1">
+                                                No sabe
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN 1er bloque contra mujeres -->
+            <!-- 2do bloque contra mujeres -->
+            <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-center">
+                <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                    <div class="receipt-right">
+                        <h5>011 Hijos vivos</h5>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="1" name="chkSinhijos" id="chkSinhijos">
+                            <label class="form-check-label lblchk" for="chkSinhijos">
+                                Sin hijos/as
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="2" name="chkSinhijos" id="chkSinhijos">
+                            <label class="form-check-label lblchk" for="chkSinhijos">
+                                1 hijo/a
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="3" name="chkSinhijos" id="chkSinhijos">
+                            <label class="form-check-label lblchk" for="chkSinhijos">
+                                2 hijos/as
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="4" name="chkSinhijos" id="chkSinhijos">
+                            <label class="form-check-label lblchk" for="chkSinhijos">
+                                3 hijos/as
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="5" name="chkSinhijos" id="chkSinhijos">
+                            <label class="form-check-label lblchk" for="chkSinhijos">
+                                4 hijos/as
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="6" name="chkSinhijos" id="chkSinhijos">
+                            <label class="form-check-label lblchk" for="chkSinhijos">
+                                5 hijos/as
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="7" name="chkSinhijos" id="chkSinhijos">
+                            <label class="form-check-label lblchk" for="chkSinhijos">
+                                No especifica
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                    <div class="receipt-right">
+                        <h5>002 Modalidad de Violencia</h5>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="1" name="chkModalidadv" id="chkModalidadv">
+                            <label class="form-check-label lblchk" for="chkModalidadv">
+                                Familiar
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="2" name="chkModalidadv" id="chkModalidadv">
+                            <label class="form-check-label lblchk" for="chkModalidadv">
+                                Laboral
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="3" name="chkModalidadv" id="chkModalidadv">
+                            <label class="form-check-label lblchk" for="chkModalidadv">
+                                Docente(Escolar)
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="4" name="chkModalidadv" id="chkModalidadv">
+                            <label class="form-check-label lblchk" for="chkModalidadv">
+                                Istitucional
+                            </label>
+                        </div>
+                        <div class="frmcheck-flex">
+                            <input class="form-check-input" type="checkbox" value="5" name="chkModalidadv" id="chkModalidadv">
+                            <label class="form-check-label lblchk" for="chkModalidadv">
+                                Feminicidio
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                    <div class="receipt-right">
+                        <h5>003 Tipo de Violencia</h5>
+                        <div class="row">
+                            <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-left">
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-left">
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="1" name="chkTipov" id="chkTipov">
+                                        <label class="form-check-label lblchk" for="chkTipov">
+                                            Hijo(a)
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="2" name="chkTipov" id="chkTipov">
+                                        <label class="form-check-label lblchk" for="chkTipov">
+                                            Esposo(a) o Compañero(a)
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="3" name="chkTipov" id="chkTipov">
+                                        <label class="form-check-label lblchk" for="chkTipov">
+                                            Trabajador(a)
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="4" name="chkTipov" id="chkTipov">
+                                        <label class="form-check-label lblchk" for="chkTipov">
+                                            Sin parentesco
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 text-left">
+                    <div class="receipt-right">
+                        <h5>017 Tipo de relación o vínculo con el/la agresor/a</h5>
+                        <div class="row">
+                            <div class="d-flex col-xs-12 col-sm-12 col-md-12 text-left">
+                                <div class="col-xs-7 col-sm-7 col-md-7 text-left">
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="1" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            Hijo(a)
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="2" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            Esposo(a) o Compañero(a)
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="3" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            Trabajador(a) Doméstico(a)
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="4" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            Sin parentesco
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-5 col-sm-5 col-md-5 text-left">
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="5" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            Huésped
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="6" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            Otra relación
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="7" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            Otro Parentesco
+                                        </label>
+                                    </div>
+                                    <div class="frmcheck-flex">
+                                        <input class="form-check-input" type="checkbox" value="8" name="chkRelacionAgr" id="chkRelacionAgr">
+                                        <label class="form-check-label lblchk" for="chkRelacionAgr">
+                                            No especificado
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- FIN 2do bloque contra mujeres -->
+            <!-- 3er bloque contra mujeres -->
+            <div class="col-xs-12 col-sm-12 col-md-12 text-right" style="margin-top: -12px;">
+                <label class="form-check-label lblchk" for="defaultCheck1">
+                    <b>020 Ingresos Mensuales:</b> <label class="txt-subrayado" id="txtIngresosmens"></label>
+                </label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 text-center" style="margin-top: -10px;">
+                <label class="form-check-label lblchk" for="defaultCheck1">
+                    <b class="linesolidtop">Nombre y Firma del o la Titular de la Información</b><br><b>(Huella digital)</b>
+                </label>
+            </div>
+            <!-- FIN 3er bloque contra mujeres -->
+            <!-- FIN checkbox -->
+            <div class="row" style="margin-top: -15px;">
+                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                    <label class="title-aviso"><b>AVISO DE PROTECCIÓN DE DATOS PERSONALES</b></label>
+                    <div class="receipt-right txt-justificado">
+                        <p>
+                            Los datos personales recabados serán protegidos, incorporados y tratados en el Sistema de Datos Personales "USUARIOS/AS ATENDIDOS/AS POR PRESUNTAS VIOLACIONES A DERECHOS HUMANOS", el cual tiene su fundamento en el artículo 28 de la Ley de la Comisión
+                            de Derechos Humanos del Estado de Puebla y el artículo 50 del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, cuya finalidad es contar con los elementos mínimos de identificación de la/s personas
+                            que han sido o esta/n siendo afectadas en sus derechos humanos para la investigación de la presunta violación a los derechos humanos, y el uso previsto de dicha información, es para establecer comunicación directa con los/las
+                            quejosos/as y agraviados/as durante la tramitación de la presunta violación a los derechos humanos; e integrar una base de datos con la información de los usuarios atendidos que facilite la rastreabilidad de los expedientes;
+                            y en su caso, para el análisis estadístico y/o científico en términos del artículo 15 de la Ley de Protección de Datos Personales en Posesión de los Sujetos Obligados en el Estado de Puebla. Los datos personales de este
+                            sistema podrán ser transmitidos a la Comisión Nacional de los Derechos Humanos, cuando ejerza su facultad de atracción en términos del artículo 60 de la Ley de la Comisión Nacional de los Derechos Humanos y 14 de su Reglamento
+                            Interno. De igual manera a la instancia que corresponda, cuando proceda la remisión en términos de los artículos 12, 65 fracción III del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla. La transmisión
+                            estará sujeta a lo estipulado en el artículo 10 y el Capítulo IV del Título II de la Ley de Protección de Datos Personales en Posesión de los Sujetos Obligados en el Estado de Puebla. Los datos marcados con (*) son obligatorios,
+                            por lo que la negativa a otorgarlos o la inexactitud de los mismos provocará que la presunta violación a los derecho humanos que se interpone se concluya por no contar con datos de identificación, según lo previsto en los
+                            artículos 53, 55 del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, Asimismo se le informa que sus datos no podrán ser difundidos sin su consentimiento expreso, salvo las excepciones previstas
+                            en la Ley. Dado que se trata de un sistema mixto, los responsables del Sistema de Datos Personales son: en su modo físico el/la Titular de la Dirección de Quejas y Orientación y en su modo automatizado el/la Titular de
+                            la Dirección de Planeación, Informática y Transparencia. El Titular de los datos o su representante legal podrán ejercer los derechos de acceso, rectificación, cancelación u oposición al tratamiento de sus datos personales
+                            ante la Unidad Administrativa de Acceso a la Información Pública de la Comisión de Derechos Humanos del Estado de Puebla, ubicada en 5 poniente #339, Centro Histórico, C.P. 72000, Puebla, Puebla.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>

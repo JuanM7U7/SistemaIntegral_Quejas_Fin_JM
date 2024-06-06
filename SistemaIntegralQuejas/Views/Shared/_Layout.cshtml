@@ -1,0 +1,316 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccesor
+@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SistemaIntegralQuejas</title>
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="~/lib/bootstrap/dist/css/twitter-bootstrap.css" rel="stylesheet" />
+    <!-- Latest compiled and minified CSS -->
+    <link href="~/lib/bootstrap/dist/css/bootstrapselect.css" rel="stylesheet" />
+    <!-- Datatble -->
+    <link href="~/js/vendor/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <!-- Toast alert -->
+    <link href="~/css/toast.css" rel="stylesheet" />
+    <!-- DateRange picker-->
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/js/vendor/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <!-- Summernote -->
+    <link href="~/js/vendor/summernote/summernote.css" rel="stylesheet" />
+    <!-- Photo Viewer -->
+    <link href="~/js/plugins/photoviewer.css" rel="stylesheet" />
+    <!-- Mis estilos -->
+    <link href="~/css/modalderecha.css" rel="stylesheet" />
+    <link href="~/css/fianlizaturno.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/SistemaIntegralQuejas.styles.css" asp-append-version="true" />
+    <link href="~/css/semaforo.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row bg-secondary py-1 px-xl-5">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="d-inline-flex align-items-center h-100">
+                    <a class="text-body mr-3" href="#" id="usuarioL"> @HttpContextAccesor.HttpContext?.Session.GetString("Nombre") @HttpContextAccesor.HttpContext?.Session.GetString("Apellidop") @HttpContextAccesor.HttpContext?.Session.GetString("Apellidom")</a>
+                    <input id="idusuario" value="@HttpContextAccesor.HttpContext?.Session.GetInt32("IdUsuario")" hidden />
+                    <input id="usuario" value="@HttpContextAccesor.HttpContext?.Session.GetString("Username")" hidden />
+                    <input id="grupohub" value="@HttpContextAccesor.HttpContext?.Session.GetString("Grupo")" hidden />
+                    <input id="areaUser" value="@HttpContextAccesor.HttpContext?.Session.GetString("Area")" hidden />
+                    <input id="cargoUser" value="@HttpContextAccesor.HttpContext?.Session.GetString("Cargo")" hidden />
+                    <input id="rolUser" value="@HttpContextAccesor.HttpContext?.Session.GetString("Rol")" hidden />
+                    <input id="idArea" value="@HttpContextAccesor.HttpContext?.Session.GetString("Idarea")" hidden />
+
+                </div>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+                <div class="d-inline-flex align-items-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Mi Cuenta</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" asp-controller="Login" asp-action="CerrarSesion" type="button">Cerrar sesión</a>
+                        </div>
+                    </div>
+                    @if (User.IsInRole("SUPERADMINISTRADOR"))
+                    {
+                        <div class="btn-group mx-2">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Admin</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" type="button">Panel Administrador</button>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sistema</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" type="button">Productivo</button>
+                                <button class="dropdown-item" type="button">Prueba</button>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+    <!-- Navbar Start -->
+    <div class="container-fluid bg-dark mb-30">
+        <!---->
+        <div class="row px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a class="btn d-flex align-items-center justify-content-between  w-100" data-toggle="collapse" href="#" style="height: 65px; padding: 0 30px; background-color: #17A2B8 !important;">
+                    <h6 class="text-light m-0"><i class="fa fa-bars mr-2"></i>Sistema Integral de Quejas</h6>
+                    @*<i class="fa fa-angle-down text-light"></i>*@
+                </a>
+                @if (User.IsInRole("SUPERADMINISTRADOR"))
+                {
+                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+                        <div class="navbar-nav w-100">
+                            <a href="" class="nav-item nav-link">Sistema Actual</a>
+                            <a href="" class="nav-item nav-link">Sistema Anterior</a>
+                        </div>
+                    </nav>
+                }
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                    <a href="" class="text-decoration-none d-block d-lg-none">
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0" id="menuD">
+                            <!--Menú dinámico-->
+                            @if (User.IsInRole("ADMIN_DQOT"))
+                            {
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btndropdown dropdown-toggle" data-toggle="dropdown"> DQOT </button>
+                                    <div class="dropdown-menu dropoption dropdown-menu-right dropdown-menu menu-maximo">
+
+                                        @if (User.IsInRole("ADMIN_DQOT"))
+                                        {
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="index">Alta de una queja </a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Index_ADMIN_DQOT">Admin DQOT</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Tomar turno</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Bucador de Formatos del ID de queja</a></li>
+                                            </li>
+
+                                        }
+
+
+                                    </div>
+                                </div>
+                            }
+                            @if (User.IsInRole("VG"))
+                            {
+                                <div class="btn-group">
+                                    <button type="button" class="btn btndropdown dropdown-toggle" data-toggle="dropdown"> VG </button>
+                                    <div class="dropdown-menu dropoption dropdown-menu-right dropdown-menu menu-maximo">
+
+                                        @if (User.IsInRole("VG"))
+                                        {
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="Calificacion">Aceptar/Rechazar ID´s de queja</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="Calificacion">Turnado de ID´s de queja</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="VistaCalificacion">Calificación de una queja</a></li>
+                                            </li>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+
+                            <!--Fin Menú Dinámico-->
+                        </div>
+
+                        <div class="btn-container" style="margin-top:1.5%">
+                            <label class="switch btn-color-mode-switch">
+                                <input type="checkbox" class="chk_userActivo" name="color_mode" id="color_mode">
+                                <label for="color_mode" data-on="Activo" data-off="Inactivo" class="lblchk btn-color-mode-switch-inner"></label>
+                            </label>
+                        </div>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar End -->
+    <div class="alert alert-warning" id="alertUltimoConectado" role="alert">
+      Eres el último usuario conectado para atender los turnos de la DQOT
+    </div>
+    <div class="alert alert-danger" id="alertNoHayConectados" role="alert">
+        No hay usuarios conectados para atender los turnos de la DQOT
+    </div>
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid mt-4">
+        <!--   boton flotante finalizar queja-->
+        <input id="idmodulo_finalizar" hidden />
+        <input id="idTurno_finalizar" hidden />
+        <div class="hero draggable" id="hero6">
+        </div>
+        <!--   Fin boton flotante finalizar queja-->
+
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Inicio</a>
+                    <a class="breadcrumb-item text-dark" href="#">Tarea</a>
+                    <span class="breadcrumb-item active">Acción</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <img width="80" src="~/img/logo_cdh.png" alt="">
+                <p class="mt-2">En la CDH PUEBLA</p>
+                <p>¡Protegémos tus Derechos!</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">CDH PUEBLA</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" target="_blank" href="https://www.cdhpuebla.org.mx/v1/index.php/cdh-puebla/la-cdhpuebla"><i class="fa fa-angle-right mr-2"></i>Misión</a>
+                            <a class="text-secondary mb-2" target="_blank" href="https://www.cdhpuebla.org.mx/v1/index.php/cdh-puebla/la-cdhpuebla"><i class="fa fa-angle-right mr-2"></i>Visión</a>
+                            <a class="text-secondary mb-2" target="_blank" href="https://www.cdhpuebla.org.mx/v1/index.php/antecedentes"><i class="fa fa-angle-right mr-2"></i>Antecedentes</a>
+                            <a class="text-secondary mb-2" target="_blank" href="https://www.cdhpuebla.org.mx/v1/index.php/normatividad"><i class="fa fa-angle-right mr-2"></i>Normatividad</a>
+                            <a class="text-secondary mb-2" target="_blank" href="https://transparencia.cdhpuebla.org.mx/images/fraccionI/PIG-I/"><i class="fa fa-angle-right mr-2"></i>Norma-nmx-25-2015</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">MI CUENTA</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Mis Datos</a>
+                            @*<a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Iniciar sesión</a>*@
+                            @*<a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Mis expedientes</a>*@
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">SOPORTE TÉCNICO</h5>
+                        <p>informatica@cdhpuebla.org.mx</p>
+                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Siguenos en redes sociales</h6>
+                        <div class="d-flex">
+                            <a class="btn btn-primary btn-square mr-2" target="_blank" href="https://twitter.com/cdhpuebla?s=11&t=dUbJX41c6WdT0S9QTZDYjA"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" target="_blank" href="https://www.facebook.com/CDHEPuebla"><i class="fab fa-facebook-f"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-secondary">
+                    &copy; <a class="text-primary" href="#">Copyright</a>. 2022 Todos los derechos reservados
+                    <a class="text-primary" target="_blank" href="https://www.cdhpuebla.org.mx/v1/"> CDH PUEBLA</a>
+
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="~/img/payments.png" alt="">
+            </div>
+        </div>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Jquery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/plugins/popper.js"></script>
+    <script src="~/js/plugins/tooltip.js"></script>
+@*    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>*@
+    <script src="~/js/vendor/moment/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/js/umd/util.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!-- Plugins -->
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Toast alert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Required vendors -->
+    <script src="~/js/vendor/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/js/plugins/bs-daterange-picker-init.js"></script>
+    <!-- Summernote -->
+    <script src="~/js/vendor/summernote/js/summernote.min.js"></script>
+    <script src="~/js/plugins/summernote-init.js"></script>
+    <!-- Datatables -->
+    <script src="~/js/vendor/datatables/js/jquery.datatables.min.js"></script>
+    <script src="~/js/plugins/datatables.init.js"></script>
+    <script src="~/js/finalizarturno.js"></script> 
+    <script src="~/js/main.js"></script>
+    <!-- JS PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+            integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <!-- Signalr -->
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <!-- Notify JS -->
+    <script src="~/js/plugins/notify.min.js"></script>
+    <script src="~/js/plugins/notify.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.5/bootstrap-notify.min.js"></script>*@
+    <!-- Photo Viewer -->
+    <script src="~/js/plugins/photoviewer.js"></script>
+    <!-- Mis scripts -->
+    <script src="~/js/general.js"></script>
+    <script src="~/js/menuanimacion.js"></script>
+    <script src="~/js/functionlayout.js"></script>
+    <script src="~/js/layoutclient.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

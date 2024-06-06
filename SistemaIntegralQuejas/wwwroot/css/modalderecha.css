@@ -1,0 +1,219 @@
+﻿.dropdown-submenu {
+    position: relative;
+}
+
+    .dropdown-submenu a::after {
+        transform: rotate(-90deg);
+        position: absolute;
+        right: 6px;
+        top: .8em;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-left: .1rem;
+        margin-right: .1rem;
+    }
+
+.btndropdown {
+    color: white;
+}
+
+.btndropdown-papa {
+    padding: 13px 10px;
+}
+
+.dropoption {
+    width: max-content;
+}
+
+.icon-left {
+    margin-left: 8px;
+}
+
+.btn-login {
+    text-align: center;
+}
+
+.contenedorformlogin {
+    height: 100%;
+}
+
+.formlogin {
+    margin-top: 15%;
+}
+
+.img-cdhplogo {
+    text-align: center;
+}
+
+    .img-cdhplogo img {
+        width: 50%;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+.casa-cdhp {
+    width: 100%;
+}
+
+
+/* modal seleccionar peticionario  */
+
+.modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    right: 0px;
+}
+
+.modal-content {
+    height: 100%;
+}
+
+.modal-header {
+    display: inline !important;
+}
+
+
+/* Estilos agregar peticionario */
+
+.container-add {
+    background-color: #fff;
+    width: 50%;
+    padding: 15px;
+    border: 1px solid #ced4da;
+}
+
+.cont-add {
+    text-align: -webkit-center;
+}
+
+h2 {
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: 15px;
+}
+
+.input-group-add {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.text-input-field {
+    margin-top: 2px;
+    width: 100%;
+    padding: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+#add-button {
+    padding: 7px 9px;
+    border: none;
+    background-color: cyan;
+}
+
+#add-button-center {
+    padding: 7px 9px;
+    border: none;
+    background-color: cyan;
+    margin-left: 45%;
+}
+
+.todos-containers {
+    overflow-y: scroll;
+    max-height: 100%;
+    /* height: auto; */
+}
+
+.todos-container {
+    overflow-y: scroll;
+    max-height: 150px;
+    /* height: auto; */
+}
+
+.todo-item-container {
+    display: flex;
+    margin-bottom: 5px;
+    text-align: initial;
+}
+
+#todo-text {
+    width: 100%;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    user-select: none;
+}
+
+.line-through {
+    text-decoration: line-through;
+    color: blue;
+}
+
+#edit-button,
+#delete-button {
+    padding: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+#add-buttonp {
+    padding: 7px 9px;
+    border: none;
+    margin-left: 5px;
+    background-color: cyan;
+    margin-top: 2px;
+}
+
+
+/* Div Loading  */
+
+#divLoading {
+    position: fixed;
+    width: 40%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    text-align: center !important;
+    align-items: center;
+    background: rgba(254, 254, 255, .65);
+    z-index: 9999;
+    display: none;
+}
+
+    #divLoading img {
+        width: 50px;
+        height: 40px;
+    }
+
+.custom-controlchk {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 1.5rem;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+}
+
+.divmunicipio {
+    margin-right: auto;
+}
+
+.modal-body {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.custom-control-input {
+    z-index: 9999 !important;
+}
+
+.custom-control-input {
+    margin-left: 50% !important;
+}

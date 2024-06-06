@@ -1,0 +1,26 @@
+/* html,
+body {
+    margin: 0;
+    padding: 0;
+} */
+
+
+/* heroes and the ball (dragables) */
+
+.hero {
+    background-image: url('../img/finalizar.png');
+    background-repeat: no-repeat;
+    display: none;
+    width: 130px;
+    height: 128px;
+    float: left;
+}
+
+#hero6 {
+ 
+    z-index: 9999;
+}
+
+.draggable {
+    cursor: pointer;
+}
