@@ -163,7 +163,7 @@ $(document).ready(function () {
     });
     codigoArea = $("#idArea").val();
     console.log(codigoArea);
-    //idusuario = $("#idusuario").val();
+    idusuario = $("#idusuario").val();
     //console.log(idusuario);
     $.ajax({
         type: "POST",
@@ -2075,8 +2075,6 @@ function GeneraPdfRechazados(id,visd,memo,p1,p2,p3,just,idsa,visitadorGeneral,ac
     else {
         codigoArea = $("#idArea").val();
         console.log(codigoArea);
-        idusuario = $("#idusuario").val();
-        console.log(idusuario);
 
         $.ajax({
             type: "POST",
