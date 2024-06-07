@@ -1953,32 +1953,25 @@ namespace SistemaIntegralQuejas.Controllers
                 //FIN CONCLUIDO
                 if (itemformatos.FechaCalific.Contains("Sin"))
                 {
-                    DateTime fechaUno = Convert.ToDateTime(itemformatos.FechaTurno);
-                    DateTime fechaDos = DateTime.Now;
-                    TimeSpan difFechas = fechaDos - fechaUno;
-                    int diasTrans = difFechas.Days;
-                    //SEMAFORO 1
-                    query = "exec semaforo " + diasTrans + "," + 3 + "," + 15 + "," + 1;
-                    itemformatos.semaforo1 = conexionsql.ObtenerReader(query);
-                    //FIN SEMAFORO 1
+                    if (!itemformatos.FechaTunAbo.Contains("Sin"))
+                    {
+                        DateTime fechaUno = Convert.ToDateTime(itemformatos.FechaTunAbo);
+                        DateTime fechaDos = DateTime.Now;
+                        TimeSpan difFechas = fechaDos - fechaUno;
+                        int diasTrans = difFechas.Days;
+                        //SEMAFORO 1
+                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 15 + "," + 1;
+                        itemformatos.semaforo1 = conexionsql.ObtenerReader(query) + "<small><strong> sin calificar</strong></small>";
+                        //FIN SEMAFORO 1
+                        //SEMAFORO 2
+                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 9 + "," + 2;
+                        itemformatos.semaforo2 = conexionsql.ObtenerReader(query) + "<small><strong> sin actuacción</strong></small>";
+                        //FIN SEMAFORO 2
+                    }
                 }
                 else
                 {
                     itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Calificado</div>";
-                }
-                if (itemformatos.FechaTunAbo.Contains("Sin"))
-                {
-                    DateTime fechaUno = Convert.ToDateTime(itemformatos.FechaTurno);
-                    DateTime fechaDos = DateTime.Now;
-                    TimeSpan difFechas = fechaDos - fechaUno;
-                    int diasTrans = difFechas.Days;
-                    //SEMAFORO 2
-                    query = "exec semaforo " + diasTrans + "," + 3 + "," + 9 + "," + 2;
-                    itemformatos.semaforo2 = conexionsql.ObtenerReader(query);
-                    //FIN SEMAFORO 2
-                }
-                else
-                {
                     itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";
                 }
                 listformatos.Add(itemformatos);
@@ -3137,7 +3130,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             mensaje = "ok";
             var data = GetDatosGeneral(query);
-            
+
             lEscritoI = ObtenerlistEscriIni(data);
 
             return Json(new { data = lEscritoI, idPeticionario = idRegistro });
@@ -3146,7 +3139,7 @@ namespace SistemaIntegralQuejas.Controllers
         public List<EscritoUpdate> ObtenerlistEscriIni(DataTable data)
         {
             List<EscritoUpdate> lEscritoI = new List<EscritoUpdate>();
-            string query_archivosadj = "";            
+            string query_archivosadj = "";
             foreach (DataRow row in data.Rows)
             {
                 EscritoUpdate escritoitem = new EscritoUpdate();

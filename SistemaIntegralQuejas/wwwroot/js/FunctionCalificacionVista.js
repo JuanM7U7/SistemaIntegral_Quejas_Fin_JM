@@ -19,7 +19,7 @@ var statusTurnoAbogado = '';
 var arregloAbogados = [];
 $(document).ready(function () {
 
-    $("#vistavis").html($("#areaUser").val());
+    $("#vistavis").html($("#usuarioL").html());
     $(".alert-danger").remove();
     console.log($(".alert-danger"));
     $("#alertNoHayConectados").css("display", "none !important");
