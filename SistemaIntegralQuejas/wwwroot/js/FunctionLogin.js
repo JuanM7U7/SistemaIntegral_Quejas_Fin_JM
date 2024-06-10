@@ -41,7 +41,7 @@ $(document).ready(function () {
                                 dataType: "json",
                                 success: function (response) {
                                     if (response.data) {
-                                        if (data.login_page == "Calificacion") { window.location.href = "/Expediente/" + data.login_page; } else { window.location.href = "/Home/" + data.login_page; }
+                                        if (data.login_page == "Calificacion" || data.login_page == "VistaCalificacion") { window.location.href = "/Expediente/" + data.login_page; } else { window.location.href = "/Home/" + data.login_page; }
                                    
 
                                     }
@@ -58,7 +58,7 @@ $(document).ready(function () {
                         dataType: "json",
                         success: function (response) {
                             if (response.data) {
-                                if (data.login_page == "Calificacion") { window.location.href = "/Expediente/" + data.login_page; } else { window.location.href = "/Home/" + data.login_page; }
+                                if (data.login_page == "Calificacion" || data.login_page == "VistaCalificacion" ) { window.location.href = "/Expediente/" + data.login_page; } else { window.location.href = "/Home/" + data.login_page; }
                             }
                         }
                     });

@@ -49,6 +49,12 @@ namespace SistemaIntegralQuejas.Controllers
                     controlador = "Expediente";
 
                 }
+                if (User.IsInRole("VAV"))
+                {
+                    vistaPrincipal = "VistaCalificacion";
+                    controlador = "Expediente";
+
+                }
 
 
                 return RedirectToAction(vistaPrincipal, controlador);
@@ -120,6 +126,12 @@ namespace SistemaIntegralQuejas.Controllers
                     {
                         login_page = "Calificacion";
                     }
+                    if (((Usuarios)listaContenedora[0]).Rol=="VAV")
+                    {
+                        login_page = "VistaCalificacion";
+
+                    }
+
 
                 }
                 else
@@ -171,6 +183,12 @@ namespace SistemaIntegralQuejas.Controllers
                     {
                         vistaPrincipal = "Calificacion";
                         login_page = "Calificacion";
+                    }
+                    if (((Usuarios)listaContenedora[0]).Rol == "VAV")
+                    {
+                        vistaPrincipal = "VistaCalificacion";
+                        login_page = "VistaCalificacion";
+
                     }
                 }
 
