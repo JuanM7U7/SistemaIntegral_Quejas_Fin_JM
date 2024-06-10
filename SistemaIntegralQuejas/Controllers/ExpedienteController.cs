@@ -1948,7 +1948,7 @@ namespace SistemaIntegralQuejas.Controllers
                 #endregion
 
                 //CONCLUIDO
-                query = "exec RegistrarConcluidos " + 143;
+                query = "exec RegistrarConcluidos " + itemformatos.Id;
                 itemformatos.Concluido = conexionsql.ObtenerReader(query);
                 //FIN CONCLUIDO
                 if (itemformatos.FechaCalific.Contains("Sin"))
@@ -1964,8 +1964,8 @@ namespace SistemaIntegralQuejas.Controllers
                         itemformatos.semaforo1 = conexionsql.ObtenerReader(query) + "<small><strong> sin calificar</strong></small>";
                         //FIN SEMAFORO 1
                         //SEMAFORO 2
-                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 9 + "," + 2;
-                        itemformatos.semaforo2 = conexionsql.ObtenerReader(query) + "<small><strong> sin actuacción</strong></small>";
+                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 9 + "," + 1;
+                        itemformatos.semaforo2 = conexionsql.ObtenerReader(query) + "<small><strong> sin actuaciones</strong></small>";
                         //FIN SEMAFORO 2
                     }
                 }
