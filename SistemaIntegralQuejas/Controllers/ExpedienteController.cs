@@ -1960,12 +1960,23 @@ namespace SistemaIntegralQuejas.Controllers
                         TimeSpan difFechas = fechaDos - fechaUno;
                         int diasTrans = difFechas.Days;
                         //SEMAFORO 1
-                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 15 + "," + 1;
+                        query = "exec semaforo " + diasTrans + "," + 2 + "," + 4 + "," + 1;
                         itemformatos.semaforo1 = conexionsql.ObtenerReader(query) + "<small><strong> sin calificar</strong></small>";
                         //FIN SEMAFORO 1
                         //SEMAFORO 2
-                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 9 + "," + 1;
-                        itemformatos.semaforo2 = conexionsql.ObtenerReader(query) + "<small><strong> sin actuaciones</strong></small>";
+                        string resultado = "";
+                        if (diasTrans < 0)
+                        {
+                            query = "exec semaforo " + 21 + "," + 10 + "," + 21 + "," + 1;
+                            resultado = conexionsql.ObtenerReader(query).Replace("21", diasTrans.ToString());
+                        }
+                        else
+                        {
+                            query = "exec semaforo " + diasTrans + "," + 10 + "," + 21 + "," + 1;
+                            resultado = conexionsql.ObtenerReader(query);
+                        }
+                        
+                        itemformatos.semaforo2 = resultado + "<small><strong> sin actuaciones</strong></small>";
                         //FIN SEMAFORO 2
                     }
                 }
@@ -2574,6 +2585,26 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin Lista Escolaridad
+
+        // Lista Autoridades
+        public ActionResult SelectAutoridad()
+        {
+            List<GeneralModel.Selectmaster> autoridades = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_AUTORIDAD";
+            string mensaje = "";
+            autoridades = conexionsql.selectMaestro(query, ref mensaje);
+            autoridades= autoridades.OrderBy(x=> x.Descripcion).ToList();
+
+            if (autoridades.Count > 0)
+            {
+                return Json(new { Sautoridades = autoridades });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Autoridades
 
         // Lista Ocupacion
         public ActionResult SelectOcupacion()

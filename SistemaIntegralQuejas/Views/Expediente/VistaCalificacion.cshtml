@@ -26,6 +26,7 @@
                                 <th>CALIFICADO / SIN CALIFICAR</th>
                                 <th>CONCLUIDO / SIN CONCLUIR</th>
                                 <th>ACTUACIONES / SIN ACTUACIONES</th>
+                                <th>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,19 +47,16 @@
 
 <div id="modaltabDetalle" class="modal">
     <!-- Modal content -->
-   
-      
-    
     <div class="modal-content">
         <div class="modal-header headerUpdate">
             <img src="\img\logo_horizontal-cdhp.png" height="45px"/>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modaltabDetalle')">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div class="tab">
-                <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpen">Información recabada por la DQOT</button>
+                <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpenD">Información recabada por la DQOT</button>
             </div>
 
             <div id="Detalle_Quejak" class="tabcontent">
@@ -66,8 +64,6 @@
                     <div id="izquierda" class="row col-6"></div>
                     <div id="derecha" class="row col-6"></div>
                 </div>
-
-
             </div>
         </div>
 
@@ -76,6 +72,34 @@
 
 </div>
 
+<div id="modaltabCalif" class="modal">
+    <div class="modal-content">
+        <div class="modal-header headerUpdate">
+            <img src="\img\logo_horizontal-cdhp.png" height="45px" />
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modaltabCalif')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="tab">
+                <button class="tablinks" onclick="openCity(event, 'Calificar')" id="defaultOpenC">Calificar</button>
+            </div>
+            <div id="Calificar" class="tabcontent">
+                <h3 class="positionCenter">Calificación del Escrito Inicial de Queja</h3>
+                <div class="row col-12">
+                    <div id="izquierdaE" class="row col-6"></div>
+                    <div id="derechaE" class="row col-6"></div>
+                </div>
+                <div class="row col-12">
+                    <div id="frmDatosCalificacion" class="col-12"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
 
 <style>
 .modal {
