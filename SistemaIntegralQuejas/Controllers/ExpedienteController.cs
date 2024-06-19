@@ -2606,6 +2606,65 @@ namespace SistemaIntegralQuejas.Controllers
         }
         // Fin Lista Autoridades
 
+        // Lista Autoridades
+        public ActionResult SelectHechVio()
+        {
+            List<GeneralModel.Selectmaster> hechvio = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_HECHOSVI";
+            string mensaje = "";
+            hechvio = conexionsql.selectMaestro(query, ref mensaje);
+            hechvio = hechvio.OrderBy(x => x.Descripcion).ToList();
+
+            if (hechvio.Count > 0)
+            {
+                return Json(new { Shechvio = hechvio });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Autoridades
+
+        // Lista Materia
+        public ActionResult SelectMateria()
+        {
+            List<GeneralModel.Selectmaster> materia = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_MATERIA";
+            string mensaje = "";
+            materia = conexionsql.selectMaestro(query, ref mensaje);
+            materia = materia.OrderBy(x => x.Descripcion).ToList();
+
+            if (materia.Count > 0)
+            {
+                return Json(new { smateria = materia });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Materia
+        
+        // Lista Materia
+        public ActionResult SelectTipExpediente()
+        {
+            List<GeneralModel.Selectmaster> tiexped = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_TIPEXPEDIENTE";
+            string mensaje = "";
+            tiexped = conexionsql.selectMaestro(query, ref mensaje);
+
+            if (tiexped.Count > 0)
+            {
+                return Json(new { stipexped = tiexped });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Materia
+
         // Lista Ocupacion
         public ActionResult SelectOcupacion()
         {
