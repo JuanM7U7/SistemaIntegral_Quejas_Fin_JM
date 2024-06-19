@@ -283,7 +283,7 @@ function mostrarResTblFormatos(response,response1) {
                     </select>`;
                     } else
                     {
-                        btnEscritook = `Actualmente este ID de queja no está en el status de "Turnado parcial a VG""`;
+                        btnEscritook = `Aceptado`;
                     }
                     return btnEscritook 
                 }

@@ -1948,7 +1948,7 @@ namespace SistemaIntegralQuejas.Controllers
                 #endregion
 
                 //CONCLUIDO
-                query = "exec RegistrarConcluidos " + 143;
+                query = "exec RegistrarConcluidos " + itemformatos.Id;
                 itemformatos.Concluido = conexionsql.ObtenerReader(query);
                 //FIN CONCLUIDO
                 if (itemformatos.FechaCalific.Contains("Sin"))
@@ -1960,12 +1960,23 @@ namespace SistemaIntegralQuejas.Controllers
                         TimeSpan difFechas = fechaDos - fechaUno;
                         int diasTrans = difFechas.Days;
                         //SEMAFORO 1
-                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 15 + "," + 1;
+                        query = "exec semaforo " + diasTrans + "," + 2 + "," + 4 + "," + 1;
                         itemformatos.semaforo1 = conexionsql.ObtenerReader(query) + "<small><strong> sin calificar</strong></small>";
                         //FIN SEMAFORO 1
                         //SEMAFORO 2
-                        query = "exec semaforo " + diasTrans + "," + 3 + "," + 9 + "," + 2;
-                        itemformatos.semaforo2 = conexionsql.ObtenerReader(query) + "<small><strong> sin actuacción</strong></small>";
+                        string resultado = "";
+                        if (diasTrans < 0)
+                        {
+                            query = "exec semaforo " + 21 + "," + 10 + "," + 21 + "," + 1;
+                            resultado = conexionsql.ObtenerReader(query).Replace("21", diasTrans.ToString());
+                        }
+                        else
+                        {
+                            query = "exec semaforo " + diasTrans + "," + 10 + "," + 21 + "," + 1;
+                            resultado = conexionsql.ObtenerReader(query);
+                        }
+                        
+                        itemformatos.semaforo2 = resultado + "<small><strong> sin actuaciones</strong></small>";
                         //FIN SEMAFORO 2
                     }
                 }
@@ -2574,6 +2585,85 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin Lista Escolaridad
+
+        // Lista Autoridades
+        public ActionResult SelectAutoridad()
+        {
+            List<GeneralModel.Selectmaster> autoridades = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_AUTORIDAD";
+            string mensaje = "";
+            autoridades = conexionsql.selectMaestro(query, ref mensaje);
+            autoridades= autoridades.OrderBy(x=> x.Descripcion).ToList();
+
+            if (autoridades.Count > 0)
+            {
+                return Json(new { Sautoridades = autoridades });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Autoridades
+
+        // Lista Autoridades
+        public ActionResult SelectHechVio()
+        {
+            List<GeneralModel.Selectmaster> hechvio = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_HECHOSVI";
+            string mensaje = "";
+            hechvio = conexionsql.selectMaestro(query, ref mensaje);
+            hechvio = hechvio.OrderBy(x => x.Descripcion).ToList();
+
+            if (hechvio.Count > 0)
+            {
+                return Json(new { Shechvio = hechvio });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Autoridades
+
+        // Lista Materia
+        public ActionResult SelectMateria()
+        {
+            List<GeneralModel.Selectmaster> materia = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_MATERIA";
+            string mensaje = "";
+            materia = conexionsql.selectMaestro(query, ref mensaje);
+            materia = materia.OrderBy(x => x.Descripcion).ToList();
+
+            if (materia.Count > 0)
+            {
+                return Json(new { smateria = materia });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Materia
+        
+        // Lista Materia
+        public ActionResult SelectTipExpediente()
+        {
+            List<GeneralModel.Selectmaster> tiexped = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_TIPEXPEDIENTE";
+            string mensaje = "";
+            tiexped = conexionsql.selectMaestro(query, ref mensaje);
+
+            if (tiexped.Count > 0)
+            {
+                return Json(new { stipexped = tiexped });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Materia
 
         // Lista Ocupacion
         public ActionResult SelectOcupacion()
