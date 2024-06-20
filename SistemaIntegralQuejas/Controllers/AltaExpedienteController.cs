@@ -23,7 +23,7 @@ namespace SistemaIntegralQuejas.Controllers
         public ActionResult GuardarQueja(IFormCollection form)
         {
             int idqueja=99, abogadoqueja = 99, estadoqueja = 99, municipioqueja = 99, visitaduriaqueja = 99, sederegistro = 99,viainter=99;
-            string hechos = "", nombrequejoso = "", apellidos = "", curp = "", fecharegistro = "";
+            string hechos = "", nombrequejoso = "", apellidos = "", curp = "", fecharegistro = "", observaciones = "";
 
             idqueja = int.Parse(form["idquejaDC"]);
             abogadoqueja = int.Parse(form["Abogadoqueja"]);
@@ -37,8 +37,9 @@ namespace SistemaIntegralQuejas.Controllers
             fecharegistro = form["Fecha_Registro"].ToString();
             sederegistro = int.Parse(form["sedeRegistro"]);
 			viainter = int.Parse(form["viainterpos"]);
+            observaciones = form["observaciones"].ToString();
 
-           string  query = "exec Sp_InsertQueja " +
+            string  query = "exec Sp_InsertQueja " +
             "" + idqueja + "," +
             "" + abogadoqueja + "," +
             "'" + hechos + "'," +
@@ -50,7 +51,8 @@ namespace SistemaIntegralQuejas.Controllers
             "" + visitaduriaqueja + "," +
             "'" + fecharegistro + "'," +
              "" + sederegistro + ","+
-            ""+ viainter+";";
+             "" + viainter + ","+
+            "'" + observaciones + "';";
             
             return Json(new { estatus = conexionsql.InsertUpdateDelete(query)});
         }
@@ -140,11 +142,12 @@ namespace SistemaIntegralQuejas.Controllers
 		public int id_lugar_hechos { get; set; }
         public int Via_interpos { get; set; }
         public int visitaduria { get; set; }
+        public string observaciones { get; set; }
         public List<informacioncomplementariapeticionario> informacioncomplementariapeticionario { get; set; }
         public List<informacioncomplementariaautoridad> informacioncomplementariaautoridad { get; set; }
 
         public informacioncomplementaria() { }
-        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos,List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica,int vi,int vis)
+        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos,List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica,int vi,int vis, string observaciones)
 		{
 			this.id_expediente = id_expediente;
 			this.id_abogado_recibe = id_abogado_recibe;
@@ -156,6 +159,7 @@ namespace SistemaIntegralQuejas.Controllers
             this.informacioncomplementariaautoridad= ica;
             this.Via_interpos = vi;
             this.visitaduria= vis;
+            this.observaciones = observaciones;
 		}
 	}
 

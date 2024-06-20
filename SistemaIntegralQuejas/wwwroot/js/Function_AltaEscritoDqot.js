@@ -3668,7 +3668,7 @@ function validarCamposVaciosInput() {
             validacion = estiloinputvalidacion('#idquejaDC', validacion);
         }
     }
-    
+
     /*if ($('#hechos').val().length === 0) {
         validacion = true;
     }*/
@@ -3684,10 +3684,15 @@ function validarCamposVaciosInput() {
     if ($('#Fecha_Registro').val().length === 0) {
         validacion = estiloinputvalidacion('#Fecha_Registro', validacion);;
     }
-    if ($('#hechos').val().length === 0) {
-        validacion = estiloinputvalidacion('#hechos', validacion);;
+    if ($('#hechos').length > 0) {
+        if ($('#hechos').val().length === 0) {
+            validacion = estiloinputvalidacion('#hechos', validacion);;
+        }
+    } else if ($('#hechosDC').length > 0) {
+        if ($('#hechosDC').val().length === 0) {
+            validacion = estiloinputvalidacion('#hechosDC', validacion);;
+        }
     }
-
     return validacion;
 }
 function validarCamposVaciosSelect() {

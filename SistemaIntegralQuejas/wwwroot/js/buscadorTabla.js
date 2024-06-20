@@ -4713,6 +4713,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus, fechavalidmodidqo
             //$("#Fecha_Registro").val(response.informarcionC.fecha_registro.toJSON().slice(0, 10));
             $("#idquejaDC").val(response.informarcionC.id_expediente);
             $("#hechosDC").val(response.informarcionC.hechos);
+            $("#observaciones").val(response.informarcionC.observaciones);
 
             console.log('valores')
             console.log(response.informarcionC.id_expediente)
@@ -4892,9 +4893,16 @@ function validarCamposVaciosInput() {
     if ($('#Fecha_Registro').val().length === 0) {
         validacion = estiloinputvalidacion('#Fecha_Registro', validacion);;
     }
-    if ($('#hechos').val().length === 0) {
-        validacion = estiloinputvalidacion('#hechos', validacion);;
+    if ($('#hechos').length > 0) {
+        if ($('#hechos').val().length === 0) {
+            validacion = estiloinputvalidacion('#hechos', validacion);;
+        }
+    } else if ($('#hechosDC').length > 0) {
+        if ($('#hechosDC').val().length === 0) {
+            validacion = estiloinputvalidacion('#hechosDC', validacion);;
+        }
     }
+    
 
     return validacion;
 }
