@@ -211,9 +211,13 @@ $(document).ready(function () {
         }*/
     }
     // Get the element with id="defaultOpen" and click on it
-
-  
-
+    $('input[name="idmedCuate"]').change(function () {
+        if ($(this).val() === 'Si') {
+            $('#tablaMedCuate').show();
+        } else {
+            $('#tablaMedCuate').hide();
+        }
+    });
 });
 
 function openCity(evt, cityName) {
@@ -2666,8 +2670,18 @@ function CrearFormuCalificacion(idformulario, response) {
     LlenarTabAutReHecVio('#tablaAutRe_HecVioT', response, idformulario);
     crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "Autoridades", "Archivo(s)", "Fecha Alta", "Plazo de Atención", "Cumplido/No Cumplido", "Semáforo"], idformulario);
     LlenartablaMedCuate('#tablaMedCuateT', response, idformulario);
+    $('.tablaMedCuate').hide();
     crearTabla('.tablaDilig', "tablaDiligT", ["Acciones", "Tipo Diligencia", "Descripción", "Fecha", "Núm. Oficio/Memorandum", "Atención", "Archivo(s)"], idformulario);
     LlenartablaDilig('#tablaDiligT', response, idformulario);
+    $(document).ready(function () {
+        $('input[id="idmedCuate' + idformulario +'"]').change(function () {
+            if ($(this).val() === 'Si') {
+                $('.tablaMedCuate').show();
+            } else {
+                $('.tablaMedCuate').hide();
+            }
+        });
+    });
 }
 
 function crearTabla(nomTabla, nomTab, arreglo, id) {
@@ -2962,3 +2976,53 @@ function ElimFilaTab(nomTab) {
         table.row(row).remove().draw();
     });
 }
+
+$(document).ready(function () {
+    $(document).on('submit', 'form[id^="frmDatosCalificacion"]', function (event) {
+        event.preventDefault();
+        //DATOS SELECT
+        var formData = $(this).serializeArray();
+        formData.forEach(function (field) {
+            console.log(field.name + ": " + field.value);
+        });
+        //DATOS DQOT
+        var formData = {
+            idqueja: $('#idquejaE').val(),
+            viainterpos: $('#viainterposE').val(),
+            Abogadoqueja: $('#AbogadoquejaE').val(),
+            hechos: $('#hechosE').val(),
+            municipioqueja: $('#municipioquejaE').val(),
+            visitaduriaqueja: $('#visitaduriaquejaE').val(),
+            Fecha_Registro: $('#Fecha_RegistroE').val(),
+            Fecha_TurnoVG: $('#Fecha_TurnoVGE').val(),
+            sedeRegistro: $('#sedeRegistroE').val(),
+            observaciones: $('#observacionesE').val()
+        };
+        //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
+        var table = $('#tablaAutRe_HecVioT').DataTable();
+
+        // Recorrer todas las filas de la tabla
+        table.rows().every(function () {
+            var rowData = this.data();
+            console.log('Fila: ', rowData);
+
+            this.nodes().to$().find('td').each(function (index) {
+                var cellData = table.cell(this).data();
+                console.log('  Celda ' + (index + 1) + ': ' + cellData);
+            });
+        });
+        //$.ajax({
+        //    type: "POST",
+        //    url: "GuardaCalifQuej",
+        //    contentType: "application/json; charset=utf-8",
+        //    data: {$.param(combinedData),JSON.stringify(formData)},
+        //    dataType: "JSON",
+        //    success: function (response) {
+        //        console.log("Datos enviados exitosamente:", response);
+        //    },
+        //    error: function (error) {
+        //        console.error("Error al enviar los datos:", error);
+        //    }
+        //});
+    });
+});
