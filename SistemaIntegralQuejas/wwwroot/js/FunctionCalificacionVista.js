@@ -211,9 +211,13 @@ $(document).ready(function () {
         }*/
     }
     // Get the element with id="defaultOpen" and click on it
-
-  
-
+    $('input[name="idmedCuate"]').change(function () {
+        if ($(this).val() === 'Si') {
+            $('#tablaMedCuate').show();
+        } else {
+            $('#tablaMedCuate').hide();
+        }
+    });
 });
 
 function openCity(evt, cityName) {
@@ -236,10 +240,11 @@ function modalShow(id, fecRecep, Tmodal) {
     if (Tmodal == "modaltabDetalle") {
         document.getElementById("defaultOpenD").click();
         Crear_Formulario_Queja(id);
+        obtenerDQOT(id, fecRecep, "");
     } else {
         document.getElementById("defaultOpenC").click();
         Crear_Formulario_QuejaEdit(id);
-        obtenerDQOT(id, fecRecep);
+        obtenerDQOT(id, fecRecep, "E");
         CrearFormuCalificacion(id, "h");
     }
     //RecuperaIds(id);
@@ -265,7 +270,7 @@ function mostrarResTblFormatos(response, response1) {
         columns: [
             {
                 'mRender': function (data, type, full) {
-                    btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, ${full.fechaRecep}, "modaltabDetalle")' class='btn btn-link margin-iconbf'>
+                    btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabDetalle")' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-plus color-muted fa-2x'></span>
                                            </button>`;
                     return btnEscritook
@@ -414,6 +419,8 @@ function Crear_Formulario_Queja(id) {
         + CreaBR()
         + CreaInputs_Con_Labeldisabled('Fecha_Registro', 'Fecha_Registro', '', 'date', 'Fecha de Registro: ', 'textfield', '')
         + CreaBR()
+        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVG', 'Fecha_TurnoVG', '', 'date', 'Fecha de turno a VG: ', 'textfield')
+        + CreaBR()
         + CreaSelectLabeldisabled('sedeRegistro', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQOT: ')
@@ -439,34 +446,34 @@ function Crear_Formulario_QuejaEdit(id) {
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idquejaE', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
         + CreaBR()
-        + CreaSelectLabeldisabled('viainterpos', '', arregloBlanco, '', 'Via de interposición: ', '')
+        + CreaSelectLabeldisabled('viainterposE', '', arregloBlanco, '', 'Via de interposición: ', '')
         + CreaBR()
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada: ', id, 1)
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial: ', id, 2)
         + CreaBR()
-        + CreaSelectLabeldisabled('Abogadoqueja', '', arregloBlanco, '', 'Abogado quien Recibe: ', '')
+        + CreaSelectLabeldisabled('AbogadoquejaE', '', arregloBlanco, '', 'Abogado quien Recibe: ', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Hechos: ')
         + icono_editar('hechosE', id)
         + CreaBR()
         + CreaTextAreadisabled('hechosE', '', 'style="width:100%; height:26%"');
     var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', 'Lugar de los hechos. Municipio y estado: ')
-        + icono_editar('municipioqueja', id)
+        + icono_editar('municipioquejaE', id)
         + CreaBR()
-        + CreaSelectLabeldisabled('municipioqueja', '', arregloBlanco, '', '', '')
+        + CreaSelectLabeldisabled('municipioquejaE', '', arregloBlanco, '', '', '')
         + CreaBR()
-        + CreaSelectLabeldisabled('visitaduriaqueja', '', arregloBlanco, '', 'Visitaduría: ', '')
+        + CreaSelectLabeldisabled('visitaduriaquejaE', '', arregloBlanco, '', 'Visitaduría: ', '')
         + CreaBR()
-        + CreaInputs_Con_Labeldisabled('Fecha_Registro', 'Fecha_Registro', '', 'date', 'Fecha de Registro: ', 'textfield', '')
+        + CreaInputs_Con_Labeldisabled('Fecha_RegistroE', 'Fecha_RegistroE', '', 'date', 'Fecha de Registro: ', 'textfield', '')
         + CreaBR()
-        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVG', 'Fecha_TurnoVG', '', 'date', 'Fecha de turno a VG: ', 'textfield', '')
+        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVGE', 'Fecha_TurnoVGE', '', 'date', 'Fecha de turno a VG: ', 'textfield', '')
         + CreaBR()
-        + CreaSelectLabeldisabled('sedeRegistro', '', arregloBlanco, '', 'Sede de Registro: ', '')
+        + CreaSelectLabeldisabled('sedeRegistroE', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQOT: ')
-        + icono_editar('observaciones', id)
+        + icono_editar('observacionesE', id)
         + CreaBR()
-        + CreaTextAreadisabled('observaciones', '', 'style="width:100%; height:14%"');
+        + CreaTextAreadisabled('observacionesE', '', 'style="width:100%; height:14%"');
     var formInnicial = '<form class="text-justify formQueja" id="formQueja" name="formQueja" method="post" style="width:95%; margin-left:2%" >';
     var fin_form = '</form>';
 
@@ -478,7 +485,7 @@ function Crear_Formulario_QuejaEdit(id) {
     return formualarioCompleto;
 }
 
-function obtenerDQOT(idqueja, fecRecep) {
+function obtenerDQOT(idqueja, fecRecep, tipo) {
     $.ajax({
         type: "POST",
         url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogos",
@@ -487,28 +494,24 @@ function obtenerDQOT(idqueja, fecRecep) {
         success: function (response) {
 
             console.log(response);
-            /*response.informarcionC.informacioncomplementariapeticionario.curp 
-            response.informarcionC.informacioncomplementariapeticionario.id_registro
-            response.informarcionC.informacioncomplementariapeticionario.nombre_peticionario*/
-            CargaDatosSelectOtro_("#Abogadoqueja", response.lista_abogado, response.informarcionC.id_abogado_recibe);
-            //CargaDatosSelectOtro_("", response.lista_autoridad);
-            //CargaDatosSelectOtro_("#estadoqueja", response.lista_estado);
-            CargaDatosSelectOtro_("#municipioqueja", response.lista_municipio, response.informarcionC.id_lugar_hechos);
-            CargaDatosSelectOtro_("#sedeRegistro", response.lista_sedes, response.informarcionC.id_sede);
-            CargaDatosSelectOtro_("#viainterpos", response.listavi, response.informarcionC.via_interpos);//Cambiar por el id_Via_Interposición
-            CargaDatosSelectOtro_("#visitaduriaqueja", response.listavisitadurias, response.informarcionC.visitaduria);
-            //Convertir Fecha 13-05-2024 GIPC
+            CargaDatosSelectOtro_(`#Abogadoqueja${tipo}`, response.lista_abogado, response.informarcionC.id_abogado_recibe);
+            CargaDatosSelectOtro_(`#municipioqueja${tipo}`, response.lista_municipio, response.informarcionC.id_lugar_hechos);
+            CargaDatosSelectOtro_(`#sedeRegistro${tipo}`, response.lista_sedes, response.informarcionC.id_sede);
+            CargaDatosSelectOtro_(`#viainterpos${tipo}`, response.listavi, response.informarcionC.via_interpos);
+            CargaDatosSelectOtro_(`#visitaduriaqueja${tipo}`, response.listavisitadurias, response.informarcionC.visitaduria);
+            
             var date = new Date();
             if (response.informarcionC.fecha_registro != null) {
                 date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(response.informarcionC.fecha_registro));
             }
-            chargeDateInputDate(document.getElementById("Fecha_Registro"), date);
+            chargeDateInputDate(document.getElementById(`Fecha_Registro${tipo}`), date);
             if (fecRecep != null) {
                 date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(fecRecep));
             }
-            chargeDateInputDate(document.getElementById("Fecha_TurnoVG"), date);
-            $("#idquejaE").val(response.informarcionC.id_expediente);
-            $("#hechosE").val(response.informarcionC.hechos);
+            chargeDateInputDate(document.getElementById(`Fecha_TurnoVG${tipo}`), date);
+            $(`#idqueja${tipo}`).val(response.informarcionC.id_expediente);
+            $(`#hechos${tipo}`).val(response.informarcionC.hechos);
+            $(`#observaciones${tipo}`).val(response.informarcionC.observaciones);
 
             console.log('valores')
             console.log(response.informarcionC.id_expediente)
@@ -2667,8 +2670,18 @@ function CrearFormuCalificacion(idformulario, response) {
     LlenarTabAutReHecVio('#tablaAutRe_HecVioT', response, idformulario);
     crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "Autoridades", "Archivo(s)", "Fecha Alta", "Plazo de Atención", "Cumplido/No Cumplido", "Semáforo"], idformulario);
     LlenartablaMedCuate('#tablaMedCuateT', response, idformulario);
-    crearTabla('.tablaDilig', "tablaDiligT", ["#", "Acciones", "Tipo Diligencia", "Descripción", "Fecha", "Núm. Oficio/Memorandum", "Atención", "Archivo(s)"], idformulario);
+    $('.tablaMedCuate').hide();
+    crearTabla('.tablaDilig', "tablaDiligT", ["Acciones", "Tipo Diligencia", "Descripción", "Fecha", "Núm. Oficio/Memorandum", "Atención", "Archivo(s)"], idformulario);
     LlenartablaDilig('#tablaDiligT', response, idformulario);
+    $(document).ready(function () {
+        $('input[id="idmedCuate' + idformulario +'"]').change(function () {
+            if ($(this).val() === 'Si') {
+                $('.tablaMedCuate').show();
+            } else {
+                $('.tablaMedCuate').hide();
+            }
+        });
+    });
 }
 
 function crearTabla(nomTabla, nomTab, arreglo, id) {
@@ -2695,14 +2708,47 @@ function crearTabla(nomTabla, nomTab, arreglo, id) {
 }
 
 function AgrDil(nomTab, id) {
+    var table = $("#" + nomTab).DataTable();
     switch (nomTab) {
         case "tablaAutRe_HecVioT":
-            //LlenarTabAutReHecVio(`#${nomTab}`, 'a', `${id}`);
-            var table = $(nomTab).DataTable();
             table.row.add([
-                `<i class='btn fa fa-trash' onclick='EliminaAutHec(${id})'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`,
+                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`,
                 CreaSelectLabel('autoridadres', '', AutoridadesSe, '', '', ''),
                 CreaSelectLabel('hechvio', '', hechvioSe, '', '', '')
+            ]).draw();
+            break;
+        case "tablaMedCuateT":
+            table.row.add([
+                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`,
+                CreaSelectLabel('autoridadres', '', AutoridadesSe, '', '', ''),
+                `<input type="file" name="archAdj" multiple id="archAdj" class="input-file">
+        <div class="input-group col-xs-12">
+            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
+            <span class="input-group-btn">
+                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
+            </span>
+        </div>`,
+                CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'date', '', 'textfield9', ''),
+                CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'date', '', 'textfield9', ''),
+                "",
+                "Semaforo"
+            ]).draw();
+            break;
+        case "tablaDiligT":
+            table.row.add([
+                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`,
+                CreaSelectLabel('tipodilig', '', [], '', '', ''),
+                '<textarea id="descrip" class="swal2-input"> </textarea>',
+                CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
+                CreaInputs_Con_Label('numOfMe', 'numOfMe', 'validatxtac', 'text', '', '', ''),
+                '<textarea id="atencion" class="swal2-input"> </textarea>',
+                `<input type="file" name="archAdj" multiple id="archAdj" class="input-file">
+        <div class="input-group col-xs-12">
+            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
+            <span class="input-group-btn">
+                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
+            </span>
+        </div>`
             ]).draw();
             break;
     }
@@ -2726,7 +2772,7 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, response, id) {
             {
                 'mRender': function (data, type, full) {
 
-                    return `<i class='btn fa fa-trash' onclick='EliminaAutHec(${id})'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
+                    return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
 
                 }
             },
@@ -2778,7 +2824,7 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             {
                 'mRender': function (data, type, full) {
 
-                    return `<i class='btn fa fa-trash' onclick='EliminaMedCa(${id})'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`;
+                    return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaMedCuateT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`;
 
                 }
             },
@@ -2853,14 +2899,7 @@ function LlenartablaDilig(tablaDilig, response, id) {
             {
                 'mRender': function (data, type, full) {
 
-                    return `#`;
-
-                }
-            },
-            {
-                'mRender': function (data, type, full) {
-
-                    return `<i class='btn fa fa-trash' onclick='EliminaDili(${id})'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`;
+                    return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`;
 
                 }
             },
@@ -2918,8 +2957,6 @@ function LlenartablaDilig(tablaDilig, response, id) {
 
     })
 }
-
-
 function icono_editar(funcion,id) {
     return `<i class='btn fa fa-pencil-square-o' onclick='HabilEdi(${id}, "#${funcion}")'></i>`;
 }
@@ -2927,3 +2964,65 @@ function HabilEdi(id, identif) {
     $(identif).prop('disabled', false);
     console.log(id);
 }
+function ElimFilaTab(nomTab) {
+
+    var table = $(`${nomTab}`).DataTable();
+    var dat = `${nomTab} tbody`;
+    $(dat).on('click', '.delete-btn', function () {
+        // Encuentra la fila correspondiente
+        var row = $(this).closest('tr');
+
+        // Elimina la fila usando DataTables
+        table.row(row).remove().draw();
+    });
+}
+
+$(document).ready(function () {
+    $(document).on('submit', 'form[id^="frmDatosCalificacion"]', function (event) {
+        event.preventDefault();
+        //DATOS SELECT
+        var formData = $(this).serializeArray();
+        formData.forEach(function (field) {
+            console.log(field.name + ": " + field.value);
+        });
+        //DATOS DQOT
+        var formData = {
+            idqueja: $('#idquejaE').val(),
+            viainterpos: $('#viainterposE').val(),
+            Abogadoqueja: $('#AbogadoquejaE').val(),
+            hechos: $('#hechosE').val(),
+            municipioqueja: $('#municipioquejaE').val(),
+            visitaduriaqueja: $('#visitaduriaquejaE').val(),
+            Fecha_Registro: $('#Fecha_RegistroE').val(),
+            Fecha_TurnoVG: $('#Fecha_TurnoVGE').val(),
+            sedeRegistro: $('#sedeRegistroE').val(),
+            observaciones: $('#observacionesE').val()
+        };
+        //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
+        var table = $('#tablaAutRe_HecVioT').DataTable();
+
+        // Recorrer todas las filas de la tabla
+        table.rows().every(function () {
+            var rowData = this.data();
+            console.log('Fila: ', rowData);
+
+            this.nodes().to$().find('td').each(function (index) {
+                var cellData = table.cell(this).data();
+                console.log('  Celda ' + (index + 1) + ': ' + cellData);
+            });
+        });
+        //$.ajax({
+        //    type: "POST",
+        //    url: "GuardaCalifQuej",
+        //    contentType: "application/json; charset=utf-8",
+        //    data: {$.param(combinedData),JSON.stringify(formData)},
+        //    dataType: "JSON",
+        //    success: function (response) {
+        //        console.log("Datos enviados exitosamente:", response);
+        //    },
+        //    error: function (error) {
+        //        console.error("Error al enviar los datos:", error);
+        //    }
+        //});
+    });
+});
