@@ -2626,6 +2626,26 @@ namespace SistemaIntegralQuejas.Controllers
         }
         // Fin Lista Autoridades
 
+        // Lista Tipo Diligencias
+        public ActionResult SelectDiligen()
+        {
+            List<GeneralModel.Selectmaster> diligencias = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_DILIGENCIAS";
+            string mensaje = "";
+            diligencias = conexionsql.selectMaestro(query, ref mensaje);
+            diligencias = diligencias.OrderBy(x => x.Descripcion).ToList();
+
+            if (diligencias.Count > 0)
+            {
+                return Json(new { Sdilige = diligencias });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Autoridades
+
         // Lista Materia
         public ActionResult SelectMateria()
         {

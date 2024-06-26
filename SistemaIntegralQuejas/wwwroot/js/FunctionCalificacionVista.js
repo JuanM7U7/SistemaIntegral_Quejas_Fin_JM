@@ -19,16 +19,16 @@ var statusTurnoAbogado = '';
 var arregloAbogados = [];
 
 let medcaute = "";
-var AutoridadesSe = [];
-var MateriaSe = [];
-var TipExpeSe = [];
-var hechvioSe = [];
+var AutoridadesSe = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [];
 $(document).ready(function () {
 
     fetchGet("Expediente/SelectAutoridad", "json", (data) => {AutoridadesSe = data.sautoridades;})
     fetchGet("Expediente/SelectMateria", "json", (data) => {MateriaSe = data.smateria;})
     fetchGet("Expediente/SelectTipExpediente", "json", (data) => {TipExpeSe = data.stipexped;})
     fetchGet("Expediente/SelectHechVio", "json", (data) => {hechvioSe = data.shechvio;})
+    fetchGet("Expediente/SelectDiligen", "json", (data) => {
+        diligenSe = data.sdilige;
+    })
 
     $("#vistavis").html($("#usuarioL").html());
     $(".alert-danger").remove();
@@ -2721,15 +2721,15 @@ function AgrDil(nomTab, id) {
             table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`,
                 CreaSelectLabel('autoridadres', '', AutoridadesSe, '', '', ''),
-                `<input type="file" name="archAdj" multiple id="archAdj" class="input-file">
+                `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
             <span class="input-group-btn">
                 <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
             </span>
         </div>`,
-                CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'date', '', 'textfield9', ''),
-                CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'date', '', 'textfield9', ''),
+                CreaInputs_Con_Label('horaAlta', 'horaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
+                CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', ''),
                 "",
                 "Semaforo"
             ]).draw();
@@ -2737,12 +2737,12 @@ function AgrDil(nomTab, id) {
         case "tablaDiligT":
             table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`,
-                CreaSelectLabel('tipodilig', '', [], '', '', ''),
+                CreaSelectLabel('tipodilig', '', diligenSe, '', '', ''),
                 '<textarea id="descrip" class="swal2-input"> </textarea>',
                 CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
                 CreaInputs_Con_Label('numOfMe', 'numOfMe', 'validatxtac', 'text', '', '', ''),
                 '<textarea id="atencion" class="swal2-input"> </textarea>',
-                `<input type="file" name="archAdj" multiple id="archAdj" class="input-file">
+                `<input type="file" name="archAdjD" multiple id="archAdjD" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
             <span class="input-group-btn">
@@ -2837,7 +2837,7 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             },
             {
                 'mRender': function (data, type, full) {
-                    return `<input type="file" name="archAdj" multiple id="archAdj" class="input-file">
+                    return `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
             <span class="input-group-btn">
@@ -2848,12 +2848,12 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             },
             {
                 'mRender': function (data, type, full) {
-                    return CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'date', '', 'textfield9', '');
+                    return CreaInputs_Con_Label('horaAlta', 'horaAlta', 'validatimeac', 'date', '', 'textfield9', '');
                 }
             },
             {
                 'mRender': function (data, type, full) {
-                    return CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'date', '', 'textfield9', '');
+                    return CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', '');
                 }
             },
             {
@@ -2906,7 +2906,7 @@ function LlenartablaDilig(tablaDilig, response, id) {
             {
                 'mRender': function (data, type, full) {
 
-                    return CreaSelectLabel('tipodilig', '', [], '', '', '');
+                    return CreaSelectLabel('tipodilig', '', diligenSe, '', '', '');
 
                 }
             },
@@ -2934,7 +2934,7 @@ function LlenartablaDilig(tablaDilig, response, id) {
             },
             {
                 'mRender': function (data, type, full) {
-                    return `<input type="file" name="archAdj" multiple id="archAdj" class="input-file">
+                    return `<input type="file" name="archAdjD" multiple id="archAdjD" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
             <span class="input-group-btn">
@@ -2980,14 +2980,89 @@ function ElimFilaTab(nomTab) {
 $(document).ready(function () {
     $(document).on('submit', 'form[id^="frmDatosCalificacion"]', function (event) {
         event.preventDefault();
+        //VARIABLES
+        var AutRe_HecVioT = [], MedCaute=[], Diligen=[];
+        var idquejaE = $('#idquejaE').val();
         //DATOS SELECT
-        var formData = $(this).serializeArray();
-        formData.forEach(function (field) {
-            console.log(field.name + ": " + field.value);
+        var formQueja = $(this).serializeArray();
+        //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
+        $('#tablaAutRe_HecVioT tbody tr').each(function (x) {
+            x = x + 1;
+            var autoridad = $(this).find('select[name="autoridadres"]').val();
+            var hecho = $(this).find('select[name="hechvio"]').val();
+            if (autoridad !== '99' && hecho !== '99') {
+                AutRe_HecVioT.push({
+                    autoridad: autoridad,
+                    hecho: hecho,
+                    idquejaE: idquejaE,
+                    idAutoHec: x
+                });
+            } else {
+                if (x == 1 && autoridad == '99' && hecho == '99') {
+
+                } else {
+                    return alert("No se han seleccionado los datos completos en la tabla Autoridades Responsables - Hechos Violatorios");
+                }
+            }
+            
+        });
+        //OBTENER MEDIDAS CUATELARES
+        if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
+            $('#tablaMedCuateT tbody tr').each(function (x) {
+                x = x + 1;
+                var autoridad = $(this).find('select[name="autoridadres"]').val();
+                var horaAlta = $(this).find('input[name="horaAlta"]').val();
+                var archAdj = $(this).find('input[name="archAdjMC"]').val();
+                var horaPlaAten = $(this).find('input[name="horaPlaAten"]').val();
+                if (autoridad !== '99' && horaAlta !== '' && horaPlaAten !== '') {
+                    MedCaute.push({
+                        autoridad: autoridad,
+                        horaAlta: horaAlta,
+                        archAdj: archAdj,
+                        horaPlaAten: horaPlaAten,
+                        idMedCaut: x
+                    });
+                } else {
+                    if (autoridad !== '99' && horaAlta !== '' && horaPlaAten !== '') {
+
+                    } else {
+                        return alert("No se han seleccionado los datos completos en la tabla Medidas Cuatelares");
+                    }
+                }
+
+            });
+        }
+        //DILIGENCIAS
+        $('#tablaDiligT tbody tr').each(function (x) {
+            x = x + 1;
+            var tipodilig = $(this).find('select[name="tipodilig"]').val();
+            var descrip = $(this).find('textarea[id="descrip"]').val();
+            var fechaAlta = $(this).find('input[name="fechaAlta"]').val();
+            var numOfMe = $(this).find('input[name="numOfMe"]').val();
+            var atencion = $(this).find('textarea[id="atencion"]').val();
+            var archAdj = $(this).find('input[name="archAdjD"]').val();
+            if (tipodilig !== '99' && descrip !== '' && fechaAlta !== '' && numOfMe !== '' && atencion !== '') {
+                Diligen.push({
+                    tipodilig: tipodilig,
+                    descrip: descrip,
+                    fechaAlta: fechaAlta,
+                    numOfMe: numOfMe,
+                    atencion: atencion,
+                    archAdj: archAdj,
+                    idMedCaut: x
+                });
+            } else {
+                if (tipodilig !== '99' && descrip !== '' && fechaAlta !== '' && numOfMe !== '' && atencion !== '') {
+
+                } else {
+                    return alert("No se han seleccionado los datos completos en la tabla Diligencias");
+                }
+            }
+
         });
         //DATOS DQOT
-        var formData = {
-            idqueja: $('#idquejaE').val(),
+        var formDQOT = {
+            idqueja: idquejaE,
             viainterpos: $('#viainterposE').val(),
             Abogadoqueja: $('#AbogadoquejaE').val(),
             hechos: $('#hechosE').val(),
@@ -2996,33 +3071,27 @@ $(document).ready(function () {
             Fecha_Registro: $('#Fecha_RegistroE').val(),
             Fecha_TurnoVG: $('#Fecha_TurnoVGE').val(),
             sedeRegistro: $('#sedeRegistroE').val(),
-            observaciones: $('#observacionesE').val()
+            observaciones: $('#observacionesE').val(),
+            tablaAutRe_HecVio: AutRe_HecVioT,
+            tablaMedCaut: MedCaute,
+            tablaDilig: Diligen
         };
-        //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
-        var table = $('#tablaAutRe_HecVioT').DataTable();
-
-        // Recorrer todas las filas de la tabla
-        table.rows().every(function () {
-            var rowData = this.data();
-            console.log('Fila: ', rowData);
-
-            this.nodes().to$().find('td').each(function (index) {
-                var cellData = table.cell(this).data();
-                console.log('  Celda ' + (index + 1) + ': ' + cellData);
-            });
+        var combinedData = formQueja.reduce(function (acc, item) {
+            acc[item.name] = item.value;
+            return acc;
+        }, formDQOT);
+        $.ajax({
+            type: "POST",
+            url: "GuardaCalifQuej",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(combinedData),
+            dataType: "json",
+            success: function (response) {
+                console.log("Datos enviados exitosamente:", response);
+            },
+            error: function (error) {
+                console.error("Error al enviar los datos:", error);
+            }
         });
-        //$.ajax({
-        //    type: "POST",
-        //    url: "GuardaCalifQuej",
-        //    contentType: "application/json; charset=utf-8",
-        //    data: {$.param(combinedData),JSON.stringify(formData)},
-        //    dataType: "JSON",
-        //    success: function (response) {
-        //        console.log("Datos enviados exitosamente:", response);
-        //    },
-        //    error: function (error) {
-        //        console.error("Error al enviar los datos:", error);
-        //    }
-        //});
     });
 });
