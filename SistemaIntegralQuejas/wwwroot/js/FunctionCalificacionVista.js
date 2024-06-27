@@ -2531,7 +2531,7 @@ function CrearFormuCalificacion(idformulario, response) {
                     {
                         class: "col-md-2",
                         label: "Especializado",
-                        name: "especializado-frmDatosCalificacion" + idformulario,
+                        name: "especializado-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
                         required: 'required',
@@ -2549,7 +2549,7 @@ function CrearFormuCalificacion(idformulario, response) {
                     {
                         class: "col-md-3",
                         label: "Trasciende la opinión Pública",
-                        name: "trancpub-frmDatosCalificacion" + idformulario,
+                        name: "trancpub-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
                         required: 'required',
@@ -2567,7 +2567,7 @@ function CrearFormuCalificacion(idformulario, response) {
                     {
                         class: "col-md-2",
                         label: "Tipo de expediente",
-                        name: "tipexpediente-frmDatosCalificacion" + idformulario,
+                        name: "tipexpediente-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
                         required: 'required',
@@ -2576,7 +2576,7 @@ function CrearFormuCalificacion(idformulario, response) {
                     {
                         class: "col-md-3",
                         label: "Materia",
-                        name: "materia-frmDatosCalificacion" + idformulario,
+                        name: "materia-frmDatosCalificacion" ,
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
                         required: 'required',
@@ -2585,7 +2585,7 @@ function CrearFormuCalificacion(idformulario, response) {
                     {
                         class: "col-md-2 form-control-sm",
                         label: "Nivel de Riesgo",
-                        name: "nivries-frmDatosCalificacion" + idformulario,
+                        name: "nivries-frmDatosCalificacion" ,
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
                         required: 'required',
@@ -2682,6 +2682,7 @@ function CrearFormuCalificacion(idformulario, response) {
             }
         });
     });
+    funcionesEscritoi();
 }
 
 function crearTabla(nomTabla, nomTab, arreglo, id) {
@@ -2980,6 +2981,21 @@ function ElimFilaTab(nomTab) {
 $(document).ready(function () {
     $(document).on('submit', 'form[id^="frmDatosCalificacion"]', function (event) {
         event.preventDefault();
+        var formDQOT = {
+            idqueja: 0,
+            viainterpos: '',
+            Abogadoqueja: '',
+            hechos: '',
+            municipioqueja: '',
+            visitaduriaqueja: '',
+            Fecha_Registro: '',
+            Fecha_TurnoVG: '',
+            sedeRegistro: '',
+            observaciones: '',
+            tablaAutRe_HecVio:[],
+            tablaMedCaut: [],
+            tablaDilig: []
+        };
         //VARIABLES
         var AutRe_HecVioT = [], MedCaute=[], Diligen=[];
         var idquejaE = $('#idquejaE').val();
@@ -3061,7 +3077,8 @@ $(document).ready(function () {
 
         });
         //DATOS DQOT
-        var formDQOT = {
+
+        formDQOT = {
             idqueja: idquejaE,
             viainterpos: $('#viainterposE').val(),
             Abogadoqueja: $('#AbogadoquejaE').val(),
@@ -3073,9 +3090,13 @@ $(document).ready(function () {
             sedeRegistro: $('#sedeRegistroE').val(),
             observaciones: $('#observacionesE').val(),
             tablaAutRe_HecVio: AutRe_HecVioT,
+            longitudtabla1: AutRe_HecVioT.length,
             tablaMedCaut: MedCaute,
-            tablaDilig: Diligen
+            longitudtabla2: MedCaute.length,
+            tablaDilig: Diligen,
+            longitudtabla3: Diligen.length,
         };
+        
         var combinedData = formQueja.reduce(function (acc, item) {
             acc[item.name] = item.value;
             return acc;
@@ -3083,9 +3104,8 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: "GuardaCalifQuej",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(combinedData),
-            dataType: "json",
+            data: combinedData ,
+            dataType: "JSON",
             success: function (response) {
                 console.log("Datos enviados exitosamente:", response);
             },
@@ -3095,3 +3115,14 @@ $(document).ready(function () {
         });
     });
 });
+
+
+function funcionesEscritoi() {
+    $(document).on('click', '.upload-field', function () {
+        var file = $(this).parent().parent().parent().find('.input-file');
+        file.trigger('click');
+    });
+    $(document).on('change', '.input-file', function () {
+        $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+    });
+}

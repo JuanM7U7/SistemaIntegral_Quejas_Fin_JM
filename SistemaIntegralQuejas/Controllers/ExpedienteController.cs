@@ -29,6 +29,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Security.Cryptography;
 using System.Drawing;
+using System.Net.WebSockets;
+using System.Runtime.Serialization;
 
 namespace SistemaIntegralQuejas.Controllers
 {
@@ -1975,7 +1977,7 @@ namespace SistemaIntegralQuejas.Controllers
                             query = "exec semaforo " + diasTrans + "," + 10 + "," + 21 + "," + 1;
                             resultado = conexionsql.ObtenerReader(query);
                         }
-                        
+
                         itemformatos.semaforo2 = resultado + "<small><strong> sin actuaciones</strong></small>";
                         //FIN SEMAFORO 2
                     }
@@ -2593,7 +2595,7 @@ namespace SistemaIntegralQuejas.Controllers
             String query = "exec GET_AUTORIDAD";
             string mensaje = "";
             autoridades = conexionsql.selectMaestro(query, ref mensaje);
-            autoridades= autoridades.OrderBy(x=> x.Descripcion).ToList();
+            autoridades = autoridades.OrderBy(x => x.Descripcion).ToList();
 
             if (autoridades.Count > 0)
             {
@@ -2665,7 +2667,7 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin Lista Materia
-        
+
         // Lista Materia
         public ActionResult SelectTipExpediente()
         {
@@ -3512,6 +3514,128 @@ namespace SistemaIntegralQuejas.Controllers
 
 
             return Json(new { status = resultado });
+        }
+
+
+        public ActionResult GuardaCalifQuej(IFormCollection form)
+        {
+            string query = "";
+            int idqueja = 0;
+            string hechos = "";
+            string municipoqueja = "";
+            string observaciones = "";
+            int especializado = 0;
+            int trasOpPublica = 0;
+            string tipoexp = "";
+            string materia = "";
+            string nivriesgo = "";
+            string autoridad = "";
+            string hecho = "";
+            int linea = 0;
+            int arreglo = 0;
+            int longitudtabla1 =int.Parse(form["longitudtabla1"].ToString());
+            int longitudtabla2 = int.Parse(form["longitudtabla2"].ToString());
+            int longitudtabla3 = int.Parse(form["longitudtabla3"].ToString());
+
+            /*Sección de la actualización de la tabla de una queja*/
+            idqueja = int.Parse(form["idqueja"].ToString());
+            hechos = form["hechos"].ToString();
+            municipoqueja = form["municipioqueja"].ToString();
+            observaciones = form["observaciones"].ToString();
+
+            if (form["especializado-frmDatosCalificacion"].ToString() == "Si") { especializado = 1; } 
+            if (form["trancpub-frmDatosCalificacion"].ToString() == "Si") { trasOpPublica = 1; }
+            tipoexp = form["tipexpediente-frmDatosCalificacion"].ToString();
+            materia = form["materia-frmDatosCalificacion"].ToString();
+            nivriesgo = form["nivries-frmDatosCalificacion"].ToString();
+
+           
+            /*Sección de la actualización de la tabla de una queja*/
+            query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "'";
+            string mensaje = "ok";
+            using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection)){command.ExecuteNonQuery();}
+                    mensaje = "OK";
+                }
+                catch (Exception ex)
+                {
+                    mensaje = "ERROR";
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+             
+            }
+            /*Sección de la actualización de la tabla de una queja*/
+            /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
+            for (int i = 0; i < longitudtabla1; i++)
+            {
+                autoridad = form["tablaAutRe_HecVio[" + i + "][autoridad]"].ToString();
+                hecho = form["tablaAutRe_HecVio[" + i + "][hecho]"].ToString();
+                linea = int.Parse(form["tablaAutRe_HecVio[" + i + "][idAutoHec]"].ToString());
+                query = "exec Sp_insertaAutoridad " + idqueja + "," + autoridad + "," + hecho + ","+ linea+"";
+                using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlCommand command = new SqlCommand(query, connection)) { command.ExecuteNonQuery(); }
+                        mensaje = "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        mensaje = "ERROR";
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+
+
+                }
+
+            }
+            /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
+            /*Actualizacion de tabla de medidas Cautelares*/
+            for (int i = 0; i < longitudtabla2; i++)
+            {
+
+            }
+            /*Actualizacion de tabla de medidas Cautelares*/
+            /*Actualizacion de tabla de diligencias*/
+            for (int i = 0; i < longitudtabla3; i++)
+            {
+                query = "exec Sp_insertTblDil " + idqueja + "," + int.Parse(form["tablaDilig["+i+"][tipodilig]"].ToString()) + ",'" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() +"','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString()+",1,0";
+
+                using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlCommand command = new SqlCommand(query, connection)) { command.ExecuteNonQuery(); }
+                        mensaje = "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        mensaje = "ERROR";
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+
+
+                }
+            }
+            /*Actualizacion de tabla de diligencias*/
+            return Json(new { status = mensaje });
+
         }
     }
 }
