@@ -49,14 +49,20 @@
     <!-- Modal content -->
     <div class="modal-content">
         <div class="modal-header headerUpdate">
-            <img src="\img\logo_horizontal-cdhp.png" height="45px"/>
+            <img src="\img\logo_horizontal-cdhp.png" height="45px" />
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modaltabDetalle')">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <div class="tab">
-                <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpenD">Información recabada por la DQOT</button>
+            <div class="row col-12">
+                <div class="tab col-4">
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpenD">Información recabada por la DQOT</button>
+                </div>
+                <div class="tab col-2">
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Calificar')">Calificación Queja</button>
+                </div>
+                <div class="tab col-6"></div>
             </div>
 
             <div id="Detalle_Quejak" class="tabcontent">
@@ -65,12 +71,14 @@
                     <div id="derecha" class="row col-6"></div>
                 </div>
             </div>
+            <div id="Detalle_Calificar" class="tabcontent">
+                <div id="frmDatosCalificacion" class=" row col-12">
+                </div>
+            </div>
         </div>
-
-
     </div>
-
 </div>
+
 
 <div id="modaltabCalif" class="modal">
     <div class="modal-content">
@@ -91,7 +99,7 @@
                     <div id="derechaE" class="row col-6"></div>
                 </div>
                 <div class="row col-12">
-                    <div id="frmDatosCalificacion" class="col-12"></div>
+                    <div id="frmDatosCalificacionE" class="col-12"></div>
                 </div>
             </div>
         </div>

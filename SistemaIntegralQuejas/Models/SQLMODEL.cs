@@ -285,7 +285,7 @@ namespace SistemaIntegralQuejas.Models
                    List< informacioncomplementariaautoridad> modelo2 = datoscomplementariosautoridad(query2, ref mensaje);
                     while (lector.Read())
 					{
-						lista = new informacioncomplementaria(int.Parse(lector[0].ToString()),int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()),modelo1,modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()),lector[8].ToString());
+						lista = new informacioncomplementaria(int.Parse(lector[0].ToString()),int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()),modelo1,modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()),lector[8].ToString(), 0,0,0,0,0);
 
 					}
 
@@ -302,9 +302,50 @@ namespace SistemaIntegralQuejas.Models
 			return lista;
 		}
 
+        public informacioncomplementaria datoscomplementariosCalif(string query, ref string mensaje, string query1, string query2)
+        {
+            mensaje = "";
+            informacioncomplementaria lista = new informacioncomplementaria();
+            SqlDataReader lector;
+
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+
+                    informacioncomplementaria modelo;
+                    List<informacioncomplementariapeticionario> modelo1 = datoscomplementariospeticionario(query1, ref mensaje);
+                    List<informacioncomplementariaautoridad> modelo2 = datoscomplementariosautoridad(query2, ref mensaje);
+                    while (lector.Read())
+                    {
+                        lista = new informacioncomplementaria(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), modelo1, modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()), lector[8].ToString(),
+                            lector[9] != DBNull.Value ? int.Parse(lector[9].ToString()) : 99,
+    lector[10] != DBNull.Value ? int.Parse(lector[10].ToString()) : 99,
+    lector[11] != DBNull.Value ? int.Parse(lector[10].ToString()) : 99,
+    lector[12] != DBNull.Value ? int.Parse(lector[12].ToString()) : 99,
+    lector[13] != DBNull.Value ? int.Parse(lector[13].ToString()) : 99);
+
+                    }
+
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
 
 
-		public List<object> Disponibilidad_Usuario(string query, ref string mensaje)
+            }
+
+
+            return lista;
+        }
+
+        public List<object> Disponibilidad_Usuario(string query, ref string mensaje)
         {
             mensaje = "";
             List<object> lista = new List<object>();

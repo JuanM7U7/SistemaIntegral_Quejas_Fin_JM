@@ -245,12 +245,13 @@ function modalShow(id, fecRecep, Tmodal) {
         document.getElementById("defaultOpenC").click();
         Crear_Formulario_QuejaEdit(id);
         obtenerDQOT(id, fecRecep, "E");
-        CrearFormuCalificacion(id, "h");
+        //CrearFormuCalificacion(id, "");
     }
-    //RecuperaIds(id);
-    //traeInformacionDatosComplementarios(id);
-    //editFormatDatosPersonales('1447', '1447', '3');
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("defaultOpenD").click();
+});
 
 function closeModal(Tmodal) {
     document.getElementById(Tmodal).style.display = "none";
@@ -488,7 +489,7 @@ function Crear_Formulario_QuejaEdit(id) {
 function obtenerDQOT(idqueja, fecRecep, tipo) {
     $.ajax({
         type: "POST",
-        url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogos",
+        url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogosCalf",
         data: { identificadorQueja: idqueja },
         dataType: "JSON",
         success: function (response) {
@@ -533,6 +534,16 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             }
             RecorreInput('.formulariodatoscomplementariosqueja');
             $("#modaldatoscomplementariosqueja").modal("show");
+            if (tipo === '') {
+                CrearFormuCalificacion(idqueja, tipo); $(`#submitForm-${idqueja}`).hide(); $('#especializado-frmDatosCalificacion').prop('disabled', true); $('#trancpub-frmDatosCalificacion').prop('disabled', true); $('#tipexpediente-frmDatosCalificacion').prop('disabled', true); $('#materia-frmDatosCalificacion').prop('disabled', true); $('#nivries-frmDatosCalificacion').prop('disabled', true);
+                $('#especializado-frmDatosCalificacion').val(response.informarcionC.id_especializado === '' ? 99 : response.informarcionC.id_especializado);
+                $('#trancpub-frmDatosCalificacion').val(response.informarcionC.id_tras_op_pub === '' ? 99 : response.informarcionC.id_tras_op_pub);
+                $('#tipexpediente-frmDatosCalificacion').val(response.informarcionC.tipo_expediente === '' ? 99 : response.informarcionC.tipo_expediente);
+                $('#materia-frmDatosCalificacion').val(response.informarcionC.id_materia === '' ? 99 : response.informarcionC.id_materia);
+                $('#nivries-frmDatosCalificacion').val(response.informarcionC.id_niv_riesgo === '' ? 99 : response.informarcionC.id_niv_riesgo);
+            } else {
+                CrearFormuCalificacion(idqueja, tipo);
+            }
         }
     });
 }
@@ -2509,7 +2520,7 @@ function ventana_acpeta_visitaduria(mensaje, idexpediente, peticionarios) {
 }
 
 
-function CrearFormuCalificacion(idformulario, response) {
+function CrearFormuCalificacion(idformulario, tipo) {
     let eliminarform = document.querySelectorAll('.eliminaformaes');
     for (var i = 0; i < eliminarform.length; i++) {
         eliminarform[i].remove();
@@ -2537,11 +2548,11 @@ function CrearFormuCalificacion(idformulario, response) {
                         required: 'required',
                         combooptions: [
                             {
-                                idSelect: 'Si',
+                                idSelect: 1,
                                 descripcion: 'Si'
                             },
                             {
-                                idSelect: 'No',
+                                idSelect: 0,
                                 descripcion: 'No'
                             }
                         ]
@@ -2555,11 +2566,11 @@ function CrearFormuCalificacion(idformulario, response) {
                         required: 'required',
                         combooptions: [
                             {
-                                idSelect: 'Si',
+                                idSelect: 1,
                                 descripcion: 'Si'
                             },
                             {
-                                idSelect: 'No',
+                                idSelect: 0,
                                 descripcion: 'No'
                             }
                         ]
@@ -2662,17 +2673,17 @@ function CrearFormuCalificacion(idformulario, response) {
                 ]
         }
     );
-    $('#frmDatosCalificacion').append(frmDatosPersonales);
+    $(`#frmDatosCalificacion${tipo}`).append(frmDatosPersonales);
     $('.tablaAutRe_HecVio').empty();
     $('.tablaMedCuate').empty();
     $('.tablaDilig').empty();
-    crearTabla('.tablaAutRe_HecVio', "tablaAutRe_HecVioT", ["Acciones", "Autoridades Responsables", "Hechos Violatorios"], idformulario);
-    LlenarTabAutReHecVio('#tablaAutRe_HecVioT', response, idformulario);
-    crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "Autoridades", "Archivo(s)", "Fecha Alta", "Plazo de Atención", "Cumplido/No Cumplido", "Semáforo"], idformulario);
-    LlenartablaMedCuate('#tablaMedCuateT', response, idformulario);
+    crearTabla('.tablaAutRe_HecVio', "tablaAutRe_HecVioT", ["Acciones", "Autoridades Responsables", "Hechos Violatorios"], idformulario, tipo);
+    LlenarTabAutReHecVio('#tablaAutRe_HecVioT', tipo, idformulario);
+    crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "Autoridades", "Archivo(s)", "Fecha Alta", "Plazo de Atención", "Cumplido/No Cumplido", "Semáforo"], idformulario, tipo);
+    LlenartablaMedCuate('#tablaMedCuateT', tipo, idformulario);
     $('.tablaMedCuate').hide();
-    crearTabla('.tablaDilig', "tablaDiligT", ["Acciones", "Tipo Diligencia", "Descripción", "Fecha", "Núm. Oficio/Memorandum", "Atención", "Archivo(s)"], idformulario);
-    LlenartablaDilig('#tablaDiligT', response, idformulario);
+    crearTabla('.tablaDilig', "tablaDiligT", ["Acciones", "Tipo Diligencia", "Descripción", "Fecha", "Núm. Oficio/Memorandum", "Atención", "Archivo(s)"], idformulario, tipo);
+    LlenartablaDilig('#tablaDiligT', tipo, idformulario);
     $(document).ready(function () {
         $('input[id="idmedCuate' + idformulario +'"]').change(function () {
             if ($(this).val() === 'Si') {
@@ -2685,9 +2696,11 @@ function CrearFormuCalificacion(idformulario, response) {
     funcionesEscritoi();
 }
 
-function crearTabla(nomTabla, nomTab, arreglo, id) {
+function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
     var datos = `"${nomTab}",${id}`;
-    $(nomTabla).append(crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus color-muted fa-2x', `AgrDil(${datos})`));
+    if (tipo!=='') {
+        $(nomTabla).append(crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus color-muted fa-2x', `AgrDil(${datos})`));
+    }
     var table = document.createElement("table");
     table.id = nomTab;
     table.classList.add("table", "table-striped");
@@ -2772,9 +2785,11 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, response, id) {
             //},
             {
                 'mRender': function (data, type, full) {
-
-                    return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
-
+                    if (response !== '') {
+                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
+                    } else {
+                        return '';
+                    }
                 }
             },
             {
@@ -2825,8 +2840,11 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             {
                 'mRender': function (data, type, full) {
 
-                    return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaMedCuateT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`;
-
+                    if (response !== '') {
+                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaMedCuateT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`;
+                    } else {
+                        return '';
+                    }
                 }
             },
             {
@@ -2899,9 +2917,11 @@ function LlenartablaDilig(tablaDilig, response, id) {
             //},
             {
                 'mRender': function (data, type, full) {
-
-                    return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`;
-
+                    if (response !== '') {
+                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`;
+                    } else {
+                        return '';
+                    }
                 }
             },
             {
