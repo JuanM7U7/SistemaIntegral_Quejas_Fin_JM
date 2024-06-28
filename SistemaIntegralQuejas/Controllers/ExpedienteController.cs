@@ -3637,5 +3637,25 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { status = mensaje });
 
         }
+
+        public class SelectAUT_HEV
+        {
+            public int id_queja { get; set; }
+            public int id_autoridad { get; set; }
+            public int id_hechov { get; set; }
+            public int id_linea { get; set; }
+            public int Version { get; set; }
+            public int Eliminado { get; set; }
+            public SelectAUT_HEV() { }
+            public SelectAUT_HEV(int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado)
+            {
+                this.id_queja = id_queja;
+                this.id_autoridad = id_autoridad;
+                this.id_hechov = id_hechov;
+                this.id_linea = id_linea;
+                this.Version = Version;
+                this.Eliminado = Eliminado;
+            }
+        }
     }
 }
