@@ -543,6 +543,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
                 $('#nivries-frmDatosCalificacion').val(response.informarcionC.id_niv_riesgo === '' ? 99 : response.informarcionC.id_niv_riesgo);
             } else {
                 CrearFormuCalificacion(idqueja, tipo);
+
             }
         }
     });
