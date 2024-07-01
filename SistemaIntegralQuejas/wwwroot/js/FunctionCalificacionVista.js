@@ -3130,8 +3130,24 @@ $(document).ready(function () {
             data: combinedData ,
             dataType: "JSON",
             success: function (response) {
-                console.log("Datos enviados exitosamente:", response);
-            },
+                if (response.status = "OK") {
+                    $("#modaltabCalif").modal("close");
+                    Swal.fire({
+                        icon: "info",
+                        title: "Registro Exitoso",
+                        text: "Expediente Calificado",
+
+                    });
+
+                   
+                } else
+                {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Debes de Acpetar y/o Rechazar todos los ID´s",
+                    });
+                }            },
             error: function (error) {
                 console.error("Error al enviar los datos:", error);
             }

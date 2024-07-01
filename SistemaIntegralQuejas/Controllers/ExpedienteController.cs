@@ -3517,6 +3517,31 @@ namespace SistemaIntegralQuejas.Controllers
         }
 
 
+        public string ejecutaInsertUpdate(string query)
+        {
+            string mensaje = "";
+            using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection)) { command.ExecuteNonQuery(); }
+                    mensaje = "OK";
+                }
+                catch (Exception ex)
+                {
+                    mensaje = "ERROR";
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+
+            }
+            return mensaje;
+        }
+
         public ActionResult GuardaCalifQuej(IFormCollection form)
         {
             string query = "";
@@ -3536,6 +3561,7 @@ namespace SistemaIntegralQuejas.Controllers
             int longitudtabla1 =int.Parse(form["longitudtabla1"].ToString());
             int longitudtabla2 = int.Parse(form["longitudtabla2"].ToString());
             int longitudtabla3 = int.Parse(form["longitudtabla3"].ToString());
+			string mensaje = "";
 
             /*Sección de la actualización de la tabla de una queja*/
             idqueja = int.Parse(form["idqueja"].ToString());
@@ -3552,26 +3578,26 @@ namespace SistemaIntegralQuejas.Controllers
            
             /*Sección de la actualización de la tabla de una queja*/
             query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "'";
-            string mensaje = "ok";
-            using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
-            {
-                try
-                {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(query, connection)){command.ExecuteNonQuery();}
-                    mensaje = "OK";
-                }
-                catch (Exception ex)
-                {
-                    mensaje = "ERROR";
-                }
-                finally
-                {
-                    connection.Close();
-                }
+          
+            mensaje =ejecutaInsertUpdate(query);
 
-             
-            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
             /*Sección de la actualización de la tabla de una queja*/
             /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
             for (int i = 0; i < longitudtabla1; i++)
@@ -3580,25 +3606,25 @@ namespace SistemaIntegralQuejas.Controllers
                 hecho = form["tablaAutRe_HecVio[" + i + "][hecho]"].ToString();
                 linea = int.Parse(form["tablaAutRe_HecVio[" + i + "][idAutoHec]"].ToString());
                 query = "exec Sp_insertaAutoridad " + idqueja + "," + autoridad + "," + hecho + ","+ linea+"";
-                using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
-                {
-                    try
-                    {
-                        connection.Open();
-                        using (SqlCommand command = new SqlCommand(query, connection)) { command.ExecuteNonQuery(); }
-                        mensaje = "OK";
-                    }
-                    catch (Exception ex)
-                    {
-                        mensaje = "ERROR";
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
+ 				mensaje =ejecutaInsertUpdate(query);
 
 
-                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             }
             /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
@@ -3613,25 +3639,24 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 query = "exec Sp_insertTblDil " + idqueja + "," + int.Parse(form["tablaDilig["+i+"][tipodilig]"].ToString()) + ",'" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() +"','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString()+",1,0";
 
-                using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
-                {
-                    try
-                    {
-                        connection.Open();
-                        using (SqlCommand command = new SqlCommand(query, connection)) { command.ExecuteNonQuery(); }
-                        mensaje = "OK";
-                    }
-                    catch (Exception ex)
-                    {
-                        mensaje = "ERROR";
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
-
-
-                }
+                mensaje =ejecutaInsertUpdate(query);
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
             }
             /*Actualizacion de tabla de diligencias*/
             return Json(new { status = mensaje });
