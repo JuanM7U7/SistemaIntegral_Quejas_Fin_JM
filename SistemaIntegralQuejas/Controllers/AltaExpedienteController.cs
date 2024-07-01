@@ -115,6 +115,66 @@ namespace SistemaIntegralQuejas.Controllers
                 return Json(new { mensaje = "error" + mensaje });
             }
         }
+
+        public async Task<ActionResult> RegresaListaCatalogosCalf(int identificadorQueja)
+        {
+            List<SelectGenerico> listaContenedora2 = new List<SelectGenerico>();
+            List<SelectGenerico> listaContenedora3 = new List<SelectGenerico>();
+            List<SelectGenerico> listaContenedora4 = new List<SelectGenerico>();
+            List<SelectGenerico> listaContenedora5 = new List<SelectGenerico>();
+            List<SelectGenerico> listaContenedora6 = new List<SelectGenerico>();
+            List<SelectGenerico> listaContenedora7 = new List<SelectGenerico>();
+            List<SelectGenerico> listaContenedora8 = new List<SelectGenerico>();
+
+            informacioncomplementaria informacioncomplementaria = new informacioncomplementaria();
+
+
+
+            String query = "exec Sp_Select_Abogado";
+            String query1 = "";
+            String query2 = "";
+            string mensaje = "";
+            listaContenedora2 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            query = "exec Sp_Select_EstadoRM";
+            listaContenedora3 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            query = "exec Sp_Select_Estado";
+            listaContenedora4 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            query = "exec Sp_Select_autoridad";
+            listaContenedora5 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            query = "exec Sp_Select_sedes";
+            listaContenedora6 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            query = "exec Sp_Select_visitadurias";
+            listaContenedora7 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            query = "exec Sp_Select_ViaInterposicionQ";
+            listaContenedora8 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            /*Cargar informacion dentro de las pantallas*/
+            query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "'";
+            query1 = "exec Sp_carga_informacion_Complementaria_peticionario '" + identificadorQueja + "'";
+            query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
+            informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
+            /*Cargar informacion dentro de las pantallas*/
+
+
+            if (listaContenedora3.Count > 0)
+            {
+                return Json(
+                    new
+                    {
+                        lista_abogado = listaContenedora2,
+                        lista_estado = listaContenedora3,
+                        lista_municipio = listaContenedora4,
+                        lista_autoridad = listaContenedora5,
+                        lista_sedes = listaContenedora6,
+                        listavisitadurias = listaContenedora7,
+                        informarcionC = informacioncomplementaria,
+                        listavi = listaContenedora8
+                    });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" + mensaje });
+            }
+        }
         public ActionResult ActualizaEstatus(IFormCollection form)
         {
             GuardarQueja(form);
@@ -143,25 +203,37 @@ namespace SistemaIntegralQuejas.Controllers
         public int Via_interpos { get; set; }
         public int visitaduria { get; set; }
         public string observaciones { get; set; }
+        public int id_especializado { get; set; }
+        public int id_tras_op_pub { get; set; }
+        public int tipo_expediente { get; set; }
+        public int id_materia { get; set; }
+        public int id_niv_riesgo { get; set; }
+
         public List<informacioncomplementariapeticionario> informacioncomplementariapeticionario { get; set; }
         public List<informacioncomplementariaautoridad> informacioncomplementariaautoridad { get; set; }
 
         public informacioncomplementaria() { }
-        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos,List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica,int vi,int vis, string observaciones)
-		{
-			this.id_expediente = id_expediente;
-			this.id_abogado_recibe = id_abogado_recibe;
-			this.hechos = hechos;
-			this.fecha_registro = fecha_registro;
-			this.id_sede = id_sede;
-			this.id_lugar_hechos = id_lugar_hechos;
+        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos, List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica, int vi, int vis, string observaciones, int id_especializado, int id_tras_op_pub, int tipo_expediente, int id_materia, int id_niv_riesgo)
+        {
+            this.id_expediente = id_expediente;
+            this.id_abogado_recibe = id_abogado_recibe;
+            this.hechos = hechos;
+            this.fecha_registro = fecha_registro;
+            this.id_sede = id_sede;
+            this.id_lugar_hechos = id_lugar_hechos;
             this.informacioncomplementariapeticionario = icp;
-            this.informacioncomplementariaautoridad= ica;
+            this.informacioncomplementariaautoridad = ica;
             this.Via_interpos = vi;
-            this.visitaduria= vis;
+            this.visitaduria = vis;
             this.observaciones = observaciones;
-		}
-	}
+
+            this.id_especializado = id_especializado;
+            this.id_tras_op_pub = id_tras_op_pub;
+            this.tipo_expediente = tipo_expediente;
+            this.id_materia = id_materia;
+            this.id_niv_riesgo = id_niv_riesgo;
+        }
+    }
 
     public class informacioncomplementariapeticionario
     {
