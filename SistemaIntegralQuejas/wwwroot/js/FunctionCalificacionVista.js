@@ -242,7 +242,7 @@ function modalShow(id, fecRecep, Tmodal) {
         Crear_Formulario_Queja(id);
         obtenerDQOT(id, fecRecep, "");
     } else {
-        document.getElementById("defaultOpenC").click();
+        //document.getElementById("defaultOpenC").click();
         Crear_Formulario_QuejaEdit(id);
         obtenerDQOT(id, fecRecep, "E");
         //CrearFormuCalificacion(id, "");
@@ -475,7 +475,7 @@ function Crear_Formulario_QuejaEdit(id) {
         + icono_editar('observacionesE', id)
         + CreaBR()
         + CreaTextAreadisabled('observacionesE', '', 'style="width:100%; height:14%"');
-    var formInnicial = '<form class="text-justify formQueja" id="formQueja" name="formQueja" method="post" style="width:95%; margin-left:2%" >';
+    var formInnicial = '<form class="text-justify formQueja" id="formQueja" name="formQueja" method="post" style="width:100%; margin-left:2%;">';
     var fin_form = '</form>';
 
     let formualarioCompleto = formInnicial + cuerpoIzquierda + fin_form;
@@ -2542,6 +2542,15 @@ function CrearFormuCalificacion(idformulario, tipo) {
                     },
                     {
                         class: "col-md-2",
+                        label: "Tipo de expediente",
+                        name: "tipexpediente-frmDatosCalificacion",
+                        type: "combobox",
+                        classControl: "ob max-300 eliminaformaes",
+                        required: 'required',
+                        combooptions: TipExpeSe
+                    },
+                    {
+                        class: "col-md-2",
                         label: "Especializado",
                         name: "especializado-frmDatosCalificacion",
                         type: "combobox",
@@ -2575,15 +2584,6 @@ function CrearFormuCalificacion(idformulario, tipo) {
                                 descripcion: 'No'
                             }
                         ]
-                    },
-                    {
-                        class: "col-md-2",
-                        label: "Tipo de expediente",
-                        name: "tipexpediente-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes",
-                        required: 'required',
-                        combooptions: TipExpeSe
                     },
                     {
                         class: "col-md-3",

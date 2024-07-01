@@ -83,30 +83,26 @@
 <div id="modaltabCalif" class="modal">
     <div class="modal-content">
         <div class="modal-header headerUpdate">
-            <img src="\img\logo_horizontal-cdhp.png" height="45px" />
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modaltabCalif')">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <div class="row col-12">
+                <div class="col-2"><img src="\img\logo_horizontal-cdhp.png" height="45px" /></div>
+                <div class="col-9"><h3 class="positionCenter">Calificación del Escrito Inicial de Queja</h3></div>
+                <div class="col-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modaltabCalif')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="modal-body">
-            <div class="tab">
-                <button class="tablinks" onclick="openCity(event, 'Calificar')" id="defaultOpenC">Calificar</button>
+            <div class="row col-12" style="height:75%;">
+                <div id="izquierdaE" class="row col-6"></div>
+                <div id="derechaE" class="row col-6"></div>
             </div>
-            <div id="Calificar" class="tabcontent">
-                <h3 class="positionCenter">Calificación del Escrito Inicial de Queja</h3>
-                <div class="row col-12">
-                    <div id="izquierdaE" class="row col-6"></div>
-                    <div id="derechaE" class="row col-6"></div>
-                </div>
-                <div class="row col-12">
-                    <div id="frmDatosCalificacionE" class="col-12"></div>
-                </div>
+            <div class="row col-12">
+                <div id="frmDatosCalificacionE" class="col-12"></div>
             </div>
         </div>
-
-
     </div>
-
 </div>
 
 <style>

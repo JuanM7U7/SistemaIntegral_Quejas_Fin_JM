@@ -202,7 +202,47 @@ namespace SistemaIntegralQuejas.Models
 			return lista;
 		}
 
-		public List< informacioncomplementariapeticionario> datoscomplementariospeticionario(string query, ref string mensaje)
+        public List<SelectAUT_HEV> lista_SelectAutHev(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectAUT_HEV> lista = new List<SelectAUT_HEV>();
+            SqlDataReader lector;
+
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+
+                    SelectAUT_HEV modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new SelectAUT_HEV();
+                        modelo.id_queja = int.Parse(lector[0].ToString());
+                        modelo.id_autoridad = int.Parse(lector[1].ToString());
+                        modelo.id_hechov = int.Parse(lector[2].ToString());
+                        modelo.id_linea = int.Parse(lector[3].ToString());
+                        modelo.Version = int.Parse(lector[4].ToString());
+                        modelo.Eliminado = int.Parse(lector[5].ToString());
+                        lista.Add(modelo);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+
+            return lista;
+        }
+
+        public List< informacioncomplementariapeticionario> datoscomplementariospeticionario(string query, ref string mensaje)
 		{
 			mensaje = "";
 			List<informacioncomplementariapeticionario> lista = new List<informacioncomplementariapeticionario>();
