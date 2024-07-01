@@ -483,6 +483,7 @@ function Crear_Formulario_QuejaEdit(id) {
 
     $('#izquierdaE').append(formualarioCompleto);
     $('#derechaE').append(formualarioCompleto1);
+    $("#municipioquejaE").select2();
     return formualarioCompleto;
 }
 
@@ -927,9 +928,8 @@ function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelab
             `;
     }
     htmld += "</select>";
-
+    $("#" + id).select2();
     return htmld
-    //$("#" + id).select2();
 }
 
 function CreaInputs_Con_Labeldisabled(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
@@ -2724,18 +2724,19 @@ function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
 
 function AgrDil(nomTab, id) {
     var table = $("#" + nomTab).DataTable();
+    var newRow;
     switch (nomTab) {
         case "tablaAutRe_HecVioT":
-            table.row.add([
+            newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`,
-                CreaSelectLabel('autoridadres', '', AutoridadesSe, '', '', ''),
-                CreaSelectLabel('hechvio', '', hechvioSe, '', '', '')
-            ]).draw();
+                CreaSelectLabel('autoridadres' + id, '', AutoridadesSe, '', '', 'select2'),
+                CreaSelectLabel('hechvio' + id, '', hechvioSe, '', '', 'select2')
+            ]).draw().node();
             break;
         case "tablaMedCuateT":
-            table.row.add([
+            newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`,
-                CreaSelectLabel('autoridadres', '', AutoridadesSe, '', '', ''),
+                CreaSelectLabel('autoridadresMC' + id, '', AutoridadesSe, '', '', 'select2'),
                 `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
@@ -2747,12 +2748,12 @@ function AgrDil(nomTab, id) {
                 CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', ''),
                 "",
                 "Semaforo"
-            ]).draw();
+            ]).draw().node();
             break;
         case "tablaDiligT":
-            table.row.add([
+            newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`,
-                CreaSelectLabel('tipodilig', '', diligenSe, '', '', ''),
+                CreaSelectLabel('tipodilig' + id, '', diligenSe, '', '', 'select2'),
                 '<textarea id="descrip" class="swal2-input"> </textarea>',
                 CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
                 CreaInputs_Con_Label('numOfMe', 'numOfMe', 'validatxtac', 'text', '', '', ''),
@@ -2764,9 +2765,10 @@ function AgrDil(nomTab, id) {
                 <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
             </span>
         </div>`
-            ]).draw();
+            ]).draw().node();
             break;
     }
+    $("#" + nomTab).find('select').select2();
 }
 function LlenarTabAutReHecVio(tablaAutRe_HecVioT, response, id) {
     $(tablaAutRe_HecVioT).DataTable({
@@ -2851,7 +2853,7 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             {
                 'mRender': function (data, type, full) {
 
-                    return CreaSelectLabel('autoridadres', '', AutoridadesSe, '', '', '');
+                    return CreaSelectLabel('autoridadresMC', '', AutoridadesSe, '', '', '');
 
                 }
             },
@@ -3047,7 +3049,7 @@ $(document).ready(function () {
         if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
             $('#tablaMedCuateT tbody tr').each(function (x) {
                 x = x + 1;
-                var autoridad = $(this).find('select[name="autoridadres"]').val();
+                var autoridad = $(this).find('select[name="autoridadresMC"]').val();
                 var horaAlta = $(this).find('input[name="horaAlta"]').val();
                 var archAdj = $(this).find('input[name="archAdjMC"]').val();
                 var horaPlaAten = $(this).find('input[name="horaPlaAten"]').val();
