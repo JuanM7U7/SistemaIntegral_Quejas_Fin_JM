@@ -17,7 +17,7 @@
                     <table id="tablaRecepcion">
                         <thead style="background:white !important; border-bottom:1px solid gray">
                             <tr>
-                                <th class="noFilter">DETALLE</th>
+                                <th @* class="noFilter" *@>NO. EXPEDIENTE</th>
                                 <th>ID QUEJA</th>
                                 <th>FECHA DE TURNO DQOT</th>
                                 <th>FECHA DE RECEPCIÓN EN VG</th>
@@ -85,7 +85,12 @@
         <div class="modal-header headerUpdate">
             <div class="row col-12">
                 <div class="col-2"><img src="\img\logo_horizontal-cdhp.png" height="45px" /></div>
-                <div class="col-9"><h3 class="positionCenter">Calificación del Escrito Inicial de Queja</h3></div>
+                <div class="col-8"><h3 class="positionCenter">Calificación del Escrito Inicial de Queja</h3></div>
+                <div class="col-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Guardado preliminar" onclick="GuardPrel()">
+                        <span aria-hidden="true"><i class="fa fa-floppy-o"></i></span>
+                    </button>
+                </div>
                 <div class="col-1">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modaltabCalif')">
                         <span aria-hidden="true">&times;</span>
@@ -354,7 +359,6 @@
         width: 50px !important;
         margin:0px;
     }
-
 </style>
 
 @section Scripts
