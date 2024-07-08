@@ -87,7 +87,7 @@
                 <div class="col-2"><img src="\img\logo_horizontal-cdhp.png" height="45px" /></div>
                 <div class="col-8"><h3 class="positionCenter">Calificación del Escrito Inicial de Queja</h3></div>
                 <div class="col-1">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Guardado preliminar" onclick="GuardPrel()">
+                    <button type="button" class="blink close" title="Guardado preliminar" onclick="GuardPrel()">
                         <span aria-hidden="true"><i class="fa fa-floppy-o"></i></span>
                     </button>
                 </div>
@@ -111,6 +111,11 @@
 </div>
 
 <style>
+
+
+.button-parpadeo {
+  animation: parpadeo 1s infinite;
+}
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -362,7 +367,9 @@
 </style>
 
 @section Scripts
-    {
+{
+    <link href="~/css/parpadeo.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
