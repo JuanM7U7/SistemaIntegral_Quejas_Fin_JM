@@ -2608,6 +2608,26 @@ namespace SistemaIntegralQuejas.Controllers
         }
         // Fin Lista Autoridades
 
+        // Lista Autoridades con filtro
+        public ActionResult SelectAutoridadFil(int tipo)
+        {
+            List<GeneralModel.Selectmaster> autoridades = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_AUTORIDAD_FIL " + tipo;
+            string mensaje = "";
+            autoridades = conexionsql.selectMaestro(query, ref mensaje);
+            autoridades = autoridades.OrderBy(x => x.Descripcion).ToList();
+
+            if (autoridades.Count > 0)
+            {
+                return Json(new { Sautoridades = autoridades });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Autoridades con filtro
+
         // Lista Autoridades
         public ActionResult SelectHechVio()
         {
@@ -2647,6 +2667,46 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin Lista Autoridades
+
+        // Lista Tema
+        public ActionResult SelectTema()
+        {
+            List<GeneralModel.Selectmaster> temas = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_TEMA";
+            string mensaje = "";
+            temas = conexionsql.selectMaestro(query, ref mensaje);
+            temas = temas.OrderBy(x => x.Descripcion).ToList();
+
+            if (temas.Count > 0)
+            {
+                return Json(new { Stemas = temas });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Tema
+
+        // Lista Programa
+        public ActionResult SelectPrograma()
+        {
+            List<GeneralModel.Selectmaster> programas = new List<GeneralModel.Selectmaster>();
+            String query = "exec GET_PROGRAMA";
+            string mensaje = "";
+            programas = conexionsql.selectMaestro(query, ref mensaje);
+            programas = programas.OrderBy(x => x.Descripcion).ToList();
+
+            if (programas.Count > 0)
+            {
+                return Json(new { Sprogramas = programas });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Programa
 
         // Lista Materia
         public ActionResult SelectMateria()
