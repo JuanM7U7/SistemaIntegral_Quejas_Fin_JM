@@ -296,13 +296,26 @@ function crearForumulario(objForumlario, objElementos) {
 
         } else if (objetoActual.type == "combobox") {
 
-            contenido += `<select data-live-search="true" ${objetoActual.required} id="${objetoActual.name}" name="${objetoActual.name}" data-idfrmit="${objetoActual.iformularioit}" class="selectpicker eliminaformaes form-control ${objetoActual.classlabel}"> <option class="eliminaformaes ${objetoActual.classlabel}" value="">Seleccione una opción</option>`;
-            for (let v = 0; v < objetoActual.combooptions.length; v++) {
-                contenido += `
+            if (objetoActual.multiple) {
+                contenido += `<select data-live-search="true" ${objetoActual.required} id="${objetoActual.name}" name="${objetoActual.name}" data-idfrmit="${objetoActual.iformularioit}" class="selectpicker eliminaformaes form-control ${objetoActual.classlabel}" multiple="${objetoActual.multiple}"> <option class="eliminaformaes ${objetoActual.classlabel}" value="" >Seleccione una opción</option>`;
+                for (let v = 0; v < objetoActual.combooptions.length; v++) {
+                    contenido += `
                     <option class="${objetoActual.classlabel} eliminaformaes" value="${objetoActual.combooptions[v].idSelect}">${objetoActual.combooptions[v].descripcion}</option>
                 `;
+                }
+                contenido += `</select>`;
+            } else {
+                contenido += `<select data-live-search="true" ${objetoActual.required} id="${objetoActual.name}" name="${objetoActual.name}" data-idfrmit="${objetoActual.iformularioit}" class="selectpicker eliminaformaes form-control ${objetoActual.classlabel}"> <option class="eliminaformaes ${objetoActual.classlabel}" value="" >Seleccione una opción</option>`;
+                for (let v = 0; v < objetoActual.combooptions.length; v++) {
+                    contenido += `
+                    <option class="${objetoActual.classlabel} eliminaformaes" value="${objetoActual.combooptions[v].idSelect}">${objetoActual.combooptions[v].descripcion}</option>
+                `;
+                }
+                contenido += `</select>`;
+
             }
-            contenido += `</select>`;
+
+
 
         } else if (objetoActual.type == "radio" || objetoActual.type == "checkbox") {
             contenido += "<br />"
