@@ -3,6 +3,7 @@
     public class TablaGenerica
     {
         public int Id { get; set; }
+        public string Expediente { get; set; }
         public string FechaTurno { get; set; }
         public string FechaRecep { get; set; }
         public string FechaCalific { get; set; }
@@ -15,7 +16,7 @@
 
 
         public TablaGenerica() { }
-        public TablaGenerica(int i , string fechaTurno, string status) { Id = i;FechaTurno = fechaTurno;Status = status; }
+        public TablaGenerica(int i ,string exp,string fechaTurno, string status) { Id = i;Expediente = exp; FechaTurno = fechaTurno;Status = status; }
 
     }
 

@@ -1915,6 +1915,7 @@ namespace SistemaIntegralQuejas.Controllers
                 TablaGenerica itemformatos = new TablaGenerica();
                 //itemformatos.IdUnionFormatosQueja = Convert.ToInt32(row["ID_UNION_FORMATOS_QUEJA"]);
                 itemformatos.Id = Convert.ToInt32(row["id_expediente"]);
+                itemformatos.Expediente= row["expediente"].ToString();
                 itemformatos.FechaTurno = (row["fechaturnovisitaduria"]).ToString();
                 itemformatos.Status = (row["status"]).ToString();
                 itemformatos.otro = (row["abogadot"]).ToString();
@@ -3616,6 +3617,10 @@ namespace SistemaIntegralQuejas.Controllers
             string nivriesgo = "";
             string autoridad = "";
             string hecho = "";
+            string programa = "";
+            string tema = "";
+            string otrotema = "";
+            string[] arreglotemas;
             int linea = 0;
             int arreglo = 0;
             int longitudtabla1 =int.Parse(form["longitudtabla1"].ToString());
@@ -3634,30 +3639,19 @@ namespace SistemaIntegralQuejas.Controllers
             tipoexp = form["tipexpediente-frmDatosCalificacion"].ToString();
             materia = form["materia-frmDatosCalificacion"].ToString();
             nivriesgo = form["nivries-frmDatosCalificacion"].ToString();
+            programa = form["programa-frmDatosCalificacion"].ToString(); ;
+            tema = form["arreglotemas[]"].ToString();
 
-           
+            arreglotemas = tema.Split(',');
             /*Sección de la actualización de la tabla de una queja*/
-            query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "'";
-          
-            mensaje =ejecutaInsertUpdate(query);
+            query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "',"+programa+"";
+            mensaje = ejecutaInsertUpdate(query);
+            for (int i = 0; i < arreglotemas.Length; i++)
+            {
+                query = "exec Sp_insertaTema "+ idqueja + ","+ arreglotemas[i].ToString()+ ","+"'"+ otrotema + "'";
+               mensaje = ejecutaInsertUpdate(query);
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
             /*Sección de la actualización de la tabla de una queja*/
             /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
             for (int i = 0; i < longitudtabla1; i++)
@@ -3667,25 +3661,6 @@ namespace SistemaIntegralQuejas.Controllers
                 linea = int.Parse(form["tablaAutRe_HecVio[" + i + "][idAutoHec]"].ToString());
                 query = "exec Sp_insertaAutoridad " + idqueja + "," + autoridad + "," + hecho + ","+ linea+"";
  				mensaje =ejecutaInsertUpdate(query);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
             /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
             /*Actualizacion de tabla de medidas Cautelares*/
@@ -3701,23 +3676,13 @@ namespace SistemaIntegralQuejas.Controllers
 
                 mensaje =ejecutaInsertUpdate(query);
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
             }
+
+            query = "exec SP_AsignaNumeroExpediente " + idqueja;
+            mensaje = ejecutaInsertUpdate(query);
+
+
+
             /*Actualizacion de tabla de diligencias*/
             return Json(new { status = mensaje });
 
