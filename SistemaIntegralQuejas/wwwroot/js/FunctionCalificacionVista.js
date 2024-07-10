@@ -2700,7 +2700,7 @@ function CrearFormuCalificacion(idformulario, tipo) {
     crearTabla('.tablaAutRe_HecVio', "tablaAutRe_HecVioT", ["Acciones", "Tipo", "Autoridades Responsables", "Hechos Violatorios", "Derecho Humano"], idformulario, tipo);
     LlenarTabAutReHecVio('#tablaAutRe_HecVioT', tipo, idformulario);
 
-    crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "Autoridades", "Archivo(s)", "Fecha Alta", "Plazo de Atención", "Cumplido/No Cumplido", "Semáforo"], idformulario, tipo);
+    crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "Tipo", "Autoridades", "Archivo(s)", "Fecha Alta", "Plazo de Atención", "Cumplido/No Cumplido", "Semáforo"], idformulario, tipo);
     LlenartablaMedCuate('#tablaMedCuateT', tipo, idformulario);
     $('.tablaMedCuate').hide();
 
@@ -2750,11 +2750,12 @@ function AgrDil(nomTab, id) {
     var table = $("#" + nomTab).DataTable();
     var newRow;
     var rowIndex = table.rows().count();
+
     switch (nomTab) {
         case "tablaAutRe_HecVioT":
             newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`,
-                generateRadioInputs(rowIndex, 'autoridadres',true), ,
+                generateRadioInputs(rowIndex, 'autoridadres'), 
                 CreaSelectLabel(`autoridadres_${rowIndex}`, '', AutoridadesSe, '', '', '', 'select2'),
                 CreaSelectLabel(`hechvio_${rowIndex}`, '', hechvioSe, '', '', '', 'select2'),
                 CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '')
@@ -2765,11 +2766,13 @@ function AgrDil(nomTab, id) {
                 var homoclav = selecTex.split('-');
                 $(newRow).find('#derecho').val(homoclav[2]);
             });
+            actualizarIndices(nomTab);
             break;
         case "tablaMedCuateT":
             newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`,
-                CreaSelectLabel('autoridadresMC', '', AutoridadesSe, '', '', '', 'select2'),
+                generateRadioInputs(rowIndex, 'autoridadresMC'),
+                CreaSelectLabel(`autoridadresMC_${rowIndex}`, '', AutoridadesSe, '', '', '', 'select2'),
                 `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
@@ -2782,6 +2785,7 @@ function AgrDil(nomTab, id) {
                 "",
                 "Semaforo"
             ]).draw().node();
+            actualizarIndices(nomTab);
             break;
         case "tablaDiligT":
             newRow = table.row.add([
@@ -2803,8 +2807,34 @@ function AgrDil(nomTab, id) {
     }
     RecargaTab(nomTab);
 }
+function actualizarIndices(nomTab) {
+    var table = $(`#${nomTab.replace('#', '')}`).DataTable();
+    table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+        var data = this.data();
+        var newIndex = rowIdx;
+        switch (nomTab) {
+            case "tablaAutRe_HecVioT":
+                var $row = $(this.node());
+                $row.find('input[type="radio"]').attr('name', 'autoridadres_' + newIndex);
+                $row.find('select[id^="autoridadres_"]').attr('id', 'autoridadres_' + newIndex);
+                $row.find('select[id^="hechvio_"]').attr('id', 'hechvio_' + newIndex);
 
+                $row.find(`#hechvio_${newIndex}`).off('change').on('change', function () {
+                    $(this).closest('tr').find('#derecho').val("");
+                    var selecTex = $(this).find("option:selected").text();
+                    var homoclav = selecTex.split('-');
+                    $(this).closest('tr').find('#derecho').val(homoclav[2]);
+                });
+                break;
+            case "tablaMedCuateT":
+                var $row = $(this.node());
+                $row.find('input[type="radio"]').attr('name', 'autoridadresMC_' + newIndex);
+                $row.find('select[id^="autoridadresMC_"]').attr('id', 'autoridadresMC_' + newIndex);
+                break;
+        }
 
+    });
+}
 function LlenarTabAutReHecVio(tablaAutRe_HecVioT, response, id) {
     $(tablaAutRe_HecVioT).DataTable({
         language: {
@@ -2816,12 +2846,6 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, response, id) {
         searching:false,
         orderCellsTop: true,
         columns: [
-            //{
-            //    className: 'details-control',
-            //    defaultContent: '',
-            //    data: null,
-            //    orderable: false
-            //},
             {
                 'mRender': function (data, type, full) {
                     if (response !== '') {
@@ -2873,7 +2897,6 @@ function generateRadioInputs(row, aut,sel) {
         <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="2" title="Secundario" onclick="SelectAutoridad(2, '${aut}', ${row});">S
     `;
 }
-
 function SelectAutoridad(tipoA, autoridadresBase, row) {
     $.ajax({
         type: "POST",
@@ -2898,7 +2921,6 @@ function SelectAutoridad(tipoA, autoridadresBase, row) {
         }
     });
 }
-
 function RecargaTab(nomTab) {
     $(`#${nomTab} select`).each(function () {
         $(this).select2();
@@ -2933,9 +2955,14 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
                 }
             },
             {
-                'mRender': function (data, type, full) {
+                'mRender': function (data, type, full, meta) {
+                    return generateRadioInputs(meta.row, 'autoridadresMC');
+                }
+            },
+            {
+                'mRender': function (data, type, full, meta) {
 
-                    return CreaSelectLabel('autoridadresMC', '', AutoridadesSe, '', '', '');
+                    return CreaSelectLabel(`autoridadresMC_${meta.row}`, '', AutoridadesSe, '', '', 'select2');
 
                 }
             },
@@ -3069,7 +3096,6 @@ function icono_editar(funcion, id) {
 }
 function HabilEdi(id, identif) {
     $(identif).prop('disabled', false);
-    console.log(id);
 }
 function ElimFilaTab(nomTab) {
 
@@ -3081,6 +3107,7 @@ function ElimFilaTab(nomTab) {
 
         // Elimina la fila usando DataTables
         table.row(row).remove().draw();
+        actualizarIndices(nomTab);
     });
 }
 
@@ -3118,7 +3145,7 @@ $(document).ready(function () {
             x = x + 1;
             //var autoridad = $(this).find('select[name="autoridadres"]').val();
             var autoridad = $(this).find('select[id^="autoridadres_"]').val();
-            var hecho = $(this).find('select[name="hechvio"]').val();
+            var hecho = $(this).find('select[name^="hechvio"]').val();
             if (autoridad !== '99' && hecho !== '99') {
                 AutRe_HecVioT.push({
                     autoridad: autoridad,
@@ -3133,7 +3160,7 @@ $(document).ready(function () {
         if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
             $('#tablaMedCuateT tbody tr').each(function (x) {
                 x = x + 1;
-                var autoridad = $(this).find('select[name="autoridadresMC"]').val();
+                var autoridad = $(this).find('select[name^="autoridadresMC"]').val();
                 var horaAlta = $(this).find('input[name="horaAlta"]').val();
                 var archAdj = $(this).find('input[name="archAdjMC"]').val();
                 var horaPlaAten = $(this).find('input[name="horaPlaAten"]').val();
