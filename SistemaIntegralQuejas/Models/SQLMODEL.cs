@@ -325,7 +325,7 @@ namespace SistemaIntegralQuejas.Models
                    List< informacioncomplementariaautoridad> modelo2 = datoscomplementariosautoridad(query2, ref mensaje);
                     while (lector.Read())
 					{
-						lista = new informacioncomplementaria(int.Parse(lector[0].ToString()),int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()),modelo1,modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()),lector[8].ToString(), 0,0,0,0,0);
+						lista = new informacioncomplementaria(int.Parse(lector[0].ToString()),int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()),modelo1,modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()),lector[8].ToString(), 0,0,0,0,0,0);
 
 					}
 
@@ -366,10 +366,10 @@ namespace SistemaIntegralQuejas.Models
                         lista = new informacioncomplementaria(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), modelo1, modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()), lector[8].ToString(),
                             lector[9] != DBNull.Value ? int.Parse(lector[9].ToString()) : 99,
     lector[10] != DBNull.Value ? int.Parse(lector[10].ToString()) : 99,
-    lector[11] != DBNull.Value ? int.Parse(lector[10].ToString()) : 99,
+    lector[11] != DBNull.Value ? int.Parse(lector[11].ToString()) : 99,
     lector[12] != DBNull.Value ? int.Parse(lector[12].ToString()) : 99,
-    lector[13] != DBNull.Value ? int.Parse(lector[13].ToString()) : 99);
-
+    lector[13] != DBNull.Value ? int.Parse(lector[13].ToString()) : 99,
+    lector[14] != DBNull.Value ? int.Parse(lector[14].ToString()) : 99);
                     }
 
                     return lista;
@@ -382,6 +382,35 @@ namespace SistemaIntegralQuejas.Models
             }
 
 
+            return lista;
+        }
+
+        public List<espedientetema> datostemaExpediente(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<espedientetema> lista = new List<espedientetema>();
+            SqlDataReader lector;
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    espedientetema modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new espedientetema(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString());
+                        lista.Add(modelo);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
+            }
             return lista;
         }
 
@@ -616,6 +645,35 @@ namespace SistemaIntegralQuejas.Models
 
             return resultado;
 
+        }
+
+        public List<SelectAUT_HEV> SelectAutHec(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectAUT_HEV> lista = new List<SelectAUT_HEV>();
+            SqlDataReader lector;
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    SelectAUT_HEV modelo;
+                    while (lector.Read())
+                    {//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
+                        modelo = new SelectAUT_HEV(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString()), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), int.Parse(lector[6].ToString()));
+                        lista.Add(modelo);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return lista;
         }
     }
 }

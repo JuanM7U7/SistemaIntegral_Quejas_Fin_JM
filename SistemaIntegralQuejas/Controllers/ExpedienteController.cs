@@ -3696,8 +3696,9 @@ namespace SistemaIntegralQuejas.Controllers
             public int id_linea { get; set; }
             public int Version { get; set; }
             public int Eliminado { get; set; }
+            public int tipo { get; set; }
             public SelectAUT_HEV() { }
-            public SelectAUT_HEV(int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado)
+            public SelectAUT_HEV(int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo)
             {
                 this.id_queja = id_queja;
                 this.id_autoridad = id_autoridad;
@@ -3705,7 +3706,28 @@ namespace SistemaIntegralQuejas.Controllers
                 this.id_linea = id_linea;
                 this.Version = Version;
                 this.Eliminado = Eliminado;
+                this.tipo = tipo;
             }
         }
+
+        // Lista obtener datos de tabla Autoridades - Hechos Violatorios
+        public ActionResult SelectAutorHech(string idqueja)
+        {
+            List<SelectAUT_HEV> autorhech = new List<SelectAUT_HEV>();
+            String query = "exec Sp_obtener_aut_hecvio " + idqueja;
+            string mensaje = "";
+            autorhech = conexionsql.SelectAutHec(query, ref mensaje);
+
+            if (autorhech.Count > 0)
+            {
+                return Json(new { autoridhecho = autorhech });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin obtener datos de tabla Autoridades - Hechos Violatorios
+
     }
 }

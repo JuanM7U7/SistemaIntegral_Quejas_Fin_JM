@@ -240,10 +240,8 @@ function modalShow(id, fecRecep, Tmodal) {
         Crear_Formulario_Queja(id);
         obtenerDQOT(id, fecRecep, "");
     } else {
-        //document.getElementById("defaultOpenC").click();
         Crear_Formulario_QuejaEdit(id);
         obtenerDQOT(id, fecRecep, "E");
-        //CrearFormuCalificacion(id, "");
     }
 }
 
@@ -542,8 +540,8 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             } else {
                 CrearFormuCalificacion(idqueja, tipo);
             }
-            $('#tema-frmDatosCalificacion').val(response.informarcionC.id_especializado === '' ? 99 : response.informarcionC.id_especializado);
-            $('#programa-frmDatosCalificacion').val(response.informarcionC.id_especializado === '' ? 99 : response.informarcionC.id_especializado);
+            $('#tema-frmDatosCalificacion').val(response.lista_tema_expe.map(function (item) { return item.id_tema; })).trigger('change');
+            $('#programa-frmDatosCalificacion').val(response.informarcionC.id_programa === '' ? 99 : response.informarcionC.id_programa).trigger('change.select2');
             $('#especializado-frmDatosCalificacion').val(response.informarcionC.id_especializado === '' ? 99 : response.informarcionC.id_especializado);
             $('#trancpub-frmDatosCalificacion').val(response.informarcionC.id_tras_op_pub === '' ? 99 : response.informarcionC.id_tras_op_pub);
             $('#tipexpediente-frmDatosCalificacion').val(response.informarcionC.tipo_expediente === '' ? 99 : response.informarcionC.tipo_expediente);
@@ -2755,7 +2753,7 @@ function AgrDil(nomTab, id) {
         case "tablaAutRe_HecVioT":
             newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`,
-                generateRadioInputs(rowIndex, 'autoridadres'), 
+                generateRadioInputs(rowIndex, 'autoridadres', '1'), 
                 CreaSelectLabel(`autoridadres_${rowIndex}`, '', AutoridadesSe, '', '', '', 'select2'),
                 CreaSelectLabel(`hechvio_${rowIndex}`, '', hechvioSe, '', '', '', 'select2'),
                 CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '')
@@ -2771,7 +2769,7 @@ function AgrDil(nomTab, id) {
         case "tablaMedCuateT":
             newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`,
-                generateRadioInputs(rowIndex, 'autoridadresMC'),
+                generateRadioInputs(rowIndex, 'autoridadresMC', '1'),
                 CreaSelectLabel(`autoridadresMC_${rowIndex}`, '', AutoridadesSe, '', '', '', 'select2'),
                 `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
         <div class="input-group col-xs-12">
@@ -2818,7 +2816,6 @@ function actualizarIndices(nomTab) {
                 $row.find('input[type="radio"]').attr('name', 'autoridadres_' + newIndex);
                 $row.find('select[id^="autoridadres_"]').attr('id', 'autoridadres_' + newIndex);
                 $row.find('select[id^="hechvio_"]').attr('id', 'hechvio_' + newIndex);
-
                 $row.find(`#hechvio_${newIndex}`).off('change').on('change', function () {
                     $(this).closest('tr').find('#derecho').val("");
                     var selecTex = $(this).find("option:selected").text();
@@ -2835,66 +2832,151 @@ function actualizarIndices(nomTab) {
 
     });
 }
-function LlenarTabAutReHecVio(tablaAutRe_HecVioT, response, id) {
-    $(tablaAutRe_HecVioT).DataTable({
-        language: {
-            "url": "/js/TablaJson.json"
-        },
-        iDisplayLength: 10,
-        data: response,
-        fixedHeader: true,
-        searching:false,
-        orderCellsTop: true,
-        columns: [
-            {
-                'mRender': function (data, type, full) {
-                    if (response !== '') {
-                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
-                    } else {
-                        return '';
-                    }
-                }
-            },
-            {
-                'mRender': function (data, type, full, meta) {
-                    return generateRadioInputs(meta.row, 'autoridadres', true);
-                }
-            },
-            {
-                'mRender': function (data, type, full, meta) {
-                    return CreaSelectLabel(`autoridadres_${meta.row}`, '', AutoridadesSe, '', '', '', 'select2');
-                }
-            },
-            {
-                'mRender': function (data, type, full, meta) {
 
-                    return CreaSelectLabel(`hechvio_${meta.row}`, '', hechvioSe, '', '', '', 'select2 hechvio-class');
-
-                }
-            },
-            {
-                'mRender': function (data, type, full) {
-                    return CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '');
-                }
-            },
-        ],
-        initComplete: function () {
+function RecuperaDaAutHec(id, callback) {
+    $.ajax({
+        type: "POST",
+        url: "SelectAutorHech",
+        data: { idqueja: id },
+        dataType: "JSON",
+        success: function (response) {
+            callback(response.autoridhecho);
         },
-        order: [1, 'desc'],
-        bDestroy: true
-    });
-    $(document).on('change', '.hechvio-class', function () {
-        var $row = $(this).closest('tr');
-        $row.find('#derecho').val("");
-        var selecTex = $(this).find('option:selected').text();
-        var homoclav = selecTex.split('-');
-        $row.find('#derecho').val(homoclav[2]);
+        error: function (xhr, status, error) {
+            console.error("Error en la solicitud AJAX:", error);
+        }
     });
 }
-function generateRadioInputs(row, aut,sel) {
+
+function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
+    RecuperaDaAutHec(id, function (datos) {
+        $(tablaAutRe_HecVioT).DataTable({
+            language: {
+                "url": "/js/TablaJson.json"
+            },
+            iDisplayLength: 10,
+            data: datos,
+            fixedHeader: true,
+            searching: false,
+            orderCellsTop: true,
+            columns: [
+                {
+                    'mRender': function (data, type, full) {
+                        if (tipo !== '') {
+                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
+                        } else {
+                            return '';
+                        }
+                    }
+                },
+                {
+                    'mRender': function (data, type, full, meta) {
+                        return generateRadioInputs(meta.row, 'autoridadres', full.tipo);
+                    }
+                },
+                {
+                    'mRender': function (data, type, full, meta) {
+                        CreaSelectLabel(`autoridadres_${meta.row}`, '', AutoridadesSe, '', '', '', 'select2')
+                        return $(`autoridadres_${meta.row}`).val(full.id_autoridad).trigger('change.select2');
+                    }
+                },
+                {
+                    'mRender': function (data, type, full, meta) {
+                        return CreaSelectLabel(`hechvio_${meta.row}`, '', hechvioSe, '', '', '', 'select2 hechvio-class');
+                    }
+                },
+                {
+                    'mRender': function (data, type, full) {
+                        return CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '');
+                    }
+                },
+            ],
+            initComplete: function () {
+            },
+            order: [1, 'desc'],
+            bDestroy: true
+        });
+
+        // Evento de cambio para la clase .hechvio-class
+        $(document).on('change', '.hechvio-class', function () {
+            var $row = $(this).closest('tr');
+            $row.find('#derecho').val("");
+            var selecTex = $(this).find('option:selected').text();
+            var homoclav = selecTex.split('-');
+            $row.find('#derecho').val(homoclav[2]);
+        });
+    });
+}
+
+//function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
+//    var datos = RecuperaDaAutHec(id);
+    
+//    console.log(datos);
+//    $(tablaAutRe_HecVioT).DataTable({
+//        language: {
+//            "url": "/js/TablaJson.json"
+//        },
+//        iDisplayLength: 10,
+//        data: datos,
+//        fixedHeader: true,
+//        searching:false,
+//        orderCellsTop: true,
+//        columns: [
+//            {
+//                'mRender': function (data, type, full) {
+//                    if (tipo !== '') {
+//                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
+//                    } else {
+//                        return '';
+//                    }
+//                }
+//            },
+//            {
+//                'mRender': function (data, type, full, meta) {
+//                    return generateRadioInputs(meta.row, 'autoridadres', true);
+//                }
+//            },
+//            {
+//                'mRender': function (data, type, full, meta) {
+//                    return CreaSelectLabel(`autoridadres_${meta.row}`, '', AutoridadesSe, '', '', '', 'select2');
+//                }
+//            },
+//            {
+//                'mRender': function (data, type, full, meta) {
+
+//                    return CreaSelectLabel(`hechvio_${meta.row}`, '', hechvioSe, '', '', '', 'select2 hechvio-class');
+
+//                }
+//            },
+//            {
+//                'mRender': function (data, type, full) {
+//                    return CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '');
+//                }
+//            },
+//        ],
+//        initComplete: function () {
+//        },
+//        order: [1, 'desc'],
+//        bDestroy: true
+//    });
+//    $(document).on('change', '.hechvio-class', function () {
+//        var $row = $(this).closest('tr');
+//        $row.find('#derecho').val("");
+//        var selecTex = $(this).find('option:selected').text();
+//        var homoclav = selecTex.split('-');
+//        $row.find('#derecho').val(homoclav[2]);
+//    });
+//}
+function generateRadioInputs(row, aut, tipo) {
+    var checked1 = '', checked2 = '';
+    if (tipo === '1') {
+        checked1 = `checked = "true"`;
+    } else {
+        checked2 = `checked = "true"`;
+    }
     return `
-        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="1" title="Primario" onclick="SelectAutoridad(1, '${aut}', ${row});" checked="${sel}" >P
-        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="2" title="Secundario" onclick="SelectAutoridad(2, '${aut}', ${row});">S
+        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="1" title="Primario" onclick="SelectAutoridad(1, '${aut}', ${row});" ${checked2} >P
+        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="2" title="Secundario" onclick="SelectAutoridad(2, '${aut}', ${row});" ${checked1}>S
     `;
 }
 function SelectAutoridad(tipoA, autoridadresBase, row) {
@@ -2956,7 +3038,7 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             },
             {
                 'mRender': function (data, type, full, meta) {
-                    return generateRadioInputs(meta.row, 'autoridadresMC');
+                    return generateRadioInputs(meta.row, 'autoridadresMC', '1');
                 }
             },
             {

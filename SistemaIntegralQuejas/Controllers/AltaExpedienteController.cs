@@ -127,6 +127,7 @@ namespace SistemaIntegralQuejas.Controllers
             List<SelectGenerico> listaContenedora8 = new List<SelectGenerico>();
 
             informacioncomplementaria informacioncomplementaria = new informacioncomplementaria();
+            List<espedientetema> informaciontemaexped = new List<espedientetema>();
 
 
 
@@ -154,6 +155,8 @@ namespace SistemaIntegralQuejas.Controllers
             informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
             /*Cargar informacion dentro de las pantallas*/
 
+            query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
+            informaciontemaexped = conexionsql.datostemaExpediente(query, ref mensaje);
 
             if (listaContenedora3.Count > 0)
             {
@@ -167,6 +170,7 @@ namespace SistemaIntegralQuejas.Controllers
                         lista_sedes = listaContenedora6,
                         listavisitadurias = listaContenedora7,
                         informarcionC = informacioncomplementaria,
+                        lista_tema_expe = informaciontemaexped,
                         listavi = listaContenedora8
                     });
             }
@@ -208,12 +212,13 @@ namespace SistemaIntegralQuejas.Controllers
         public int tipo_expediente { get; set; }
         public int id_materia { get; set; }
         public int id_niv_riesgo { get; set; }
+        public int id_programa { get; set; }
 
         public List<informacioncomplementariapeticionario> informacioncomplementariapeticionario { get; set; }
         public List<informacioncomplementariaautoridad> informacioncomplementariaautoridad { get; set; }
 
         public informacioncomplementaria() { }
-        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos, List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica, int vi, int vis, string observaciones, int id_especializado, int id_tras_op_pub, int tipo_expediente, int id_materia, int id_niv_riesgo)
+        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos, List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica, int vi, int vis, string observaciones, int id_especializado, int id_tras_op_pub, int tipo_expediente, int id_materia, int id_niv_riesgo, int id_programa)
         {
             this.id_expediente = id_expediente;
             this.id_abogado_recibe = id_abogado_recibe;
@@ -232,6 +237,7 @@ namespace SistemaIntegralQuejas.Controllers
             this.tipo_expediente = tipo_expediente;
             this.id_materia = id_materia;
             this.id_niv_riesgo = id_niv_riesgo;
+            this.id_programa = id_programa;
         }
     }
 
@@ -264,6 +270,24 @@ namespace SistemaIntegralQuejas.Controllers
             this.id_registro = id_registro;
             this.nombre_autoridad = nombre_peticionario;
             this.ambito = curp;
+        }
+    }
+
+    public class espedientetema
+    {
+        public int id_tema { get; set; }
+        public int id_expediente { get; set; }
+        public string otro_tema { get; set; }
+        public string descripcion { get; set; }
+
+        public espedientetema() { }
+
+        public espedientetema(int id_tema, int id_expediente, string otro_tema, string descripcion)
+        {
+            this.id_tema = id_tema;
+            this.id_expediente = id_expediente;
+            this.otro_tema = otro_tema;
+            this.descripcion = descripcion;
         }
     }
 
