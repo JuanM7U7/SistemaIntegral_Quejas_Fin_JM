@@ -3681,10 +3681,18 @@ namespace SistemaIntegralQuejas.Controllers
             query = "exec SP_AsignaNumeroExpediente " + idqueja;
             mensaje = ejecutaInsertUpdate(query);
 
+            query = "Sp_GetNumExp";
+            var noexpq = GetDatosGeneral(query);
+            int noexp = 0;
 
+
+            foreach (DataRow row in noexpq.Rows)
+            {
+                noexp = Convert.ToInt32(row["numeroexp"].ToString());
+            }
 
             /*Actualizacion de tabla de diligencias*/
-            return Json(new { status = mensaje });
+            return Json(new { status = mensaje ,no_exp= noexp });
 
         }
 

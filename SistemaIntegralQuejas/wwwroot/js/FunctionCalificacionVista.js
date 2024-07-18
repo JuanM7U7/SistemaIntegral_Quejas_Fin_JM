@@ -257,6 +257,9 @@ var tableBuscadorFormatos = $("#tablaRecepcion");
 function mostrarResTblFormatos(response, response1) {
 
     //alert(response);
+
+    //$("#tablaRecepcion").DataTable().destroy();
+    $("#ContenedorTabla").html();
     tableBuscadorFormatos.DataTable({
         language: {
             "url": "/js/TablaJson.json"
@@ -3346,7 +3349,7 @@ $(document).ready(function () {
                         Swal.fire({
                             icon: "success",
                             title: "Registro Exitoso",
-                            text: "Expediente Calificado",
+                            text: "Número de expediente asignado:" + response.no_exp+"-2024",
 
                         });
 
