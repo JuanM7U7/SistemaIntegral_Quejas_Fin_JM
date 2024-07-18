@@ -2917,6 +2917,24 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin Lista Paises 
+        // Lista Via de Interposición
+        public ActionResult SelectViaInter()
+        {
+            List<SelectGenerico> listaVia = new List<SelectGenerico>();
+            string mensaje = "";
+            String query = "exec Sp_Select_ViaInterposicionQ";
+            listaVia = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+
+            if (listaVia.Count > 0)
+            {
+                return Json(new { listviai = listaVia });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Lista Via de Interposición 
         public ActionResult selectsCreacionExpediente()
         {
             List<SelectGenerico> listaContenedora2 = new List<SelectGenerico>();

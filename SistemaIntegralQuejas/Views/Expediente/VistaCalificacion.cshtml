@@ -87,8 +87,8 @@
                 <div class="col-2"><img src="\img\logo_horizontal-cdhp.png" height="45px" /></div>
                 <div class="col-8"><h3 class="positionCenter">Calificación del Escrito Inicial de Queja</h3></div>
                 <div class="col-1">
-                    <button type="button" class="blink close" title="Guardado preliminar" onclick="GuardPrel()">
-                        <span aria-hidden="true"><i class="fa fa-floppy-o"></i></span>
+                    <button type="button" class="close" title="Guardado preliminar" onclick="GuardPrel()">
+                        <span aria-hidden="true"><i class="fa fa-floppy-o" style="color: purple;"></i></span>
                     </button>
                 </div>
                 <div class="col-1">
@@ -99,6 +99,7 @@
             </div>
         </div>
         <div class="modal-body">
+            <h6 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;"><span style="color: red;">*</span> Campos Requeridos</h6>
             <div class="row col-12" style="height:75%;">
                 <div id="izquierdaE" class="row col-6"></div>
                 <div id="derechaE" class="row col-6"></div>
@@ -110,8 +111,39 @@
     </div>
 </div>
 
-<style>
+<div id="modalDilig" class="modal" style="width: 100%; height: 100%;">
+    <div class="modal-content" style="height: 76%;">
+        <div class="modal-header headerUpdate">
+            <div class="row col-12">
+                <div class="col-2"><img src="\img\logo_horizontal-cdhp.png" height="45px" /></div>
+                <div class="col-8"><h3 class="positionCenter">Detalle Diligencia</h3></div>
+                <div class="col-1">
+                   @*  <button type="button" class="close" title="Guardado preliminar" onclick="GuardPrel()">
+                        <span aria-hidden="true"><i class="fa fa-floppy-o" style="color: purple;"></i></span>
+                    </button> *@
+                </div>
+                <div class="col-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modalDilig')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            @* <h6 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;"><span style="color: red;">*</span> Campos Requeridos</h6> *@
+            <div class="row col-12">
+                <div id="frmDetaDiligen" class="row col-12"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<style>
+    .btn-right {
+        position: absolute; /* Posición absoluta para colocar el botón */
+        top: 10px; /* Distancia desde arriba */
+        right: 10px; /* Distancia desde la derecha */
+    }
 
 .button-parpadeo {
   animation: parpadeo 1s infinite;

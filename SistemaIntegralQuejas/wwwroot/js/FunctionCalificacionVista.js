@@ -19,16 +19,17 @@ var statusTurnoAbogado = '';
 var arregloAbogados = [];
 
 let medcaute = "";
-var AutoridadesSe = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [], temaSe = [], programSe = [];
+var AutoridadesSe1 = [],AutoridadesSe2 = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [], temaSe = [], programSe = [], viainter = [];
 $(document).ready(function () {
-
-    //fetchGet("Expediente/SelectAutoridad", "json", (data) => { AutoridadesSe = data.sautoridades; })
+    SelectAutoridad(1);
+    SelectAutoridad(2);
     fetchGet("Expediente/SelectMateria", "json", (data) => { MateriaSe = data.smateria; })
     fetchGet("Expediente/SelectTipExpediente", "json", (data) => { TipExpeSe = data.stipexped; })
     fetchGet("Expediente/SelectHechVio", "json", (data) => { hechvioSe = data.shechvio; })
     fetchGet("Expediente/SelectDiligen", "json", (data) => { diligenSe = data.sdilige; })
     fetchGet("Expediente/SelectTema", "json", (data) => { temaSe = data.stemas; })
     fetchGet("Expediente/SelectPrograma", "json", (data) => { programSe = data.sprogramas; })
+    fetchGet("Expediente/SelectViaInter", "json", (data) => { viainter = data.listviai; })
 
     $("#vistavis").html($("#usuarioL").html());
     $(".alert-danger").remove();
@@ -255,7 +256,9 @@ function closeModal(Tmodal) {
 var tableBuscadorFormatos = $("#tablaRecepcion");
 
 function mostrarResTblFormatos(response, response1) {
-
+    if ($.fn.DataTable.isDataTable(tableBuscadorFormatos)) {
+        tableBuscadorFormatos.DataTable().clear().destroy();
+    }
     //alert(response);
 
     //$("#tablaRecepcion").DataTable().destroy();
@@ -308,7 +311,11 @@ function mostrarResTblFormatos(response, response1) {
             },
             {
                 'mRender': function (data, type, full) {
-                    btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif")' class='btn btn-info status-badge rounded'>Calificar</button>`;
+                    if (full.expediente !== 'PENDIENTE') {
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif")' class='btn btn-info status-badge rounded'>Modificar</button>`;
+                    } else {
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif")' class='btn btn-info status-badge rounded'>Calificar</button>`;
+                    }
                     return btnEscritook
                 }
             }
@@ -456,20 +463,20 @@ function Crear_Formulario_QuejaEdit(id) {
         + CreaBR()
         + CreaSelectLabeldisabled('AbogadoquejaE', '', arregloBlanco, '', 'Abogado quien Recibe: ', '')
         + CreaBR()
-        + Crea_Label('textfield8', 'textfield8', '', 'Hechos: ')
+        + Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Hechos: ')
         + icono_editar('hechosE', id)
         + CreaBR()
         + CreaTextAreadisabled('hechosE', '', 'style="width:100%; height:26%"');
-    var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', 'Lugar de los hechos. Municipio y estado: ')
+    var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', Requeridos()+'Lugar de los hechos. Municipio y estado: ')
         + icono_editar('municipioquejaE', id)
         + CreaBR()
         + CreaSelectLabeldisabled('municipioquejaE', '', arregloBlanco, '', '', '')
         + CreaBR()
-        + CreaSelectLabeldisabled('visitaduriaquejaE', '', arregloBlanco, '', 'Visitaduría: ', '')
+        + CreaSelectLabeldisabled('visitaduriaquejaE', '', arregloBlanco, '', Requeridos() + 'Visitaduría: ', '')
         + CreaBR()
         + CreaInputs_Con_Labeldisabled('Fecha_RegistroE', 'Fecha_RegistroE', '', 'date', 'Fecha de Registro: ', 'textfield', '')
         + CreaBR()
-        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVGE', 'Fecha_TurnoVGE', '', 'date', 'Fecha de turno a VG: ', 'textfield', '')
+        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVGE', 'Fecha_TurnoVGE', '', 'date', Requeridos() + 'Fecha de turno a VG: ', 'textfield', '')
         + CreaBR()
         + CreaSelectLabeldisabled('sedeRegistroE', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
@@ -2542,8 +2549,17 @@ function CrearFormuCalificacion(idformulario, tipo) {
                         type: "hidden"
                     },
                     {
-                        class: "col-md-6 select2",
-                        label: "Tema",
+                        class: "col-md-12",
+                        label: Requeridos() + "Tipo de expediente",
+                        name: "tipexpediente-frmDatosCalificacion",
+                        type: "combobox",
+                        classControl: "ob max-300 eliminaformaes",
+                        required: 'required',
+                        combooptions: TipExpeSe
+                    },
+                    {
+                        class: "col-md-12 select2",
+                        label: Requeridos() + "Tema",
                         name: "tema-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes select2",
@@ -2552,26 +2568,18 @@ function CrearFormuCalificacion(idformulario, tipo) {
                         multiple:"multiple"
                     },
                     {
-                        class: "col-md-6 select2",
-                        label: "Programa",
+                        class: "col-md-3 select2",
+                        label: Requeridos() + "Programa",
                         name: "programa-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes select2",
                         required: 'required',
                         combooptions: programSe
                     },
+                    
                     {
                         class: "col-md-2",
-                        label: "Tipo de expediente",
-                        name: "tipexpediente-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes",
-                        required: 'required',
-                        combooptions: TipExpeSe
-                    },
-                    {
-                        class: "col-md-2",
-                        label: "Especializado",
+                        label: Requeridos() + "Especializado",
                         name: "especializado-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
@@ -2589,7 +2597,7 @@ function CrearFormuCalificacion(idformulario, tipo) {
                     },
                     {
                         class: "col-md-3",
-                        label: "Trasciende la opinión Pública",
+                        label: Requeridos() + "Trasciende la opinión Pública",
                         name: "trancpub-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
@@ -2606,8 +2614,8 @@ function CrearFormuCalificacion(idformulario, tipo) {
                         ]
                     },
                     {
-                        class: "col-md-3",
-                        label: "Materia",
+                        class: "col-md-2",
+                        label: Requeridos() + "Materia",
                         name: "materia-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
@@ -2616,7 +2624,7 @@ function CrearFormuCalificacion(idformulario, tipo) {
                     },
                     {
                         class: "col-md-2 form-control-sm",
-                        label: "Nivel de Riesgo",
+                        label: Requeridos() + "Nivel de Riesgo",
                         name: "nivries-frmDatosCalificacion",
                         type: "combobox",
                         classControl: "ob max-300 eliminaformaes",
@@ -2646,7 +2654,7 @@ function CrearFormuCalificacion(idformulario, tipo) {
                     },
                     {
                         class: "col-md-12 positionCenter",
-                        labelhr: '¿Tiene Medidas Cautelares?',
+                        labelhr: Requeridos() + '¿Tiene Medidas Cautelares?',
                         type: 'separacion'
                     },
                     {
@@ -2698,14 +2706,14 @@ function CrearFormuCalificacion(idformulario, tipo) {
     $('.tablaAutRe_HecVio').empty();
     $('.tablaMedCuate').empty();
     $('.tablaDilig').empty();
-    crearTabla('.tablaAutRe_HecVio', "tablaAutRe_HecVioT", ["Acciones", "Tipo", "Autoridades Responsables", "Hechos Violatorios", "Derecho Humano"], idformulario, tipo);
+    crearTabla('.tablaAutRe_HecVio', "tablaAutRe_HecVioT", ["Acciones", "Tipo", "Autoridades Responsables", "Autoridad Primaria", "Hechos Violatorios", "Derecho Humano"], idformulario, tipo);
     LlenarTabAutReHecVio('#tablaAutRe_HecVioT', tipo, idformulario);
 
     crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "Tipo", "Autoridades", "Archivo(s)", "Fecha Alta", "Plazo de Atención", "Cumplido/No Cumplido", "Semáforo"], idformulario, tipo);
     LlenartablaMedCuate('#tablaMedCuateT', tipo, idformulario);
     $('.tablaMedCuate').hide();
 
-    crearTabla('.tablaDilig', "tablaDiligT", ["Acciones", "Tipo Diligencia", "Descripción", "Fecha", "Núm. Oficio/Memorandum", "Atención", "Archivo(s)"], idformulario, tipo);
+    crearTabla('.tablaDilig', "tablaDiligT", ["Acciones", "Tipo Diligencia", "Descripción de diligencia", "Fecha de emisión", "Atendido SI/NO"], idformulario, tipo);
     LlenartablaDilig('#tablaDiligT', tipo, idformulario);
 
     $(document).ready(function () {
@@ -2725,10 +2733,6 @@ function CrearFormuCalificacion(idformulario, tipo) {
 
 
 function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
-    var datos = `"${nomTab}",${id}`;
-    if (tipo !== '') {
-        $(nomTabla).append(crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus color-muted fa-2x', `AgrDil(${datos})`));
-    }
     var table = document.createElement("table");
     table.id = nomTab;
     table.classList.add("table", "table-striped");
@@ -2755,10 +2759,11 @@ function AgrDil(nomTab, id) {
     switch (nomTab) {
         case "tablaAutRe_HecVioT":
             newRow = table.row.add([
-                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`,
-                generateRadioInputs(rowIndex, 'autoridadres', '1'), 
-                CreaSelectLabel(`autoridadres_${rowIndex}`, '', AutoridadesSe, '', '', '', 'select2'),
-                CreaSelectLabel(`hechvio_${rowIndex}`, '', hechvioSe, '', '', '', 'select2'),
+                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i>`,
+                generateRadioInputs(rowIndex, 'autoridadres', 1),
+                Requeridos() + CreaSelectLabel(`autoridadres_${rowIndex}`, '', AutoridadesSe1, '', '', '', 'select2'),
+                CreaInputs_Con_Labeldisabled('tipauto', 'tipauto', '', 'text', '', '', ''),
+                Requeridos() + CreaSelectLabel(`hechvio_${rowIndex}`, '', hechvioSe, '', '', '', 'select2'),
                 CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '')
             ]).draw().node();
             $(newRow).find(`#hechvio_${rowIndex}`).on('change', function () {
@@ -2767,13 +2772,12 @@ function AgrDil(nomTab, id) {
                 var homoclav = selecTex.split('-');
                 $(newRow).find('#derecho').val(homoclav[2]);
             });
-            actualizarIndices(nomTab);
             break;
         case "tablaMedCuateT":
             newRow = table.row.add([
-                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`,
-                generateRadioInputs(rowIndex, 'autoridadresMC', '1'),
-                CreaSelectLabel(`autoridadresMC_${rowIndex}`, '', AutoridadesSe, '', '', '', 'select2'),
+                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i>`,
+                generateRadioInputs(rowIndex, 'autoridadresMC', 1),
+                Requeridos() + CreaSelectLabel(`autoridadresMC_${rowIndex}`, '', AutoridadesSe1, '', '', '', 'select2'),
                 `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
@@ -2781,31 +2785,23 @@ function AgrDil(nomTab, id) {
                 <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
             </span>
         </div>`,
-                CreaInputs_Con_Label('horaAlta', 'horaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
-                CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', ''),
+                Requeridos() + CreaInputs_Con_Label('horaAlta', 'horaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
+                Requeridos() + CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', ''),
                 "",
                 "Semaforo"
             ]).draw().node();
-            actualizarIndices(nomTab);
             break;
         case "tablaDiligT":
             newRow = table.row.add([
-                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`,
-                CreaSelectLabel('tipodilig', '', diligenSe, '', '', '', 'select2'),
+                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='DetDilig("modalDilig","${nomTab}")'></i>`,
+                CreaSelectLabel(`tipodilig_${rowIndex}`, '', diligenSe, '', '', ''),
                 '<textarea id="descrip" class="swal2-input"> </textarea>',
                 CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
-                CreaInputs_Con_Label('numOfMe', 'numOfMe', 'validatxtac', 'text', '', '', ''),
-                '<textarea id="atencion" class="swal2-input"> </textarea>',
-                `<input type="file" name="archAdjD" multiple id="archAdjD" class="input-file">
-        <div class="input-group col-xs-12">
-            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
-            <span class="input-group-btn">
-                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-            </span>
-        </div>`
+                'SIN ATENDER (TEMPORAL)'
             ]).draw().node();
             break;
     }
+    actualizarIndices(nomTab);
     RecargaTab(nomTab);
 }
 function actualizarIndices(nomTab) {
@@ -2813,12 +2809,18 @@ function actualizarIndices(nomTab) {
     table.rows().every(function (rowIdx, tableLoop, rowLoop) {
         var data = this.data();
         var newIndex = rowIdx;
+        var $row = $(this.node());
         switch (nomTab) {
             case "tablaAutRe_HecVioT":
-                var $row = $(this.node());
                 $row.find('input[type="radio"]').attr('name', 'autoridadres_' + newIndex);
                 $row.find('select[id^="autoridadres_"]').attr('id', 'autoridadres_' + newIndex);
                 $row.find('select[id^="hechvio_"]').attr('id', 'hechvio_' + newIndex);
+                $row.find(`#autoridadres_${newIndex}`).off('change').on('change', function () {
+                    $(this).closest('tr').find('#tipauto').val("");
+                    var selecTex = $(this).find("option:selected").text();
+                    var homoclav = selecTex.split('/');
+                    $(this).closest('tr').find('#tipauto').val(homoclav[2]);
+                });
                 $row.find(`#hechvio_${newIndex}`).off('change').on('change', function () {
                     $(this).closest('tr').find('#derecho').val("");
                     var selecTex = $(this).find("option:selected").text();
@@ -2827,12 +2829,13 @@ function actualizarIndices(nomTab) {
                 });
                 break;
             case "tablaMedCuateT":
-                var $row = $(this.node());
                 $row.find('input[type="radio"]').attr('name', 'autoridadresMC_' + newIndex);
                 $row.find('select[id^="autoridadresMC_"]').attr('id', 'autoridadresMC_' + newIndex);
                 break;
+            case "tablaDiligT":
+                $row.find('select[id^="tipodilig_"]').attr('id', 'tipodilig_' + newIndex);
+                break;
         }
-
     });
 }
 
@@ -2844,9 +2847,6 @@ function RecuperaDaAutHec(id, callback) {
         dataType: "JSON",
         success: function (response) {
             callback(response.autoridhecho);
-        },
-        error: function (xhr, status, error) {
-            console.error("Error en la solicitud AJAX:", error);
         }
     });
 }
@@ -2866,7 +2866,7 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
                 {
                     'mRender': function (data, type, full) {
                         if (tipo !== '') {
-                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
+                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i>`;
                         } else {
                             return '';
                         }
@@ -2879,13 +2879,21 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        CreaSelectLabel(`autoridadres_${meta.row}`, '', AutoridadesSe, '', '', '', 'select2')
-                        return $(`autoridadres_${meta.row}`).val(full.id_autoridad).trigger('change.select2');
+                        if (full.tipo !== 0 || full.tipo ==='undefined') {
+                            return Requeridos() + CreaSelectLabel(`autoridadres_${meta.row}`, '', AutoridadesSe1, '', '', '', 'select2 autoridadres-class');
+                        } else {
+                            return Requeridos() + CreaSelectLabel(`autoridadres_${meta.row}`, '', AutoridadesSe2, '', '', '', 'select2 autoridadres-class');
+                        }
+                    }
+                },
+                {
+                    'mRender': function (data, type, full) {
+                        return CreaInputs_Con_Labeldisabled('tipauto', 'tipauto', '', 'text', '', '', '');
                     }
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return CreaSelectLabel(`hechvio_${meta.row}`, '', hechvioSe, '', '', '', 'select2 hechvio-class');
+                        return Requeridos() + CreaSelectLabel(`hechvio_${meta.row}`, '', hechvioSe, '', '', '', 'select2 hechvio-class');
                     }
                 },
                 {
@@ -2894,13 +2902,32 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
                     }
                 },
             ],
+            dom: 'lfrtip',
             initComplete: function () {
+                const table = $(tablaAutRe_HecVioT).DataTable();
+                if (tipo !== '') {
+                    var param = `"${tablaAutRe_HecVioT.replace('#', '')}",${id}`;
+                    const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
+                    $(table.table().container()).find('.dataTables_length').append(boton);
+                }
+                table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                    const data = this.data();
+                    $(`#autoridadres_${rowIdx}`).val(data.id_autoridad).trigger('change');
+                    $(`#hechvio_${rowIdx}`).val(data.id_hechov).trigger('change');
+                });
             },
             order: [1, 'desc'],
             bDestroy: true
         });
 
-        // Evento de cambio para la clase .hechvio-class
+        $(document).on('change', '.autoridadres-class', function () {
+            var $row = $(this).closest('tr');
+            $row.find('#tipauto').val("");
+            var selecTex = $(this).find('option:selected').text();
+            var homoclav = selecTex.split('/');
+            $row.find('#tipauto').val(homoclav[2]);
+        });
+
         $(document).on('change', '.hechvio-class', function () {
             var $row = $(this).closest('tr');
             $row.find('#derecho').val("");
@@ -2910,100 +2937,51 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
         });
     });
 }
-
-//function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
-//    var datos = RecuperaDaAutHec(id);
-    
-//    console.log(datos);
-//    $(tablaAutRe_HecVioT).DataTable({
-//        language: {
-//            "url": "/js/TablaJson.json"
-//        },
-//        iDisplayLength: 10,
-//        data: datos,
-//        fixedHeader: true,
-//        searching:false,
-//        orderCellsTop: true,
-//        columns: [
-//            {
-//                'mRender': function (data, type, full) {
-//                    if (tipo !== '') {
-//                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModAutHec(${id})'></i>`;
-//                    } else {
-//                        return '';
-//                    }
-//                }
-//            },
-//            {
-//                'mRender': function (data, type, full, meta) {
-//                    return generateRadioInputs(meta.row, 'autoridadres', true);
-//                }
-//            },
-//            {
-//                'mRender': function (data, type, full, meta) {
-//                    return CreaSelectLabel(`autoridadres_${meta.row}`, '', AutoridadesSe, '', '', '', 'select2');
-//                }
-//            },
-//            {
-//                'mRender': function (data, type, full, meta) {
-
-//                    return CreaSelectLabel(`hechvio_${meta.row}`, '', hechvioSe, '', '', '', 'select2 hechvio-class');
-
-//                }
-//            },
-//            {
-//                'mRender': function (data, type, full) {
-//                    return CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '');
-//                }
-//            },
-//        ],
-//        initComplete: function () {
-//        },
-//        order: [1, 'desc'],
-//        bDestroy: true
-//    });
-//    $(document).on('change', '.hechvio-class', function () {
-//        var $row = $(this).closest('tr');
-//        $row.find('#derecho').val("");
-//        var selecTex = $(this).find('option:selected').text();
-//        var homoclav = selecTex.split('-');
-//        $row.find('#derecho').val(homoclav[2]);
-//    });
-//}
 function generateRadioInputs(row, aut, tipo) {
     var checked1 = '', checked2 = '';
-    if (tipo === '1') {
+    if (tipo !== 0 || tipo === 'undefined') {
         checked1 = `checked = "true"`;
     } else {
         checked2 = `checked = "true"`;
     }
     return `
-        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="1" title="Primario" onclick="SelectAutoridad(1, '${aut}', ${row});" ${checked2} >P
-        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="2" title="Secundario" onclick="SelectAutoridad(2, '${aut}', ${row});" ${checked1}>S
+        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="1" title="Primario" onclick="SelectAutoridades(1, '${aut}', ${row});" ${checked1} >P
+        <input name="tipauto_${row}" type="radio" class="radio" id="tipauto" value="2" title="Secundario" onclick="SelectAutoridades(2, '${aut}', ${row});" ${checked2}>S
     `;
 }
-function SelectAutoridad(tipoA, autoridadresBase, row) {
+function SelectAutoridad(tipoA) {
     $.ajax({
         type: "POST",
         url: "SelectAutoridadFil",
         data: { tipo: tipoA },
         dataType: "JSON",
         success: function (response) {
-            var autoridadresId = `${autoridadresBase}_${row}`;
-            var autoridadesSelect = $(`#${autoridadresId}`);
-            autoridadesSelect.empty();
-            autoridadesSelect.append('<option value="999">Seleccione una opción</option>');
-            if (response.mensaje !== 'error') {
-                $.each(response.sautoridades, function (index, autoridad) {
-                    var option = $('<option>', {
-                        value: autoridad.idSelect,
-                        text: autoridad.descripcion
-                    });
-                    autoridadesSelect.append(option);
-                    autoridadesSelect.select2();
-                });
+            if (tipoA === 1) {
+                AutoridadesSe1 = response.sautoridades;
+            } else {
+                AutoridadesSe2 = response.sautoridades;
             }
         }
+    });
+}
+function SelectAutoridades(tipoA, autoridadresBase, row) {
+    var autor = [];
+    if (tipoA === 1) {
+        autor = AutoridadesSe1;
+    } else {
+        autor = AutoridadesSe2;
+    }
+    var autoridadresId = `${autoridadresBase}_${row}`;
+    var autoridadesSelect = $(`#${autoridadresId}`);
+    autoridadesSelect.empty();
+    autoridadesSelect.append('<option value="999">Seleccione una opción</option>');
+    $.each(autor, function (index, autoridad) {
+        var option = $('<option>', {
+            value: autoridad.idSelect,
+            text: autoridad.descripcion
+        });
+        autoridadesSelect.append(option);
+        autoridadesSelect.select2();
     });
 }
 function RecargaTab(nomTab) {
@@ -3012,13 +2990,25 @@ function RecargaTab(nomTab) {
     });
 }
 
-function LlenartablaMedCuate(tablaMedCuateT, response, id) {
+function RecuperaMedCaut(id, callback) {
+    $.ajax({
+        type: "POST",
+        url: "SelectMedCaut",
+        data: { idqueja: id },
+        dataType: "JSON",
+        success: function (response) {
+            callback(response.autoridhecho);
+        }
+    });
+}
+function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
+    RecuperaDaAutHec(id, function (datos) {
     $(tablaMedCuateT).DataTable({
         language: {
             "url": "/js/TablaJson.json"
         },
         iDisplayLength: 10,
-        data: response,
+        data: tipo,
         fixedHeader: true,
         orderCellsTop: true,
         searching: false,
@@ -3032,8 +3022,8 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             {
                 'mRender': function (data, type, full) {
 
-                    if (response !== '') {
-                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaMedCuateT}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModMedCa(${id})'></i>`;
+                    if (tipo !== '') {
+                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaMedCuateT}")'></i>`;
                     } else {
                         return '';
                     }
@@ -3041,14 +3031,17 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             },
             {
                 'mRender': function (data, type, full, meta) {
-                    return generateRadioInputs(meta.row, 'autoridadresMC', '1');
+                    return generateRadioInputs(meta.row, 'autoridadresMC', 1);
                 }
             },
             {
                 'mRender': function (data, type, full, meta) {
-
-                    return CreaSelectLabel(`autoridadresMC_${meta.row}`, '', AutoridadesSe, '', '', 'select2');
-
+                    //if (full.tipo === 1) {
+                    //    return Requeridos() + CreaSelectLabel(`autoridadresMC_${meta.row}`, '', AutoridadesSe1, '', '', '', 'select2');
+                    //} else {
+                    //    return Requeridos() + CreaSelectLabel(`autoridadresMC_${meta.row}`, '', AutoridadesSe2, '', '', '', 'select2');
+                    //}
+                    return Requeridos() + CreaSelectLabel(`autoridadresMC_${meta.row}`, '', AutoridadesSe1, '', '', '', 'select2');
                 }
             },
             {
@@ -3064,12 +3057,12 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             },
             {
                 'mRender': function (data, type, full) {
-                    return CreaInputs_Con_Label('horaAlta', 'horaAlta', 'validatimeac', 'date', '', 'textfield9', '');
+                    return Requeridos() + CreaInputs_Con_Label('horaAlta', 'horaAlta', 'validatimeac', 'date', '', 'textfield9', '');
                 }
             },
             {
                 'mRender': function (data, type, full) {
-                    return CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', '');
+                    return Requeridos() + CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', '');
                 }
             },
             {
@@ -3084,7 +3077,12 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
             },
         ],
         initComplete: function () {
-
+            if (tipo !== '') {
+                const table = $(tablaMedCuateT).DataTable();
+                var param = `"${tablaMedCuateT.replace('#', '')}",${id}`;
+                const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
+                $(table.table().container()).find('.dataTables_length').append(boton);
+            }
         },
         order: [1, 'desc'],
         bDestroy: true
@@ -3095,43 +3093,37 @@ function LlenartablaMedCuate(tablaMedCuateT, response, id) {
         //activarBtnTurnopre();
 
     })
+    });
 }
-function LlenartablaDilig(tablaDilig, response, id) {
+function LlenartablaDilig(tablaDilig, tipo, id) {
     $(tablaDilig).DataTable({
         language: {
             "url": "/js/TablaJson.json"
         },
         iDisplayLength: 10,
-        data: response,
+        data: tipo,
         fixedHeader: true,
         orderCellsTop: true,
         searching: false,
         columns: [
-            //{
-            //    className: 'details-control',
-            //    defaultContent: '',
-            //    data: null,
-            //    orderable: false
-            //},
             {
-                'mRender': function (data, type, full) {
-                    if (response !== '') {
-                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i><i class='btn fa fa-pencil-square-o' onclick='ModDili(${id})'></i>`;
+                'mRender': function (data, type, full, meta) {
+                    if (tipo !== '') {
+                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i><i class='btn fa fa-pencil-square-o' onclick='DetDilig("modalDilig","tipodilig_${meta.row}")'></i>`;
                     } else {
                         return '';
                     }
                 }
             },
             {
-                'mRender': function (data, type, full) {
+                'mRender': function (data, type, full, meta) {
 
-                    return CreaSelectLabel('tipodilig', '', diligenSe, '', '', '');
+                    return CreaSelectLabel(`tipodilig_${meta.row}`, '', diligenSe, '', '', '');
 
                 }
             },
             {
                 'mRender': function (data, type, full) {
-                    //return CreaInputs_Con_Label('descrip', 'descrip', 'validatxtac', 'text', '', '', '');
                     return '<textarea id="descrip" class="swal2-input"> </textarea>';
                 }
             },
@@ -3142,29 +3134,17 @@ function LlenartablaDilig(tablaDilig, response, id) {
             },
             {
                 'mRender': function (data, type, full) {
-                    return CreaInputs_Con_Label('numOfMe', 'numOfMe', 'validatxtac', 'text', '', '', '');
-                }
-            },
-            {
-                'mRender': function (data, type, full) {
-                    //return CreaInputs_Con_Label('atencion', 'atencion', 'validatxtac', 'text', '', '', '');
-                    return '<textarea id="atencion" class="swal2-input"> </textarea>';
-                }
-            },
-            {
-                'mRender': function (data, type, full) {
-                    return `<input type="file" name="archAdjD" multiple id="archAdjD" class="input-file">
-        <div class="input-group col-xs-12">
-            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
-            <span class="input-group-btn">
-                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-            </span>
-        </div>`;
+                    return 'SIN ATENDER (TEMPORAL)';
                 }
             },
         ],
         initComplete: function () {
-
+            if (tipo !== '') {
+                const table = $(tablaDilig).DataTable();
+                var param = `"${tablaDilig.replace('#', '')}",${id}`;
+                const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
+                $(table.table().container()).find('.dataTables_length').append(boton);
+            }
         },
         order: [1, 'desc'],
         bDestroy: true
@@ -3176,8 +3156,98 @@ function LlenartablaDilig(tablaDilig, response, id) {
 
     })
 }
+
+function DetDilig(modDil, tipoDi) {
+    if ($(`#${tipoDi}`).val() !== '99') {
+        $(`#${modDil}`).modal({
+            backdrop: false
+        });
+        CreafrmDetaDiligen($(`#${tipoDi}`).val());
+        CargaDatosSelectOtro_(`#viaDil`, viainter, '99');
+        CargaDatosSelectOtro_(`#atentido`, [{ idSelectGenerico: 1, descripcion: 'Si', seleccionable: true, ruta: null }, { idSelectGenerico: 2, descripcion: 'No', seleccionable: true, ruta: null }], '99');
+    } else {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Seleccione el tipo de diligencia.",
+        });
+    }
+}
+
+function CreafrmDetaDiligen(tip) {
+    $('#frmDetaDiligen').empty();
+    var arregloBlanco = [];
+    var cuerpo1 = '', cuerpo2 ='';
+    if (tip!=='3') {
+        cuerpo1 = CreaSelectLabel('viaDil', '', arregloBlanco, '', 'Via: ', '');
+        cuerpo2 = CreaInputs_Con_Label('noOfMe', 'noOfMe', '', 'text', 'Número de Oficio o Memorándum: ', 'textfield', '')
+            + CreaBR()
+            + CreaInputs_Con_Label('Fecha_Soli', 'Fecha_Soli', '', 'date', 'Fecha de Solicitud: ', 'textfield', '')
+            + CreaBR()
+            + Crea_Label('textfield8', 'textfield8', '', 'Evidencia de Atención: ')
+            + '<input type="file" name="archEvAd" multiple id="archEvAd" class="input-file">'
+            + '<div class="input-group col-xs-12">'
+            + '<input type="text" class="form-control" disabled placeholder="Cargar archivos">'
+            + '<span class="input-group-btn">'
+            + '<button id="archEvAdb" class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>'
+            + '</span>'
+            + '</div>'
+            + CreaInputs_Con_Label('plazo', 'plazo', '', 'number', 'Plazo de Atención: ', 'textfield', '')
+            + Crea_Label('textfield8', 'textfield8', '', ' días.')
+            + CreaBR()
+            + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido: ', 'textfield', '')
+            + CreaBR()
+            + CreaSelectLabel('atentido', '', arregloBlanco, '', 'Atendido: ', '')
+            + CreaBR();
+    }
+    var cuerpo = '<div class="row col-12"><div class="col-6">'
+        + cuerpo1
+        + Crea_Label('textfield8', 'textfield8', '', 'Descripción: ')
+        + CreaTextArea('descripcion', '', 'style="width:100%; height:72%"')
+        + '</div>'
+        + '<div class="col-6">'
+        + cuerpo2
+        + Crea_Label('textfield8', 'textfield8', '', 'Evidencia: ')
+        + '<input type="file" name="archEvAd2" multiple id="archEvAd2" class="input-file">'
+        + '<div class="input-group col-xs-12">'
+        + '<input type="text" class="form-control" disabled placeholder="Cargar archivos">'
+        + '<span class="input-group-btn">'
+        + '<button id="archEvAdb2" class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>'
+        + '</span>'
+        + '</div>'
+        + '</div></div>'
+        + '<div class="positionCenter">'
+        + CreaBR()
+        + crea_Boton('button', 'Guardar Diligencia', 'guardaDil', 'btn btn-success', 'guardaDil()')
+        + '</div>';
+    var formInnicial = '<form class="text-justify formDetalleDil" id="formDetalleDil" name="formDetalleDil" method="post" style="width:100%; margin-left:2%;">';
+    var fin_form = '</form>';
+
+    let formualarioCompleto = formInnicial + cuerpo + fin_form;
+
+    $('#frmDetaDiligen').append(formualarioCompleto);
+
+    $(document).on('click', '.archEvAdb', function () {
+        var file = $(this).parent().parent().parent().find('.archEvAd');
+        file.trigger('click');
+    });
+    $(document).on('change', '.archEvAd', function () {
+        $(this).parent().find('.control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+    });
+    $(document).on('click', '.upload-field2', function () {
+        var file = $(this).parent().parent().parent().find('.archEvAd2');
+        file.trigger('click');
+    });
+    $(document).on('change', '.archEvAd2', function () {
+        $(this).parent().find('.control2').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+    });
+}
+
 function icono_editar(funcion, id) {
     return `<i class='btn fa fa-pencil-square-o' onclick='HabilEdi(${id}, "#${funcion}")'></i>`;
+}
+function Requeridos() {
+    return '<span style="color: red;">*</span>';
 }
 function HabilEdi(id, identif) {
     $(identif).prop('disabled', false);
@@ -3314,26 +3384,26 @@ $(document).ready(function () {
         
         if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacion").val() == '' || formDQOT.visitaduriaqueja == ''
             || $("materia-frmDatosCalificacion").val() == '' || $("tipexpediente-frmDatosCalificacion").val() == '' || $("especializado-frmDatosCalificacion").val() == '' || $("trancpub-frmDatosCalificacion").val() == ''
-            || $("nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.longitudtabla2<=0){
+            || $("nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' || formDQOT.longitudtabla2 <= 0) {
+            var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
+            if ($("#programa-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Programa<br>'; }
+            if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
+            if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hecho violatiorio<br>';}
+            if ($("#materia-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Materia<br>';}
+            if ($("#tipexpediente-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Tipo Expediente<br>';}
+            if ($("#especializado-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Especializado<br>';}
+            if ($("#trancpub-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Traciende a la opinión pública<br>';}
+            if ($("#nivries-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Nivel de Riesgo<br>';}
+            if (formDQOT.arreglotemas == '') { htm = htm + Requeridos() + 'Tema<br>';}
+            if (formDQOT.Fecha_TurnoVG == '') { htm = htm + Requeridos() + 'Fecha de Recepción en VG<br>';}
+            if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>';}
+            if (formDQOT.longitudtabla1 <= 0) { htm = htm + Requeridos() + 'Autoridades - Hechos Violatorios<br>'; }
+            if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si' && formDQOT.longitudtabla2 <= 0) {
+                htm = htm + Requeridos() + 'Medidas Cuatelares<br>';
+            }
             Swal.fire({
                 icon: "error",
-                title: "Error al Guardar la información",
-                html: `<div style ="float:left;"><p>
-                          Para poder calificar el expediente es necesario capturar los 13 datos obligatorios: <br>
-                          &#x2714;Autoridad<br> 
-                          &#x2714;Hecho violatiorio<br> 
-                          &#x2714;Tema<br> 
-                          &#x2714;Programa<br>  
-                          &#x2714;Visitaduría General<br>  
-                          &#x2714;Materia<br> 
-                          &#x2714;Tipo queja<br> 
-                          &#x2714;Especializado<br> 
-                          &#x2714;Traciende a la opinión pública<br> 
-                          &#x2714;Nivel de Riesgo <br> 
-                          &#x2714;Fecha de Recepción en VG <br> 
-                          &#x2714;Lugar donde Ocurrieron los Hechos <br> 
-                          &#x2714;Medidas Cuatelares<br> 
-                       Favor de completar la información para continuar  </p>`,
+                html: htm,
 
             });
         } else {
@@ -3386,7 +3456,9 @@ $(document).ready(function () {
 
 function funcionesEscritoi() {
     $(document).on('click', '.upload-field', function () {
-        var file = $(this).parent().parent().parent().find('.input-file');
+        //var file = $(this).parent().parent().parent().find('.input-file');
+        //file.trigger('click');
+        var file = $(this).closest('.input-group').find('.input-file');
         file.trigger('click');
     });
     $(document).on('change', '.input-file', function () {
