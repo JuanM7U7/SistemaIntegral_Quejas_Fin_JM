@@ -254,7 +254,7 @@ $(document).ready(function () {
         let dataTurnoexp = new FormData();
         let fechaFinEditDqot = getSinFestivosNiFinDeSemana(fechActual, 2);
         let fechActualtv = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
-
+        fechActualtv = getSinFestivosNiFinDeSemana(fechActualtv, 2);
         $(filas).each(function (index) {
             let valorselect = $(this).find('.selTurno').val();
 
@@ -1186,7 +1186,10 @@ function mostrarResTblFormatos(response) {
                     let disabled = full.status_Expediente == 'Turnado parcial a VG' ? 'disabled' : '';
                     let cadena = `<div class="form-group"> <select class="form-control selTurno" ${disabled} style="width: auto;" id="selectTurnoexp${full.fkExpediente}"> <option value="">Seleccionar</option>`;
                     let cont = 0;
-
+                    if (full.fkExpediente == 521) {
+                        let vas = full.fkExpediente;
+                        console.log(vas);
+                    }
                     for (i = 0; i < visitadurias.length; i++) {
                         if (full.status_Expediente == 'Pendiente de turnar' || full.status_Expediente == 'Pendiente de Returno') {
                             cont++;

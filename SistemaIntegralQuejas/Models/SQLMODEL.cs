@@ -675,5 +675,35 @@ namespace SistemaIntegralQuejas.Models
             }
             return lista;
         }
+
+
+        public List<inforaportaciones> Obtaport(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<inforaportaciones> lista = new List<inforaportaciones>();
+            SqlDataReader lector;
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    inforaportaciones modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new inforaportaciones(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), int.Parse(lector[2].ToString()), lector[3].ToString(), lector[4].ToString());
+                        lista.Add(modelo);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return lista;
+        }
     }
 }

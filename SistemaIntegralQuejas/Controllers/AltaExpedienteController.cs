@@ -128,6 +128,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             informacioncomplementaria informacioncomplementaria = new informacioncomplementaria();
             List<espedientetema> informaciontemaexped = new List<espedientetema>();
+            List<inforaportaciones> infoaportacioness = new List<inforaportaciones>();
 
 
 
@@ -154,6 +155,16 @@ namespace SistemaIntegralQuejas.Controllers
             query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
             informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
             /*Cargar informacion dentro de las pantallas*/
+            if (informacioncomplementaria.tipo_expediente == 1)
+            {
+                query = "exec Sp_Select_Aporta ''," + identificadorQueja;
+            }
+            else
+            {
+                query = "exec Sp_Select_Aporta "+ identificadorQueja +", ''";
+            }
+            
+            infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
 
             query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
             informaciontemaexped = conexionsql.datostemaExpediente(query, ref mensaje);
@@ -170,6 +181,7 @@ namespace SistemaIntegralQuejas.Controllers
                         lista_sedes = listaContenedora6,
                         listavisitadurias = listaContenedora7,
                         informarcionC = informacioncomplementaria,
+                        infoaportaciones = infoaportacioness,
                         lista_tema_expe = informaciontemaexped,
                         listavi = listaContenedora8
                     });
@@ -288,6 +300,25 @@ namespace SistemaIntegralQuejas.Controllers
             this.id_expediente = id_expediente;
             this.otro_tema = otro_tema;
             this.descripcion = descripcion;
+        }
+    }
+    
+    public class inforaportaciones
+    {
+        public int id_aportacion { get; set; }
+        public int id_expediente { get; set; }
+        public int id_expediente_apor { get; set; }
+        public string descripcion { get; set; }
+        public string noexpe { get; set; }
+        public inforaportaciones() { }
+
+        public inforaportaciones(int id_aportacion, int id_expediente, int id_expediente_apor, string descripcion, string noexpe)
+        {
+            this.id_aportacion = id_aportacion;
+            this.id_expediente = id_expediente;
+            this.id_expediente_apor = id_expediente_apor;
+            this.descripcion = descripcion;
+            this.noexpe = noexpe;
         }
     }
 
