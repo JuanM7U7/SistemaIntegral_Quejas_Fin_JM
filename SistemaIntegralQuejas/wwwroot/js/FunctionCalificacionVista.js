@@ -3373,7 +3373,7 @@ function GuardarAp() {
                     Swal.fire({
                         icon: "success",
                         title: "Registro Exitoso",
-                        text: "Número de expediente asignado:" + response.no_exp + "-2024. Aportación a espediente: " + expediente,
+                        text: "ID aportado:" + response.no_exp + " a expediente: " + expediente,
                     });
 
                     $.ajax({

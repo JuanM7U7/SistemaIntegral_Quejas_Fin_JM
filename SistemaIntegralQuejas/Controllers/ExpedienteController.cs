@@ -3655,6 +3655,7 @@ namespace SistemaIntegralQuejas.Controllers
             string autoridad = "";
             string hecho = "";
             string tipo = "";
+            string TiGua = "";
             string expedsc = "";
             string descapo = "";
             string programa = "";
@@ -3676,21 +3677,21 @@ namespace SistemaIntegralQuejas.Controllers
             tipoexp = form["tipexpediente"].ToString();
             expedsc = form["expedsc"].ToString();
             descapo = form["descapo"].ToString();
-
+            TiGua = form["tipGuarda"].ToString();
+            /*Sección de la actualización de la tabla de una queja*/
             if (form["especializado-frmDatosCalificacion"].ToString() == "Si") { especializado = 1; }
             if (form["trancpub-frmDatosCalificacion"].ToString() == "Si") { trasOpPublica = 1; }
             materia = form["materia-frmDatosCalificacion"].ToString();
             nivriesgo = form["nivries-frmDatosCalificacion"].ToString();
-            programa = form["programa-frmDatosCalificacion"].ToString(); ;
+            programa = form["programa-frmDatosCalificacion"].ToString();
             tema = form["arreglotemas[]"].ToString();
-
             arreglotemas = tema.Split(',');
-            /*Sección de la actualización de la tabla de una queja*/
-
-            query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "'," + programa + "";
-            mensaje = ejecutaInsertUpdate(query);
+            
             if (tipoexp=="1")
             {
+                query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "','" + programa + "'";
+                mensaje = ejecutaInsertUpdate(query);
+
                 for (int i = 0; i < arreglotemas.Length; i++)
                 {
                     query = "exec Sp_insertaTema " + idqueja + "," + arreglotemas[i].ToString() + "," + "'" + otrotema + "'";
@@ -3723,29 +3724,33 @@ namespace SistemaIntegralQuejas.Controllers
                     mensaje = ejecutaInsertUpdate(query);
 
                 }
-
-                query = "exec SP_AsignaNumeroExpediente " + idqueja + "," + expedsc + ",'" + descapo + "'";
-                mensaje = ejecutaInsertUpdate(query);
-
-                query = "Sp_GetNumExp";
-                var noexpq = GetDatosGeneral(query);
-
-                foreach (DataRow row in noexpq.Rows)
+                if (TiGua != "preliminar")
                 {
-                    noexp = Convert.ToInt32(row["numeroexp"].ToString());
+                    query = "exec SP_AsignaNumeroExpediente " + idqueja;
+                    mensaje = ejecutaInsertUpdate(query);
+
+                    query = "Sp_GetNumExp";
+                    var noexpq = GetDatosGeneral(query);
+                    foreach (DataRow row in noexpq.Rows)
+                    {
+                        noexp = Convert.ToInt32(row["numeroexp"].ToString());
+                    }
                 }
                 /*Actualizacion de tabla de diligencias*/
                 return Json(new { status = mensaje, no_exp = noexp });
             }
             else if (tipoexp == "2")
             {
-                query = "exec Sp_insertAporta " + idqueja;
+                if (expedsc=="99"){expedsc = "";}
+                query = "exec Sp_insertAporta " + idqueja + ",'" + expedsc + "','" + descapo + "'";
                 mensaje = ejecutaInsertUpdate(query);
-
-                query = "Sp_GetNumExp";
-                var noexpq = GetDatosGeneral(query);
                 
-                return Json(new { status = mensaje, no_exp = noexp });
+                if (TiGua != "preliminar")
+                {
+                    query = "exec Sp_AsignaNumAport " + idqueja ;
+                    mensaje = ejecutaInsertUpdate(query);
+                }
+                return Json(new { status = mensaje, no_exp = idqueja });
             }
             else
             {
