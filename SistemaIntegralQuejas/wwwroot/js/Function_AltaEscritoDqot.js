@@ -408,7 +408,7 @@ function funcionesActac(nfrm) {
         e.stopImmediatePropagation();
 
         let nfrm = this.dataset.idfrmac;
-        habilitarAlta(nfrm);
+        //habilitarAlta(nfrm);
         console.log('frm actac: ' + nfrm)
 
         var vari = $("#id_lugar" + nfrm).val()
