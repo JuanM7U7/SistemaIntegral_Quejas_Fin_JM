@@ -182,6 +182,7 @@ $(document).ready(function () {
                 let autoridad = data.lista2;
                 CargaDatosSelectOtro("#Input_autoridades" + nfin, autoridad);
             })
+            $(`#Input_autoridades${nfin}`).select2();
         } else {
             Swal.fire({
                 position: 'center',
@@ -675,7 +676,7 @@ function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente, 
                         contenedor = Agrega_PersonaAutoridad(i + 1, response.data[i].nombre_persona, response.data[i].cargo_persona, response.data[i].autoridad);
 
                         $('#Contenedor_Cargos_Personas').append(contenedor);
-
+                        $(`#Input_autoridades${i + 1}`).select2();
                         cargaInformacionSelectsEscritoInicial(i + 1, response.data[i].cvemun, response.data[i].autoridad);
 
                     }
@@ -2211,9 +2212,6 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja, fechavalidae
     $('.formularioActaCircunstanciada').empty()
     $('.formularioActaCircunstanciada').append(iformActaCircunstanciada);
 
-    //Carga_Informacion_selec_quejas();
-    $('#Input_autoridades').select2();
-    //$('#lugar').select2();
     $("#origenPetExt").css("display", "none");
     $("#origenPetExtedo").css("display", "none");
     $.ajax({
@@ -2222,16 +2220,13 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja, fechavalidae
         data: { identificadorActac: idActaC },
         dataType: "JSON",
         success: function (response) {
-            console.log(response);
             var longitud = response.data.length;
             if (response.data.length > 0) {
                 var idMunicipio = parseInt(response.data[0].lugar);
-                console.log("Respuesta_EscritoInicial: " + response.data[0]);
                 let fechahechos = response.data[0].fechaHechos.split(' ');
-                console.log(parseInt(response.data[0].lugar));
 
                 Carga_Informacion_selec_quejas();
-                console.log('termina')
+
                 $("input[name='diaFecha']").val(response.data[0].diaFecha);
                 $('#mes > option[value="' + response.data[0].mes + '"]').attr('selected', 'selected');
                 $('#anio > option[value="' + response.data[0].anio + '"]').attr('selected', 'selected');
@@ -2267,8 +2262,13 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja, fechavalidae
                 $("input[name='idescritoim']").val(idescrito);
                 $("input[name='idqueja']").val(idqueja);
                 $("input[name='idactaedit']").val(idActaC);
-                console.log('selecciona')
-                $('#lugar > option[value="' + idMunicipio + '"]').attr('selected', 'selected');
+                $('#catEstado_hechos').select2();
+                $('#lugar').select2();
+                $('#origenPet').select2();
+
+                //$('#lugar').val(idMunicipio).trigger('change');
+                //$('#lugar option[value="' + idMunicipio + '"]').trigger('change');
+                $('#lugar > option[value="' + idMunicipio + '"]').attr('selected', 'selected').trigger('change');
 
                 $("#Input_autoridades option:contains('" + response.data[0].autoridad + "')").attr("selected", "true");
                 if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || fechavalidaeditdqot === true) {
@@ -3857,7 +3857,6 @@ function Agrega_PersonaAutoridad(contador, persona, cargo, autoridadSe) {
         let autoridad = data.lista2;
         CargaDatosSelectOtro("#Input_autoridades" + contador, autoridad);
     });
-    $('#Input_autoridades' + contador).select2();
     return cuerpo;
 
 }

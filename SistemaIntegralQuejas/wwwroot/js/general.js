@@ -11,9 +11,10 @@ let rolUser = document.getElementById('rolUser').value;
 let fechActual = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
 // crea un nuevo objeto `Date`
 let fechahoy = new Date();
-let horaActual = fechahoy.toLocaleString();
-let horaActualFin = horaActual.split(', ')[1];
-
+console.log(fechahoy);
+let horaActual = fechahoy;
+let horaActualFin = horaActual.toString().split(' ')[4];
+console.log(horaActualFin);
 async function fetchPost(url, tiporespuesta, frm, callback) {
     try {
 
