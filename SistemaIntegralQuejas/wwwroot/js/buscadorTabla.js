@@ -254,7 +254,7 @@ $(document).ready(function () {
         let dataTurnoexp = new FormData();
         let fechaFinEditDqot = getSinFestivosNiFinDeSemana(fechActual, 2);
         let fechActualtv = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
-
+        fechActualtv = getSinFestivosNiFinDeSemana(fechActualtv, 2);
         $(filas).each(function (index) {
             let valorselect = $(this).find('.selTurno').val();
 
@@ -614,6 +614,7 @@ function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente, 
     let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
     $('.formularioEscritoInicial').empty()
     $('.formularioEscritoInicial').append(iformEscritoInicial);
+    $('#Input_LugarHechos').select2();
     $.ajax({
         type: "POST",
         url: "GetDataEscritoInicial",
@@ -733,6 +734,7 @@ function AddEscritoInicial(idExpediente, peticionarios) {
     ventana_eligepeticionario_ei('Selecciona el peticionario para continuar', idExpediente, peticionarios);
 
     $('.formularioEscritoInicial').append(iformEscritoInicial);
+    $('#Input_LugarHechos').select2();
     funcionesEscritoi();
     $("#modalformularioEscritoInicial").modal("show");
 }
@@ -1186,7 +1188,10 @@ function mostrarResTblFormatos(response) {
                     let disabled = full.status_Expediente == 'Turnado parcial a VG' ? 'disabled' : '';
                     let cadena = `<div class="form-group"> <select class="form-control selTurno" ${disabled} style="width: auto;" id="selectTurnoexp${full.fkExpediente}"> <option value="">Seleccionar</option>`;
                     let cont = 0;
-
+                    if (full.fkExpediente == 521) {
+                        let vas = full.fkExpediente;
+                        console.log(vas);
+                    }
                     for (i = 0; i < visitadurias.length; i++) {
                         if (full.status_Expediente == 'Pendiente de turnar' || full.status_Expediente == 'Pendiente de Returno') {
                             cont++;
@@ -3711,7 +3716,7 @@ function CreaSelectLabelSelect2(id, tiposelect, arreglo, nombreDiv, textoLabel, 
     htmld += "</select>";
 
     return htmld;
-    // $("#" + id).select2();
+    $("#" + id).select2();
 }
 function CreaSelectLabelSelect2DI(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, estiloLabel, estiloselect, clas = '') {
     let htmld = '<label for= "' + namelabel + '" ' + estiloLabel + ' >' + textoLabel + '</label ><select id="' + id + '" class="' + clas + '" name="' + nombreDiv + '" ' + tiposelect + ' ' + estiloselect + '> <option value="">Seleccione una opción</option>';
@@ -3852,6 +3857,7 @@ function Agrega_PersonaAutoridad(contador, persona, cargo, autoridadSe) {
         let autoridad = data.lista2;
         CargaDatosSelectOtro("#Input_autoridades" + contador, autoridad);
     });
+    $('#Input_autoridades' + contador).select2();
     return cuerpo;
 
 }

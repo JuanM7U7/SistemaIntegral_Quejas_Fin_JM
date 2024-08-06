@@ -2619,7 +2619,7 @@ function formEscritoInicial2(action, id) {
         + CreaBR()
         + CreaBR()
         //+ CreaInputs_Con_Label('Input_LugarHechos', 'Input_LugarHechos', '', 'text', 'Lugar en donde Ocurrieron los Hechos: ', 'Input_LugarHechos', 'placeholder="Lugar de los Hechos" style ="float:left;"', ' style ="float:left;"')
-        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloAutoridades(), '', '&nbsp;&nbsp;&nbsp;LUGAR EN QUE SE SUSCITARON LOS HECHOS:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%;"')
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', [], '', '&nbsp;&nbsp;&nbsp;LUGAR EN QUE SE SUSCITARON LOS HECHOS:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%;"')
         + CreaInputs_Con_Label('CheckDcompleta', 'CheckDcompleta', '', 'checkbox', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¿SABE LA DIRECCIÓN COMPLETA?&nbsp;&nbsp;', 'CheckDcompleta', '', '')
         + '<div id="Contenedor_Datos_LE"></div>'
         + CreaBR()
@@ -2723,7 +2723,7 @@ function formActacircunstanciada2c(idfrm) {
         + CreaInputs_Con_Label('fechaHechos' + numfrm, 'fechaHechos' + numfrm, 'inputac', 'date', 'Que el día', 'textfield10', '', idfrm)
         + CreaInputs_Con_Label('horaHechos' + numfrm, 'horaHechos' + numfrm, 'inputac', 'time', 'a las', 'textfield10', '', idfrm)
         + CreaInputs_Con_Label('ubiHechos' + numfrm, 'ubiHechos' + numfrm, 'inputac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"', idfrm)
-        + CreaSelectLabel('catMunicipio_hechos' + numfrm, '', arregloMun(), '', 'ubicado en el municipio de', '', 'catMunicipio_hechos', idfrm)
+        + CreaSelectLabel('catMunicipio_hechos' + numfrm, '', {}, '', 'ubicado en el municipio de', '', 'catMunicipio_hechos', idfrm)
         + CreaSelectLabel('catEstado_hechos' + numfrm, '', arreglo_Estados(), '', 'del estado dee', '', 'catEstado_hechos', idfrm)
         + CreaSelectLabel('catAutoridad' + numfrm, '', arregloEstado(), '', ', la(s) autoridad(es)', '', 'catAutoridad', idfrm)
         + CreaTextArea('hechos' + numfrm, '', 'style="width:100%"', idfrm)
@@ -3421,7 +3421,7 @@ function Crear_Formulario_Queja() {
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Autoridad(es): ')
         + CreaBR()
-        + "<div id='contenedor_Autoridades'>" + DivPequeniosautoridad('Honorable Congreso del Estado', 'Estatal', '1245') + "</div>";
+        + "<div id='contenedor_Autoridades'>" /*+ DivPequeniosautoridad('Honorable Congreso del Estado', 'Estatal', '1245')*/ + "</div>";
     var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', 'Lugar de los hechos: ')
         + CreaBR() + CreaSelectLabel('municipioqueja', '', arregloBlanco, '', 'Municipio y estado: ', '')
         + Crea_Label('textfield8', 'textfield8', '', 'Peticionario(s): ')
@@ -3431,7 +3431,7 @@ function Crear_Formulario_Queja() {
         //+ CreaInputs_Con_Label('Apellidos', 'Apellidos', '', 'text', 'Apellidos: ', 'textfield', 'Apellido paterno - Aepllido Materno')
         //+ CreaBR()
         //+ CreaInputs_Con_Label('curp', 'curp', '', 'text', 'CURP: ', 'textfield', 'CURP')
-        + "<div id='contenedor_Usuarios'>" + DivPequenios('Christopher marquez', 'MALC961120HNERPH05', '1') + "</div>"
+        + "<div id='contenedor_Usuarios'>" /*+ DivPequenios('Christopher marquez', 'MALC961120HNERPH05', '1')*/ + "</div>"
         + CreaBR()
         + CreaSelectLabeldisabled('visitaduriaqueja', '', arregloBlanco, '', 'Visitaduria: ', '')
         + CreaBR()
@@ -3454,6 +3454,8 @@ function Crear_Formulario_Queja() {
 
     $('#izquierda').append(formualarioCompleto);
     $('#derecha').append(formualarioCompleto1);
+    $('#Abogadoqueja').select2();
+    $('#municipioqueja').select2();
     return formualarioCompleto;
 }
 // Método que recibe un elemento input date y un objeto date
