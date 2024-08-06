@@ -614,6 +614,7 @@ function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente, 
     let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
     $('.formularioEscritoInicial').empty()
     $('.formularioEscritoInicial').append(iformEscritoInicial);
+    $('#Input_LugarHechos').select2();
     $.ajax({
         type: "POST",
         url: "GetDataEscritoInicial",
@@ -733,6 +734,7 @@ function AddEscritoInicial(idExpediente, peticionarios) {
     ventana_eligepeticionario_ei('Selecciona el peticionario para continuar', idExpediente, peticionarios);
 
     $('.formularioEscritoInicial').append(iformEscritoInicial);
+    $('#Input_LugarHechos').select2();
     funcionesEscritoi();
     $("#modalformularioEscritoInicial").modal("show");
 }
@@ -3714,7 +3716,7 @@ function CreaSelectLabelSelect2(id, tiposelect, arreglo, nombreDiv, textoLabel, 
     htmld += "</select>";
 
     return htmld;
-    // $("#" + id).select2();
+    $("#" + id).select2();
 }
 function CreaSelectLabelSelect2DI(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, estiloLabel, estiloselect, clas = '') {
     let htmld = '<label for= "' + namelabel + '" ' + estiloLabel + ' >' + textoLabel + '</label ><select id="' + id + '" class="' + clas + '" name="' + nombreDiv + '" ' + tiposelect + ' ' + estiloselect + '> <option value="">Seleccione una opción</option>';
@@ -3855,6 +3857,7 @@ function Agrega_PersonaAutoridad(contador, persona, cargo, autoridadSe) {
         let autoridad = data.lista2;
         CargaDatosSelectOtro("#Input_autoridades" + contador, autoridad);
     });
+    $('#Input_autoridades' + contador).select2();
     return cuerpo;
 
 }
