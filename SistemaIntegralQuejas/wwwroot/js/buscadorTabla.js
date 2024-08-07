@@ -2262,10 +2262,18 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja, fechavalidae
                 $("input[name='idescritoim']").val(idescrito);
                 $("input[name='idqueja']").val(idqueja);
                 $("input[name='idactaedit']").val(idActaC);
+<<<<<<< Updated upstream
                 $('#catEstado_hechos').select2();
                 $('#lugar').select2();
                 $('#origenPet').select2();
 
+=======
+                
+                //$('#lugar').val(idMunicipio);
+                $('#lugar').val(idMunicipio).trigger('change');
+                console.log($('#lugar').val());
+                //$('#lugar').val(idMunicipio).trigger('change');
+>>>>>>> Stashed changes
                 //$('#lugar').val(idMunicipio).trigger('change');
                 //$('#lugar option[value="' + idMunicipio + '"]').trigger('change');
                 $('#lugar > option[value="' + idMunicipio + '"]').attr('selected', 'selected').trigger('change');
