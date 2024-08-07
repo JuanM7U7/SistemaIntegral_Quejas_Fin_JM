@@ -2214,101 +2214,92 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja, fechavalidae
 
     $("#origenPetExt").css("display", "none");
     $("#origenPetExtedo").css("display", "none");
-    $.ajax({
-        type: "POST",
-        url: "GetDataActaCircunstanciada",
-        data: { identificadorActac: idActaC },
-        dataType: "JSON",
-        success: function (response) {
-            var longitud = response.data.length;
-            if (response.data.length > 0) {
-                var idMunicipio = parseInt(response.data[0].lugar);
-                let fechahechos = response.data[0].fechaHechos.split(' ');
 
-                Carga_Informacion_selec_quejas();
+    Carga_Informacion_selec_quejas().then(() => {
+        $.ajax({
+            type: "POST",
+            url: "GetDataActaCircunstanciada",
+            data: { identificadorActac: idActaC },
+            dataType: "JSON",
+            success: function (response) {
+                var longitud = response.data.length;
+                if (response.data.length > 0) {
+                    var idMunicipio = parseInt(response.data[0].lugar);
+                    let fechahechos = response.data[0].fechaHechos.split(' ');
 
-                $("input[name='diaFecha']").val(response.data[0].diaFecha);
-                $('#mes > option[value="' + response.data[0].mes + '"]').attr('selected', 'selected');
-                $('#anio > option[value="' + response.data[0].anio + '"]').attr('selected', 'selected');
-                $("input[name='horaInicio']").val(response.data[0].horaInicio);
-                $("input[name='idactac']").val(response.data[0].id);
-                $("input[name='ubicacion']").val(response.data[0].ubicacion);
-                $("input[name='nombrePet']").val(response.data[0].nombrePet);
-                $("input[name='idpeti']").val(response.data[0].idPet);
-                $("input[name='idcompet']").val(response.data[0].complementoPeticionario);
-                $('#consentimiento > option[value="' + response.data[0].consentimiento + '"]').attr('selected', 'selected');
-                $("input[name='edadPet']").val(response.data[0].edadPet);
-                $("input[name='escolaridadPet']").val(response.data[0].escolaridadPet);
-                $("input[name='sabeleerPet']").val(response.data[0].sabePet);
-                $("input[name='callePet']").val(response.data[0].callePet);
-                $("input[name='numextPet']").val(response.data[0].numextPet);
-                $("input[name='numintPet']").val(response.data[0].numextPet);
-                $("input[name='cpPet']").val(response.data[0].cpPet);
-                $("input[name='coloniaPet']").val(response.data[0].coloniaPet);
-                $("input[name='municipioPet']").val(response.data[0].municipioPet);
-                $("input[name='estadoPet']").val(response.data[0].estadoPet);
-                $("input[name='ocupacionPet']").val(response.data[0].ocupacionPet);
-                $("input[name='telPet']").val(response.data[0].telPet);
-                $("input[name='correoPet']").val(response.data[0].correoPet);
-                $('#identificacionPet > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
-                $("input[name='fechaHechos']").val(fechahechos[0]);
-                $("input[name='horaHechos']").val(response.data[0].horaHechos);
-                $("input[name='ubiHechos']").val(response.data[0].ubiHechos);
-                $('#catMunicipio_hechos > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
-                $('#catEstado_hechos > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
-                $('#catAutoridad > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
-                $("textarea[name='hechos']").val(response.data[0].hechos);
-                $("input[name='horaTermino']").val(response.data[0].horaTermino);
-                $("input[name='idescritoim']").val(idescrito);
-                $("input[name='idqueja']").val(idqueja);
-                $("input[name='idactaedit']").val(idActaC);
-<<<<<<< Updated upstream
-                $('#catEstado_hechos').select2();
-                $('#lugar').select2();
-                $('#origenPet').select2();
+                    $("input[name='diaFecha']").val(response.data[0].diaFecha);
+                    $('#mes > option[value="' + response.data[0].mes + '"]').attr('selected', 'selected');
+                    $('#anio > option[value="' + response.data[0].anio + '"]').attr('selected', 'selected');
+                    $("input[name='horaInicio']").val(response.data[0].horaInicio);
+                    $("input[name='idactac']").val(response.data[0].id);
+                    $("input[name='ubicacion']").val(response.data[0].ubicacion);
+                    $("input[name='nombrePet']").val(response.data[0].nombrePet);
+                    $("input[name='idpeti']").val(response.data[0].idPet);
+                    $("input[name='idcompet']").val(response.data[0].complementoPeticionario);
+                    $('#consentimiento > option[value="' + response.data[0].consentimiento + '"]').attr('selected', 'selected');
+                    $("input[name='edadPet']").val(response.data[0].edadPet);
+                    $("input[name='escolaridadPet']").val(response.data[0].escolaridadPet);
+                    $("input[name='sabeleerPet']").val(response.data[0].sabePet);
+                    $("input[name='callePet']").val(response.data[0].callePet);
+                    $("input[name='numextPet']").val(response.data[0].numextPet);
+                    $("input[name='numintPet']").val(response.data[0].numextPet);
+                    $("input[name='cpPet']").val(response.data[0].cpPet);
+                    $("input[name='coloniaPet']").val(response.data[0].coloniaPet);
+                    $("input[name='municipioPet']").val(response.data[0].municipioPet);
+                    $("input[name='estadoPet']").val(response.data[0].estadoPet);
+                    $("input[name='ocupacionPet']").val(response.data[0].ocupacionPet);
+                    $("input[name='telPet']").val(response.data[0].telPet);
+                    $("input[name='correoPet']").val(response.data[0].correoPet);
+                    $('#identificacionPet > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
+                    $("input[name='fechaHechos']").val(fechahechos[0]);
+                    $("input[name='horaHechos']").val(response.data[0].horaHechos);
+                    $("input[name='ubiHechos']").val(response.data[0].ubiHechos);
+                    $('#catMunicipio_hechos > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
+                    
+                    $('#catAutoridad > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
+                    $("textarea[name='hechos']").val(response.data[0].hechos);
+                    $("input[name='horaTermino']").val(response.data[0].horaTermino);
+                    $("input[name='idescritoim']").val(idescrito);
+                    $("input[name='idqueja']").val(idqueja);
+                    $("input[name='idactaedit']").val(idActaC);
+                    $('#lugar').select2();
+                    $('#origenPet').select2();
+                    $('#catEstado_hechos').select2();
+                    $('#lugar').val(idMunicipio).trigger('change');
+                    $('#origenPet').val(response.data[0].origenPet).trigger('change');
+                    $('#catEstado_hechos').val(response.data[0].identificacionPet).trigger('change');
+                    //$('#catEstado_hechos > option[value="' + response.data[0].identificacionPet + '"]').attr('selected', 'selected');
+                    $("#Input_autoridades option:contains('" + response.data[0].autoridad + "')").attr("selected", "true");
+                    if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || fechavalidaeditdqot === true) {
+                        $('#modalformularioActaCircunstanciada button[type="button"]').hide();
+                    }
+                    var autoridades = '';
+                    for (var i = 0; i < response.data1.length; i++) {
+                        autoridades = autoridades + response.data1[i] + ' - ';
+                    }
+                    $("input[name='AutoridadesEI']").val(autoridades);
 
-=======
-                
-                //$('#lugar').val(idMunicipio);
-                $('#lugar').val(idMunicipio).trigger('change');
-                console.log($('#lugar').val());
-                //$('#lugar').val(idMunicipio).trigger('change');
->>>>>>> Stashed changes
-                //$('#lugar').val(idMunicipio).trigger('change');
-                //$('#lugar option[value="' + idMunicipio + '"]').trigger('change');
-                $('#lugar > option[value="' + idMunicipio + '"]').attr('selected', 'selected').trigger('change');
+                    $("#modalformularioActaCircunstanciada").modal("show");
 
-                $("#Input_autoridades option:contains('" + response.data[0].autoridad + "')").attr("selected", "true");
-                if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || fechavalidaeditdqot === true) {
-                    $('#modalformularioActaCircunstanciada button[type="button"]').hide();
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: 'Datos no encontrados, verifique que exista un escrito Inicial dentro de la queja',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    return;
                 }
-                var autoridades = '';
-                for (var i = 0; i < response.data1.length; i++) {
-                    autoridades = autoridades + response.data1[i] + ' - ';
-
-                }
-                $("input[name='AutoridadesEI']").val(autoridades);
-
-                $("#modalformularioActaCircunstanciada").modal("show");
-                //$("#colonia_petit-frmDatosPersonales1 option:contains('" + response.data[0].colonia + "')").attr("selected", "true");/*Seleccion del elemento dentro de un select*/
-                //$('input[value=' + response.data[0].fkSexo + ']').prop('checked', true);/*Seleccionar lapropiedad checked en True*/
-                //$("#leindi_petit-frmDatosPersonales1 option[value=" + response.data[0].hablaLenguai + "]").attr("selected", "true");
-
-            } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'warning',
-                    title: 'Datos no encontrados, verifique que exista un escrito Inicial dentro de la queja',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-
-                return;
+                RecorreInput('.formularioActaCircunstanciada');
             }
-            RecorreInput('.formularioActaCircunstanciada');
-        }
+        });
+    }).catch((error) => {
+        console.error("Error al cargar la información de quejas:", error);
     });
 }
+
 
 function AddActac(idExpediente, idescritoi, peticionarios) {
 
@@ -2319,6 +2310,9 @@ function AddActac(idExpediente, idescritoi, peticionarios) {
     ventana_acpeta_visitaduria('Selecciona el peticionario para continuar', idExpediente, peticionarios);
     $('#idescritoim').val(idescritoi)
     Carga_Informacion_selec_quejas();
+    $('#lugar').select2();
+    $('#origenPet').select2();
+    $('#catEstado_hechos').select2();
     $('#Input_autoridades').select2();
     $("#origenPetExt").css("display", "none");
     $("#origenPetExtedo").css("display", "none");
@@ -3962,69 +3956,68 @@ function arregloIdentificación() {
 }
 
 function Carga_Informacion_selec_quejas() {
+    return new Promise((resolve, reject) => {
+        fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
+            console.log(data);
+            let abogado = data.lista3;
+            let estado = data.lista4;
+            let autoridad = data.lista2;
+            let estadoRM = data.lista5;
+            console.log(abogado);
+            console.log(estado);
+            console.log(estadoRM);
 
-    fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
-        console.log(data)
-        let abogado = data.lista3;
-        let estado = data.lista4;
-        let autoridad = data.lista2;
-        let estadoRM = data.lista5;
-        console.log(abogado);
-        console.log(estado);
-        console.log(estadoRM);
+            CargaDatosSelectOtro("#lugar", estado);
+            CargaDatosSelectOtro("#nomAbogado", abogado);
+            CargaDatosSelectOtro("#Input_LugarHechos", estado);
+            CargaDatosSelectOtro("#origenPet", estado);
+            CargaDatosSelectOtro("#catMunicipio_hechos", estado);
+            CargaDatosSelectOtro("#catEstado_hechos", estadoRM);
 
-        CargaDatosSelectOtro("#lugar", estado);
-        CargaDatosSelectOtro("#nomAbogado", abogado);
-        CargaDatosSelectOtro("#Input_LugarHechos", estado);
-        // CargaDatosSelectOtro("#Input_autoridades", autoridad);
-        CargaDatosSelectOtro("#origenPet", estado);
-        CargaDatosSelectOtro("#catMunicipio_hechos", estado);
-        CargaDatosSelectOtro("#catEstado_hechos", estadoRM);
+            var idUser = $("#idusuario").val();
+            console.log("ID_USER_SELECT:" + idUser);
+            $('#nomAbogado > option[value="' + idUser + '"]').attr('selected', 'selected');
+            $('#idabogado').val(idUser);
+            $('#idpet').val('1165');
+            $('#idEscrito_').val('2');
+            $('#nomAbogado').val(idUser).trigger('change.select2');
+            $("#nomAbogado").prop('readOnly', true);
+            $("#nombrePet").prop('readOnly', true);
+            $("#edadPet").prop('readOnly', true);
+            $("#sabeleerPet").prop('readOnly', true);
+            $("#escolaridadPet").prop('readOnly', true);
+            $("#callePet").prop('readOnly', true);
+            $("#numextPet").prop('readOnly', true);
+            $("#numintPet").prop('readOnly', true);
+            $("#cpPet").prop('readOnly', true);
+            $("#coloniaPet").prop('readOnly', true);
+            $("#municipioPet").prop('readOnly', true);
+            $("#estadoPet").prop('readOnly', true);
+            $("#ocupacionPet").prop('readOnly', true);
+            $("#telPet").prop('readOnly', true);
+            $("#correoPet").prop('readOnly', true);
+            $("#AutoridadesEI").prop('readOnly', true);
 
-        var idUser = $("#idusuario").val();
-        console.log("ID_USER_SELECT:" + idUser);
-        //$("#nomAbogado option[value='" + idUser + "'']").attr("selected", true);
-        $('#nomAbogado > option[value="' + idUser + '"]').attr('selected', 'selected');
-        $('#idabogado').val(idUser);
-        $('#idpet').val('1165');
-        $('#idEscrito_').val('2');
-        //$("#nomAbogado").val(idUser);
-        $('#nomAbogado').val(idUser).trigger('change.select2');
-        $("#nomAbogado").prop('readOnly', true);
-        $("#nombrePet").prop('readOnly', true);
-        $("#edadPet").prop('readOnly', true);
-        $("#sabeleerPet").prop('readOnly', true);
-        $("#escolaridadPet").prop('readOnly', true);
-        $("#callePet").prop('readOnly', true);
-        $("#numextPet").prop('readOnly', true);
-        $("#numintPet").prop('readOnly', true);
-        $("#cpPet").prop('readOnly', true);
-        $("#coloniaPet").prop('readOnly', true);
-        $("#municipioPet").prop('readOnly', true);
-        $("#estadoPet").prop('readOnly', true);
-        $("#ocupacionPet").prop('readOnly', true);
-        $("#telPet").prop('readOnly', true);
-        $("#correoPet").prop('readOnly', true);
-        $("#AutoridadesEI").prop('readOnly', true);
-
-        $("#nomAbogado").css("font-weight", "bold");
-        $("#nombrePet").css("font-weight", "bold");
-        $("#edadPet").css("font-weight", "bold");
-        $("#sabeleerPet").css("font-weight", "bold");
-        $("#escolaridadPet").css("font-weight", "bold");
-        $("#callePet").css("font-weight", "bold");
-        $("#numextPet").css("font-weight", "bold");
-        $("#numintPet").css("font-weight", "bold");
-        $("#cpPet").css("font-weight", "bold");
-        $("#coloniaPet").css("font-weight", "bold");
-        $("#municipioPet").css("font-weight", "bold");
-        $("#estadoPet").css("font-weight", "bold");
-        $("#ocupacionPet").css("font-weight", "bold");
-        $("#telPet").css("font-weight", "bold");
-        $("#correoPet").css("font-weight", "bold");
-        $("#AutoridadesEI").css("font-weight", "bold");
-        CambioColorInputs();
-    })
+            $("#nomAbogado").css("font-weight", "bold");
+            $("#nombrePet").css("font-weight", "bold");
+            $("#edadPet").css("font-weight", "bold");
+            $("#sabeleerPet").css("font-weight", "bold");
+            $("#escolaridadPet").css("font-weight", "bold");
+            $("#callePet").css("font-weight", "bold");
+            $("#numextPet").css("font-weight", "bold");
+            $("#numintPet").css("font-weight", "bold");
+            $("#cpPet").css("font-weight", "bold");
+            $("#coloniaPet").css("font-weight", "bold");
+            $("#municipioPet").css("font-weight", "bold");
+            $("#estadoPet").css("font-weight", "bold");
+            $("#ocupacionPet").css("font-weight", "bold");
+            $("#telPet").css("font-weight", "bold");
+            $("#correoPet").css("font-weight", "bold");
+            $("#AutoridadesEI").css("font-weight", "bold");
+            CambioColorInputs();
+            resolve();
+        });
+    });
 }
 
 function cargaInformacionSelectsEscritoInicial(contador, idLugar, ID_Autoridades) {

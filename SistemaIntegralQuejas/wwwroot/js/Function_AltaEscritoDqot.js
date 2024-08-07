@@ -419,7 +419,7 @@ function funcionesActac(nfrm) {
         var vari5 = $("#ubicacion" + nfrm).val()
         var vari6 = $("#idpeticionarioelegido" + nfrm).val()
         var vari7 = $("#idconsentimiento" + nfrm).val()
-        var vari8 = $("#origenPetval" + nfrm).val()
+        var vari8 = $("#origenPet" + nfrm).val()
         var vari9 = $("#edadPet" + nfrm).val()
         var vari10 = $("#sabeleerPet" + nfrm).val()
         var vari11 = $("#escolaridad" + nfrm).val()

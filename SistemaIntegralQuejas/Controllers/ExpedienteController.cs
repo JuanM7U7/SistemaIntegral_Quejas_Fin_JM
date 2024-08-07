@@ -934,7 +934,7 @@ namespace SistemaIntegralQuejas.Controllers
             string ubicacion = form["ubicacion" + nformulario].ToString();
             int idPet = int.Parse(form["idpeticionarioelegido" + nformulario].ToString());
             string nombrePet = form["nombrePet" + nformulario].ToString();
-            string origenPet = form["origenPetval" + nformulario].ToString();
+            string origenPet = form["origenPet" + nformulario].ToString();
             int consentimiento = int.Parse(form["idconsentimiento" + nformulario].ToString());
             int identificacionPet = int.Parse(form["idcredencial" + nformulario].ToString());
             int edadPet = int.Parse(form["edadPet" + nformulario].ToString());
@@ -3405,7 +3405,7 @@ namespace SistemaIntegralQuejas.Controllers
             String query = "";
 
             List<ActacModificado> lEscritoI = new List<ActacModificado>();
-            List<string> Arreglo_autoridades = new List<string>(); ;
+            List<string> Arreglo_autoridades = new List<string>(); 
 
             query = "exec Sp_Regresa_Acta_Circunstanciada_Edicion " + idActaC;
             string mensaje = "ok";
@@ -3473,7 +3473,7 @@ namespace SistemaIntegralQuejas.Controllers
                 DateTime fechaActual = DateTime.Now;
 
                 Acacircunstanciada =
-               new ActacModificado(Id, lugar, Diafecha, mes, año, abogado, cargo, siglas, horaInicio, ubicacion, peticionario, consentimiento, OrigenPetExt, edadPeticionario, SABE_LEER, escolaridad, callePeticionario, Num_exterior_Peticionario, Codigo_postalPeticionario, COLONIA_Peticionario,
+               new ActacModificado(Id, lugar, Diafecha, mes, año, abogado, cargo, siglas, horaInicio, ubicacion, peticionario, consentimiento, OrigenPeticionario, edadPeticionario, SABE_LEER, escolaridad, callePeticionario, Num_exterior_Peticionario, Codigo_postalPeticionario, COLONIA_Peticionario,
                MUNICIPIO_Peticionario, ESTADO, Ocupacion_peticionario, TELEFONO_Peticionario, email_peticionario, identificacionPet, fechaHechos, horaHechos, ubiHechos, hechos, horaTermino, OrigenPetExt, OrigenPetExtComp, idpet, compet, fechaActual);
                 lEscritoI.Add(Acacircunstanciada);
                 Arreglo_autoridades.Add((row["AUTORIDAD"]).ToString());
