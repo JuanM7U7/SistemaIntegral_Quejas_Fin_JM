@@ -52,7 +52,7 @@ $(document).ready(function () {
         $(".statusf").each(function (index) {
 
             
-            //console.log(index + ": " + $(this).val());
+            console.log(index + ": " + $(this).val());
             var ArregloidQqueja = $(this).val().toString().split('-');
             var idQueja = ArregloidQqueja[1];
             var statusQueja = ArregloidQqueja[0];
@@ -155,6 +155,7 @@ $(document).ready(function () {
                 })()
             } else
             {
+                console.log(aceptados);
                 return GeneraPdfRechazados(225, '', '', '', '', '', '', '', '', aceptados);
             }
         /*Metodo de swetalert*/
@@ -283,7 +284,15 @@ function mostrarResTblFormatos(response,response1) {
                     </select>`;
                     } else
                     {
-                        btnEscritook = `Aceptado`;
+                        if (full.status == 'Pendiente de Returno')
+                        {
+                            btnEscritook = `Rechazado`;
+                           
+                        } else
+                        {
+                            btnEscritook = `Aceptado`;
+                        }
+                       
                     }
                     return btnEscritook 
                 }
@@ -2114,17 +2123,19 @@ function GeneraPdfRechazados(id,visd,memo,p1,p2,p3,just,idsa,visitadorGeneral,ac
         $.ajax({
             type: "POST",
             url: "verPDFRechazo",
-            data: { idqueja: id,visd:visd,memo:memo,p1:p1,p2:p2,p3:p3,just:just,idsa:idsa,vg:visitadorGeneral,acep:aceptados },
+            data: { idqueja: id, visd: visd, memo: memo, p1: p1, p2: p2, p3: p3, just: just, idsa: idsa, vg: visitadorGeneral, acep: aceptados.toString() },
             dataType: "JSON",
             success: function (response) {
                 Swal.fire({
                     icon: "success",
                     title: "ID´s Aceptados",
                     text: "Todos los ID´s Fueron aceptados",
+                }).then(function () {
+                    location.reload();
                 });
             }
         });
-        location.reload();
+        //location.reload();
     }
     else {
         codigoArea = $("#idArea").val();
@@ -2137,7 +2148,14 @@ function GeneraPdfRechazados(id,visd,memo,p1,p2,p3,just,idsa,visitadorGeneral,ac
             dataType: "JSON",
             success: function (response) {
                 //console.log(response.data)
-                mostrarResTblFormatos(response.data, response.data1);
+                //mostrarResTblFormatos(response.data, response.data1);
+                Swal.fire({
+                    icon: "success",
+                    title: "ID´s Aceptados y/o Rechazados",
+                    text: "Todos los ID´s Fueron aceptados y/o Rechazados",
+                }).then(function () {
+                    location.reload();
+                });
             }
         });
         // console.log(ExportaDocumentorechazo + "?idqueja=" + id + "&visd=" + visd + "&memo=" + memo + "&p1=" + p1 + "&p2=" + p2 + "&p3=" + p3 + "&just=" + just + "&idsa=" + idsa + "&vg=" + visitadorGeneral); 

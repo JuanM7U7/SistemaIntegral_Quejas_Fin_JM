@@ -3350,7 +3350,7 @@ function GuardarAp() {
         if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
         if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
         if (formDQOT.Fecha_TurnoVG == '') { htm = htm + Requeridos() + 'Fecha de Recepción en VG<br>'; }
-        if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hecho violatiorio<br>'; }
+        if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hechos DQOT<br>'; }
         if ($("#tipexpediente-frmDatosCalificacion").val() == '99') { htm = htm + Requeridos() + 'Tipo Expediente<br>'; }
         if ($("#expedsc-frmDatosCalificacion").val() == '99') { htm = htm + Requeridos() + 'Expediente a aportar<br>'; }
         if ($("#descapo-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Descripción de la aportación<br>'; }
@@ -3538,7 +3538,7 @@ $(document).ready(function () {
             var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
             if ($("#programa-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Programa<br>'; }
             if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
-            if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hecho violatiorio<br>'; }
+            if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hechos DQOT <br>'; }
             if ($("#materia-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Materia<br>'; }
             if ($("#tipexpediente-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Tipo Expediente<br>'; }
             if ($("#especializado-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Especializado<br>'; }
