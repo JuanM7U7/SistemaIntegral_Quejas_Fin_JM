@@ -16,13 +16,15 @@
 @foreach (var itemp in Model)
 {
         var temp_fecha = @itemp.FechaDeCreacion.ToString().Split(' ');
-
+        DateTime fecha = Convert.ToDateTime(temp_fecha[0]);
+        var meses = new string[] { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre" };
+        
     <div class="row">
         <div class="col-xs-12">
             <h6 class="font-weight-bold text-right mr-4">COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA</h6>
             <h6 class="font-weight-bold text-right mr-4">DIRECCIÓN DE QUEJAS ORIENTACIÓN Y TRANSPARENCIA  </h6>
                 <h6 class="font-weight-bold text-right mr-4">MEMORANDUM: @itemp.NumMemorandum</h6>
-                <h6 class="font-weight-bold text-right mr-4">H. PUEBLA DE ZARAGOZA, @temp_fecha[0] </h6>
+                <h6 class="font-weight-bold text-right mr-4">H. Puebla de Zaragoza a @fecha.Day de @meses[fecha.Month - 1] de @fecha.Year</h6>
             <h6 class="font-weight-bold text-right mr-4 mb-3">REMISIÓN DE ESCRITOS INICIALES DE QUEJAS</h6>
         </div>
 

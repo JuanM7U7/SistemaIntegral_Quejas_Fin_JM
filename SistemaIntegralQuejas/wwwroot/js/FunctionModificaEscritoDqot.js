@@ -415,7 +415,7 @@ let formulariocanalizacion = `
                     window.open(ExportaDocumento, '_blank');
                     //location.href = ExportaDocumento;
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: 'Información guardada Correctamente: ',
                         showConfirmButton: false,
@@ -424,7 +424,7 @@ let formulariocanalizacion = `
 
                 } else {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Error al Insertar los datos',
                         showConfirmButton: false,
@@ -447,7 +447,7 @@ let formulariocanalizacion = `
                     //location.href = ExportaDocumento;
                     window.open(ExportaDocumentoacta, '_blank');
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: 'Información guardada Correctamente: ',
                         showConfirmButton: false,
@@ -456,7 +456,7 @@ let formulariocanalizacion = `
 
                 } else {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Error al Insertar los datos',
                         showConfirmButton: false,
@@ -1827,7 +1827,7 @@ function guardarDatosPeticionarios() {
 
                             if (resp.status) {
                                 Swal.fire({
-                                    position: 'top-end',
+                                    position: 'center',
                                     icon: 'success',
                                     title: 'Información guardada Correctamente, Id Queja: ' + idqueja,
                                     showConfirmButton: false,
@@ -1839,7 +1839,7 @@ function guardarDatosPeticionarios() {
 
                     } else {
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'success',
                             title: 'Información guardada Correctamente',
                             showConfirmButton: false,
@@ -1849,7 +1849,7 @@ function guardarDatosPeticionarios() {
 
                 } else {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Error al Insertar los datos, comuniquese ',
                         showConfirmButton: false,
