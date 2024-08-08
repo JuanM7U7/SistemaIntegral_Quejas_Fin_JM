@@ -16,7 +16,7 @@ $(document).ready(function () {
                 if (data.page == "Nouser")  {
 
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Usuario o Contraseña Iconrrecta',
                         showConfirmButton: false,

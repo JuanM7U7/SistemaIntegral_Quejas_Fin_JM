@@ -20,7 +20,8 @@ $(document).ready(function () {
 
     $("#buscar_idqueja").click(function (e) {
         e.preventDefault();
-
+        var idusuario = $('#idusuario').val();
+        var usuario = $('#usuario').val();
         Swal.fire({
             text: 'Cargando Quejas...',
             didOpen: () => {
@@ -324,24 +325,39 @@ $(document).ready(function () {
                     success: function (resp) {
                         console.log(resp)
                         if (resp.data) {
-
-                            $.ajax({
-                                type: "POST",
-                                url: "BuscardorFormatos",
-                                data: $('#frm_busquedaFormatos').serialize(),
-                                dataType: "JSON",
-                                success: function (response) {
-                                    mostrarResTblFormatos(response.data);
-                                    $('#btnTurnapexp').prop('disabled', true);
-                                }
-                            });
-
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
                                 title: 'Los expedientes han sido turnados correctamente',
                                 showConfirmButton: false,
                                 timer: 1500
+                            }).then(() => {
+                                Swal.fire({
+                                    text: 'Cargando Quejas...',
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    },
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    url: "BuscardorFormatos",
+                                    data: $('#frm_busquedaFormatos').serialize(),
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        mostrarResTblFormatos(response.data);
+                                        Swal.close();
+                                    },
+                                    error: function () {
+                                        Swal.close();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: 'Error al actualizar los datos, informe al área de sistemas'
+                                        });
+                                    }
+                                });
                             });
 
                         } else {
@@ -512,24 +528,40 @@ function GeneraEscrito_Inicial() {
                     if (resp.status) {
                         // window.open(ExportaDocumento, '_blank');
                         $("#modalformularioEscritoInicial").modal("hide");
-                        $.ajax({
-                            type: "POST",
-                            url: "BuscardorFormatos",
-                            data: $('#frm_busquedaFormatos').serialize(),
-                            dataType: "JSON",
-                            success: function (response) {
-                                mostrarResTblFormatos(response.data);
-                            }
-                        });
-
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'success',
-                            title: 'Información guardada Correctamente: ',
+                            title: 'Información Guardada Correctamente',
                             showConfirmButton: false,
                             timer: 1500
+                        }).then(() => {
+                            Swal.fire({
+                                text: 'Cargando Quejas...',
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                },
+                                allowOutsideClick: false,
+                                allowEscapeKey: false
+                            });
+                            $.ajax({
+                                type: "POST",
+                                url: "BuscardorFormatos",
+                                data: $('#frm_busquedaFormatos').serialize(),
+                                dataType: "JSON",
+                                success: function (response) {
+                                    mostrarResTblFormatos(response.data);
+                                    Swal.close();
+                                },
+                                error: function () {
+                                    Swal.close();
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'Error al actualizar los datos, informe al área de sistemas'
+                                    });
+                                }
+                            });
                         });
-
                     }
 
                 });
@@ -537,7 +569,7 @@ function GeneraEscrito_Inicial() {
 
             } else {
                 Swal.fire({
-                    position: 'top-end',
+                    position: 'center',
                     icon: 'error',
                     title: 'Error al Insertar los datos',
                     showConfirmButton: false,
@@ -575,24 +607,41 @@ function GeneraActaCircunstanciada() {
         data: $('#formActa1').serialize(),
         dataType: "JSON",
         success: function (response) {
-            $.ajax({
-                type: "POST",
-                url: "BuscardorFormatos",
-                data: $('#frm_busquedaFormatos').serialize(),
-                dataType: "JSON",
-                success: function (response) {
-                    mostrarResTblFormatos(response.data);
-                }
-            });
-
             Swal.fire({
                 position: 'center',
                 icon: 'success',
                 title: 'Información Actualizada Correctamente',
                 showConfirmButton: false,
                 timer: 1500
+            }).then(() => {
+                Swal.fire({
+                    text: 'Cargando Quejas...',
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "BuscardorFormatos",
+                    data: $('#frm_busquedaFormatos').serialize(),
+                    dataType: "JSON",
+                    success: function (response) {
+                        mostrarResTblFormatos(response.data);
+                        $("#modalFormPeticionario").modal("hide");
+                        Swal.close();
+                    },
+                    error: function () {
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al actualizar los datos, informe al área de sistemas'
+                        });
+                    }
+                });
             });
-
             $("#modalformularioActaCircunstanciada").modal("hide");
         }
     });
@@ -863,7 +912,6 @@ function validafechamodificacionDqot(fechaturno, fechafinmoddqot) {
 
 /*Metodo actualizado por christopher 13 - 12 - 2023*/
 function mostrarResTblFormatos(response) {
-
     tableBuscadorFormatos.DataTable({
         language: {
             "url": "/js/TablaJson.json"
@@ -1585,7 +1633,7 @@ function btnUpdatememo(element) {
                 if (resp.data) {
 
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: 'La información ha sido actualizada correctamente',
                         showConfirmButton: false,
@@ -1594,7 +1642,7 @@ function btnUpdatememo(element) {
 
                 } else {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Ocurrio un error al actualizar los datos, reporte el incidente al area de sistemas',
                         showConfirmButton: false,
@@ -1749,7 +1797,7 @@ function changeSelectPetActac(valors) {
                 document.querySelectorAll('.datapet').forEach(p => p.readOnly = true);
 
                 Swal.fire({
-                    position: 'top-end',
+                    position: 'center',
                     icon: 'error',
                     title: 'Error al obtener los datos, reporte el error del sistema',
                     showConfirmButton: false,
@@ -2010,27 +2058,44 @@ function eliminarExpediente() {
 
                             if (resp.status) {
                                 Swal.fire({
-                                    position: 'top-center',
+                                    position: 'center',
                                     icon: 'success',
                                     title: 'Expediente eliminado',
                                     showConfirmButton: false,
                                     timer: 1500
-                                })
-
-                                $.ajax({
-                                    type: "POST",
-                                    url: "BuscardorFormatos",
-                                    data: $('#frm_busquedaFormatos').serialize(),
-                                    dataType: "JSON",
-                                    success: function (response) {
-                                        mostrarResTblFormatos(response.data);
-                                        $('#tableEditFormatosDqot td:last-child:contains(1)').parents("tr").css("background-color", "#f5b8b5 !important");
-                                    }
+                                }).then(() => {
+                                    Swal.fire({
+                                        text: 'Cargando Quejas...',
+                                        didOpen: () => {
+                                            Swal.showLoading();
+                                        },
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false
+                                    });
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "BuscardorFormatos",
+                                        data: $('#frm_busquedaFormatos').serialize(),
+                                        dataType: "JSON",
+                                        success: function (response) {
+                                            mostrarResTblFormatos(response.data);
+                                            $('#tableEditFormatosDqot td:last-child:contains(1)').parents("tr").css("background-color", "#f5b8b5 !important");
+                                            Swal.close();
+                                        },
+                                        error: function () {
+                                            Swal.close();
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: 'Error al actualizar los datos, informe al área de sistemas'
+                                            });
+                                        }
+                                    });
                                 });
 
                             } else {
                                 Swal.fire({
-                                    position: 'top-center',
+                                    position: 'center',
                                     icon: 'error',
                                     title: 'Error al eliminar el expediente, informe al área de sistemas',
                                     showConfirmButton: false,
@@ -2043,7 +2108,7 @@ function eliminarExpediente() {
                     else {
 
                         Swal.fire({
-                            position: 'top-center',
+                            position: 'center',
                             icon: 'error',
                             title: 'Debe ingresar el motivo por el cual va a eliminar el expediente',
                             showConfirmButton: true,
@@ -2082,26 +2147,43 @@ function eliminarActac(Actacc, nombrepetligado) {
 
                 if (resp.status) {
                     Swal.fire({
-                        position: 'top-center',
+                        position: 'center',
                         icon: 'success',
                         title: 'Acta circunstanciada eliminado',
                         showConfirmButton: false,
                         timer: 1500
-                    })
-
-                    $.ajax({
-                        type: "POST",
-                        url: "BuscardorFormatos",
-                        data: $('#frm_busquedaFormatos').serialize(),
-                        dataType: "JSON",
-                        success: function (response) {
-                            mostrarResTblFormatos(response.data);
-                        }
+                    }).then(() => {
+                        Swal.fire({
+                            text: 'Cargando Quejas...',
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "BuscardorFormatos",
+                            data: $('#frm_busquedaFormatos').serialize(),
+                            dataType: "JSON",
+                            success: function (response) {
+                                mostrarResTblFormatos(response.data);
+                                Swal.close();
+                            },
+                            error: function () {
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Error al actualizar los datos, informe al área de sistemas'
+                                });
+                            }
+                        });
                     });
 
                 } else {
                     Swal.fire({
-                        position: 'top-center',
+                        position: 'center',
                         icon: 'error',
                         title: 'Error al eliminar el acta circunstanciada, informe al área de sistemas',
                         showConfirmButton: false,
@@ -2177,25 +2259,42 @@ function eliminarEscrito(id, nombrepetligado, idqueja) {
 
                 if (resp.status) {
                     Swal.fire({
-                        position: 'top-center',
+                        position: 'center',
                         icon: 'success',
                         title: 'Escrito eliminado',
                         showConfirmButton: false,
                         timer: 1500
-                    })
-
-                    $.ajax({
-                        type: "POST",
-                        url: "BuscardorFormatos",
-                        data: $('#frm_busquedaFormatos').serialize(),
-                        dataType: "JSON",
-                        success: function (response) {
-                            mostrarResTblFormatos(response.data);
-                        }
+                    }).then(() => {
+                        Swal.fire({
+                            text: 'Cargando Quejas...',
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "BuscardorFormatos",
+                            data: $('#frm_busquedaFormatos').serialize(),
+                            dataType: "JSON",
+                            success: function (response) {
+                                mostrarResTblFormatos(response.data);
+                                Swal.close();
+                            },
+                            error: function () {
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Error al actualizar los datos, informe al área de sistemas'
+                                });
+                            }
+                        });
                     });
                 } else {
                     Swal.fire({
-                        position: 'top-center',
+                        position: 'center',
                         icon: 'warning',
                         title: 'No se puede eliminar el escrito porque esta ligado a una acta circunstanciada',
                         showConfirmButton: false,
@@ -2346,26 +2445,43 @@ function eliminaActac(Actacc, nombrepetligado) {
 
                 if (resp.status) {
                     Swal.fire({
-                        position: 'top-center',
+                        position: 'center',
                         icon: 'success',
                         title: 'Acta circunstanciada eliminado',
                         showConfirmButton: false,
                         timer: 1500
-                    })
-
-                    $.ajax({
-                        type: "POST",
-                        url: "BuscardorFormatos",
-                        data: $('#frm_busquedaFormatos').serialize(),
-                        dataType: "JSON",
-                        success: function (response) {
-                            mostrarResTblFormatos(response.data);
-                        }
+                    }).then(() => {
+                        Swal.fire({
+                            text: 'Cargando Quejas...',
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "BuscardorFormatos",
+                            data: $('#frm_busquedaFormatos').serialize(),
+                            dataType: "JSON",
+                            success: function (response) {
+                                mostrarResTblFormatos(response.data);
+                                Swal.close();
+                            },
+                            error: function () {
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Error al actualizar los datos, informe al área de sistemas'
+                                });
+                            }
+                        });
                     });
 
                 } else {
                     Swal.fire({
-                        position: 'top-center',
+                        position: 'center',
                         icon: 'error',
                         title: 'Error al eliminar el acta circunstanciada, informe al área de sistemas',
                         showConfirmButton: false,
@@ -4059,27 +4175,43 @@ function updateDatosPeticionarios() {
                 if (data.idpeticionario > 0 && data.idcomplemento > 0) {
 
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: 'Información Actualizada Correctamente',
                         showConfirmButton: false,
                         timer: 1500
-                    })
-
-                    $.ajax({
-                        type: "POST",
-                        url: "BuscardorFormatos",
-                        data: $('#frm_busquedaFormatos').serialize(),
-                        dataType: "JSON",
-                        success: function (response) {
-                            mostrarResTblFormatos(response.data);
-                            $("#modalFormPeticionario").modal("hide");
-                        }
+                    }).then(() => {
+                        Swal.fire({
+                            text: 'Cargando Quejas...',
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "BuscardorFormatos",
+                            data: $('#frm_busquedaFormatos').serialize(),
+                            dataType: "JSON",
+                            success: function (response) {
+                                mostrarResTblFormatos(response.data);
+                                $("#modalFormPeticionario").modal("hide");
+                                Swal.close();
+                            },
+                            error: function () {
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Error al actualizar los datos, informe al área de sistemas'
+                                });
+                            }
+                        });
                     });
-
                 } else {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Error al actualizar los datos, informe al área de sistemas',
                         showConfirmButton: false,
@@ -4149,22 +4281,38 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
 
                         if (resp.status) {
                             Swal.fire({
-                                position: 'top-center',
+                                position: 'center',
                                 icon: 'success',
-                                title: 'Peticionario eliminado',
+                                title: 'Peticionario Elimin',
                                 showConfirmButton: false,
                                 timer: 1500
-                            })
-
-                            $.ajax({
-                                type: "POST",
-                                url: "BuscardorFormatos",
-                                data: $('#frm_busquedaFormatos').serialize(),
-                                dataType: "JSON",
-                                success: function (response) {
-                                    console.log(response.data)
-                                    mostrarResTblFormatos(response.data);
-                                }
+                            }).then(() => {
+                                Swal.fire({
+                                    text: 'Cargando Quejas...',
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    },
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    url: "BuscardorFormatos",
+                                    data: $('#frm_busquedaFormatos').serialize(),
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        mostrarResTblFormatos(response.data);
+                                        Swal.close();
+                                    },
+                                    error: function () {
+                                        Swal.close();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: 'Error al actualizar los datos, informe al área de sistemas'
+                                        });
+                                    }
+                                });
                             });
                         }
                     });
@@ -4821,24 +4969,41 @@ function EnviarQueja() {
                 data: $('.formQueja').serialize(),
                 dataType: "JSON",
                 success: function (response) {
+                    $("#modaldatoscomplementariosqueja").modal("hide");
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
                         title: 'Escrito Inicial Enviado a turno',
                         showConfirmButton: false,
                         timer: 1500
+                    }).then(() => {
+                        Swal.fire({
+                            text: 'Cargando Quejas...',
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "BuscardorFormatos",
+                            data: $('#frm_busquedaFormatos').serialize(),
+                            dataType: "JSON",
+                            success: function (response) {
+                                mostrarResTblFormatos(response.data);
+                                Swal.close();
+                            },
+                            error: function () {
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Error al actualizar los datos, informe al área de sistemas'
+                                });
+                            }
+                        });
                     });
-                    $("#modaldatoscomplementariosqueja").modal("hide");
-                    $.ajax({
-                        type: "POST",
-                        url: "BuscardorFormatos",
-                        data: $('#frm_busquedaFormatos').serialize(),
-                        dataType: "JSON",
-                        success: function (response) {
-                            mostrarResTblFormatos(response.data);
-                        }
-                    });
-
                 }
             });
 
