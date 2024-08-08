@@ -270,7 +270,7 @@ let crearformularios = 0;
                                 $('#hechos1').val($('#CircunstanciasHechos').val())
 
                                 Swal.fire({
-                                    position: 'top-end',
+                                    position: 'center',
                                     icon: 'success',
                                     title: 'Información guardada Correctamente: ',
                                     showConfirmButton: false,
@@ -284,7 +284,7 @@ let crearformularios = 0;
 
                     } else {
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'error',
                             title: 'Error al Insertar los datos',
                             showConfirmButton: false,
@@ -488,7 +488,7 @@ function funcionesActac(nfrm) {
                                 if (resp.status) {
                                     $('#idenlaceformatquejac' + nfrm).val(resp.idinsertado);
                                     Swal.fire({
-                                        position: 'top-end',
+                                        position: 'center',
                                         icon: 'success',
                                         title: 'Información guardada Correctamente',
                                         showConfirmButton: false,
@@ -511,7 +511,7 @@ function funcionesActac(nfrm) {
                                 if (resp.status) {
                                     $('#idenlaceformatquejac' + nfrm).val(resp.respidenlacequeja);
                                     Swal.fire({
-                                        position: 'top-end',
+                                        position: 'center',
                                         icon: 'success',
                                         title: 'Información guardada Correctamente',
                                         showConfirmButton: false,
@@ -526,7 +526,7 @@ function funcionesActac(nfrm) {
                         frmcompleto("#tab3");
                     } else {
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'error',
                             title: 'Error al Insertar los datos',
                             showConfirmButton: false,
@@ -2327,7 +2327,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                             seleccionarSelectacp();
 
                             Swal.fire({
-                                position: 'top-end',
+                                position: 'center',
                                 icon: 'success',
                                 title: 'Información guardada Correctamente, Id Queja: ' + idqueja,
                                 showConfirmButton: false,
@@ -2394,7 +2394,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                         seleccionarSelectacp();
 
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'success',
                             title: 'Información guardada Correctamente',
                             showConfirmButton: false,
@@ -2442,7 +2442,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                     }
 
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: 'Información guardada Correctamente',
                         showConfirmButton: false,
@@ -2453,7 +2453,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
 
             } else {
                 Swal.fire({
-                    position: 'top-end',
+                    position: 'center',
                     icon: 'error',
                     title: 'Error al Insertar los datos, reporte el error del sistema',
                     showConfirmButton: false,
@@ -2555,7 +2555,7 @@ function changeSelectPetActac() {
                     document.querySelectorAll('.datapet').forEach(p => p.readOnly = true);
 
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Error al obtener los datos, reporte el error del sistema',
                         showConfirmButton: false,

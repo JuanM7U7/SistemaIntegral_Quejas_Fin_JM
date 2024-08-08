@@ -1703,11 +1703,24 @@ namespace SistemaIntegralQuejas.Controllers
             string via_interposicion = form["txt_via"].ToString();
             string estatus_queja = form["txt_EstQueja"].ToString();
             string fecha_reg = form["txt_fecha"].ToString();
+            string rolabogado = form["txt_abogado"].ToString();
+            string rolabogadodesc = form["txt_abogado_rol"].ToString();
             string estatusFormatos = "";
 
             List<TablaBusquedaFormatos> listformatos = new List<TablaBusquedaFormatos>();
             List<TblActac> arreglo_actac = new List<TblActac>();
-            String query = "exec Sp_Select_Formatos_Queja '" + nom_peticionario + "' ,'" + ap_peticionario + "' ,'" + am_peticionario + "', '" + curp + "', '" + idqueja + "','" + via_interposicion + "','" + estatus_queja + "','" + fecha_reg + "'";
+            string query = "";
+            if (rolabogadodesc== "VA_DQOT")
+            {
+                 query = "exec Sp_Select_Formatos_Queja_VADQOT '" + nom_peticionario + "' ,'" + ap_peticionario + "' ,'" + am_peticionario + "', '" + curp + "', '" + idqueja + "','" + via_interposicion + "','" + estatus_queja + "','" + fecha_reg + "'," + rolabogado + "";
+            }
+            else
+            {
+                 query = "exec Sp_Select_Formatos_Queja '" + nom_peticionario + "' ,'" + ap_peticionario + "' ,'" + am_peticionario + "', '" + curp + "', '" + idqueja + "','" + via_interposicion + "','" + estatus_queja + "','" + fecha_reg + "'";
+            }
+
+
+
             String query_petiexp = "";
             String query_actasc = "";
             String query_turnoexp = "";
