@@ -419,46 +419,58 @@ namespace SistemaIntegralQuejas.Controllers
             int status_exp = 6;
             string mensajet = "no";
 
-            string num_memorandum = form["num_memosendexp"].ToString();
+            //var num_memorandum = form["num_memosendexp"].ToList();
             string fk_area_origen = form["area_origen"].ToString();
             string fk_usuario = form["usuario_registra"].ToString();
 
+            List<Memorandum> lstNumMemos = JsonConvert.DeserializeObject<List<Memorandum>>(form["num_memosendexp"].ToString());
             List<ExpedienteTurnoModificado> lstExpedientesTurnados = JsonConvert.DeserializeObject<List<ExpedienteTurnoModificado>>(form["dataexpturno"].ToString());
             bool resp = false;
 
             if (lstExpedientesTurnados.Count > 0)
             {
-                string asunto = "Remisión de escritos iniciales de quejas a la " + lstExpedientesTurnados[0].Txtvisitaduria + " Visitaduría";
-
-                queryinsert_memo = "exec Sp_Insert_Memorandum '" + num_memorandum + "','" + fk_area_origen + "','" + lstExpedientesTurnados[0].Clavevisitaduria + "','" + asunto + "','" + fk_usuario + "', '" + lstExpedientesTurnados[0].fk_iduserdestinatario + "'";
-                int n_memo = conexionsql.InsertUpdateDeleteRegresaid(queryinsert_memo);
-
-                if (n_memo > 0)
+                foreach (Memorandum nm in lstNumMemos)
                 {
-                    for (int i = 0; i < lstExpedientesTurnados.Count; i++)
+                    string asunto = "Remisión de escritos iniciales de quejas a la " + lstExpedientesTurnados[0].Txtvisitaduria + " Visitaduría";
+                    queryinsert_memo = "exec Sp_Insert_Memorandum '" + nm.num_memo + "','" + fk_area_origen + "','" + nm.visitaduria + "','" + asunto + "','" + fk_usuario + "', '" + nm.destinatario + "'";
+                    int n_memo = conexionsql.InsertUpdateDeleteRegresaid(queryinsert_memo);
+
+                    if (n_memo > 0)
                     {
-                        queryupdatestatusext = "exec Sp_Update_Status_Expediente '" + lstExpedientesTurnados[i].IdExpediente + "','" + status_exp + "'";
-                        int sino = conexionsql.InsertUpdateDeleteRegresaid(queryupdatestatusext);
-
-                        if (sino > 0)
+                        foreach (ExpedienteTurnoModificado expedT in lstExpedientesTurnados.Where(x=> x.Clavevisitaduria==nm.visitaduria))
                         {
-                            queryupdatetblturno = "exec Sp_Update_Expediente_Turno '" + lstExpedientesTurnados[i].IdExpediente + "','" + lstExpedientesTurnados[i].Fechaturnovisitaduriatxt + "', '" + lstExpedientesTurnados[i].Clavevisitaduria + "', '" + n_memo + "', '" + lstExpedientesTurnados[i].FechastrFinDqot + "'";
-                            int sinot = conexionsql.InsertUpdateDeleteRegresaid(queryupdatetblturno);
+                            queryupdatestatusext = "exec Sp_Update_Status_Expediente '" + expedT.IdExpediente + "','" + status_exp + "'";
+                            int sino = conexionsql.InsertUpdateDeleteRegresaid(queryupdatestatusext);
 
-                            if (sinot > 0)
+                            if (sino > 0)
                             {
-                                resp = true;
-                                mensajet = "ok";
+                                queryupdatetblturno = "exec Sp_Update_Expediente_Turno '" + expedT.IdExpediente + "','" + expedT.Fechaturnovisitaduriatxt + "', '" + expedT.Clavevisitaduria + "', '" + n_memo + "', '" + expedT.FechastrFinDqot + "'";
+                                int sinot = conexionsql.InsertUpdateDeleteRegresaid(queryupdatetblturno);
+                                if (sinot > 0)
+                                {
+                                    resp = true;
+                                    mensajet = "ok";
+                                }
                             }
                         }
-
                     }
                 }
-
             }
-
             return Json(new { mensaje = mensajet, data = resp });
+        }
 
+        public class Memorandum
+        {
+            public int visitaduria { get; set; }
+            public string num_memo { get; set; }
+            public int destinatario { get; set; }
+            public Memorandum() { }
+            public Memorandum(int visitaduria, string num_memo, int destinatario)
+            {
+                this.visitaduria = visitaduria;
+                this.num_memo = num_memo;
+                this.destinatario = destinatario;
+            }
         }
 
         public async Task<ActionResult> ActualizaMemorandumDqot(IFormCollection form)

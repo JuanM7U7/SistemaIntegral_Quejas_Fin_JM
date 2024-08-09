@@ -247,6 +247,136 @@ $(document).ready(function () {
         return body;
     });
 
+    //$("#btnTurnapexp").click(function (e) {
+    //    e.preventDefault();
+
+    //    let filas = $('#tableEditFormatosDqot').dataTable().fnGetNodes();
+    //    let cont = 0;
+    //    let arrayTurnados = [];
+    //    let dataTurnoexp = new FormData();
+    //    let fechaFinEditDqot = getSinFestivosNiFinDeSemana(fechActual, 2);
+    //    let fechActualtv = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
+    //    fechActualtv = getSinFestivosNiFinDeSemana(fechActualtv, 2);
+    //    $(filas).each(function (index) {
+    //        let valorselect = $(this).find('.selTurno').val();
+
+    //        if (valorselect != undefined) {
+
+    //            if ($(this).find('.selTurno')[0].disabled == false && valorselect != "") {
+    //                let idVisitaduria = valorselect.split("/")[0];
+    //                let idQueja = valorselect.split("/")[1];
+    //                let idtitular = valorselect.split("/")[2];
+
+    //                arrayTurnados.push({
+    //                    IdExpediente: idQueja,
+    //                    Clavevisitaduria: idVisitaduria,
+    //                    Fechaturnovisitaduriatxt: fechActualtv + ' ' + horaActualFin,
+    //                    fk_iduserdestinatario: idtitular,
+    //                    FechastrFinDqot: fechaFinEditDqot + ' ' + horaActualFin
+    //                });
+    //            }
+
+    //        }
+
+    //    });
+
+    //    dataTurnoexp.append('dataexpturno', JSON.stringify(arrayTurnados));
+    //    let tblexp_aturnar = retornatabla(JSON.stringify(arrayTurnados));
+
+    //    swal.fire({
+    //        title: 'Se turnaran los siguientes expedientes',
+    //        input: "text",
+    //        inputAttributes: {
+    //            autocapitalize: "off",
+    //            placeholder: 'Ingrese el número de memorandum ligado a este turnado de expedientes',
+    //            required: true
+    //        },
+    //        inputValidator: (value) => {
+    //            return new Promise((resolve) => {
+    //                if (value === '') {
+    //                    resolve('Ingrese el número de memorandum ligado a este turnado de expedientes')
+    //                } else {
+    //                    resolve()
+    //                }
+    //            })
+    //        },
+    //        html: tblexp_aturnar,
+    //        showCancelButton: true,
+    //        confirmButtonColor: '#3085d6',
+    //        cancelButtonColor: '#d33',
+    //        confirmButtonText: 'Confirmar',
+    //        cancelButtonText: 'Cancelar',
+    //        allowOutsideClick: false
+    //    }).then((result) => {
+    //        if (result.isConfirmed) {
+
+    //            let num_memoexpsend = result.value;
+    //            dataTurnoexp.append('num_memosendexp', num_memoexpsend);
+    //            dataTurnoexp.append('area_origen', $('#idArea').val());
+    //            dataTurnoexp.append('usuario_registra', $('#idusuario').val());
+
+    //            $.ajax({
+    //                type: "post",
+    //                url: 'TurnoPreliminar',
+    //                contentType: false,
+    //                processData: false,
+    //                data: dataTurnoexp,
+    //                dataType: "json",
+    //                success: function (resp) {
+    //                    console.log(resp)
+    //                    if (resp.data) {
+    //                        Swal.fire({
+    //                            position: 'center',
+    //                            icon: 'success',
+    //                            title: 'Los expedientes han sido turnados correctamente',
+    //                            showConfirmButton: false,
+    //                            timer: 1500
+    //                        }).then(() => {
+    //                            Swal.fire({
+    //                                text: 'Cargando Quejas...',
+    //                                didOpen: () => {
+    //                                    Swal.showLoading();
+    //                                },
+    //                                allowOutsideClick: false,
+    //                                allowEscapeKey: false
+    //                            });
+    //                            $.ajax({
+    //                                type: "POST",
+    //                                url: "BuscardorFormatos",
+    //                                data: $('#frm_busquedaFormatos').serialize(),
+    //                                dataType: "JSON",
+    //                                success: function (response) {
+    //                                    mostrarResTblFormatos(response.data);
+    //                                    Swal.close();
+    //                                },
+    //                                error: function () {
+    //                                    Swal.close();
+    //                                    Swal.fire({
+    //                                        icon: 'error',
+    //                                        title: 'Error',
+    //                                        text: 'Error al actualizar los datos, informe al área de sistemas'
+    //                                    });
+    //                                }
+    //                            });
+    //                        });
+
+    //                    } else {
+    //                        Swal.fire({
+    //                            position: 'center',
+    //                            icon: 'error',
+    //                            title: 'Ocurrio un error al turnar los expedientes, reporte el incidente al area a de sistemas',
+    //                            showConfirmButton: false,
+    //                            timer: 1500
+    //                        });
+    //                    }
+
+    //                }
+    //            });
+
+    //        }
+    //    });
+
+    //});
     $("#btnTurnapexp").click(function (e) {
         e.preventDefault();
 
@@ -279,38 +409,58 @@ $(document).ready(function () {
             }
 
         });
+        let CVIUnicos = new Set();
+        arrayTurnados.forEach(obj => {
+            CVIUnicos.add(JSON.stringify({ visit: obj.Clavevisitaduria, destina: obj.fk_iduserdestinatario }));
+        });
+        let CVIUniF = Array.from(CVIUnicos).map(item => JSON.parse(item));
+
 
         dataTurnoexp.append('dataexpturno', JSON.stringify(arrayTurnados));
         let tblexp_aturnar = retornatabla(JSON.stringify(arrayTurnados));
+        CVIUniF.sort((a, b) => a.visit - b.visit).forEach(v => {
+            var visit = '';
+            switch (v.visit) {
+                case '1': visit = `P`; break;
+                case '2': visit = `S`; break;
+                case '3': visit = `T`; break;
+                case '4': visit = `C`; break;
+            }
+            tblexp_aturnar += `<label>No. Memorándum ${visit}VG:</label><input id="swal-input${v.visit}" class="swal2-input" placeholder="Ingrese el número de memorándum ligado a este turnado de expedientes">`;
+        });
 
-        swal.fire({
-            title: 'Se turnaran los siguientes expedientes',
-            input: "text",
-            inputAttributes: {
-                autocapitalize: "off",
-                placeholder: 'Ingrese el número de memorandum ligado a este turnado de expedientes',
-                required: true
-            },
-            inputValidator: (value) => {
-                return new Promise((resolve) => {
-                    if (value === '') {
-                        resolve('Ingrese el número de memorandum ligado a este turnado de expedientes')
-                    } else {
-                        resolve()
-                    }
-                })
-            },
+        Swal.fire({
+            title: "Se turnaran los siguientes expedientes",
             html: tblexp_aturnar,
+            focusConfirm: false,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Confirmar',
             cancelButtonText: 'Cancelar',
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            preConfirm: () => {
+                let inputs = [];
+                for (let v of CVIUniF.sort((a, b) => a.visit - b.visit)) {
+                    let inputVal = document.getElementById(`swal-input${v.visit}`).value;
+                    if (!inputVal) {
+                        var visit = '';
+                        switch (v.visit) {
+                            case '1': visit = `P`; break;
+                            case '2': visit = `S`; break;
+                            case '3': visit = `T`; break;
+                            case '4': visit = `C`; break;
+                        }
+                        Swal.showValidationMessage(`Ingrese el número de memorandum para ${visit}VG`);
+                        return false;
+                    }
+                    inputs.push({ visitaduria: v.visit, num_memo: inputVal, destinatario: v.destina });
+                }
+                return inputs;
+            }
         }).then((result) => {
             if (result.isConfirmed) {
-
-                let num_memoexpsend = result.value;
+                let num_memoexpsend = JSON.stringify(result.value);
                 dataTurnoexp.append('num_memosendexp', num_memoexpsend);
                 dataTurnoexp.append('area_origen', $('#idArea').val());
                 dataTurnoexp.append('usuario_registra', $('#idusuario').val());
@@ -372,12 +522,102 @@ $(document).ready(function () {
 
                     }
                 });
-
             }
         });
+        //swal.fire({
+        //    title: 'Se turnaran los siguientes expedientes',
+        //    input: "text",
+        //    inputAttributes: {
+        //        autocapitalize: "off",
+        //        placeholder: 'Ingrese el número de memorandum ligado a este turnado de expedientes',
+        //        required: true
+        //    },
+        //    inputValidator: (value) => {
+        //        return new Promise((resolve) => {
+        //            if (value === '') {
+        //                resolve('Ingrese el número de memorandum ligado a este turnado de expedientes')
+        //            } else {
+        //                resolve()
+        //            }
+        //        })
+        //    },
+        //    html: tblexp_aturnar,
+        //    showCancelButton: true,
+        //    confirmButtonColor: '#3085d6',
+        //    cancelButtonColor: '#d33',
+        //    confirmButtonText: 'Confirmar',
+        //    cancelButtonText: 'Cancelar',
+        //    allowOutsideClick: false
+        //}).then((result) => {
+        //    if (result.isConfirmed) {
+
+        //        let num_memoexpsend = result.value;
+        //        dataTurnoexp.append('num_memosendexp', num_memoexpsend);
+        //        dataTurnoexp.append('area_origen', $('#idArea').val());
+        //        dataTurnoexp.append('usuario_registra', $('#idusuario').val());
+
+        //        $.ajax({
+        //            type: "post",
+        //            url: 'TurnoPreliminar',
+        //            contentType: false,
+        //            processData: false,
+        //            data: dataTurnoexp,
+        //            dataType: "json",
+        //            success: function (resp) {
+        //                console.log(resp)
+        //                if (resp.data) {
+        //                    Swal.fire({
+        //                        position: 'center',
+        //                        icon: 'success',
+        //                        title: 'Los expedientes han sido turnados correctamente',
+        //                        showConfirmButton: false,
+        //                        timer: 1500
+        //                    }).then(() => {
+        //                        Swal.fire({
+        //                            text: 'Cargando Quejas...',
+        //                            didOpen: () => {
+        //                                Swal.showLoading();
+        //                            },
+        //                            allowOutsideClick: false,
+        //                            allowEscapeKey: false
+        //                        });
+        //                        $.ajax({
+        //                            type: "POST",
+        //                            url: "BuscardorFormatos",
+        //                            data: $('#frm_busquedaFormatos').serialize(),
+        //                            dataType: "JSON",
+        //                            success: function (response) {
+        //                                mostrarResTblFormatos(response.data);
+        //                                Swal.close();
+        //                            },
+        //                            error: function () {
+        //                                Swal.close();
+        //                                Swal.fire({
+        //                                    icon: 'error',
+        //                                    title: 'Error',
+        //                                    text: 'Error al actualizar los datos, informe al área de sistemas'
+        //                                });
+        //                            }
+        //                        });
+        //                    });
+
+        //                } else {
+        //                    Swal.fire({
+        //                        position: 'center',
+        //                        icon: 'error',
+        //                        title: 'Ocurrio un error al turnar los expedientes, reporte el incidente al area a de sistemas',
+        //                        showConfirmButton: false,
+        //                        timer: 1500
+        //                    });
+        //                }
+
+        //            }
+        //        });
+
+        //    }
+        //});
 
     });
-
 });
 
 function retornatabla(data) {
