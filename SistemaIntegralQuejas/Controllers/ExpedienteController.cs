@@ -419,46 +419,58 @@ namespace SistemaIntegralQuejas.Controllers
             int status_exp = 6;
             string mensajet = "no";
 
-            string num_memorandum = form["num_memosendexp"].ToString();
+            //var num_memorandum = form["num_memosendexp"].ToList();
             string fk_area_origen = form["area_origen"].ToString();
             string fk_usuario = form["usuario_registra"].ToString();
 
+            List<Memorandum> lstNumMemos = JsonConvert.DeserializeObject<List<Memorandum>>(form["num_memosendexp"].ToString());
             List<ExpedienteTurnoModificado> lstExpedientesTurnados = JsonConvert.DeserializeObject<List<ExpedienteTurnoModificado>>(form["dataexpturno"].ToString());
             bool resp = false;
 
             if (lstExpedientesTurnados.Count > 0)
             {
-                string asunto = "Remisión de escritos iniciales de quejas a la " + lstExpedientesTurnados[0].Txtvisitaduria + " Visitaduría";
-
-                queryinsert_memo = "exec Sp_Insert_Memorandum '" + num_memorandum + "','" + fk_area_origen + "','" + lstExpedientesTurnados[0].Clavevisitaduria + "','" + asunto + "','" + fk_usuario + "', '" + lstExpedientesTurnados[0].fk_iduserdestinatario + "'";
-                int n_memo = conexionsql.InsertUpdateDeleteRegresaid(queryinsert_memo);
-
-                if (n_memo > 0)
+                foreach (Memorandum nm in lstNumMemos)
                 {
-                    for (int i = 0; i < lstExpedientesTurnados.Count; i++)
+                    string asunto = "Remisión de escritos iniciales de quejas a la " + lstExpedientesTurnados[0].Txtvisitaduria + " Visitaduría";
+                    queryinsert_memo = "exec Sp_Insert_Memorandum '" + nm.num_memo + "','" + fk_area_origen + "','" + nm.visitaduria + "','" + asunto + "','" + fk_usuario + "', '" + nm.destinatario + "'";
+                    int n_memo = conexionsql.InsertUpdateDeleteRegresaid(queryinsert_memo);
+
+                    if (n_memo > 0)
                     {
-                        queryupdatestatusext = "exec Sp_Update_Status_Expediente '" + lstExpedientesTurnados[i].IdExpediente + "','" + status_exp + "'";
-                        int sino = conexionsql.InsertUpdateDeleteRegresaid(queryupdatestatusext);
-
-                        if (sino > 0)
+                        foreach (ExpedienteTurnoModificado expedT in lstExpedientesTurnados.Where(x=> x.Clavevisitaduria==nm.visitaduria))
                         {
-                            queryupdatetblturno = "exec Sp_Update_Expediente_Turno '" + lstExpedientesTurnados[i].IdExpediente + "','" + lstExpedientesTurnados[i].Fechaturnovisitaduriatxt + "', '" + lstExpedientesTurnados[i].Clavevisitaduria + "', '" + n_memo + "', '" + lstExpedientesTurnados[i].FechastrFinDqot + "'";
-                            int sinot = conexionsql.InsertUpdateDeleteRegresaid(queryupdatetblturno);
+                            queryupdatestatusext = "exec Sp_Update_Status_Expediente '" + expedT.IdExpediente + "','" + status_exp + "'";
+                            int sino = conexionsql.InsertUpdateDeleteRegresaid(queryupdatestatusext);
 
-                            if (sinot > 0)
+                            if (sino > 0)
                             {
-                                resp = true;
-                                mensajet = "ok";
+                                queryupdatetblturno = "exec Sp_Update_Expediente_Turno '" + expedT.IdExpediente + "','" + expedT.Fechaturnovisitaduriatxt + "', '" + expedT.Clavevisitaduria + "', '" + n_memo + "', '" + expedT.FechastrFinDqot + "'";
+                                int sinot = conexionsql.InsertUpdateDeleteRegresaid(queryupdatetblturno);
+                                if (sinot > 0)
+                                {
+                                    resp = true;
+                                    mensajet = "ok";
+                                }
                             }
                         }
-
                     }
                 }
-
             }
-
             return Json(new { mensaje = mensajet, data = resp });
+        }
 
+        public class Memorandum
+        {
+            public int visitaduria { get; set; }
+            public string num_memo { get; set; }
+            public int destinatario { get; set; }
+            public Memorandum() { }
+            public Memorandum(int visitaduria, string num_memo, int destinatario)
+            {
+                this.visitaduria = visitaduria;
+                this.num_memo = num_memo;
+                this.destinatario = destinatario;
+            }
         }
 
         public async Task<ActionResult> ActualizaMemorandumDqot(IFormCollection form)
@@ -1703,11 +1715,24 @@ namespace SistemaIntegralQuejas.Controllers
             string via_interposicion = form["txt_via"].ToString();
             string estatus_queja = form["txt_EstQueja"].ToString();
             string fecha_reg = form["txt_fecha"].ToString();
+            string rolabogado = form["txt_abogado"].ToString();
+            string rolabogadodesc = form["txt_abogado_rol"].ToString();
             string estatusFormatos = "";
 
             List<TablaBusquedaFormatos> listformatos = new List<TablaBusquedaFormatos>();
             List<TblActac> arreglo_actac = new List<TblActac>();
-            String query = "exec Sp_Select_Formatos_Queja '" + nom_peticionario + "' ,'" + ap_peticionario + "' ,'" + am_peticionario + "', '" + curp + "', '" + idqueja + "','" + via_interposicion + "','" + estatus_queja + "','" + fecha_reg + "'";
+            string query = "";
+            if (rolabogadodesc== "VA_DQOT")
+            {
+                 query = "exec Sp_Select_Formatos_Queja_VADQOT '" + nom_peticionario + "' ,'" + ap_peticionario + "' ,'" + am_peticionario + "', '" + curp + "', '" + idqueja + "','" + via_interposicion + "','" + estatus_queja + "','" + fecha_reg + "'," + rolabogado + "";
+            }
+            else
+            {
+                 query = "exec Sp_Select_Formatos_Queja '" + nom_peticionario + "' ,'" + ap_peticionario + "' ,'" + am_peticionario + "', '" + curp + "', '" + idqueja + "','" + via_interposicion + "','" + estatus_queja + "','" + fecha_reg + "'";
+            }
+
+
+
             String query_petiexp = "";
             String query_actasc = "";
             String query_turnoexp = "";
@@ -3171,11 +3196,13 @@ namespace SistemaIntegralQuejas.Controllers
             string idcomplemento_agrv = (form["id_complemento"]).ToString();
             string iduseragraviado = (form["id_peticionario"]).ToString();
             string id_via_interposicion = (form["id_via_interposicion"]).ToString();
+            int id_abogado_queja = 0;
+             id_abogado_queja = Convert.ToInt32(form["id_Abogado_Queja"].ToString());
             int idqueja = 0;
             int idenlacequeja = 0;
             bool statusresp = false;
 
-            string quey_insertqueja = "EXEC Sp_GeneraIdQueja " + id_via_interposicion;
+            string quey_insertqueja = "EXEC Sp_GeneraIdQueja " + id_via_interposicion+","+ id_abogado_queja;
 
             idqueja = conexionsql.InsertUpdateDeleteRegresaid(quey_insertqueja);
 

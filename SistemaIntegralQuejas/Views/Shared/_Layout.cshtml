@@ -118,7 +118,7 @@
                                     <button type="button" class="btn btndropdown dropdown-toggle" data-toggle="dropdown"> DQOT </button>
                                     <div class="dropdown-menu dropoption dropdown-menu-right dropdown-menu menu-maximo">
 
-                                        @if (User.IsInRole("ADMIN_DQOT") || User.IsInRole("VA_DQOT"))
+                                        @if (User.IsInRole("ADMIN_DQOT"))
                                         {
                                             <li class="dropdown-submenu">
                                             <li><a class="dropdown-item" asp-controller="Expediente" asp-action="index">Alta de escrito inicial</a></li>
@@ -133,6 +133,17 @@
                                             <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Bucador de ID´s</a></li>
                                             </li>
 
+                                    }else if ( User.IsInRole("VA_DQOT"))
+                                        {
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="index">Alta de escrito inicial</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Tomar turno</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Bucador de ID´s</a></li>
+                                            </li>
                                         }
 
 

@@ -2275,6 +2275,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                         FrmEnlacefq.append('id_complemento', $('#idcomplementopet' + numFrm).val());
                         FrmEnlacefq.append('id_peticionario', $('#idpeticionarioi' + numFrm).val());
                         FrmEnlacefq.append('id_via_interposicion', $('#select_viainterposicionc').val());
+                        FrmEnlacefq.append('id_Abogado_Queja', $('#idusuario').val());
                         // Se genera id de queja
                         fetchPost("Expediente/GeneraIdQueja", "json", FrmEnlacefq, (resp) => {
                             idqueja = resp.idqueja;
