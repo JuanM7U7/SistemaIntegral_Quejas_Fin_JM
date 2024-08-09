@@ -1042,7 +1042,7 @@ function formEscritoInicial2(action, id) {
     var cuerpo = '<div class="text-right">'
         + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
         + CreaBR()
-        + CreaInputs_Con_Label('Input_Peticionario2', 'Input_Peticionario2', '', 'text', 'Peticionaria/o:&nbsp;', 'textfield', 'placeholder="Nombre del peticionario"', 'style ="margin-left: 60%;"')
+        + CreaInputs_Con_Label('Input_Peticionario2', 'Input_Peticionario2', '', 'text', 'Peticionario/Agraviado:&nbsp;', 'textfield', 'placeholder="Nombre del peticionario"', 'style ="margin-left: 60%;"')
         + '</div>'
         + Crea_Parrafos('parrafo0', 'parrafo0', 'col-md-3 parrafo', 'DR. JOSÉ FELIX CEREZO VÉLEZ</br>PRESIDENTE DE LA COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA', 'style ="text-align: left;font-weight: bold;"')
         + '<div class="text-justify">'
@@ -2555,7 +2555,7 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja, fechavalidae
     let iformActaCircunstanciada = formActacircunstanciada2c();
     $('.formularioActaCircunstanciada').empty()
     $('.formularioActaCircunstanciada').append(iformActaCircunstanciada);
-
+    $(`#anio`).val(2024);
     $("#origenPetExt").css("display", "none");
     $("#origenPetExtedo").css("display", "none");
 
@@ -2651,6 +2651,7 @@ function AddActac(idExpediente, idescritoi, peticionarios) {
     let iformActaCircunstanciada = formActacircunstanciada2c();
     $('.formularioActaCircunstanciada').empty();
     $('.formularioActaCircunstanciada').append(iformActaCircunstanciada);
+    $(`#anio`).val(2024);
     ventana_acpeta_visitaduria('Selecciona el peticionario para continuar', idExpediente, peticionarios);
     $('#idescritoim').val(idescritoi)
     Carga_Informacion_selec_quejas();
@@ -2760,7 +2761,7 @@ function formActacircunstanciada2c
         CreaSelectLabel('lugar', '', arregloBlanco, '', 'En', '', 'validaselectdac')
         + CreaInputs_Con_Label('diaFecha', 'diaFecha', 'validanumerosac', 'number', ', a los', 'textfield', 'mes')
         + CreaSelectLabel('mes', '', arregloMeses(), '', 'días del mes de', 'textfield4', 'validaselectdac')
-        + CreaSelectLabel('anio', '', arregloAnio(), '', 'de', '', 'validaselectdac')
+        + CreaSelectLabeldisabled('anio', '', arregloAnio(), '', 'de', '', 'validaselectdac')
         //+ CreaInputs_Con_Label('nomAbogado', 'nomAbogado', '', 'text', ', el suscrito, licenciado', 'textfield5', 'placeholder="nombre de abogado"')
         + CreaSelectLabel('nomAbogado', '', arregloBlanco, '', ', el suscrito, licenciado', '', 'validaselectdac')
         + CreaInputs_Con_Label('puestoAbogado', 'puestoAbogado', '', 'text', ', en mi carácter de', 'textfield6', 'placeholder="cargo de abogado" value="' + Cargo + '" disabled')
@@ -2794,12 +2795,13 @@ function formActacircunstanciada2c
         + CreaInputs_Con_Label('horaHechos', 'horaHechos', 'validatimeac', 'time', 'a las', 'textfield10', '')
         + CreaInputs_Con_Label('ubiHechos', 'ubiHechos', 'validatxtac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"')
         //+ CreaSelectLabel('catMunicipio_hechos', '', arregloMun(), '', 'ubicado en el municipio de', '', 'validaselectdac')
-        + CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado dee', '', 'validaselectdac')
+        + CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado de ', '', 'validaselectdac')
         //+ CreaSelectLabel('catAutoridad', '', arregloEstado(), '', ', la(s) autoridad(es)', '')
         + CreaInputs_Con_Label('AutoridadesEI', 'AutoridadesEI', '', 'text', 'la(s) autoridad(es)', 'textfield10', 'placeholder="Autoridades"')
         + CreaTextArea('hechos', 'validanovacioac', 'style="width:100%"')
         + CreaInputs_Con_Label('horaTermino', 'horaTermino', 'validatimeac', 'time', 'dando por terminada la presente actuación a  las', 'textfield10', '')
-        + Crea_LabelCentro('textfield12', 'textfield12', '', 'horas. Hago constar lo anterior de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla para los efectos correspondientes----------------------------------<b>DOY FE.</b> ')
+        + CreaInputs_Con_Label('', '', 'inputac', 'text', 'horas.', 'textfield10', 'hidden', '')
+        + Crea_LabelCentro('textfield12', 'textfield12', '', 'Hago constar lo anterior de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla para los efectos correspondientes----------------------------------<b>DOY FE.</b> ')
         + crea_Boton('button', 'Previsualizar PDF', 'generaPDFActaC', 'btn btn-pinterest', 'GeneraActaC_pdf()')
         + crea_Boton('button', 'Guardar', 'saveActaC', 'btn btn-success', 'GeneraActaCircunstanciada()')
         + CreaInputs('idabogado', 'idabogado', '', 'hidden')

@@ -2001,7 +2001,7 @@ function formActacircunstanciada2c() {
         + CreaInputs_Con_Label('horaHechos', 'horaHechos', '', 'time', 'a las', 'textfield10', '')
         + CreaInputs_Con_Label('ubiHechos', 'ubiHechos', '', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"')
         + CreaSelectLabel('catMunicipio_hechos', '', arregloMun(), '', 'ubicado en el municipio de', '')
-        + CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado dee', '')
+        + CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado de ', '')
         + CreaSelectLabel('catAutoridad', '', arregloEstado(), '', ', la(s) autoridad(es)', '')
         + CreaTextArea('hechos', '', 'style="width:100%"')
         + CreaInputs_Con_Label('horaTermino', 'horaTermino', '', 'time', ', dando por terminada la presente actuación a  las', 'textfield10', '')
