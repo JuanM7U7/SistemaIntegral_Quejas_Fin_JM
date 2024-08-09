@@ -3196,11 +3196,13 @@ namespace SistemaIntegralQuejas.Controllers
             string idcomplemento_agrv = (form["id_complemento"]).ToString();
             string iduseragraviado = (form["id_peticionario"]).ToString();
             string id_via_interposicion = (form["id_via_interposicion"]).ToString();
+            int id_abogado_queja = 0;
+             id_abogado_queja = Convert.ToInt32(form["id_Abogado_Queja"].ToString());
             int idqueja = 0;
             int idenlacequeja = 0;
             bool statusresp = false;
 
-            string quey_insertqueja = "EXEC Sp_GeneraIdQueja " + id_via_interposicion;
+            string quey_insertqueja = "EXEC Sp_GeneraIdQueja " + id_via_interposicion+","+ id_abogado_queja;
 
             idqueja = conexionsql.InsertUpdateDeleteRegresaid(quey_insertqueja);
 
