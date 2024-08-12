@@ -869,6 +869,8 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
     $('#Input_autoridades').select2();
     $("#origenPetExt").css("display", "none");
     $("#origenPetExtedo").css("display", "none");
+
+
    
 }
 function addPeticionarios() {

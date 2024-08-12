@@ -618,6 +618,7 @@ function GeneraActaC_pdf() {
 
 function GeneraActaCircunstanciada() {
     console.log($('#anio').val());
+    $('#anioND').val($('#anio').val());
     if (validaTexto('validatxtac') || validaNum('validanumerosac') || validainputvacio('validaselectdac') || validainputvacio('validadateac') || validainputvacio('validatimeac') || validainputvacio('validanovacioac')) {
         return;
     }
@@ -1253,43 +1254,53 @@ function mostrarResTblFormatos(response) {
             {
                 'mRender': function (data, type, full) {
 
-                    let iconVermemo = '';
-                    // fecha 1900-01-01 10:00:00 PM se usa por default para valores nulos
-                    let disabled = full.status_Expediente == 'Turnado parcial a VG' ? 'disabled' : '';
-                    let cadena = `<div class="form-group"> <select class="form-control selTurno" ${disabled} style="width: auto;" id="selectTurnoexp${full.fkExpediente}"> <option value="">Seleccionar</option>`;
-                    let cont = 0;
-                    if (full.fkExpediente == 521) {
-                        let vas = full.fkExpediente;
-                        //console.log(vas);
-                    }
-                    for (i = 0; i < visitadurias.length; i++) {
-                        if (full.status_Expediente == 'Pendiente de turnar' || full.status_Expediente == 'Pendiente de Returno') {
-                            cont++;
-                            cadena = cadena + '<option data-idexpt="' + full.fkExpediente + '" class="btn-success" value=' + visitadurias[i].idSelect + '/' + full.fkExpediente + '/' + visitadurias[i].idUserTitular + '>' + visitadurias[i].descripcion + '</option>';
-                        } else if (full.status_Expediente == 'Turnado parcial a VG' || full.status_Expediente == 'Pendiente de Returno') {
-                            cont++;
+                    var rolAbogado = $('#grupohub').val();
+                    if (rolAbogado == 'VA_DQOT') {
+                        return '';
 
-                            if (visitadurias[i].idSelect == full.expedienteTurno[0].clavevisitaduria) {
-                                cadena = cadena + '<option selected data-idexpt="' + full.fkExpediente + '" class="btn-success" value=' + visitadurias[i].idSelect + '/' + full.fkExpediente + '/' + visitadurias[i].idUserTitular + '>' + visitadurias[i].descripcion + '</option>';
-                            } else {
+                    } else if (rolAbogado == 'ADMIN_DQOT') {
+
+                        let iconVermemo = '';
+                        // fecha 1900-01-01 10:00:00 PM se usa por default para valores nulos
+                        let disabled = full.status_Expediente == 'Turnado parcial a VG' ? 'disabled' : '';
+                        let cadena = `<div class="form-group"> <select class="form-control selTurno" ${disabled} style="width: auto;" id="selectTurnoexp${full.fkExpediente}"> <option value="">Seleccionar</option>`;
+                        let cont = 0;
+                        if (full.fkExpediente == 521) {
+                            let vas = full.fkExpediente;
+                            //console.log(vas);
+                        }
+                        for (i = 0; i < visitadurias.length; i++) {
+                            if (full.status_Expediente == 'Pendiente de turnar' || full.status_Expediente == 'Pendiente de Returno') {
+                                cont++;
                                 cadena = cadena + '<option data-idexpt="' + full.fkExpediente + '" class="btn-success" value=' + visitadurias[i].idSelect + '/' + full.fkExpediente + '/' + visitadurias[i].idUserTitular + '>' + visitadurias[i].descripcion + '</option>';
+                            } else if (full.status_Expediente == 'Turnado parcial a VG' || full.status_Expediente == 'Pendiente de Returno') {
+                                cont++;
+
+                                if (visitadurias[i].idSelect == full.expedienteTurno[0].clavevisitaduria) {
+                                    cadena = cadena + '<option selected data-idexpt="' + full.fkExpediente + '" class="btn-success" value=' + visitadurias[i].idSelect + '/' + full.fkExpediente + '/' + visitadurias[i].idUserTitular + '>' + visitadurias[i].descripcion + '</option>';
+                                } else {
+                                    cadena = cadena + '<option data-idexpt="' + full.fkExpediente + '" class="btn-success" value=' + visitadurias[i].idSelect + '/' + full.fkExpediente + '/' + visitadurias[i].idUserTitular + '>' + visitadurias[i].descripcion + '</option>';
+                                }
+
                             }
 
                         }
+                        cadena = cadena + '</select> </div >';
 
-                    }
-                    cadena = cadena + '</select> </div >';
-
-                    if (full.status_Expediente == 'Turnado parcial a VG') {
-                        //console.log(full)
-                        cadena += `<button type='button' onclick='verMemoturno(${full.fkExpediente},${full.expedienteTurno[0].fkMemorandum}, "${full.expedienteTurno[0].memorandum}")' class='btn btn - link margin - iconbf'>
+                        if (full.status_Expediente == 'Turnado parcial a VG') {
+                            //console.log(full)
+                            cadena += `<button type='button' onclick='verMemoturno(${full.fkExpediente},${full.expedienteTurno[0].fkMemorandum}, "${full.expedienteTurno[0].memorandum}")' class='btn btn - link margin - iconbf'>
                             <span class='fa fa-file-text color-muted fa-2x'></span>
                         </button > <br>`;
-                    }
+                        }
 
-                    if (cont > 0) {
-                        return cadena;
-                    } else {
+                        if (cont > 0) {
+                            return cadena;
+                        } else {
+                            return '';
+                        }
+                    } else
+                    {
                         return '';
                     }
 
@@ -2588,6 +2599,7 @@ function formActacircunstanciada2c
         + CreaInputs('id_lugar', 'id_lugar', '', 'hidden')
         + CreaInputs('id_mes', 'id_mes', '', 'hidden')
         + CreaInputs('id_anio', 'id_anio', '', 'hidden')
+        + CreaInputs('anioND', 'anioND', '', 'hidden')
         + CreaInputs('origenPetval', 'origenPetval', '', 'hidden')
         + CreaInputs('origenPetvalExt', 'origenPetvalExt', '', 'hidden')
         + CreaInputs('idactac', 'idactac', '', 'hidden')

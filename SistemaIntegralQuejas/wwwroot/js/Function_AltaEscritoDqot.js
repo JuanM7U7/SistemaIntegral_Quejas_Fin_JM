@@ -399,7 +399,69 @@ let crearformularios = 0;
         return body;
     });
 
+    $(document).ready(function () {
+
+        $("body").on("click", "#tab3", function (event) {
+            validaVacios(".form_acta", "input", "", "#tab3");
+            validaVacios(".form_acta", "select", "99", "#tab3");
+
+        });
+
+        $("body").on("click", "#tab2", function (event) {
+            validaVacios("#frmFromatoQueja", "input", "", "#tab2");
+            validaVacios("#frmFromatoQueja", "select", "", "#tab2");
+            validaVacios("#frmFromatoQueja", "textarea", "", "#tab2");
+        });
+
+        $("input").focus(function () {
+            $(this).css({ "background": "trasnparent" });
+        });
+      
+    });
+
+
 })(jQuery);
+
+
+
+function ejecutatab2() {
+
+    //$("#tab2").click();
+    validaVacios(".form_acta", "input", "", "#tab3");
+    validaVacios(".form_acta", "select", "99", "#tab3");
+}
+
+function ejecutatab3() {
+    //$("#tab3").click();
+    validaVacios("#frmFromatoQueja", "input", "", "#tab2");
+    validaVacios("#frmFromatoQueja", "select", "", "#tab2");
+    validaVacios("#frmFromatoQueja", "textarea", "", "#tab2");
+}
+
+
+
+function validaVacios( formpapa,tipoelemento ,elementoavalidar,elementoclick)
+{
+    //contador = 0;
+    var inputs = document.querySelectorAll(formpapa + ' > ' + tipoelemento);
+    //console.log(inputs);
+    var alerta = false;
+
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].value.trim() === elementoavalidar) {
+
+            if (inputs[i].offsetParent !== null) {
+                 inputs[i].style.cssText = "border:1px solid #f09e94; color: black;";// Colocar el foco en el input vacío
+                const nuevoParrafo = document.createElement("span");
+                nuevoParrafo.textContent = "*"; nuevoParrafo.style.color = "red";
+                inputs[i].parentNode.insertBefore(nuevoParrafo, inputs[i]);
+            } else {
+                console.log("hidden");
+            }
+        }
+    }
+    //contador++
+}
 function funcionesActac(nfrm) {
     console.log('hola funcionesActac')
 
@@ -783,6 +845,8 @@ function changeselects() {
             default:
                 break;
         }
+
+
     });
 
     $('#select_tipoescritoc').on('change', function () {
@@ -2816,7 +2880,7 @@ let formularioqueja = `
              <li class="nav-item eliminaformaes">
             <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_escrito" id="tab2">Alta Escrito inicial</a>
             </li>
-            <li class="nav-item eliminaformaes">
+            <li class="nav-item eliminaformaes" >
             <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_acta" id="tab3">Alta Acta Circunstanciada</a>
             </li>
             <li class="nav-item eliminaformaes">
@@ -2904,6 +2968,7 @@ let formularioqueja = `
                                 </div>
                                 <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
                                     <div class="accordion__body--text eliminaformaes" id="divformularioEscritoInicial">
+                                       <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;padding"><span style="color: red;">*</span> Campos Requeridos</h3>
                                     </div>
                                 </div>
                             </div>
@@ -2959,6 +3024,7 @@ let formularioqueja = `
                                                                 <div id="ref-frm-frmActacir1" class="tab-pane fade active show divformularioActacir eliminaformaes">
                                                                     <div class ="hoja_acta">
                                                                         <div class="accordion__body--text eliminaformaes" id="divformularioActaCircunstanciada">
+                                       <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;padding"><span style="color: red;">*</span> Campos Requeridos</h3>
                                                                         </div>
                                                                     <div>
                                                                 </div>
