@@ -42,7 +42,7 @@ $(document).ready(function () {
                     showConfirmButton: false,
                     timer: 1
                 });
-                console.log(response.data)
+                //console.log(response.data)
                 mostrarResTblFormatos(response.data);
                 var intro = document.getElementById('tableEditFormatosDqot tr');
                 //intro.style.background = '#f5b8b5 !important';
@@ -91,33 +91,33 @@ $(document).ready(function () {
 
 
     $(document).on('change', '#nomAbogado', function (event) {
-        console.log($("#nomAbogado option:selected").val());
+        //console.log($("#nomAbogado option:selected").val());
         $('#idabogado').val($("#nomAbogado option:selected").val());
         $('#idpet').val('1165');
         $('#idEscrito_').val('2');
     });
     $(document).on('change', '#consentimiento', function (event) {
-        console.log($("#consentimiento option:selected").val());
+        //console.log($("#consentimiento option:selected").val());
         $('#idconsentimiento').val($("#consentimiento option:selected").val());
     });
     $(document).on('change', '#identificacionPet', function (event) {
-        console.log($("#identificacionPet option:selected").val());
+        //console.log($("#identificacionPet option:selected").val());
         $('#idcredencial').val($("#identificacionPet option:selected").val());
     });
     $(document).on('change', '#mes', function (event) {
-        console.log($("#mes option:selected").val());
+        //console.log($("#mes option:selected").val());
         $('#id_mes').val($("#mes option:selected").val());
     });
     $(document).on('change', '#anio', function (event) {
-        console.log($("#anio option:selected").val());
+        //console.log($("#anio option:selected").val());
         $('#id_anio').val($("#anio option:selected").val());
     });
     $(document).on('change', '#lugar', function (event) {
-        console.log($("#lugar option:selected").val());
+        //console.log($("#lugar option:selected").val());
         $('#id_lugar').val($("#lugar option:selected").val());
     });
     $(document).on('change', '#origenPet', function (event) {/*Adicion del Origen del peticionario cuando es extranjero en el catalogo es 246*/
-        console.log($("#origenPet option:selected").val());
+        //console.log($("#origenPet option:selected").val());
         var seleccion = $("#origenPet option:selected").val();
         $('#origenPetval').val($("#origenPet option:selected").val());
         if (seleccion == '218') {
@@ -131,7 +131,7 @@ $(document).ready(function () {
             });
 
         } else {
-            console.log("Entro al else ");
+            //console.log("Entro al else ");
             $("#origenPetExt").select2().next().hide();
             $("#origenPetExtedo").css("display", "none");
             $("#origenPetvalExt").val("");
@@ -141,25 +141,25 @@ $(document).ready(function () {
 
     });
     $(document).on('change', '#origenPetExt', function (event) {/*Adicion del Origen del peticionario cuando es extranjero en el catalogo es 246*/
-        console.log($("#origenPetExt option:selected").val());/*Desde el origen Vine Vacio*/
+        //console.log($("#origenPetExt option:selected").val());/*Desde el origen Vine Vacio*/
         var seleccion = $("#origenPetExt option:selected").val();
         $('#origenPetvalExt').val($("#origenPetExt option:selected").val());
 
     });
     $(document).on('change', '#CheckDcompleta', function (event) {/*Evento del check, datos complementarios de la calle*/
         var contenedor = '';
-        console.log(this)
+        //console.log(this)
         $('#Contenedor_Datos_LE').empty();
         if ($('#CheckDcompleta').prop('checked')) {
-            console.log("Entró al check");
+            //console.log("Entró al check");
             contenedor = complementoFormLugarHchos(true);
             $("#sino").val("si");
         } else {
-            console.log("No Entró al check");
+            //console.log("No Entró al check");
             contenedor = complementoFormLugarHchos(false);
             $("#sino").val("no");
         }
-        console.log(contenedor)
+        //console.log(contenedor)
         $('#Contenedor_Datos_LE').append(contenedor);
 
         //return body;
@@ -170,7 +170,7 @@ $(document).ready(function () {
         let arrNumPet = [];
         let npmax = 1;
         let autoridades = document.querySelectorAll('.arrInput_nombres');
-        console.log(autoridades)
+        //console.log(autoridades)
 
         for (var i = 0; i < autoridades.length; i++) {
             arrNumPet.push(parseInt(autoridades[i].dataset.idinei))
@@ -220,7 +220,7 @@ $(document).ready(function () {
         $('input[type="text"]').each(function (key, value) {
             arregloInputs.push(value.id);
         });
-        console.log(arregloInputs);
+        //console.log(arregloInputs);
         /*
         var contenedor = '';
         contenedor = Agrega_PersonaAutoridad();
@@ -250,137 +250,6 @@ $(document).ready(function () {
 
         return body;
     });
-
-    //$("#btnTurnapexp").click(function (e) {
-    //    e.preventDefault();
-
-    //    let filas = $('#tableEditFormatosDqot').dataTable().fnGetNodes();
-    //    let cont = 0;
-    //    let arrayTurnados = [];
-    //    let dataTurnoexp = new FormData();
-    //    let fechaFinEditDqot = getSinFestivosNiFinDeSemana(fechActual, 2);
-    //    let fechActualtv = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
-    //    fechActualtv = getSinFestivosNiFinDeSemana(fechActualtv, 2);
-    //    $(filas).each(function (index) {
-    //        let valorselect = $(this).find('.selTurno').val();
-
-    //        if (valorselect != undefined) {
-
-    //            if ($(this).find('.selTurno')[0].disabled == false && valorselect != "") {
-    //                let idVisitaduria = valorselect.split("/")[0];
-    //                let idQueja = valorselect.split("/")[1];
-    //                let idtitular = valorselect.split("/")[2];
-
-    //                arrayTurnados.push({
-    //                    IdExpediente: idQueja,
-    //                    Clavevisitaduria: idVisitaduria,
-    //                    Fechaturnovisitaduriatxt: fechActualtv + ' ' + horaActualFin,
-    //                    fk_iduserdestinatario: idtitular,
-    //                    FechastrFinDqot: fechaFinEditDqot + ' ' + horaActualFin
-    //                });
-    //            }
-
-    //        }
-
-    //    });
-
-    //    dataTurnoexp.append('dataexpturno', JSON.stringify(arrayTurnados));
-    //    let tblexp_aturnar = retornatabla(JSON.stringify(arrayTurnados));
-
-    //    swal.fire({
-    //        title: 'Se turnaran los siguientes expedientes',
-    //        input: "text",
-    //        inputAttributes: {
-    //            autocapitalize: "off",
-    //            placeholder: 'Ingrese el número de memorandum ligado a este turnado de expedientes',
-    //            required: true
-    //        },
-    //        inputValidator: (value) => {
-    //            return new Promise((resolve) => {
-    //                if (value === '') {
-    //                    resolve('Ingrese el número de memorandum ligado a este turnado de expedientes')
-    //                } else {
-    //                    resolve()
-    //                }
-    //            })
-    //        },
-    //        html: tblexp_aturnar,
-    //        showCancelButton: true,
-    //        confirmButtonColor: '#3085d6',
-    //        cancelButtonColor: '#d33',
-    //        confirmButtonText: 'Confirmar',
-    //        cancelButtonText: 'Cancelar',
-    //        allowOutsideClick: false
-    //    }).then((result) => {
-    //        if (result.isConfirmed) {
-
-    //            let num_memoexpsend = result.value;
-    //            dataTurnoexp.append('num_memosendexp', num_memoexpsend);
-    //            dataTurnoexp.append('area_origen', $('#idArea').val());
-    //            dataTurnoexp.append('usuario_registra', $('#idusuario').val());
-
-    //            $.ajax({
-    //                type: "post",
-    //                url: 'TurnoPreliminar',
-    //                contentType: false,
-    //                processData: false,
-    //                data: dataTurnoexp,
-    //                dataType: "json",
-    //                success: function (resp) {
-    //                    console.log(resp)
-    //                    if (resp.data) {
-    //                        Swal.fire({
-    //                            position: 'center',
-    //                            icon: 'success',
-    //                            title: 'Los expedientes han sido turnados correctamente',
-    //                            showConfirmButton: false,
-    //                            timer: 1500
-    //                        }).then(() => {
-    //                            Swal.fire({
-    //                                text: 'Cargando Quejas...',
-    //                                didOpen: () => {
-    //                                    Swal.showLoading();
-    //                                },
-    //                                allowOutsideClick: false,
-    //                                allowEscapeKey: false
-    //                            });
-    //                            $.ajax({
-    //                                type: "POST",
-    //                                url: "BuscardorFormatos",
-    //                                data: $('#frm_busquedaFormatos').serialize(),
-    //                                dataType: "JSON",
-    //                                success: function (response) {
-    //                                    mostrarResTblFormatos(response.data);
-    //                                    Swal.close();
-    //                                },
-    //                                error: function () {
-    //                                    Swal.close();
-    //                                    Swal.fire({
-    //                                        icon: 'error',
-    //                                        title: 'Error',
-    //                                        text: 'Error al actualizar los datos, informe al área de sistemas'
-    //                                    });
-    //                                }
-    //                            });
-    //                        });
-
-    //                    } else {
-    //                        Swal.fire({
-    //                            position: 'center',
-    //                            icon: 'error',
-    //                            title: 'Ocurrio un error al turnar los expedientes, reporte el incidente al area a de sistemas',
-    //                            showConfirmButton: false,
-    //                            timer: 1500
-    //                        });
-    //                    }
-
-    //                }
-    //            });
-
-    //        }
-    //    });
-
-    //});
     $("#btnTurnapexp").click(function (e) {
         e.preventDefault();
 
@@ -478,7 +347,7 @@ $(document).ready(function () {
                     data: dataTurnoexp,
                     dataType: "json",
                     success: function (resp) {
-                        console.log(resp)
+                        //console.log(resp)
                         if (resp.data) {
                             Swal.fire({
                                 position: 'center',
@@ -529,99 +398,6 @@ $(document).ready(function () {
                 });
             }
         });
-        //swal.fire({
-        //    title: 'Se turnaran los siguientes expedientes',
-        //    input: "text",
-        //    inputAttributes: {
-        //        autocapitalize: "off",
-        //        placeholder: 'Ingrese el número de memorandum ligado a este turnado de expedientes',
-        //        required: true
-        //    },
-        //    inputValidator: (value) => {
-        //        return new Promise((resolve) => {
-        //            if (value === '') {
-        //                resolve('Ingrese el número de memorandum ligado a este turnado de expedientes')
-        //            } else {
-        //                resolve()
-        //            }
-        //        })
-        //    },
-        //    html: tblexp_aturnar,
-        //    showCancelButton: true,
-        //    confirmButtonColor: '#3085d6',
-        //    cancelButtonColor: '#d33',
-        //    confirmButtonText: 'Confirmar',
-        //    cancelButtonText: 'Cancelar',
-        //    allowOutsideClick: false
-        //}).then((result) => {
-        //    if (result.isConfirmed) {
-
-        //        let num_memoexpsend = result.value;
-        //        dataTurnoexp.append('num_memosendexp', num_memoexpsend);
-        //        dataTurnoexp.append('area_origen', $('#idArea').val());
-        //        dataTurnoexp.append('usuario_registra', $('#idusuario').val());
-
-        //        $.ajax({
-        //            type: "post",
-        //            url: 'TurnoPreliminar',
-        //            contentType: false,
-        //            processData: false,
-        //            data: dataTurnoexp,
-        //            dataType: "json",
-        //            success: function (resp) {
-        //                console.log(resp)
-        //                if (resp.data) {
-        //                    Swal.fire({
-        //                        position: 'center',
-        //                        icon: 'success',
-        //                        title: 'Los expedientes han sido turnados correctamente',
-        //                        showConfirmButton: false,
-        //                        timer: 1500
-        //                    }).then(() => {
-        //                        Swal.fire({
-        //                            text: 'Cargando Quejas...',
-        //                            didOpen: () => {
-        //                                Swal.showLoading();
-        //                            },
-        //                            allowOutsideClick: false,
-        //                            allowEscapeKey: false
-        //                        });
-        //                        $.ajax({
-        //                            type: "POST",
-        //                            url: "BuscardorFormatos",
-        //                            data: $('#frm_busquedaFormatos').serialize(),
-        //                            dataType: "JSON",
-        //                            success: function (response) {
-        //                                mostrarResTblFormatos(response.data);
-        //                                Swal.close();
-        //                            },
-        //                            error: function () {
-        //                                Swal.close();
-        //                                Swal.fire({
-        //                                    icon: 'error',
-        //                                    title: 'Error',
-        //                                    text: 'Error al actualizar los datos, informe al área de sistemas'
-        //                                });
-        //                            }
-        //                        });
-        //                    });
-
-        //                } else {
-        //                    Swal.fire({
-        //                        position: 'center',
-        //                        icon: 'error',
-        //                        title: 'Ocurrio un error al turnar los expedientes, reporte el incidente al area a de sistemas',
-        //                        showConfirmButton: false,
-        //                        timer: 1500
-        //                    });
-        //                }
-
-        //            }
-        //        });
-
-        //    }
-        //});
-
     });
 });
 
@@ -731,7 +507,7 @@ function GeneraEscrito_Inicial() {
                     IdAutoridad: $('#Input_autoridades' + idfrmautoridad).val() != "" ? $('#Input_autoridades' + idfrmautoridad).val() : 285
                 };
             }
-            console.log('entra if')
+            //console.log('entra if')
         } else {
             for (var i = 0; i < autoridades.length - 1; i++) {
                 let idfrmautoridad = autoridades[i].dataset.idinei;
@@ -741,7 +517,7 @@ function GeneraEscrito_Inicial() {
                     IdAutoridad: $('#Input_autoridades' + idfrmautoridad).val() != "" ? $('#Input_autoridades' + idfrmautoridad).val() : 285
                 };
             }
-            console.log('entra else')
+            //console.log('entra else')
         }
     }
     dataEscritoi.append('autoridades', JSON.stringify(arrAutoridades));
@@ -756,7 +532,7 @@ function GeneraEscrito_Inicial() {
         data: dataEscritoi,
         dataType: "json",
         success: function (data) {
-            console.log(data)
+            //console.log(data)
             if (data.mensaje == 'ok') {
 
                 $('#id_escritoigenerado').val(data.listat.id);
@@ -769,7 +545,7 @@ function GeneraEscrito_Inicial() {
 
                 fetchPost("Expediente/ActualizaEnlaceFormatoQueja", "json", FrmEnFormatQueja, (resp) => {
 
-                    console.log(resp)
+                    //console.log(resp)
                     if (resp.status) {
                         // window.open(ExportaDocumento, '_blank');
                         $("#modalformularioEscritoInicial").modal("hide");
@@ -841,11 +617,11 @@ function GeneraActaC_pdf() {
 }
 
 function GeneraActaCircunstanciada() {
-
+    console.log($('#anio').val());
     if (validaTexto('validatxtac') || validaNum('validanumerosac') || validainputvacio('validaselectdac') || validainputvacio('validadateac') || validainputvacio('validatimeac') || validainputvacio('validanovacioac')) {
         return;
     }
-
+    
     $.ajax({
         type: "POST",
         url: "GuardaActaC",
@@ -893,7 +669,7 @@ function GeneraActaCircunstanciada() {
     var NumeroActaC = $('#Contenedor_Actas').find('p').length + 1;
 
 
-    console.log("Entro a la adición del contenedor de las actas");
+    //console.log("Entro a la adición del contenedor de las actas");
     document.getElementById("Contenedor_Actas").innerHTML += `<p>Acta Circunstanciada ${NumeroActaC}</p>
                             <button type='button' onclick='traeInformacionActaC()' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-pencil color-muted fa-2x'></span>
@@ -920,7 +696,7 @@ function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente, 
             var longitud = response.data.length;
             if (response.data.length > 0) {
 
-                console.log(response.data)
+                //console.log(response.data)
 
                 let fecha_hechos = new Date(response.data[0].fechahd).toISOString().split("T")[0];
                 let hora_hechos = (response.data[0].fechahd).split("T")[1];
@@ -965,8 +741,8 @@ function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente, 
                     for (var i = 0; i < longitud; i++) {
 
                         var contenedor = '';
-                        console.log(i);
-                        console.log(response.data[i].autoridad);
+                        //console.log(i);
+                        //console.log(response.data[i].autoridad);
                         contenedor = Agrega_PersonaAutoridad(i + 1, response.data[i].nombre_persona, response.data[i].cargo_persona, response.data[i].autoridad);
 
                         $('#Contenedor_Cargos_Personas').append(contenedor);
@@ -1009,8 +785,8 @@ function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente, 
 }
 
 function seleccionaSelectEscritoi(contador, autoridadSe) {
-    console.log('contador: ' + contador)
-    console.log('autoridad: ' + autoridadSe)
+    //console.log('contador: ' + contador)
+    //console.log('autoridad: ' + autoridadSe)
     //$('#Input_autoridades' + contador).select2();
     $("#Input_autoridades1").select2().val("1").trigger('change.select2');
 
@@ -1018,7 +794,7 @@ function seleccionaSelectEscritoi(contador, autoridadSe) {
     //$('#Input_autoridades' + contador).select2().val(autoridadSe).trigger("change");
     /*    $('#Input_autoridades' + contador).select2().val(autoridadSe).trigger('change.select2');*/
 
-    console.log('valorautoridad: ' + $('#Input_autoridades' + contador).val())
+    //console.log('valorautoridad: ' + $('#Input_autoridades' + contador).val())
 }
 
 function AddEscritoInicial(idExpediente, peticionarios) {
@@ -1140,12 +916,12 @@ function validafechamodificacionDqot(fechaturno, fechafinmoddqot) {
     if (fechafinmoddqot != '1900-01-01T22:00:00') {
 
         let fechaHoyFin = new Date();
-        console.log(fechaHoyFin);
+        //console.log(fechaHoyFin);
 
         let fecha_dos = (fechafinmoddqot.split('T')[0]).split('-');
         let hora_dos = (fechafinmoddqot.split('T')[1]).split(':');
         let fechaTerminaFin = new Date(fecha_dos[0], fecha_dos[1] - 1, fecha_dos[2], hora_dos[0], hora_dos[1], hora_dos[2]);
-        console.log(fechaTerminaFin)
+        //console.log(fechaTerminaFin)
 
         if (fechaHoyFin > fechaTerminaFin) {
             resp = true;
@@ -1182,7 +958,7 @@ function mostrarResTblFormatos(response) {
                     }
 
                     let validafecha_modificaciondqot = validafechamodificacionDqot(full.expedienteTurno[0].fechaturnovisitaduria, full.expedienteTurno[0].fechaFinDqot);
-                    console.log(validafecha_modificaciondqot);
+                    //console.log(validafecha_modificaciondqot);
 
                     let peticionarioslist = "";
                     let contador_agraviado = 0;
@@ -1223,7 +999,7 @@ function mostrarResTblFormatos(response) {
                                     if (full.agravQuej[i].tipoUsuario == "Agraviado") {
                                         contador_agraviado++;
                                     }
-                                    else if (full.agravQuej[i].tipoUsuario == "Quejoso") {
+                                    else if (full.agravQuej[i].tipoUsuario == "Peticionario") {
                                         contador_quejoso++;
                                     }
                                 } else {
@@ -1238,7 +1014,7 @@ function mostrarResTblFormatos(response) {
                                     if (full.agravQuej[i].tipoUsuario == "Agraviado") {
                                         contador_agraviado++;
                                     }
-                                    else if (full.agravQuej[i].tipoUsuario == "Quejoso") {
+                                    else if (full.agravQuej[i].tipoUsuario == "Peticionario") {
                                         contador_quejoso++;
                                     }
                                 }
@@ -1257,7 +1033,7 @@ function mostrarResTblFormatos(response) {
                             }
                             else {
                                 return `<p> ${contador_agraviado} Agraviado(s) </p><br>
-                                    <p> ${contador_quejoso} Quejoso(s)</p>`;
+                                    <p> ${contador_quejoso} Peticionario(s)</p>`;
                             }
                         }
                         return peticionarioslist + iconadd;
@@ -1484,7 +1260,7 @@ function mostrarResTblFormatos(response) {
                     let cont = 0;
                     if (full.fkExpediente == 521) {
                         let vas = full.fkExpediente;
-                        console.log(vas);
+                        //console.log(vas);
                     }
                     for (i = 0; i < visitadurias.length; i++) {
                         if (full.status_Expediente == 'Pendiente de turnar' || full.status_Expediente == 'Pendiente de Returno') {
@@ -1505,7 +1281,7 @@ function mostrarResTblFormatos(response) {
                     cadena = cadena + '</select> </div >';
 
                     if (full.status_Expediente == 'Turnado parcial a VG') {
-                        console.log(full)
+                        //console.log(full)
                         cadena += `<button type='button' onclick='verMemoturno(${full.fkExpediente},${full.expedienteTurno[0].fkMemorandum}, "${full.expedienteTurno[0].memorandum}")' class='btn btn - link margin - iconbf'>
                             <span class='fa fa-file-text color-muted fa-2x'></span>
                         </button > <br>`;
@@ -1682,7 +1458,7 @@ function EstatusFormatos(full) {
 }
 //metodo creado por GITP
 function RecorreInput(form) {
-    console.log("Recorriendo input y select")
+    //console.log("Recorriendo input y select")
     $(form).find(":input, select").each(function () {
         var id = $(this).val()
         //var atributo = $(this).attr("id");//validaselectdac class
@@ -1701,8 +1477,8 @@ function RecorreInput(form) {
 }
 
 function mostrarResTblMemorandum(response, fecha = '') {
-    console.log(response)
-    console.log(fecha)
+    //console.log(response)
+    //console.log(fecha)
 
     tableMemorandum.DataTable({
         "bPaginate": false,
@@ -1807,7 +1583,7 @@ function verMemoturno(idexpediente, idmemo, num_memo) {
         contentType: false,
         dataType: "JSON",
         success: function (response) {
-            console.log(response)
+            //console.log(response)
 
             mostrarResTblMemorandum(response.data[0].lstExpturnados, '' + response.data[0].fechaDeCreacion + '');
             $('#titleModalmemo').text('Memorandum ' + num_memo);
@@ -1873,7 +1649,7 @@ function btnUpdatememo(element) {
             data: frmUpdateMemo,
             dataType: "json",
             success: function (resp) {
-                console.log(resp)
+                //console.log(resp)
 
                 if (resp.data) {
 
@@ -1928,7 +1704,7 @@ function ventana_acpeta_visitaduria(mensaje, idexpediente, peticionarios) {
         }
     }).then(function (result) {
         if (result.isConfirmed) {
-            console.log(result);
+            //console.log(result);
             Swal.fire({
                 icon: 'success',
                 html: 'La información del Peticionario Se ha cargado Correctamente: '
@@ -1967,7 +1743,7 @@ function ventana_eligepeticionario_ei(mensaje, idexpediente, peticionarios) {
         }
     }).then(function (result) {
         if (result.isConfirmed) {
-            console.log(result);
+            //console.log(result);
             Swal.fire({
                 icon: 'success',
                 html: 'La información del Peticionario Se ha cargado Correctamente: '
@@ -1983,7 +1759,7 @@ function ventana_eligepeticionario_ei(mensaje, idexpediente, peticionarios) {
 function changePeticionarioselEi(valors, idexpediente) {
 
     if (valors != '') {
-        console.log(valors)
+        //console.log(valors)
         let valor = (valors).split('/');
         $('#Input_ID').val(idexpediente);
         $('#id_escritoigenerado').val(valor[0]);
@@ -2003,7 +1779,7 @@ function changeSelectPetActac(valors) {
     if (valors != '') {
 
         let valor = (valors).split('/');
-        console.log(valors);
+        //console.log(valors);
         let FrmDataPet = new FormData();
         FrmDataPet.append('id_queja', valor[0]);
         FrmDataPet.append('id_peticionario', valor[1]);
@@ -2016,7 +1792,7 @@ function changeSelectPetActac(valors) {
 
             if (resp.status) {
                 let p = resp.data[0];
-                console.log(p);
+                //console.log(p);
 
                 $('#AutoridadesEI').val("------");
                 $('#nombrePet').val(valor[3].toString().toLowerCase());
@@ -2097,7 +1873,7 @@ function format(data) {
                                </button>`;
             } else {
                 peticionarioslist += `
-                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat} ${data.agravQuej[i].apellidoMat} (${data.agravQuej[i].tipoUsuario})</label> <br/> '
+                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat} ${data.agravQuej[i].apellidoMat} (${data.agravQuej[i].tipoUsuario})</label> <br/>
                               <button type='button' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-pencil color-muted fa-2x'></span>
                                </button>
@@ -2299,7 +2075,7 @@ function eliminarExpediente() {
                         FrmDelExp.append('motivo', value);
 
                         fetchPost("Expediente/DeleteExpediente", "json", FrmDelExp, (resp) => {
-                            console.log(resp)
+                            //console.log(resp)
 
                             if (resp.status) {
                                 Swal.fire({
@@ -2369,8 +2145,8 @@ function eliminarExpediente() {
 }
 function eliminarActac(Actacc, nombrepetligado) {
 
-    console.log(Actacc)
-    console.log(nombrepetligado)
+    //console.log(Actacc)
+    //console.log(nombrepetligado)
     swal.fire({
         title: 'Eliminar Acta Circunstanciada',
         text: "¿Desea eliminar esta acta ligado al peticionario " + nombrepetligado + "?",
@@ -2388,7 +2164,7 @@ function eliminarActac(Actacc, nombrepetligado) {
             FrmDelActac.append('id_actac', Actacc);
 
             fetchPost("Expediente/DeleteActac", "json", FrmDelActac, (resp) => {
-                console.log(resp)
+                //console.log(resp)
 
                 if (resp.status) {
                     Swal.fire({
@@ -2500,7 +2276,7 @@ function eliminarEscrito(id, nombrepetligado, idqueja) {
     }).then((result) => {
         if (result.isConfirmed) {
             fetchPost("Expediente/DeleteEscrito", "json", FrmDelExp, (resp) => {
-                console.log(resp)
+                //console.log(resp)
 
                 if (resp.status) {
                     Swal.fire({
@@ -2647,7 +2423,7 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja, fechavalidae
 
 function AddActac(idExpediente, idescritoi, peticionarios) {
 
-    console.log(peticionarios)
+    //console.log(peticionarios)
     let iformActaCircunstanciada = formActacircunstanciada2c();
     $('.formularioActaCircunstanciada').empty();
     $('.formularioActaCircunstanciada').append(iformActaCircunstanciada);
@@ -2668,8 +2444,8 @@ function AddActac(idExpediente, idescritoi, peticionarios) {
 
 function eliminaActac(Actacc, nombrepetligado) {
 
-    console.log(Actacc)
-    console.log(nombrepetligado)
+    //console.log(Actacc)
+    //console.log(nombrepetligado)
     swal.fire({
         title: 'Eliminar Acta Circunstanciada',
         text: "¿Desea eliminar esta acta ligado al peticionario " + nombrepetligado + "?",
@@ -2687,7 +2463,7 @@ function eliminaActac(Actacc, nombrepetligado) {
             FrmDelActac.append('id_actac', Actacc);
 
             fetchPost("Expediente/DeleteActac", "json", FrmDelActac, (resp) => {
-                console.log(resp)
+                //console.log(resp)
 
                 if (resp.status) {
                     Swal.fire({
@@ -2749,9 +2525,9 @@ function formActacircunstanciada2c
     var Area = $("#areaUser").val();
     var Cargo = $("#cargoUser").val();
 
-    console.log("ID_USER:" + idUser);
-    console.log("AREA_USER:" + Area);
-    console.log("CARGO_USER:" + Cargo);
+    //console.log("ID_USER:" + idUser);
+    //console.log("AREA_USER:" + Area);
+    //console.log("CARGO_USER:" + Cargo);
     var arregloBlanco = [];
     let numfrm = 1;
 
@@ -2761,7 +2537,7 @@ function formActacircunstanciada2c
         CreaSelectLabel('lugar', '', arregloBlanco, '', 'En', '', 'validaselectdac')
         + CreaInputs_Con_Label('diaFecha', 'diaFecha', 'validanumerosac', 'number', ', a los', 'textfield', 'mes')
         + CreaSelectLabel('mes', '', arregloMeses(), '', 'días del mes de', 'textfield4', 'validaselectdac')
-        + CreaSelectLabeldisabled('anio', '', arregloAnio(), '', 'de', '', 'validaselectdac')
+        + CreaSelectLabeldisabled('anio', '', arregloAnio(), '', 'de', 'textfield4', 'validaselectdac')
         //+ CreaInputs_Con_Label('nomAbogado', 'nomAbogado', '', 'text', ', el suscrito, licenciado', 'textfield5', 'placeholder="nombre de abogado"')
         + CreaSelectLabel('nomAbogado', '', arregloBlanco, '', ', el suscrito, licenciado', '', 'validaselectdac')
         + CreaInputs_Con_Label('puestoAbogado', 'puestoAbogado', '', 'text', ', en mi carácter de', 'textfield6', 'placeholder="cargo de abogado" value="' + Cargo + '" disabled')
@@ -2842,14 +2618,14 @@ function chkNoproporcinado() {
 
     $(".radiosnvm").change(function () {
         let idfrm = this.dataset.idfrmit;
-        console.log(this.value)
+        //console.log(this.value)
         if (this.value == 'Si') {
             document.querySelectorAll('.frmviolenciam' + idfrm).forEach(p => p.classList.remove("dis-none"));
             $('.frmviolenciam' + idfrm + ' input[type=text]', '.frmviolenciam' + idfrm + ' select').each(function () {
                 $(this).attr('required', true)
             });
             $('.viomujer').each(function () {
-                console.log(this)
+                //console.log(this)
                 $(this).attr('required', true)
             })
         } else if (this.value == 'No') {
@@ -2867,7 +2643,7 @@ function chkNoproporcinado() {
 
     $(".radextrsn").change(function () {
         let idfrm = this.dataset.idfrmit;
-        console.log(this.value)
+        //console.log(this.value)
         if (this.value == 'Extranjero') {
             document.querySelectorAll('.frmextrsnwno' + idfrm).forEach(
                 p => p.classList.remove("dis-none")
@@ -2890,10 +2666,10 @@ function seltxt() {
     $('.seltxt').change(function () {
         let inotro = '#' + this.dataset.selidotro;
         let valtxt = $(this).find("option:selected").text();
-        console.log(valtxt)
+        //console.log(valtxt)
 
         if (valtxt.trim() === 'Otro' || valtxt.trim() === 'Si') {
-            console.log(inotro)
+            //console.log(inotro)
             $(inotro).prop('disabled', false);
             $(inotro).removeClass("d-none");
         } else {
@@ -2938,7 +2714,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
     keypresscp();
     fetchGet("Expediente/SelectPaises", "json", (data) => {
         let Paises = data.relacionpaises;
-        console.log(Paises)
+        //console.log(Paises)
         AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
         AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
     })
@@ -2956,7 +2732,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
         data: { curp: curpd, nombre: nombrep, apellidop: apellidope, apellidom: apellidome, idcomp: idcomplemento },
         dataType: "JSON",
         success: function (response) {
-            console.log(response)
+            //console.log(response)
             if (response.data.length > 0) {
 
                 $("#idcomplementopet1").val(idcomplemento)
@@ -3094,7 +2870,7 @@ function AddFormatDatosPersonales(idExpediente) {
     buscapeticionariocurpnom();
     fetchGet("Expediente/SelectPaises", "json", (data) => {
         let Paises = data.relacionpaises;
-        console.log(Paises)
+        //console.log(Paises)
         AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
         AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
     })
@@ -3365,7 +3141,7 @@ function formPeticionario(idformulario) {
                             1: 'idAgraviado'
                         },
                         values: {
-                            0: 'Quejoso',
+                            0: 'Peticionario',
                             1: 'Agraviado'
                         },
                         class: "col-md-2 positionLeft",
@@ -3800,7 +3576,7 @@ function buscapeticionariocurpnom() {
                 success: function (response) {
 
                     if (response.data.length > 0) {
-                        console.log(response.data)
+                        //console.log(response.data)
 
                         $("#CURP_petit-frmDatosPersonales" + idform).val(response.data[0].docIdentificatorio)
                         $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].nombre)
@@ -4010,7 +3786,7 @@ function CargaDatosSelectOtroPaises(select, arreglo) {
 function arreglo_Estados() {
     var arregloEdos = [];
     $.getJSON("https://api.copomex.com/query/get_estado_clave?token=pruebas", function (copomex) {
-        console.log(copomex.response.estado_clave);
+        //console.log(copomex.response.estado_clave);
         arregloEdos = copomex.response.estado_clave;
 
 
@@ -4321,14 +4097,14 @@ function arregloIdentificación() {
 function Carga_Informacion_selec_quejas() {
     return new Promise((resolve, reject) => {
         fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
-            console.log(data);
+            //console.log(data);
             let abogado = data.lista3;
             let estado = data.lista4;
             let autoridad = data.lista2;
             let estadoRM = data.lista5;
-            console.log(abogado);
-            console.log(estado);
-            console.log(estadoRM);
+            //console.log(abogado);
+            //console.log(estado);
+            //console.log(estadoRM);
 
             CargaDatosSelectOtro("#lugar", estado);
             CargaDatosSelectOtro("#nomAbogado", abogado);
@@ -4338,7 +4114,7 @@ function Carga_Informacion_selec_quejas() {
             CargaDatosSelectOtro("#catEstado_hechos", estadoRM);
 
             var idUser = $("#idusuario").val();
-            console.log("ID_USER_SELECT:" + idUser);
+            //console.log("ID_USER_SELECT:" + idUser);
             $('#nomAbogado > option[value="' + idUser + '"]').attr('selected', 'selected');
             $('#idabogado').val(idUser);
             $('#idpet').val('1165');
@@ -4417,7 +4193,7 @@ function updateDatosPeticionarios() {
             data: $(idForm).serialize(),
             dataType: "json",
             success: function (data) {
-                console.log(data)
+                //console.log(data)
 
                 if (data.idpeticionario > 0 && data.idcomplemento > 0) {
 
@@ -4473,7 +4249,7 @@ function updateDatosPeticionarios() {
 function complementoFormLugarHchos(estado) {
     var cuerpo = '';
     if (estado) {
-        console.log("Pintando Cuerpo");
+        //console.log("Pintando Cuerpo");
         cuerpo = '<div class="text-center">'
             + CreaInputs_Con_Label('calleLH', 'calleLH', '', 'text', '', 'textfield10', 'placeholder="calle"')
             + CreaInputs_Con_Label('numextLH', 'numextLH', '', 'text', '', '', 'placeholder="número exterior"')
@@ -4645,7 +4421,7 @@ function btnGenerapdfp(element) {
         success: function (response) {
 
             if (response.data.length > 0) {
-                console.log(response.data[0]);
+                //console.log(response.data[0]);
                 html.dateact.textContent = fechatxt;
 
                 (Array.from(html.chkTipoaq)).forEach(function (input, index) {
@@ -5091,7 +4867,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus, fechavalidmodidqo
         dataType: "JSON",
         success: function (response) {
 
-            console.log(response);
+            //console.log(response);
 
             /*response.informarcionC.informacioncomplementariapeticionario.curp 
             response.informarcionC.informacioncomplementariapeticionario.id_registro
@@ -5116,13 +4892,13 @@ function traeInformacionDatosComplementarios(idqueja, estatus, fechavalidmodidqo
             $("#hechosDC").val(response.informarcionC.hechos);
             $("#observaciones").val(response.informarcionC.observaciones);
 
-            console.log('valores')
-            console.log(response.informarcionC.id_expediente)
-            console.log(response.informarcionC.hechos)
+            //console.log('valores')
+            //console.log(response.informarcionC.id_expediente)
+            //console.log(response.informarcionC.hechos)
             if (response.informarcionC.informacioncomplementariapeticionario != null) {
                 var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
                 for (var i = 0; i < contadorpeticionarios; i++) {
-                    console.log(contadorpeticionarios);
+                    //console.log(contadorpeticionarios);
                     $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
                 }
             }
@@ -5130,7 +4906,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus, fechavalidmodidqo
             if (response.informarcionC.informacioncomplementariaautoridad != null) {
                 var contadorautoridades = response.informarcionC.informacioncomplementariaautoridad.length;
                 for (var i = 0; i < contadorautoridades; i++) {
-                    console.log(contadorautoridades);
+                    //console.log(contadorautoridades);
                     $("#contenedor_Autoridades").html($("#contenedor_Autoridades").html() + DivPequeniosautoridad(response.informarcionC.informacioncomplementariaautoridad[i].nombre_autoridad, response.informarcionC.informacioncomplementariaautoridad[i].ambito, response.informarcionC.informacioncomplementariaautoridad[i].id_registro));
                 }
             }

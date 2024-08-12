@@ -1770,7 +1770,7 @@ function formPeticionario(idformulario) {
                             1: 'idAgraviado'
                         },
                         values: {
-                            0: 'Quejoso',
+                            0: 'Peticionario',
                             1: 'Agraviado'
                         },
                         class: "col-md-2 positionLeft",
@@ -2267,7 +2267,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                 let ids_unicos = Array.from(new Set(ids));
                 peticionariosGuardadosok = peticionariosGuardados.filter(({ idcomplementopet }, index) => !ids_unicos.includes(idcomplementopet, index + 1));
                 // Si el peticionario agregado es Agraviado procede a obtener un id de queja, si es quejoso aun no se le da id de queja
-                if (data.tipousuario == 'Agraviado' || data.tipousuario == 'Quejoso') {
+                if (data.tipousuario == 'Agraviado' || data.tipousuario == 'Peticionario') {
                     // Se valida que el input hidden que guarda el id de queja ste vacio
                     if ($('.idquejagenerado').val() == '') {
 
