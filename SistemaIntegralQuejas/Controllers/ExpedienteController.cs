@@ -1107,7 +1107,7 @@ namespace SistemaIntegralQuejas.Controllers
             int lugar = int.Parse(form["lugar"].ToString());
             int diaFecha = int.Parse(form["diaFecha"].ToString());
             int mes = int.Parse(form["mes"].ToString());
-            int anio = int.Parse(form["anio"].ToString());
+            int anio = int.Parse(form["anioND"].ToString());
             int idAbogado = int.Parse(form["idabogado"].ToString());
             string nomAbogado = form["nomAbogado"].ToString();
             string puestoAbogado = form["puestoAbogado"].ToString();

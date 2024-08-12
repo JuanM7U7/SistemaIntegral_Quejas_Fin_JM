@@ -618,6 +618,7 @@ function GeneraActaC_pdf() {
 
 function GeneraActaCircunstanciada() {
     console.log($('#anio').val());
+    $('#anioND').val($('#anio').val());
     if (validaTexto('validatxtac') || validaNum('validanumerosac') || validainputvacio('validaselectdac') || validainputvacio('validadateac') || validainputvacio('validatimeac') || validainputvacio('validanovacioac')) {
         return;
     }
@@ -2588,6 +2589,7 @@ function formActacircunstanciada2c
         + CreaInputs('id_lugar', 'id_lugar', '', 'hidden')
         + CreaInputs('id_mes', 'id_mes', '', 'hidden')
         + CreaInputs('id_anio', 'id_anio', '', 'hidden')
+        + CreaInputs('anioND', 'anioND', '', 'hidden')
         + CreaInputs('origenPetval', 'origenPetval', '', 'hidden')
         + CreaInputs('origenPetvalExt', 'origenPetvalExt', '', 'hidden')
         + CreaInputs('idactac', 'idactac', '', 'hidden')
