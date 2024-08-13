@@ -3756,7 +3756,7 @@ namespace SistemaIntegralQuejas.Controllers
                     query = "exec SP_AsignaNumeroExpediente " + idqueja;
                     mensaje = ejecutaInsertUpdate(query);
 
-                    query = "Sp_GetNumExp";
+                    query = "Sp_GetNumExp " + idqueja; 
                     var noexpq = GetDatosGeneral(query);
                     foreach (DataRow row in noexpq.Rows)
                     {

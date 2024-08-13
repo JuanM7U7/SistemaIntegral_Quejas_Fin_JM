@@ -401,29 +401,40 @@ let crearformularios = 0;
 
     $(document).ready(function () {
 
-        $("body").on("click", "#tab3", function (event) {
-            validaVacios(".form_acta", "input", "", "#tab3");
-            validaVacios(".form_acta", "select", "99", "#tab3");
 
+        $("body").on("click", ".nav-link", function (event) {
+
+            var target = $(this).attr("href");
+            console.log("Tab mostrado: " + target);
+            // Aquí puedes ejecutar las acciones que necesites
+            if (target == "#alta_escrito") {
+                validaVacios("#frmFromatoQueja", "input", "", target);
+                //validaVacios("#frmFromatoQueja", "select", "", target);
+                //validaVacios("#frmFromatoQueja", "textarea", "", target);
+            } else {
+
+                validaVacios(".form_acta", "input", "", target);
+                //validaVacios(".form_acta", "select", "99", target);
+            }
         });
 
-        $("body").on("click", "#tab2", function (event) {
-            validaVacios("#frmFromatoQueja", "input", "", "#tab2");
-            validaVacios("#frmFromatoQueja", "select", "", "#tab2");
-            validaVacios("#frmFromatoQueja", "textarea", "", "#tab2");
-        });
+        //$("body").on("click", "#tab2", function (event) {
+        //    validaVacios("#frmFromatoQueja", "input", "", "#tab2");
+        //    validaVacios("#frmFromatoQueja", "select", "", "#tab2");
+        //    validaVacios("#frmFromatoQueja", "textarea", "", "#tab2");
+        //});
 
-        $("input").focus(function () {
-            $(this).css({ "background": "trasnparent" });
-        });
+        //$("input").focus(function () {
+        //    $(this).css({ "background": "trasnparent" });
+        //});
       
     });
 
 
+
+
+
 })(jQuery);
-
-
-
 function ejecutatab2() {
 
     //$("#tab2").click();
@@ -442,6 +453,8 @@ function ejecutatab3() {
 
 function validaVacios( formpapa,tipoelemento ,elementoavalidar,elementoclick)
 {
+
+    $(formpapa).find('span').remove();
     //contador = 0;
     var inputs = document.querySelectorAll(formpapa + ' > ' + tipoelemento);
     //console.log(inputs);
@@ -451,7 +464,9 @@ function validaVacios( formpapa,tipoelemento ,elementoavalidar,elementoclick)
         if (inputs[i].value.trim() === elementoavalidar) {
 
             if (inputs[i].offsetParent !== null) {
-                 inputs[i].style.cssText = "border:1px solid #f09e94; color: black;";// Colocar el foco en el input vacío
+
+                $('#miDiv').find('span').remove();
+                inputs[i].style.cssText = "border:1px solid #f09e94; color: black;";// Colocar el foco en el input vacío
                 const nuevoParrafo = document.createElement("span");
                 nuevoParrafo.textContent = "*"; nuevoParrafo.style.color = "red";
                 inputs[i].parentNode.insertBefore(nuevoParrafo, inputs[i]);
@@ -2877,10 +2892,10 @@ let formularioqueja = `
             <li class="nav-item eliminaformaes">
             <a class="nav-link  eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
             </li>
-             <li class="nav-item eliminaformaes">
+             <li class="nav-item eliminaformaes tab2">
             <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_escrito" id="tab2">Alta Escrito inicial</a>
             </li>
-            <li class="nav-item eliminaformaes" >
+            <li class="nav-item eliminaformaes tab3" >
             <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_acta" id="tab3">Alta Acta Circunstanciada</a>
             </li>
             <li class="nav-item eliminaformaes">

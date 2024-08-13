@@ -325,7 +325,7 @@ namespace SistemaIntegralQuejas.Models
                    List< informacioncomplementariaautoridad> modelo2 = datoscomplementariosautoridad(query2, ref mensaje);
                     while (lector.Read())
 					{
-						lista = new informacioncomplementaria(int.Parse(lector[0].ToString()),int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()),modelo1,modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()),lector[8].ToString(), 0,0,0,0,0,0);
+						lista = new informacioncomplementaria(int.Parse(lector[0].ToString()),int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()),modelo1,modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()),lector[8].ToString(), 0,0,0,0,0,0,"");
 
 					}
 
@@ -369,7 +369,8 @@ namespace SistemaIntegralQuejas.Models
     lector[11] != DBNull.Value ? int.Parse(lector[11].ToString()) : 99,
     lector[12] != DBNull.Value ? int.Parse(lector[12].ToString()) : 99,
     lector[13] != DBNull.Value ? int.Parse(lector[13].ToString()) : 99,
-    lector[14] != DBNull.Value ? int.Parse(lector[14].ToString()) : 99);
+    lector[14] != DBNull.Value ? int.Parse(lector[14].ToString()) : 99,
+	lector[15] != DBNull.Value ? lector[15].ToString() : "PASO-ERRONEO-FAVOR-VERIFICARLO-ADMINISTRADOR");
                     }
 
                     return lista;
