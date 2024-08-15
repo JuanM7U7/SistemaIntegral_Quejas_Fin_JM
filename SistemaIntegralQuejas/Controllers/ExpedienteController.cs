@@ -3740,7 +3740,8 @@ namespace SistemaIntegralQuejas.Controllers
                 /*Actualizacion de tabla de medidas Cautelares*/
                 for (int i = 0; i < longitudtabla2; i++)
                 {
-
+                    query = "exec Sp_insertTblMedidas " + idqueja + "," + form["tablaMedCuate[" + i + "][fechaEmision]"].ToString() + ",'" + form["tablaMedCuate[" + i + "][archivoEmision]"].ToString() + "','" + form["tablaMedCuate[" + i + "][fechaAtencion]"].ToString() + "','" + form["tablaMedCuate[" + i + "][archivoAtencion]"].ToString() + "','" + form["tablaMedCuate[" + i + "][noOficio]"].ToString() + "','" + form["tablaMedCuate[" + i + "][obsEmision]"].ToString() + "','" + form["tablaMedCuate[" + i + "][obsAtencion]"].ToString();
+                    mensaje = ejecutaInsertUpdate(query);
                 }
                 /*Actualizacion de tabla de medidas Cautelares*/
                 /*Actualizacion de tabla de diligencias*/

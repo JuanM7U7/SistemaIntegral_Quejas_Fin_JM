@@ -2984,17 +2984,15 @@ function AgrDil(nomTab, id) {
         case "tablaMedCuateT":
             newRow = table.row.add([
                 `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i>`,
-                generateRadioInputs(rowIndex, 'autoridadresMC', 1),
-                Requeridos() + CreaSelectLabel(`autoridadresMC_${rowIndex}`, '', AutoridadesSe1, '', '', '', 'select2'),
-                `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
+                Requeridos() + `<input type="file" name="archivoEmision" multiple id="archivoEmision" class="input-file">
         <div class="input-group col-xs-12">
             <input type="text" class="form-control" disabled placeholder="Cargar archivos">
             <span class="input-group-btn">
                 <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
             </span>
         </div>`,
-                Requeridos() + CreaInputs_Con_Label('horaAlta', 'horaAlta', 'validatimeac', 'date', '', 'textfield9', ''),
-                Requeridos() + CreaInputs_Con_Label('horaPlaAten', 'horaPlaAten', 'validatimeac', 'date', '', 'textfield9', ''),
+                Requeridos() + CreaInputs_Con_Label('fechaEmision', 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', ''),
+                Requeridos() + CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', ''),
                 "",
                 "Semaforo"
             ]).draw().node();
@@ -3224,6 +3222,27 @@ function RecuperaMedCaut(id, callback) {
         }
     });
 }
+function muestraAtencionMedidaCautelar() {
+    // Get the checkbox
+    var checkBox = document.getElementById("cumplio1");
+    var checkBox2 = document.getElementById("cumplio2");
+    // Get the output text
+    var datosAtencion = document.getElementById("muestra");
+
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true) {
+        datosAtencion.style.display = "block";
+        alert ("se prendio esta madre");
+    }
+    if (checkBox2.checked == true) {
+        datosAtencion.style.display = "none";
+        alert("se apago esta madre");
+    }
+    
+    else {
+            
+        }
+    }
 function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
     RecuperaDaAutHec(id, function (datos) {
         $(tablaMedCuateT).DataTable({
@@ -3254,37 +3273,41 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label('noficio', 'noficio', '', 'text', '', 'textfield2')
+                        return CreaInputs_Con_Label('noOficio', 'noOficio', '', 'text', '', 'textfield2')
                     }
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
-        <div class="input-group col-xs-12">
-            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
-            <span class="input-group-btn">
-                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-            </span>
-        </div>`;
+                        return CreaInputs_Con_Label('fechaEmision', 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision" class="input-file">
+                <div class="input-group col-xs-12">
+                <input type="text" class="form-control" disabled placeholder="Cargar archivos">
+                <span class="input-group-btn">
+                    <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
+                </span>
+                </div>`+ '<textarea id="obsEmision" class="swal2-input"> </textarea>'
                     }
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return `
-        <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio" value="1" title="Si" disabled>Si
-        <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio" value="2" title="No" checked = "true" disabled>No
-    `;
+                    return `
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio1" value="1" title="Si" onclick="muestraAtencionMedidaCautelar()">Si
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio2" value="2" checked="true" title="No" onclick="muestraAtencionMedidaCautelar()">No
+                `;
+                        
+                        
                     }
                 },
+
                 {
+
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
-        <div class="input-group col-xs-12">
-            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
-            <span class="input-group-btn">
-                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-            </span>
-        </div>`;
+                        return '<div id="muestra" style= "display:none">'+ CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion" class="input-file">
+                <div class="input-group col-xs-12">
+                <input type="text" class="form-control" disabled placeholder="Cargar archivos">
+                <span class="input-group-btn">
+                    <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
+                </span>
+                 </div>` + '<textarea id="obsAtencion" class="swal2-input"> </textarea></div>'
                     }
                 },
             ],
@@ -3626,16 +3649,23 @@ $(document).ready(function () {
         if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
             $('#tablaMedCuateT tbody tr').each(function (x) {
                 x = x + 1;
-                var autoridad = $(this).find('select[name^="autoridadresMC"]').val();
-                var horaAlta = $(this).find('input[name="horaAlta"]').val();
-                var archAdj = $(this).find('input[name="archAdjMC"]').val();
-                var horaPlaAten = $(this).find('input[name="horaPlaAten"]').val();
-                if (horaAlta !== '' && horaPlaAten !== '' && typeof horaAlta != 'undefined' && typeof horaPlaAten != 'undefined') {
+               /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
+                var fechaEmision = $(this).find('input[name="fechaEmision"]').val();
+                var archivoEmision = $(this).find('input[name="archivoEmision"]').val();
+                var fechaAtencion = $(this).find('input[name="fechaAtencion"]').val();
+                var archivoAtencion = $(this).find('input[name="archivoAtencion"]').val();
+                var noOficio = $(this).find('input[name="noOficio"]').val();
+                var obsEmision = $(this).find('textarea[id="obsEmision"]').val();
+                var obsAtencion = $(this).find('textarea[id="obsAtencion"]').val();
+              
+                if (fechaEmision !== '' && archivoEmision !== '' && fechaAtencion !== '' && archivoAtencion !== '' && noOficio !== '' && obsEmision !== '' && obsAtencion !== '') {
                     MedCaute.push({
-                        autoridad: autoridad,
-                        horaAlta: horaAlta,
-                        archAdj: archAdj,
-                        horaPlaAten: horaPlaAten,
+                        fechaEmision: fechaEmision,
+                        archivoEmision: archivoEmision,
+                        fechaAtencion: fechaAtencion,
+                        archivoAtencion: archivoAtencion,
+                        obsEmision: obsEmision,
+                        obsAtencion: obsAtencion,
                         idMedCaut: x
                     });
                 }
@@ -3720,16 +3750,16 @@ $(document).ready(function () {
             if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
             if (formDQOT.longitudtabla1 <= 0) { htm = htm + Requeridos() + 'Autoridades - Hechos Violatorios<br>'; }
             //if (formDQOT.longitudtabla2 <= 0) { htm = htm + Requeridos() + 'Medidas Cautelares<br>'; }
-            var valo = $('input[id=idmedCuate' + idquejaE + ']:checked').val();
-            if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si' && formDQOT.longitudtabla2 <= 0) {
-                htm = htm + Requeridos() + 'Medidas Cuatelares<br>';
-            }
-            Swal.fire({
-                icon: "error",
-                html: htm,
+            //var valo = $('input[id=idmedCuate' + idquejaE + ']:checked').val();
+            //if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si' && formDQOT.longitudtabla2 <= 0) {
+            //    htm = htm + Requeridos() + 'Medidas Cuatelares<br>';
+            //}
+            //Swal.fire({
+            //    icon: "error",
+            //    html: htm,
 
-            });
-        } else {
+            //});
+      /*  } else {*/
 
             $.ajax({
                 type: "POST",
@@ -3832,17 +3862,23 @@ function GuardPrel() {
     //OBTENER MEDIDAS CUATELARES
     if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
         $('#tablaMedCuateT tbody tr').each(function (x) {
-            x = x + 1;
-            var autoridad = $(this).find('select[name="autoridadresMC"]').val();
-            var horaAlta = $(this).find('input[name="horaAlta"]').val();
-            var archAdj = $(this).find('input[name="archAdjMC"]').val();
-            var horaPlaAten = $(this).find('input[name="horaPlaAten"]').val();
-            if (autoridad !== '99' && horaAlta !== '' && horaPlaAten !== '' && horaPlaAten !== '' && typeof horaAlta != 'undefined' && typeof horaPlaAten != 'undefined') {
+            /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
+            var fechaEmision = $(this).find('input[name="fechaEmision"]').val();
+            var archivoEmision = $(this).find('input[name="archivoEmision"]').val();
+            var fechaAtencion = $(this).find('input[name="fechaAtencion"]').val();
+            var archivoAtencion = $(this).find('input[name="archivoAtencion"]').val();
+            var noOficio = $(this).find('input[name="noOficio"]').val();
+            var obsEmision = $(this).find('textarea[id="obsEmision"]').val();
+            var obsAtencion = $(this).find('textarea[id="obsAtencion"]').val();
+
+            if (fechaEmision !== '' && archivoEmision !== '' && fechaAtencion !== '' && archivoAtencion !== '' && noOficio !== '' && obsEmision !== '' && obsAtencion !== '') {
                 MedCaute.push({
-                    autoridad: autoridad,
-                    horaAlta: horaAlta,
-                    archAdj: archAdj,
-                    horaPlaAten: horaPlaAten,
+                    fechaEmision: fechaEmision,
+                    archivoEmision: archivoEmision,
+                    fechaAtencion: fechaAtencion,
+                    archivoAtencion: archivoAtencion,
+                    obsEmision: obsEmision,
+                    obsAtencion: obsAtencion,
                     idMedCaut: x
                 });
             }
