@@ -3740,8 +3740,18 @@ namespace SistemaIntegralQuejas.Controllers
                 /*Actualizacion de tabla de medidas Cautelares*/
                 for (int i = 0; i < longitudtabla2; i++)
                 {
-                    query = "exec Sp_insertTblMedidas " + idqueja + "," + form["tablaMedCuate[" + i + "][fechaEmision]"].ToString() + ",'" + form["tablaMedCuate[" + i + "][archivoEmision]"].ToString() + "','" + form["tablaMedCuate[" + i + "][fechaAtencion]"].ToString() + "','" + form["tablaMedCuate[" + i + "][archivoAtencion]"].ToString() + "','" + form["tablaMedCuate[" + i + "][noOficio]"].ToString() + "','" + form["tablaMedCuate[" + i + "][obsEmision]"].ToString() + "','" + form["tablaMedCuate[" + i + "][obsAtencion]"].ToString();
-                    mensaje = ejecutaInsertUpdate(query);
+
+                    string fechaemi = form["tablaMedCaut[" + i + "][fechaEmision]"].ToString();
+					string archemi = form["tablaMedCaut[" + i + "][archivoEmision]"].ToString();
+					string fechaate = form["tablaMedCaut[" + i + "][fechaAtencion]"].ToString();
+					string archate = form["tablaMedCaut[" + i + "][archivoAtencion]"].ToString();
+					string noofic = form["tablaMedCaut[" + i + "][noOficio]"].ToString();
+					string obsemi = form["tablaMedCaut[" + i + "][obsEmision]"].ToString();
+					string obsate = form["tablaMedCaut[" + i + "][obsAtencion]"].ToString(); ;
+                    //{ [tablaMedCaut[0][fechaEmision], { 2024 - 08 - 21}]}
+                    query = "exec Sp_insertTblMedidas '" + fechaemi + "','" + archemi + "','" + fechaate + "','" + archate + "'," + idqueja + ",'" + noofic + "','" + obsemi + "','" + obsate + "'";
+
+					mensaje = ejecutaInsertUpdate(query);
                 }
                 /*Actualizacion de tabla de medidas Cautelares*/
                 /*Actualizacion de tabla de diligencias*/
