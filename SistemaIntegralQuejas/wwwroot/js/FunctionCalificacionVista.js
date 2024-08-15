@@ -498,7 +498,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
         $(`#idqueja${tipo}`).val(response.informarcionC.id_expediente);
         $(`#hechos${tipo}`).val(response.informarcionC.hechos);
         $(`#observaciones${tipo}`).val(response.informarcionC.observaciones);
-
+        
         console.log('valores')
         console.log(response.informarcionC.id_expediente)
         console.log(response.informarcionC.hechos)
@@ -535,9 +535,10 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
         $(document).ready(function () {
             $('#tipexpediente-frmDatosCalificacion').change(function () {
                 var tipoExpediente = $(this).val();
-
+                console.log("Respuesta Estatus:" + response.informarcionC.estatus_Expediente);
                 if (tipoExpediente == 1) {
-                    CrearFormuCalificacion(idqueja, tipo);
+                    var pasot = response.informarcionC.estatus_Expediente;
+                    CrearFormuCalificacion(idqueja, tipo, pasot );
                 } else {
                     var ajaxSelectExpeSC = $.ajax({
                         type: "POST",
@@ -556,7 +557,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
 
     $.when(ajaxDQOT).done(function (response) {
         if (tipo === '') {
-            CrearFormuCalificacion(idqueja, tipo);
+            CrearFormuCalificacion(idqueja, tipo, response.informarcionC.estatus_Expediente);
             $(`#submitForm-${idqueja}`).hide();
             $('#especializado-frmDatosCalificacion').prop('disabled', true);
             $('#trancpub-frmDatosCalificacion').prop('disabled', true);
@@ -565,7 +566,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             $('#nivries-frmDatosCalificacion').prop('disabled', true);
         } else {
             if (response.informarcionC.tipo_expediente === 1) {
-                CrearFormuCalificacion(idqueja, tipo);
+                CrearFormuCalificacion(idqueja, tipo, response.informarcionC.estatus_Expediente);
             } else {
                 var ajaxSelectExpeSC = $.ajax({
                     type: "POST",
@@ -2574,171 +2575,342 @@ function CrearFormuCalificacionApo(tipo) {
     $(`#frmDatosCalificacion${tipo}`).append(frmDatos);
     $('#expedsc-frmDatosCalificacion').select2();
 }
-function CrearFormuCalificacion(idformulario, tipo) {
+function CrearFormuCalificacion(idformulario, tipo, paso) {
     $(`#frmDatosCalificacion${tipo}`).empty();
     let eliminarform = document.querySelectorAll('.eliminaformaes');
     for (var i = 0; i < eliminarform.length; i++) {
         eliminarform[i].remove();
     }
+    let frmDatosPersonales;
+    console.log(paso);
+    if (paso == 'Calificado') {
 
-    let frmDatosPersonales = crearForumulario(
-        {
-            idformulario: "frmDatosCalificacion" + idformulario,
-            numForm: idformulario
-        },
-        {
-            formulario:
-                [
-                    {
-                        valhidden: idformulario,
-                        name: "numFrm",
-                        type: "hidden"
-                    },
-                    {
-                        class: "col-md-12 select2",
-                        label: Requeridos() + "Tema",
-                        name: "tema-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes select2",
-                        required: 'required',
-                        combooptions: temaSe,
-                        multiple: "multiple"
-                    },
-                    {
-                        class: "col-md-3 select2",
-                        label: Requeridos() + "Programa",
-                        name: "programa-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes select2",
-                        required: 'required',
-                        combooptions: programSe
-                    },
+        frmDatosPersonales = crearForumulario(
+            {
+                idformulario: "frmDatosCalificacion" + idformulario,
+                numForm: idformulario
+            },
+            {
+                formulario:
+                    [
+                        {
+                            valhidden: idformulario,
+                            name: "numFrm",
+                            type: "hidden"
+                        },
+                        {
+                            class: "col-md-12 select2",
+                            label: Requeridos() + "Tema",
+                            name: "tema-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes select2",
+                            required: 'required',
+                            combooptions: temaSe,
+                            multiple: "multiple"
+                        },
+                        {
+                            class: "col-md-3 select2",
+                            label: Requeridos() + "Programa",
+                            name: "programa-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes select2",
+                            required: 'required',
+                            combooptions: programSe
+                        },
 
-                    {
-                        class: "col-md-2",
-                        label: Requeridos() + "Especializado",
-                        name: "especializado-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes",
-                        required: 'required',
-                        combooptions: [
-                            {
-                                idSelect: 1,
-                                descripcion: 'Si'
-                            },
-                            {
-                                idSelect: 0,
-                                descripcion: 'No'
-                            }
-                        ]
-                    },
-                    {
-                        class: "col-md-3",
-                        label: Requeridos() + "Trasciende la opinión Pública",
-                        name: "trancpub-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes",
-                        required: 'required',
-                        combooptions: [
-                            {
-                                idSelect: 1,
-                                descripcion: 'Si'
-                            },
-                            {
-                                idSelect: 0,
-                                descripcion: 'No'
-                            }
-                        ]
-                    },
-                    {
-                        class: "col-md-2",
-                        label: Requeridos() + "Materia",
-                        name: "materia-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes",
-                        required: 'required',
-                        combooptions: MateriaSe
-                    },
-                    {
-                        class: "col-md-2 form-control-sm",
-                        label: Requeridos() + "Nivel de Riesgo",
-                        name: "nivries-frmDatosCalificacion",
-                        type: "combobox",
-                        classControl: "ob max-300 eliminaformaes",
-                        required: 'required',
-                        combooptions: [
-                            {
-                                idSelect: '1',
-                                descripcion: 'Bajo'
-                            },
-                            {
-                                idSelect: '2',
-                                descripcion: 'Medio'
-                            },
-                            {
-                                idSelect: '3',
-                                descripcion: 'Alto'
-                            }
-                        ]
-                    },
-                    {
-                        class: "col-md-12 positionCenter",
-                        labelhr: 'Autoridades Responsables - Hechos Violatorios',
-                        type: 'separacion'
-                    },
-                    {
-                        class: "col-md-12 tablaAutRe_HecVio ContenedorTabla"
-                    },
-                    {
-                        class: "col-md-12 positionCenter",
-                        labelhr: '¿Tiene Medidas Cautelares?',
-                        type: 'separacion'
-                    },
-                    {
-                        type: "radio",
-                        iformularioit: idformulario,
-                        labels: [
-                            'Si', 'No'
-                        ],
-                        ids: {
-                            0: 'idmedCuate' + idformulario,
-                            1: 'idmedCuate' + idformulario
+                        {
+                            class: "col-md-2",
+                            label: Requeridos() + "Especializado",
+                            name: "especializado-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: [
+                                {
+                                    idSelect: 1,
+                                    descripcion: 'Si'
+                                },
+                                {
+                                    idSelect: 0,
+                                    descripcion: 'No'
+                                }
+                            ]
                         },
-                        values: {
-                            0: 'Si',
-                            1: 'No'
+                        {
+                            class: "col-md-3",
+                            label: Requeridos() + "Trasciende la opinión Pública",
+                            name: "trancpub-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: [
+                                {
+                                    idSelect: 1,
+                                    descripcion: 'Si'
+                                },
+                                {
+                                    idSelect: 0,
+                                    descripcion: 'No'
+                                }
+                            ]
                         },
-                        class: "col-md-12 d-flex mleft positionCenter",
-                        classradio: "radiosnvm",
-                        checked: [
-                            'idmedCuate' + idformulario
-                        ],
-                        name: "radsinoviomu_petit-frmDatosCalificacion" + idformulario,
-                        classControl: "ob max-300 eliminaformaes"
-                    },
-                    {
-                        class: "col-md-12 tablaMedCuate ContenedorTabla"
-                    },
-                    {
-                        class: "col-md-12 positionCenter",
-                        labelhr: 'Diligencias',
-                        type: 'separacion'
-                    },
-                    {
-                        class: "col-md-12 tablaDilig ContenedorTabla"
-                    },
-                    {
-                        class: "col-md-12 positionCenter",
-                        name: "submitForm-" + idformulario,
-                        type: "submiticon",
-                        classSubmit: "eliminaformaes btn btn-success",
-                        submitLabel: "Guardar y Calificar",
-                        classSpan: "btn-icon-right",
-                        icon: "fa fa-check"
-                    }
-                ]
-        }
-    );
+                        {
+                            class: "col-md-2",
+                            label: Requeridos() + "Materia",
+                            name: "materia-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: MateriaSe
+                        },
+                        {
+                            class: "col-md-2 form-control-sm",
+                            label: Requeridos() + "Nivel de Riesgo",
+                            name: "nivries-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: [
+                                {
+                                    idSelect: '1',
+                                    descripcion: 'Bajo'
+                                },
+                                {
+                                    idSelect: '2',
+                                    descripcion: 'Medio'
+                                },
+                                {
+                                    idSelect: '3',
+                                    descripcion: 'Alto'
+                                }
+                            ]
+                        },
+                        {
+                            class: "col-md-12 positionCenter",
+                            labelhr: 'Autoridades Responsables - Hechos Violatorios',
+                            type: 'separacion'
+                        },
+                        {
+                            class: "col-md-12 tablaAutRe_HecVio ContenedorTabla"
+                        },
+                        {
+                            class: "col-md-12 positionCenter",
+                            labelhr: '¿Tiene Medidas Cautelares?',
+                            type: 'separacion'
+                        },
+                        {
+                            type: "radio",
+                            iformularioit: idformulario,
+                            labels: [
+                                'Si', 'No'
+                            ],
+                            ids: {
+                                0: 'idmedCuate' + idformulario,
+                                1: 'idmedCuate' + idformulario
+                            },
+                            values: {
+                                0: 'Si',
+                                1: 'No'
+                            },
+                            class: "col-md-12 d-flex mleft positionCenter",
+                            classradio: "radiosnvm",
+                            checked: [
+                                'idmedCuate' + idformulario
+                            ],
+                            name: "radsinoviomu_petit-frmDatosCalificacion" + idformulario,
+                            classControl: "ob max-300 eliminaformaes"
+                        },
+                        {
+                            class: "col-md-12 tablaMedCuate ContenedorTabla"
+                        },
+                        {
+                            class: "col-md-12 positionCenter",
+                            labelhr: 'Diligencias',
+                            type: 'separacion'
+                        },
+                        {
+                            class: "col-md-12 tablaDilig ContenedorTabla"
+                        },
+                        {
+
+                            class: "col-md-12 positionCenter",
+                            name: "submitForm-" + idformulario,
+                            type: "submiticon",
+                            classSubmit: "eliminaformaes btn btn-success",
+                            submitLabel: "Modificar Calificación",
+                            classSpan: "btn-icon-right",
+                            icon: "fa fa-check"
+                        }
+                    ]
+            }
+        );
+
+    } else {
+        frmDatosPersonales = crearForumulario(
+            {
+                idformulario: "frmDatosCalificacion" + idformulario,
+                numForm: idformulario
+            },
+            {
+                formulario:
+                    [
+                        {
+                            valhidden: idformulario,
+                            name: "numFrm",
+                            type: "hidden"
+                        },
+                        {
+                            class: "col-md-12 select2",
+                            label: Requeridos() + "Tema",
+                            name: "tema-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes select2",
+                            required: 'required',
+                            combooptions: temaSe,
+                            multiple: "multiple"
+                        },
+                        {
+                            class: "col-md-3 select2",
+                            label: Requeridos() + "Programa",
+                            name: "programa-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes select2",
+                            required: 'required',
+                            combooptions: programSe
+                        },
+
+                        {
+                            class: "col-md-2",
+                            label: Requeridos() + "Especializado",
+                            name: "especializado-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: [
+                                {
+                                    idSelect: 1,
+                                    descripcion: 'Si'
+                                },
+                                {
+                                    idSelect: 0,
+                                    descripcion: 'No'
+                                }
+                            ]
+                        },
+                        {
+                            class: "col-md-3",
+                            label: Requeridos() + "Trasciende la opinión Pública",
+                            name: "trancpub-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: [
+                                {
+                                    idSelect: 1,
+                                    descripcion: 'Si'
+                                },
+                                {
+                                    idSelect: 0,
+                                    descripcion: 'No'
+                                }
+                            ]
+                        },
+                        {
+                            class: "col-md-2",
+                            label: Requeridos() + "Materia",
+                            name: "materia-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: MateriaSe
+                        },
+                        {
+                            class: "col-md-2 form-control-sm",
+                            label: Requeridos() + "Nivel de Riesgo",
+                            name: "nivries-frmDatosCalificacion",
+                            type: "combobox",
+                            classControl: "ob max-300 eliminaformaes",
+                            required: 'required',
+                            combooptions: [
+                                {
+                                    idSelect: '1',
+                                    descripcion: 'Bajo'
+                                },
+                                {
+                                    idSelect: '2',
+                                    descripcion: 'Medio'
+                                },
+                                {
+                                    idSelect: '3',
+                                    descripcion: 'Alto'
+                                }
+                            ]
+                        },
+                        {
+                            class: "col-md-12 positionCenter",
+                            labelhr: 'Autoridades Responsables - Hechos Violatorios',
+                            type: 'separacion'
+                        },
+                        {
+                            class: "col-md-12 tablaAutRe_HecVio ContenedorTabla"
+                        },
+                        {
+                            class: "col-md-12 positionCenter",
+                            labelhr: '¿Tiene Medidas Cautelares?',
+                            type: 'separacion'
+                        },
+                        {
+                            type: "radio",
+                            iformularioit: idformulario,
+                            labels: [
+                                'Si', 'No'
+                            ],
+                            ids: {
+                                0: 'idmedCuate' + idformulario,
+                                1: 'idmedCuate' + idformulario
+                            },
+                            values: {
+                                0: 'Si',
+                                1: 'No'
+                            },
+                            class: "col-md-12 d-flex mleft positionCenter",
+                            classradio: "radiosnvm",
+                            checked: [
+                                'idmedCuate' + idformulario
+                            ],
+                            name: "radsinoviomu_petit-frmDatosCalificacion" + idformulario,
+                            classControl: "ob max-300 eliminaformaes"
+                        },
+                        {
+                            class: "col-md-12 tablaMedCuate ContenedorTabla"
+                        },
+                        {
+                            class: "col-md-12 positionCenter",
+                            labelhr: 'Diligencias',
+                            type: 'separacion'
+                        },
+                        {
+                            class: "col-md-12 tablaDilig ContenedorTabla"
+                        },
+                        {
+
+                            class: "col-md-12 positionCenter",
+                            name: "submitForm-" + idformulario,
+                            type: "submiticon",
+                            classSubmit: "eliminaformaes btn btn-success",
+                            submitLabel: "Guardar y Calificar",
+                            classSpan: "btn-icon-right",
+                            icon: "fa fa-check"
+                        }
+                    ]
+            }
+
+
+
+
+        );
+
+    }
     $(`#frmDatosCalificacion${tipo}`).append(frmDatosPersonales);
     $('.tablaAutRe_HecVio').empty();
     $('.tablaMedCuate').empty();
@@ -2767,7 +2939,6 @@ function CrearFormuCalificacion(idformulario, tipo) {
     $("#tema-frmDatosCalificacion").select2();
     $("#programa-frmDatosCalificacion").select2();
 }
-
 
 function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
     var table = document.createElement("table");
@@ -3051,6 +3222,27 @@ function RecuperaMedCaut(id, callback) {
         }
     });
 }
+function muestraAtencionMedidaCautelar() {
+    // Get the checkbox
+    var checkBox = document.getElementById("cumplio1");
+    var checkBox2 = document.getElementById("cumplio2");
+    // Get the output text
+    var datosAtencion = document.getElementById("muestra");
+
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true) {
+        datosAtencion.style.display = "block";
+        alert ("se prendio esta madre");
+    }
+    if (checkBox2.checked == true) {
+        datosAtencion.style.display = "none";
+        alert("se apago esta madre");
+    }
+    
+    else {
+            
+        }
+    }
 function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
     RecuperaDaAutHec(id, function (datos) {
         $(tablaMedCuateT).DataTable({
@@ -3098,21 +3290,24 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 {
                     'mRender': function (data, type, full, meta) {
                     return `
-                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio" value="1" title="Si">Si
-                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio" value="2" title="No">No
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio1" value="1" title="Si" onclick="muestraAtencionMedidaCautelar()">Si
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio2" value="2" checked="true" title="No" onclick="muestraAtencionMedidaCautelar()">No
                 `;
+                        
+                        
                     }
                 },
+
                 {
 
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion" class="input-file">
+                        return '<div id="muestra" style= "display:none">'+ CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion" class="input-file">
                 <div class="input-group col-xs-12">
                 <input type="text" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
                 </span>
-                 </div>` + '<textarea id="obsAtencion" class="swal2-input"> </textarea>'
+                 </div>` + '<textarea id="obsAtencion" class="swal2-input"> </textarea></div>'
                     }
                 },
             ],
@@ -3576,8 +3771,8 @@ $(document).ready(function () {
                         closeModal('modaltabCalif');
                         Swal.fire({
                             icon: "success",
-                            title: "Registro Exitoso",
-                            text: "Número de expediente asignado:" + response.no_exp + "-2024",
+                            title: "Expediente Calificado",
+                            text: "Número de expediente :" + response.no_exp + "-2024",
 
                         });
 
