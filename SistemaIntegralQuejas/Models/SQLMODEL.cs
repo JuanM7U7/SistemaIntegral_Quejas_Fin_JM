@@ -648,10 +648,10 @@ namespace SistemaIntegralQuejas.Models
 
         }
 
-        public List<SelectAUT_HEV> SelectAutHec(string query, ref string mensaje)
+        public List<selectMED_CAUT> Selectmedcaut(string query, ref string mensaje)
         {
             mensaje = "";
-            List<SelectAUT_HEV> lista = new List<SelectAUT_HEV>();
+            List<selectMED_CAUT> lista = new List<selectMED_CAUT>();
             SqlDataReader lector;
             try
             {
@@ -662,10 +662,10 @@ namespace SistemaIntegralQuejas.Models
                     cmd.CommandText = query;
                     cmd.Connection = conn;
                     lector = cmd.ExecuteReader();
-                    SelectAUT_HEV modelo;
+					selectMED_CAUT modelo;
                     while (lector.Read())
                     {//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
-                        modelo = new SelectAUT_HEV(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString()), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), int.Parse(lector[6].ToString()));
+                        modelo = new selectMED_CAUT(int.Parse(lector[0].ToString()), lector[1].ToString(),lector[2].ToString(),lector[3].ToString(),lector[4].ToString(),lector[5].ToString(), lector[6].ToString(),lector[7].ToString(),int.Parse(lector[8].ToString()));
                         lista.Add(modelo);
                     }
                     return lista;
@@ -677,8 +677,39 @@ namespace SistemaIntegralQuejas.Models
             return lista;
         }
 
+		public List<SelectAUT_HEV> SelectAutHec(string query, ref string mensaje)
+		{
+			mensaje = "";
+			List<SelectAUT_HEV> lista = new List<SelectAUT_HEV>();
+			SqlDataReader lector;
+			try
+			{
+				using (SqlConnection conn = conexion(ref mensaje))
+				{
+					SqlCommand cmd = new SqlCommand();
+					cmd.CommandType = CommandType.Text;
+					cmd.CommandText = query;
+					cmd.Connection = conn;
+					lector = cmd.ExecuteReader();
+					SelectAUT_HEV modelo;
+					while (lector.Read())
+					{//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
+						modelo = new SelectAUT_HEV(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString()), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), int.Parse(lector[6].ToString()));
+						lista.Add(modelo);
+					}
+					return lista;
+				}
+			}
+			catch (Exception)
+			{
+			}
+			return lista;
+		}
 
-        public List<inforaportaciones> Obtaport(string query, ref string mensaje)
+		
+
+
+		public List<inforaportaciones> Obtaport(string query, ref string mensaje)
         {
             mensaje = "";
             List<inforaportaciones> lista = new List<inforaportaciones>();

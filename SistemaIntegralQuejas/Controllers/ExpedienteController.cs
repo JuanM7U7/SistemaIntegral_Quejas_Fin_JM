@@ -3696,8 +3696,18 @@ namespace SistemaIntegralQuejas.Controllers
             int longitudtabla2 = int.Parse(form["longitudtabla2"].ToString());
             int longitudtabla3 = int.Parse(form["longitudtabla3"].ToString());
 			string mensaje = "";
-            /*Sección de la actualización de la tabla de una queja*/
-            idqueja = int.Parse(form["idqueja"].ToString());
+
+            string fechaemi = "";
+            string archemi = "";
+			string fechaate = "";
+			string archate = "";
+			string noofic ="";
+			string obsemi = "";
+			string obsate = "";
+            int statust = 0;
+            int nomedidadC = 0;
+			/*Sección de la actualización de la tabla de una queja*/
+			idqueja = int.Parse(form["idqueja"].ToString());
             hechos = form["hechos"].ToString();
             municipoqueja = form["municipioqueja"].ToString();
             observaciones = form["observaciones"].ToString();
@@ -3740,8 +3750,20 @@ namespace SistemaIntegralQuejas.Controllers
                 /*Actualizacion de tabla de medidas Cautelares*/
                 for (int i = 0; i < longitudtabla2; i++)
                 {
-                    query = "exec Sp_insertTblMedidas " + idqueja + "," + form["tablaMedCuate[" + i + "][fechaEmision]"].ToString() + ",'" + form["tablaMedCuate[" + i + "][archivoEmision]"].ToString() + "','" + form["tablaMedCuate[" + i + "][fechaAtencion]"].ToString() + "','" + form["tablaMedCuate[" + i + "][archivoAtencion]"].ToString() + "','" + form["tablaMedCuate[" + i + "][noOficio]"].ToString() + "','" + form["tablaMedCuate[" + i + "][obsEmision]"].ToString() + "','" + form["tablaMedCuate[" + i + "][obsAtencion]"].ToString();
-                    mensaje = ejecutaInsertUpdate(query);
+
+                     fechaemi = form["tablaMedCaut[" + i + "][fechaEmision]"].ToString();
+					 archemi = form["tablaMedCaut[" + i + "][archivoEmision]"].ToString();
+					 fechaate = form["tablaMedCaut[" + i + "][fechaAtencion]"].ToString();
+					 archate = form["tablaMedCaut[" + i + "][archivoAtencion]"].ToString();
+					 noofic = form["tablaMedCaut[" + i + "][noOficio]"].ToString();
+					 obsemi = form["tablaMedCaut[" + i + "][obsEmision]"].ToString();
+					 obsate = form["tablaMedCaut[" + i + "][obsAtencion]"].ToString();
+					statust= Convert.ToInt32( form["tablaMedCaut[" + i + "][status]"].ToString());
+                    nomedidadC = Convert.ToInt32(form["tablaMedCaut[" + i + "][idMedCaut]"].ToString());
+					//{ [tablaMedCaut[0][fechaEmision], { 2024 - 08 - 21}]}
+					query = "exec Sp_insertTblMedidas '"+ fechaemi + "','" + archemi + "','" + fechaate + "','" + archate + "'," + idqueja + ",'" + noofic + "','" + obsemi + "','" + obsate + "',"+ statust + ","+ nomedidadC + "";
+
+					mensaje = ejecutaInsertUpdate(query);
                 }
                 /*Actualizacion de tabla de medidas Cautelares*/
                 /*Actualizacion de tabla de diligencias*/
@@ -3808,6 +3830,38 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
+        public class selectMED_CAUT
+        { 
+
+            public int idqueja { get; set; }
+            public string no_oficio { get; set; }
+			public string fecha_emision { get; set; }
+			public string archivo_emision { get; set; }
+			public string obs_emision { get; set; }
+			public string fecha_atencion { get; set; }
+			public string archivo_atencion { get; set; }
+			public string obs_atencion { get; set; }
+            public int status { get; set; }
+
+            public selectMED_CAUT()
+            { 
+            }
+
+            public selectMED_CAUT(int idq,string no_of,string fecha_em,string arch_emi,string obs_emi,string fecha_aten,string arch_aten,string obs_aten,int stat) 
+            {
+                idqueja = idq;
+                no_oficio = no_of;
+                fecha_emision = fecha_em;
+                archivo_emision = arch_emi;
+                obs_emision=obs_emi;
+                fecha_atencion= fecha_aten;
+				archivo_atencion= arch_aten;
+                obs_atencion= obs_aten;
+                status = stat;
+
+			}
+		}
+
         // Lista obtener datos de tabla Autoridades - Hechos Violatorios
         public ActionResult SelectAutorHech(string idqueja)
         {
@@ -3825,7 +3879,24 @@ namespace SistemaIntegralQuejas.Controllers
                 return Json(new { mensaje = "error" });
             }
         }
-        // Fin obtener datos de tabla Autoridades - Hechos Violatorios
 
-    }
+		public ActionResult SelectMedc(string idqueja)
+		{
+			List<selectMED_CAUT> autorhech = new List<selectMED_CAUT>();
+			String query = "exec Sp_obtener_med_caut " + idqueja;
+			string mensaje = "";
+			autorhech = conexionsql.Selectmedcaut(query, ref mensaje);
+
+			if (autorhech.Count > 0)
+			{
+				return Json(new { medcaut = autorhech });
+			}
+			else
+			{
+				return Json(new { mensaje = "error" });
+			}
+		}
+		// Fin obtener datos de tabla Autoridades - Hechos Violatorios
+
+	}
 }

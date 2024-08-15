@@ -2991,8 +2991,8 @@ function AgrDil(nomTab, id) {
                 <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
             </span>
         </div>`,
-                Requeridos() + CreaInputs_Con_Label('fechaEmision', 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', ''),
-                Requeridos() + CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', ''),
+                Requeridos() + CreaInputs_Con_Label('fechaEmision_' + rowIndex, 'fechaEmision_' + rowIndex, 'validatimeac', 'date', '', 'textfield9', ''),
+                Requeridos() + CreaInputs_Con_Label('fechaAtencion_' + rowIndex, 'fechaAtencion_' + rowIndex, 'validatimeac', 'date', '', 'textfield9', ''),
                 "",
                 "Semaforo"
             ]).draw().node();
@@ -3068,6 +3068,35 @@ function RecuperaDaAutHec(id, callback) {
         dataType: "JSON",
         success: function (response) {
             callback(response.autoridhecho);
+        }
+    });
+}
+
+function RecuperaDaMedC(id, callback) {
+    $.ajax({
+        type: "POST",
+        url: "SelectMedc",
+        data: { idqueja: id },
+        dataType: "JSON",
+        success: function (response) {
+            callback(response.medcaut);
+
+            if (response.medcaut !=undefined) {
+
+
+            if (response.medcaut.length > 0)
+            {
+                console.log(response.medcaut);
+                //$(".radiosnvm").prop('checked', true);
+                $(".radiosnvm").each(function (indice, elemento) {
+                    if ($(elemento).val() == "Si")
+                    {
+                        $(elemento).prop('checked', true);
+                        $('.tablaMedCuate').show();
+                    }
+                });
+                }
+            }
         }
     });
 }
@@ -3222,21 +3251,21 @@ function RecuperaMedCaut(id, callback) {
         }
     });
 }
-function muestraAtencionMedidaCautelar() {
+function muestraAtencionMedidaCautelar(row) {
     // Get the checkbox
-    var checkBox = document.getElementById("cumplio1");
-    var checkBox2 = document.getElementById("cumplio2");
+    var checkBox = document.getElementById("cumplio1_" + row);
+    var checkBox2 = document.getElementById("cumplio2_" + row);
     // Get the output text
-    var datosAtencion = document.getElementById("muestra");
+    var datosAtencion = document.getElementById("muestra_"+row);
 
     // If the checkbox is checked, display the output text
     if (checkBox.checked == true) {
         datosAtencion.style.display = "block";
-        alert ("se prendio esta madre");
+        //alert ("se prendio esta madre");
     }
     if (checkBox2.checked == true) {
         datosAtencion.style.display = "none";
-        alert("se apago esta madre");
+        //alert("se apago esta madre");
     }
     
     else {
@@ -3244,13 +3273,13 @@ function muestraAtencionMedidaCautelar() {
         }
     }
 function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
-    RecuperaDaAutHec(id, function (datos) {
+    RecuperaDaMedC(id, function (datos) {
         $(tablaMedCuateT).DataTable({
             language: {
                 "url": "/js/TablaJson.json"
             },
             iDisplayLength: 10,
-            data: tipo,
+            data: datos,
             fixedHeader: true,
             orderCellsTop: true,
             searching: false,
@@ -3273,25 +3302,25 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label('noOficio', 'noOficio', '', 'text', '', 'textfield2')
+                        return CreaInputs_Con_Label(`noOficio_${meta.row}`, 'noOficio', '', 'text', '', 'textfield2')
                     }
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label('fechaEmision', 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision" class="input-file">
+                        return CreaInputs_Con_Label(`fechaEmision_${meta.row}`, 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision_${meta.row}" class="input-file">
                 <div class="input-group col-xs-12">
-                <input type="text" class="form-control" disabled placeholder="Cargar archivos">
+                <input type="text" id="archivoEmisionruta_${meta.row}" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
                 </span>
-                </div>`+ '<textarea id="obsEmision" class="swal2-input"> </textarea>'
+                </div>`+ `<textarea id="obsEmision_${meta.row}" class="swal2-input"> </textarea>`
                     }
                 },
                 {
                     'mRender': function (data, type, full, meta) {
                     return `
-                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio1" value="1" title="Si" onclick="muestraAtencionMedidaCautelar()">Si
-                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio2" value="2" checked="true" title="No" onclick="muestraAtencionMedidaCautelar()">No
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio1_${meta.row}" value="1" title="Si" onclick="muestraAtencionMedidaCautelar(${meta.row})">Si
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio2_${meta.row}" value="2" checked="true" title="No" onclick="muestraAtencionMedidaCautelar(${meta.row})">No
                 `;
                         
                         
@@ -3301,26 +3330,68 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 {
 
                     'mRender': function (data, type, full, meta) {
-                        return '<div id="muestra" style= "display:none">'+ CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion" class="input-file">
+                        return `<div id="muestra_${meta.row}" style= "display:none">` + CreaInputs_Con_Label(`fechaAtencion_${meta.row}`, 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion_${meta.row}" class="input-file">
                 <div class="input-group col-xs-12">
-                <input type="text" class="form-control" disabled placeholder="Cargar archivos">
+                <input id="archivoAtencionRuta_${meta.row}" type="text" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
                 </span>
-                 </div>` + '<textarea id="obsAtencion" class="swal2-input"> </textarea></div>'
+                 </div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input"> </textarea></div>`
                     }
                 },
             ],
             initComplete: function () {
+
                 if (tipo !== '') {
                     const table = $(tablaMedCuateT).DataTable();
                     var param = `"${tablaMedCuateT.replace('#', '')}",${id}`;
                     const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
                     $(table.table().container()).find('.dataTables_length').append(boton);
                 }
-                $(`${tablaMedCuateT} th:nth-child(1), ${tablaMedCuateT} td:nth-child(1)`).css('width', '5%');
-                $(`${tablaMedCuateT} th:nth-child(2), ${tablaMedCuateT} td:nth-child(2)`).css('width', '5%');
-                $(`${tablaMedCuateT} th:nth-child(4), ${tablaMedCuateT} td:nth-child(4)`).css('width', '10%');
+                const table = $(tablaMedCuateT).DataTable();
+                table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                    const data = this.data();
+                    var dat = {};
+                        dat = {
+                            idq: data.idqueja,
+                            femi: data.fecha_emision,
+                            aemi: data.archivo_emision,
+                            obsemi: data.obs_emision,
+                            fate: data.fecha_atencion,
+                            aate: data.archivo_atencion,
+                            obsate: data.obs_atencion,
+                            est: data.status,
+                            noof: data.no_oficio
+                    }
+                    console.log(dat);
+                    $(`#noOficio_${rowIdx}`).val(dat.noof);
+                    /*Fecha emision*/
+                    var fecha = data.fecha_emision.split(' ')[0];
+                    var fechaspl = fecha.split('/');
+                    var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
+                    var date = new Date(fechaemi);
+                    /*Fecha emision*/
+                    chargeDateInputDate(document.getElementById(`fechaEmision_${rowIdx}`), date);
+                    $(`#archivoEmisionruta_${rowIdx}`).val(dat.aemi);
+                    $(`#obsEmision_${rowIdx}`).val(dat.obsemi);
+                    /*Esta Cumplida*/
+                    if (data.status==1) {
+                        $(`#cumplio1_${rowIdx}`).prop("checked", true);
+                        //$(`#cumplio1_${rowIdx}`).click();
+                        var datosAtencion = document.getElementById(`muestra_${rowIdx}`);
+                        datosAtencion.style.display = "block";
+
+                        var fecha = data.fecha_atencion.split(' ')[0];
+                        var fechaspl = fecha.split('/');
+                        var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
+                        var date = new Date(fechaemi);
+                        /*Fecha emision*/
+                        chargeDateInputDate(document.getElementById(`fechaAtencion_${rowIdx}`), date);
+                        $(`#archivoAtencionRuta_${rowIdx}`).val(dat.aate);
+                        $(`#obsAtencion_${rowIdx}`).val(dat.obsemi);
+
+                    }
+                });  
             },
             order: [1, 'desc'],
             bDestroy: true
@@ -3581,8 +3652,6 @@ function GuardarAp() {
                         }
                     });
 
-
-
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -3648,29 +3717,58 @@ $(document).ready(function () {
         //OBTENER MEDIDAS CUATELARES
         if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
             $('#tablaMedCuateT tbody tr').each(function (x) {
-                x = x + 1;
-               /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
-                var fechaEmision = $(this).find('input[name="fechaEmision"]').val();
-                var archivoEmision = $(this).find('input[name="archivoEmision"]').val();
-                var fechaAtencion = $(this).find('input[name="fechaAtencion"]').val();
-                var archivoAtencion = $(this).find('input[name="archivoAtencion"]').val();
-                var noOficio = $(this).find('input[name="noOficio"]').val();
-                var obsEmision = $(this).find('textarea[id="obsEmision"]').val();
-                var obsAtencion = $(this).find('textarea[id="obsAtencion"]').val();
-              
-                if (fechaEmision !== '' && archivoEmision !== '' && fechaAtencion !== '' && archivoAtencion !== '' && noOficio !== '' && obsEmision !== '' && obsAtencion !== '') {
-                    MedCaute.push({
-                        fechaEmision: fechaEmision,
-                        archivoEmision: archivoEmision,
-                        fechaAtencion: fechaAtencion,
-                        archivoAtencion: archivoAtencion,
-                        obsEmision: obsEmision,
-                        obsAtencion: obsAtencion,
-                        idMedCaut: x
-                    });
+                console.log(x);
+                /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
+                var fechaEmision = $(this).find('input[id="fechaEmision_' + x + '"]').val();
+                var archivoEmision = $(this).find('input[id="archivoEmision_' + x + '"]').val();
+                var fechaAtencion = $(this).find('input[id="fechaAtencion_' + x + '"]').val();
+                var archivoAtencion = $(this).find('input[id="archivoAtencion_' + x + '"]').val();
+                var noOficioT = $(this).find('input[id="noOficio_' + x + '"]').val();
+                var obsEmision = $(this).find('textarea[id="obsEmision_' + x + '"]').val();
+                var obsAtencion = $(this).find('textarea[id="obsAtencion_' + x + '"]').val();
+                var statust = 0;
+
+
+                var banderaEstatus = document.getElementById('cumplio1_' + x);
+                console.log(banderaEstatus.checked);
+
+                if ($('input[id="cumplio1_' + x + '"]').attr('checked', true)) {
+
+                        MedCaute.push({
+                            noOficio: noOficioT,
+                            fechaEmision: fechaEmision,
+                            archivoEmision: archivoEmision,
+                            fechaAtencion: fechaAtencion,
+                            archivoAtencion: archivoAtencion,
+                            obsEmision: obsEmision,
+                            obsAtencion: obsAtencion,
+                            idMedCaut: x,
+                            status: 1
+                        });
+
+
+                } else
+                {
+
+                        MedCaute.push({
+                            noOficio: noOficioT,
+                            fechaEmision: fechaEmision,
+                            archivoEmision: archivoEmision,
+                            fechaAtencion: '',
+                            archivoAtencion: '',
+                            obsEmision: obsEmision,
+                            obsAtencion: '',
+                            idMedCaut: x,
+                            status: statust
+                        });
+                    
                 }
 
+                x = x + 1;
+
             });
+
+            console.log(MedCaute);
         }
         //DILIGENCIAS
         $('#tablaDiligT tbody tr').each(function (x) {
@@ -3863,27 +3961,54 @@ function GuardPrel() {
     if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
         $('#tablaMedCuateT tbody tr').each(function (x) {
             /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
-            var fechaEmision = $(this).find('input[name="fechaEmision"]').val();
-            var archivoEmision = $(this).find('input[name="archivoEmision"]').val();
-            var fechaAtencion = $(this).find('input[name="fechaAtencion"]').val();
-            var archivoAtencion = $(this).find('input[name="archivoAtencion"]').val();
-            var noOficio = $(this).find('input[name="noOficio"]').val();
-            var obsEmision = $(this).find('textarea[id="obsEmision"]').val();
-            var obsAtencion = $(this).find('textarea[id="obsAtencion"]').val();
+            var fechaEmision = $(this).find('input[id="fechaEmision_' + x + '"]').val();
+            var archivoEmision = $(this).find('input[id="archivoEmision_' + x + '"]').val();
+            var fechaAtencion = $(this).find('input[id="fechaAtencion_' + x + '"]').val();
+            var archivoAtencion = $(this).find('input[id="archivoAtencion_' + x + '"]').val();
+            var noOficioT = $(this).find('input[id="noOficio_' + x + '"]').val();
+            var obsEmision = $(this).find('textarea[id="obsEmision_' + x + '"]').val();
+            var obsAtencion = $(this).find('textarea[id="obsAtencion_' + x + '"]').val();
+            var statust = 0;
 
-            if (fechaEmision !== '' && archivoEmision !== '' && fechaAtencion !== '' && archivoAtencion !== '' && noOficio !== '' && obsEmision !== '' && obsAtencion !== '') {
+            var banderaEstatus = document.getElementById('cumplio1_' + x);
+            console.log(banderaEstatus.checked);
+
+            if ($('input[id="cumplio1_' + x + '"]').attr('checked', true)) {
+
                 MedCaute.push({
+                    noOficio: noOficioT,
                     fechaEmision: fechaEmision,
                     archivoEmision: archivoEmision,
                     fechaAtencion: fechaAtencion,
                     archivoAtencion: archivoAtencion,
                     obsEmision: obsEmision,
                     obsAtencion: obsAtencion,
-                    idMedCaut: x
+                    idMedCaut: x,
+                    status: 1
                 });
+
+
+            } else {
+
+                MedCaute.push({
+                    noOficio: noOficioT,
+                    fechaEmision: fechaEmision,
+                    archivoEmision: archivoEmision,
+                    fechaAtencion: '',
+                    archivoAtencion: '',
+                    obsEmision: obsEmision,
+                    obsAtencion: '',
+                    idMedCaut: x,
+                    status: statust
+                });
+
             }
 
+            x = x + 1;
+
         });
+
+        console.log(MedCaute);
     }
     //DILIGENCIAS
     $('#tablaDiligT tbody tr').each(function (x) {
