@@ -3051,6 +3051,27 @@ function RecuperaMedCaut(id, callback) {
         }
     });
 }
+function muestraAtencionMedidaCautelar() {
+    // Get the checkbox
+    var checkBox = document.getElementById("cumplio1");
+    var checkBox2 = document.getElementById("cumplio2");
+    // Get the output text
+    var datosAtencion = document.getElementById("muestra");
+
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true) {
+        datosAtencion.style.display = "block";
+        alert ("se prendio esta madre");
+    }
+    if (checkBox2.checked == true) {
+        datosAtencion.style.display = "none";
+        alert("se apago esta madre");
+    }
+    
+    else {
+            
+        }
+    }
 function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
     RecuperaDaAutHec(id, function (datos) {
         $(tablaMedCuateT).DataTable({
@@ -3098,21 +3119,24 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 {
                     'mRender': function (data, type, full, meta) {
                     return `
-                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio" value="1" title="Si">Si
-                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio" value="2" title="No">No
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio1" value="1" title="Si" onclick="muestraAtencionMedidaCautelar()">Si
+                    <input name="cumplio_${meta.row}" type="radio" class="radio" id="cumplio2" value="2" checked="true" title="No" onclick="muestraAtencionMedidaCautelar()">No
                 `;
+                        
+                        
                     }
                 },
+
                 {
 
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion" class="input-file">
+                        return '<div id="muestra" style= "display:none">'+ CreaInputs_Con_Label('fechaAtencion', 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion" class="input-file">
                 <div class="input-group col-xs-12">
                 <input type="text" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
                 </span>
-                 </div>` + '<textarea id="obsAtencion" class="swal2-input"> </textarea>'
+                 </div>` + '<textarea id="obsAtencion" class="swal2-input"> </textarea></div>'
                     }
                 },
             ],
