@@ -31,6 +31,7 @@ using System.Security.Cryptography;
 using System.Drawing;
 using System.Net.WebSockets;
 using System.Runtime.Serialization;
+using System.Numerics;
 
 namespace SistemaIntegralQuejas.Controllers
 {
@@ -1899,6 +1900,28 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { data = listformatos });
         }
 
+        //public ActionResult GuarDil(IFormCollection form)
+        //{
+        //    string viaDil = "0";
+        //    string noOfMe = "";
+        //    string Fecha_Soli = "";
+        //    string plazo = "";
+        //    string Fecha_Recib = "";
+        //    string atentido = "";
+        //    if (form["tipodil"].ToString() != "3")
+        //    {
+        //        viaDil = form["viaDil"].ToString();
+        //        noOfMe = form["noOfMe"].ToString();
+        //        Fecha_Soli = form["Fecha_Soli"].ToString();
+        //        plazo = form["plazo"].ToString();
+        //        Fecha_Recib = form["Fecha_Recib"].ToString();
+        //        atentido = form["atentido"].ToString();
+        //    }
+
+        //    string query = "exec Sp_insertTblDil " + form["idqueja"].ToString() + ",'"+ form["tipodil"].ToString() + "', '"+ form["descripcion"].ToString() + "', '"+ form["fecEm"].ToString() + "', '"+ noOfMe + "', '"+ plazo + "', '', "+ form["fila"].ToString() + ", 0, 0, "+ viaDil + ", '"+ Fecha_Recib + "', '', '"+ Fecha_Soli + "', '"+ form["descEvi"].ToString() + "'";
+            
+        //    return Json(new { data = ejecutaInsertUpdate( query) });
+        //}
 
         public ActionResult TurnoAbogado(int idqueja, int idabogado)
         {
@@ -2069,6 +2092,8 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin aportaciones
+
+        // Fin Diligencias
 
         // Datos de un memorandum
         public ActionResult GetDataMemorandum(IFormCollection form)
@@ -3747,8 +3772,8 @@ namespace SistemaIntegralQuejas.Controllers
                 /*Actualizacion de tabla de diligencias*/
                 for (int i = 0; i < longitudtabla3; i++)
                 {
-                    query = "exec Sp_insertTblDil " + idqueja + "," + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + ",'" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0";
-
+                    query = "exec Sp_insertTblDil " + idqueja + ",'" + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + "','" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0," + form["tablaDilig[" + i + "][viaint]"].ToString() + ", '" + form["tablaDilig[" + i + "][fecReci]"].ToString() + "','" + form["tablaDilig[" + i + "][archEvi]"].ToString() + "','" + form["tablaDilig[" + i + "][fecha_soli]"].ToString() + "','" + form["tablaDilig[" + i + "][desc_evi]"].ToString() + "';";
+                    //query = "exec Sp_insertTblDil " + idqueja + ",'" + form["tipodil"].ToString() + "', '" + form["descripcion"].ToString() + "', '" + form["fecEm"].ToString() + "', '" + noOfMe + "', '" + plazo + "', '', " + form["fila"].ToString() + ", 0, 0, " + viaDil + ", '" + Fecha_Recib + "', '', '" + Fecha_Soli + "', '" + form["descEvi"].ToString() + "'";
                     mensaje = ejecutaInsertUpdate(query);
 
                 }
@@ -3757,7 +3782,7 @@ namespace SistemaIntegralQuejas.Controllers
                     query = "exec SP_AsignaNumeroExpediente " + idqueja;
                     mensaje = ejecutaInsertUpdate(query);
 
-                    query = "Sp_GetNumExp " + idqueja; 
+                    query = "Sp_GetNumExp " + idqueja;
                     var noexpq = GetDatosGeneral(query);
                     foreach (DataRow row in noexpq.Rows)
                     {
@@ -3827,5 +3852,23 @@ namespace SistemaIntegralQuejas.Controllers
         }
         // Fin obtener datos de tabla Autoridades - Hechos Violatorios
 
+        // Lista obtener datos de tabla Diligencias
+        public ActionResult SelectDiligencias(string idqueja)
+        {
+            List<SelectAUT_HEV> autorhech = new List<SelectAUT_HEV>();
+            String query = "exec Sp_obtener_diligen " + idqueja;
+            string mensaje = "";
+            autorhech = conexionsql.SelectAutHec(query, ref mensaje);
+
+            if (autorhech.Count > 0)
+            {
+                return Json(new { autoridhecho = autorhech });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin obtener datos de tabla Diligencias
     }
 }
