@@ -3400,7 +3400,6 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
         })
     });
 }
-
 function RecuperaDilige(id, callback) {
     $.ajax({
         type: "POST",
@@ -3461,6 +3460,7 @@ function LlenartablaDilig(tablaDilig, tipo, id) {
             initComplete: function () {
                 const table = $(tablaDilig).DataTable();
                 if (tipo !== '') {
+
                     var param = `"${tablaDilig.replace('#', '')}",${id}`;
                     const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
                     $(table.table().container()).find('.dataTables_length').append(boton);
@@ -3596,6 +3596,7 @@ function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja) {
             + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido de la Autiridad: ', 'textfield', '')
             + CreaBR()
             + CreaSelectLabeldisabled('atentido', '', arregloBlanco, '', 'Atendido: ', '');
+
         desEv3 = Crea_Label('textfield8', 'textfield8', '', 'Descripción de Evidencia: ') + CreaTextArea('descEvi', '', 'style="width:100%; height:22%"');
         desEvi = '';
     } else {
@@ -4050,30 +4051,6 @@ function guardaDili(tip, numF) {
         $(`#diligenArreg_${numF}`).val('');
         $(`#diligenArreg_${numF}`).val(combinedDataJson);
         closeModal('modalDilig');
-        //$.ajax({
-        //    type: "POST",
-        //    url: "GuarDil",
-        //    data: $('#formDetalleDil').serialize(),
-        //    dataType: "JSON",
-        //    success: function (response) {
-        //        if (response.data = "OK") {
-        //            Swal.fire({
-        //                position: 'center',
-        //                icon: 'success',
-        //                title: 'Diligencia Correctamente Registrada',
-        //                showConfirmButton: false,
-        //                timer: 1500
-        //            });
-        //            $(`#descrip_${numF}`).val($('#descripcion').val());
-        //        } else {
-        //            Swal.fire({
-        //                icon: "error",
-        //                title: "Error",
-        //                text: "No es posible gus radar la diligencia.",
-        //            });
-        //        }
-        //    }
-        //});
     }
 }
 
