@@ -3713,8 +3713,7 @@ function GuardarAp() {
         descapo: $("#descapo-frmDatosCalificacion").val()
     };
     var combinedData = formDQOT;
-    if (formDQOT.municipioqueja == '' || formDQOT.visitaduriaqueja == '99' || formDQOT.Fecha_TurnoVG == '' || formDQOT.hechos == ''
-        || $("#tipexpediente-frmDatosCalificacion").val() == '99' || $("#expedsc-frmDatosCalificacion").val() == '99' || $("#descapo-frmDatosCalificacion").val() == '') {
+    if (formDQOT.municipioqueja == '' || formDQOT.visitaduriaqueja == '99' || formDQOT.Fecha_TurnoVG == '' || formDQOT.hechos == ''|| $("#tipexpediente-frmDatosCalificacion").val() == '99' || $("#expedsc-frmDatosCalificacion").val() == '99' || $("#descapo-frmDatosCalificacion").val() == '') {
         var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
         if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
         if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
@@ -3946,7 +3945,7 @@ $(document).ready(function () {
 
         if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacion").val() == '' || formDQOT.visitaduriaqueja == ''
             || $("#materia-frmDatosCalificacion").val() == '' || $("#tipexpediente-frmDatosCalificacion").val() == '' || $("#especializado-frmDatosCalificacion").val() == '' || $("#trancpub-frmDatosCalificacion").val() == ''
-            || $("#nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' || $('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si'/* || formDQOT.longitudtabla2 <= 0*/) {
+            || $("#nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' /* || formDQOT.longitudtabla2 <= 0*/) {
             var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
             if ($("#programa-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Programa<br>'; }
             if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
