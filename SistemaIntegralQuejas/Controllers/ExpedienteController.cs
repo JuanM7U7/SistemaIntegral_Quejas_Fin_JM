@@ -31,6 +31,7 @@ using System.Security.Cryptography;
 using System.Drawing;
 using System.Net.WebSockets;
 using System.Runtime.Serialization;
+using static SistemaIntegralQuejas.Controllers.ExpedienteController;
 
 namespace SistemaIntegralQuejas.Controllers
 {
@@ -3933,13 +3934,6 @@ namespace SistemaIntegralQuejas.Controllers
             string mensaje = "";
             diligen = conexionsql.SelectDilig(query, ref mensaje);
 
-		public ActionResult SelectMedc(string idqueja)
-		{
-			List<selectMED_CAUT> autorhech = new List<selectMED_CAUT>();
-			String query = "exec Sp_obtener_med_caut " + idqueja;
-			string mensaje = "";
-			autorhech = conexionsql.Selectmedcaut(query, ref mensaje);
-
             foreach (SelectDILIG dil in diligen)
             {
                 dil.semaforo = "<div class=\"badge status-badge badge-danger\">NO</div>";
@@ -3972,17 +3966,21 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin obtener datos de tabla Diligencias
-    }
-			if (autorhech.Count > 0)
-			{
-				return Json(new { medcaut = autorhech });
-			}
-			else
-			{
-				return Json(new { mensaje = "error" });
-			}
-		}
-		// Fin obtener datos de tabla Autoridades - Hechos Violatorios
 
-	}
+        public ActionResult SelectMedc(string idqueja)
+        {
+            List<selectMED_CAUT> autorhech = new List<selectMED_CAUT>();
+            String query = "exec Sp_obtener_med_caut " + idqueja;
+            string mensaje = "";
+            autorhech = conexionsql.Selectmedcaut(query, ref mensaje);
+            if (autorhech.Count > 0)
+            {
+                return Json(new { medcaut = autorhech });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+    }
 }
