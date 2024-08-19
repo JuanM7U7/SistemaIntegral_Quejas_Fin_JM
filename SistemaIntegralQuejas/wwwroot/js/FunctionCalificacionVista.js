@@ -3824,48 +3824,46 @@ $(document).ready(function () {
                 console.log(x);
                 /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
                 var fechaEmision = $(this).find('input[id="fechaEmision_' + x + '"]').val();
-                var archivoEmision = $(this).find('input[id="archivoEmision_' + x + '"]').val();
+                var archivoEmision = $(this).find('input[id="archivoEmisionruta_' + x + '"]').val();
                 var fechaAtencion = $(this).find('input[id="fechaAtencion_' + x + '"]').val();
-                var archivoAtencion = $(this).find('input[id="archivoAtencion_' + x + '"]').val();
+                var archivoAtencion = $(this).find('input[id="archivoAtencionRuta_' + x + '"]').val();
                 var noOficioT = $(this).find('input[id="noOficio_' + x + '"]').val();
                 var obsEmision = $(this).find('textarea[id="obsEmision_' + x + '"]').val();
                 var obsAtencion = $(this).find('textarea[id="obsAtencion_' + x + '"]').val();
                 var statust = 0;
 
 
-                var banderaEstatus = document.getElementById('cumplio1_' + x);
-                console.log(banderaEstatus.checked);
+                var banderaEstatus = document.getElementById('cumplio1_' + x).checked;
 
-                if ($('input[id="cumplio1_' + x + '"]').attr('checked', true)) {
+                if (banderaEstatus) {
 
-                        MedCaute.push({
-                            noOficio: noOficioT,
-                            fechaEmision: fechaEmision,
-                            archivoEmision: archivoEmision,
-                            fechaAtencion: fechaAtencion,
-                            archivoAtencion: archivoAtencion,
-                            obsEmision: obsEmision,
-                            obsAtencion: obsAtencion,
-                            idMedCaut: x,
-                            status: 1
-                        });
+                    MedCaute.push({
+                        noOficio: noOficioT,
+                        fechaEmision: fechaEmision,
+                        archivoEmision: archivoEmision,
+                        fechaAtencion: fechaAtencion,
+                        archivoAtencion: archivoAtencion,
+                        obsEmision: obsEmision,
+                        obsAtencion: obsAtencion,
+                        idMedCaut: x,
+                        status: 1
+                    });
 
 
-                } else
-                {
+                } else {
 
-                        MedCaute.push({
-                            noOficio: noOficioT,
-                            fechaEmision: fechaEmision,
-                            archivoEmision: archivoEmision,
-                            fechaAtencion: '',
-                            archivoAtencion: '',
-                            obsEmision: obsEmision,
-                            obsAtencion: '',
-                            idMedCaut: x,
-                            status: statust
-                        });
-                    
+                    MedCaute.push({
+                        noOficio: noOficioT,
+                        fechaEmision: fechaEmision,
+                        archivoEmision: archivoEmision,
+                        fechaAtencion: '',
+                        archivoAtencion: '',
+                        obsEmision: obsEmision,
+                        obsAtencion: '',
+                        idMedCaut: x,
+                        status: 0
+                    });
+
                 }
 
                 x = x + 1;
@@ -4156,18 +4154,17 @@ function GuardPrel() {
         $('#tablaMedCuateT tbody tr').each(function (x) {
             /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
             var fechaEmision = $(this).find('input[id="fechaEmision_' + x + '"]').val();
-            var archivoEmision = $(this).find('input[id="archivoEmision_' + x + '"]').val();
+            var archivoEmision = $(this).find('input[id="archivoEmisionruta_' + x + '"]').val();
             var fechaAtencion = $(this).find('input[id="fechaAtencion_' + x + '"]').val();
-            var archivoAtencion = $(this).find('input[id="archivoAtencion_' + x + '"]').val();
+            var archivoAtencion = $(this).find('input[id="archivoAtencionRuta_' + x + '"]').val();
             var noOficioT = $(this).find('input[id="noOficio_' + x + '"]').val();
             var obsEmision = $(this).find('textarea[id="obsEmision_' + x + '"]').val();
             var obsAtencion = $(this).find('textarea[id="obsAtencion_' + x + '"]').val();
             var statust = 0;
 
-            var banderaEstatus = document.getElementById('cumplio1_' + x);
-            console.log(banderaEstatus.checked);
+            var banderaEstatus = document.getElementById('cumplio1_' + x).checked;
 
-            if ($('input[id="cumplio1_' + x + '"]').is(":checked")) {
+            if (banderaEstatus) {
 
                 MedCaute.push({
                     noOficio: noOficioT,
@@ -4193,7 +4190,7 @@ function GuardPrel() {
                     obsEmision: obsEmision,
                     obsAtencion: '',
                     idMedCaut: x,
-                    status: statust
+                    status: 0
                 });
 
             }
