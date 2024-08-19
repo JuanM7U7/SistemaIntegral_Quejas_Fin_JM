@@ -3769,8 +3769,14 @@ namespace SistemaIntegralQuejas.Controllers
                 /*Actualizacion de tabla de diligencias*/
                 for (int i = 0; i < longitudtabla3; i++)
                 {
-                    query = "exec Sp_insertTblDil " + idqueja + "," + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + ",'" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0";
-
+                    if (TiGua != "preliminar")
+                    {
+                        query = "exec Sp_insertTblDil " + idqueja + ",'" + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + "','" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0," + form["tablaDilig[" + i + "][viaint]"].ToString() + ", '" + form["tablaDilig[" + i + "][fecReci]"].ToString() + "','" + form["tablaDilig[" + i + "][archEvi]"].ToString() + "','" + form["tablaDilig[" + i + "][fecha_soli]"].ToString() + "','" + form["tablaDilig[" + i + "][desc_evi]"].ToString() + "';";
+                    }
+                    else
+                    {
+                        query = "exec Sp_updateTblDil " + idqueja + ",'" + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + "','" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0," + form["tablaDilig[" + i + "][viaint]"].ToString() + ", '" + form["tablaDilig[" + i + "][fecReci]"].ToString() + "','" + form["tablaDilig[" + i + "][archEvi]"].ToString() + "','" + form["tablaDilig[" + i + "][fecha_soli]"].ToString() + "','" + form["tablaDilig[" + i + "][desc_evi]"].ToString() + "';";
+                    }
                     mensaje = ejecutaInsertUpdate(query);
 
                 }
@@ -3879,6 +3885,53 @@ namespace SistemaIntegralQuejas.Controllers
                 return Json(new { mensaje = "error" });
             }
         }
+        // Fin obtener datos de tabla Autoridades - Hechos Violatorios
+        public class SelectDILIG
+        {
+            public int id_queja { get; set; }
+            public int Tipo_diligencia { get; set; }
+            public string descripcion { get; set; }
+            public string fecha_emi { get; set; }
+            public string oficioMemo { get; set; }
+            public string plaz_aten { get; set; }
+            public string ruta_archivo { get; set; }
+            public int id_fila { get; set; }
+            public int version { get; set; }
+            public int eliminado { get; set; }
+            public int id_viainter { get; set; }
+            public string fecharecibo { get; set; }
+            public string ruta_arch_eviden { get; set; }
+            public string fecha_soli { get; set; }
+            public string desc_evi { get; set; }
+            public string semaforo { get; set; }
+            public SelectDILIG() { }
+            public SelectDILIG(int id_queja, int Tipo_diligencia, string descripcion, string fecha_emi, string oficioMemo, string plaz_aten, string ruta_archivo, int id_fila, int version, int eliminado, int id_viainter, string fecharecibo, string ruta_arch_eviden, string fecha_soli, string desc_evi, string semaforo)
+            {
+                this.id_queja = id_queja;
+                this.Tipo_diligencia = Tipo_diligencia;
+                this.descripcion = descripcion;
+                this.fecha_emi = fecha_emi;
+                this.oficioMemo = oficioMemo;
+                this.plaz_aten = plaz_aten;
+                this.ruta_archivo = ruta_archivo;
+                this.id_fila = id_fila;
+                this.version = version;
+                this.eliminado = eliminado;
+                this.id_viainter = id_viainter;
+                this.fecharecibo = fecharecibo;
+                this.ruta_arch_eviden = ruta_arch_eviden;
+                this.fecha_soli = fecha_soli;
+                this.desc_evi = desc_evi;
+                this.semaforo = semaforo;
+            }
+        }
+        // Lista obtener datos de tabla Diligencias
+        public ActionResult SelectDiligencias(string idqueja)
+        {
+            List<SelectDILIG> diligen = new List<SelectDILIG>();
+            String query = "exec Sp_obtener_diligen " + idqueja;
+            string mensaje = "";
+            diligen = conexionsql.SelectDilig(query, ref mensaje);
 
 		public ActionResult SelectMedc(string idqueja)
 		{
@@ -3887,6 +3940,39 @@ namespace SistemaIntegralQuejas.Controllers
 			string mensaje = "";
 			autorhech = conexionsql.Selectmedcaut(query, ref mensaje);
 
+            foreach (SelectDILIG dil in diligen)
+            {
+                dil.semaforo = "<div class=\"badge status-badge badge-danger\">NO</div>";
+                if (dil.Tipo_diligencia == 3 && !string.IsNullOrEmpty(dil.ruta_arch_eviden))
+                {
+                    dil.semaforo = "<div class=\"badge status-badge badge-success\">SI</div>";
+                    continue;
+                }
+                if (dil.Tipo_diligencia != 3)
+                {
+                    DateTime fechaUno = Convert.ToDateTime(dil.fecha_soli);
+                    DateTime fechaDos = string.IsNullOrEmpty(dil.fecharecibo) ? DateTime.Now : Convert.ToDateTime(dil.fecharecibo);
+                    dil.semaforo = "<div class=\"badge status-badge badge-success\">SI</div>";
+                    int diasTrans = (fechaDos - fechaUno).Days;
+                    int plazAten = Convert.ToInt16(dil.plaz_aten);
+                    if (diasTrans != plazAten || (diasTrans == plazAten && string.IsNullOrEmpty(dil.fecharecibo)))
+                    {
+                        query = $"exec semaforo {diasTrans}, {plazAten - 1}, {plazAten}, 1";
+                        dil.semaforo = conexionsql.ObtenerReader(query) + "<small><strong> sin atender</strong></small>";
+                    }
+                }
+            }
+            if (diligen.Count > 0)
+            {
+                return Json(new { diligencias = diligen });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin obtener datos de tabla Diligencias
+    }
 			if (autorhech.Count > 0)
 			{
 				return Json(new { medcaut = autorhech });

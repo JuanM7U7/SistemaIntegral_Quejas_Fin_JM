@@ -676,6 +676,35 @@ namespace SistemaIntegralQuejas.Models
             }
             return lista;
         }
+        
+        public List<SelectDILIG> SelectDilig(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectDILIG> lista = new List<SelectDILIG>();
+            SqlDataReader lector;
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    SelectDILIG modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new SelectDILIG(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), lector[5].ToString(), lector[6].ToString(), int.Parse(lector[7].ToString()), int.Parse(lector[8].ToString()), int.Parse(lector[9].ToString()), int.Parse(lector[10].ToString()), lector[11].ToString(), lector[12].ToString(), lector[13].ToString(), lector[14].ToString(), "");
+                        lista.Add(modelo);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return lista;
+        }
 
 		public List<SelectAUT_HEV> SelectAutHec(string query, ref string mensaje)
 		{

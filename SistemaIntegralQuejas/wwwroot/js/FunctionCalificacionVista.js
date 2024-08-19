@@ -989,6 +989,14 @@ function CreaTextAreadisabled(Name, clas, adicion) {
 function crea_Boton(tipo, texto, id, clase, click) {
     return " <button onclick=" + click + " id='" + id + "' class='" + clase + "' type='" + tipo + "' value='" + texto + "''>" + texto + "</button>";
 }
+
+function CreaInputs(idParrafo, Name, clas, tipo) {
+    let br = '';
+    if (tipo != 'hidden') {
+        br = '</br>';
+    }
+    return "<input type='" + tipo + "' id='" + idParrafo + "' class='" + clas + "' name='" + Name + "' > " + br
+}
 /*apartado modal datos complementarios de la queja*/
 
 /*apartado modal datos Peticionario*/
@@ -2999,26 +3007,11 @@ function AgrDil(nomTab, id) {
             break;
         case "tablaDiligT":
             newRow = table.row.add([
-                `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i>`,
-                CreaInputs_Con_Label('noficio', 'noficio', '', 'text', '', 'textfield2'),
-                CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
-        <div class="input-group col-xs-12">
-            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
-            <span class="input-group-btn">
-                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-            </span>
-        </div>`,
-                `
-        <input name="cumplio_${rowIndex}" type="radio" class="radio" id="cumplio" value="1" title="Si">Si
-        <input name="cumplio_${rowIndex}" type="radio" class="radio" id="cumplio" value="2" title="No" checked = "true">No
-    `,
-                CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archAdjMC" multiple id="archAdjMC" class="input-file">
-        <div class="input-group col-xs-12">
-            <input type="text" class="form-control" disabled placeholder="Cargar archivos">
-            <span class="input-group-btn">
-                <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-            </span>
-        </div>`,
+                CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden') + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${nomTab}")'></i><i class='btn fa fa-pencil-square-o' onclick='DetDilig("modalDilig","tipodilig_${rowIndex}", ${rowIndex}, ${id})'></i>`,
+                CreaSelectLabel(`tipodilig_${rowIndex}`, '', diligenSe, '', '', ''),
+                `<textarea id="descrip_${rowIndex}" class="swal2-input" disabled> </textarea>`,
+                CreaInputs_Con_Label(`fechaAlta_${rowIndex}`, `fechaAlta_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                ''
             ]).draw().node();
             break;
     }
@@ -3054,7 +3047,10 @@ function actualizarIndices(nomTab) {
                 $row.find('select[id^="autoridadresMC_"]').attr('id', 'autoridadresMC_' + newIndex);
                 break;
             case "tablaDiligT":
+                $row.find('input[id^="diligenArreg_"]').attr('id', 'diligenArreg_' + newIndex);
                 $row.find('select[id^="tipodilig_"]').attr('id', 'tipodilig_' + newIndex);
+                $row.find('textarea[id^="descrip_"]').attr('id', 'descrip_' + newIndex);
+                $row.find('input[id^="fechaAlta_"]').attr('id', 'fechaAlta_' + newIndex);
                 break;
         }
     });
@@ -3404,138 +3400,238 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
         })
     });
 }
-function LlenartablaDilig(tablaDilig, tipo, id) {
-    $(tablaDilig).DataTable({
-        language: {
-            "url": "/js/TablaJson.json"
-        },
-        iDisplayLength: 10,
-        data: tipo,
-        fixedHeader: true,
-        orderCellsTop: true,
-        searching: false,
-        columns: [
-            {
-                'mRender': function (data, type, full, meta) {
-                    if (tipo !== '') {
-                        return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i><i class='btn fa fa-pencil-square-o' onclick='DetDilig("modalDilig","tipodilig_${meta.row}")'></i>`;
-                    } else {
-                        return '';
-                    }
-                }
-            },
-            {
-                'mRender': function (data, type, full, meta) {
 
-                    return CreaSelectLabel(`tipodilig_${meta.row}`, '', diligenSe, '', '', '');
-
-                }
-            },
-            {
-                'mRender': function (data, type, full) {
-                    return '<textarea id="descrip" class="swal2-input"> </textarea>';
-                }
-            },
-            {
-                'mRender': function (data, type, full) {
-                    return CreaInputs_Con_Label('fechaAlta', 'fechaAlta', 'validatimeac', 'date', '', 'textfield9', '');
-                }
-            },
-            {
-                'mRender': function (data, type, full) {
-                    return 'SIN ATENDER (TEMPORAL)';
-                }
-            },
-        ],
-        initComplete: function () {
-            if (tipo !== '') {
-                const table = $(tablaDilig).DataTable();
-                var param = `"${tablaDilig.replace('#', '')}",${id}`;
-                const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
-                $(table.table().container()).find('.dataTables_length').append(boton);
-            }
-        },
-        order: [1, 'desc'],
-        bDestroy: true
+function RecuperaDilige(id, callback) {
+    $.ajax({
+        type: "POST",
+        url: "SelectDiligencias",
+        data: { idqueja: id },
+        dataType: "JSON",
+        success: function (response) {
+            callback(response.diligencias);
+        }
     });
+}
+function LlenartablaDilig(tablaDilig, tipo, id) {
+    RecuperaDilige(id, function (datos) {
+        $(tablaDilig).DataTable({
+            language: {
+                "url": "/js/TablaJson.json"
+            },
+            iDisplayLength: 10,
+            data: datos,
+            fixedHeader: true,
+            orderCellsTop: true,
+            searching: false,
+            columns: [
+                {
+                    'mRender': function (data, type, full, meta) {
+                        if (tipo !== '') {
+                            return CreaInputs(`diligenArreg_${meta.row}`, `diligenArreg_${meta.row}`, '', 'hidden') + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i><i class='btn fa fa-pencil-square-o' onclick='DetDilig("modalDilig","tipodilig_${meta.row}", ${meta.row}, ${id})'></i>`;
+                        } else {
+                            return '';
+                        }
+                    }
+                },
+                {
+                    'mRender': function (data, type, full, meta) {
+                        return CreaSelectLabel(`tipodilig_${meta.row}`, '', diligenSe, '', '', '');
+                    }
+                },
+                {
+                    'mRender': function (data, type, full, meta) {
+                        return `<textarea id="descrip_${meta.row}" class="swal2-input" disabled> </textarea>`;
+                    }
+                },
+                {
+                    'mRender': function (data, type, full, meta) {
+                        return CreaInputs_Con_Label(`fechaAlta_${meta.row}`, `fechaAlta_${meta.row}`, 'validatimeac', 'date', '', 'textfield9', '');
+                    }
+                },
+                {
+                    'mRender': function (data, type, full) {
+                        if (typeof full.semaforo != 'undefined') {
+                            return '<center>' + full.semaforo + '</center>';
+                        } else {
+                            return '';
+                        }
+                    }
+                },
+            ],
+            initComplete: function () {
+                const table = $(tablaDilig).DataTable();
+                if (tipo !== '') {
+                    var param = `"${tablaDilig.replace('#', '')}",${id}`;
+                    const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
+                    $(table.table().container()).find('.dataTables_length').append(boton);
+                }
+                table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                    const data = this.data();
+                    var dat = {};
+                    if (data.tipo_diligencia !== 3) {
+                        var aten = 2;
+                        if (data.fecharecibo !== '') {
+                            aten = 1;
+                        }
+                        dat = {
+                            archEvAd: data.ruta_archivo,
+                            archEvi: data.ruta_arch_eviden,
+                            viaDil: data.id_viainter,
+                            descripcion: data.descripcion,
+                            descEvi: data.desc_evi,
+                            noOfMe: data.oficioMemo,
+                            Fecha_Soli: data.fecha_soli,
+                            plazo: data.plaz_aten,
+                            Fecha_Recib: data.fecharecibo,
+                            atentido: aten,
+                            fila: data.id_fila,
+                            tipodil: data.tipo_diligencia,
+                            fecEm: data.fecha_emi,
+                            idqueja: data.id_queja
+                        }
+                    } else {
+                        dat = {
+                            archEvi: data.ruta_arch_eviden,
+                            descripcion: data.descripcion,
+                            fila: data.id_fila,
+                            tipodil: data.tipo_diligencia,
+                            fecEm: data.fecha_emi,
+                            idqueja: data.id_queja,
+                            descEvi: data.desc_evi
+                        }
+                    } 
+                    $(`#diligenArreg_${rowIdx}`).val(JSON.stringify(dat));
+                    $(`#tipodilig_${rowIdx}`).val(data.tipo_diligencia).trigger('change');
+                    $(`#descrip_${rowIdx}`).val(data.descripcion);
+                    var fecha = data.fecha_emi.split(' ')[0];
+                    var fechaspl = fecha.split('/');
+                    var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
+                    var date = new Date(fechaemi);
+                    chargeDateInputDate(document.getElementById(`fechaAlta_${rowIdx}`), date);
+                });
+            },
+            order: [1, 'desc'],
+            bDestroy: true
+        });
 
-    $(tablaDilig).DataTable().on("draw", function (data) {
+        $(tablaDilig).DataTable().on("draw", function (data) {
 
-        //activarBtnTurnopre();
+            //activarBtnTurnopre();
 
-    })
+        })
+    });
 }
 
-function DetDilig(modDil, tipoDi) {
-    if ($(`#${tipoDi}`).val() !== '99') {
-        $(`#${modDil}`).modal({
-            backdrop: false
-        });
-        CreafrmDetaDiligen($(`#${tipoDi}`).val());
+function DetDilig(modDil, tipoDi, numFil, idqueja) {
+    if ($(`#${tipoDi}`).val() !== '99' && $(`#fechaAlta_${numFil}`).val() !== '') {
+        document.getElementById(modDil).style.display = "block";
+        CreafrmDetaDiligen($(`#${tipoDi}`).val(), numFil, $(`#tipodilig_${numFil}`).val(), $(`#fechaAlta_${numFil}`).val(), idqueja);
         CargaDatosSelectOtro_(`#viaDil`, viainter, '99');
         CargaDatosSelectOtro_(`#atentido`, [{ idSelectGenerico: 1, descripcion: 'Si', seleccionable: true, ruta: null }, { idSelectGenerico: 2, descripcion: 'No', seleccionable: true, ruta: null }], '99');
+
+        var arre = $(`#diligenArreg_${numFil}`).val();
+        if (arre !== '') {
+            var datos = JSON.parse(arre);
+            $('#descripcion').val(datos.descripcion);
+            $('#descEvi').val(datos.descEvi);
+            $('#archEvAd2').val();
+            if (datos.tipodil!==3) {
+                $('#viaDil').val(datos.viaDil);
+                $('#noOfMe').val(datos.noOfMe);
+                $('#plazo').val(datos.plazo);
+                $('#atentido').val(datos.atentido);
+                $('#archEvAd2').val();//datos.archEvi
+
+                var fecha = datos.Fecha_Soli.split(' ')[0];//'15/08/2024 12:00:00 a. m.'
+                var fechaspl = fecha.split('/');
+                var fechae = fechaspl[2] + '/' + fechaspl[1] + '/' + fechaspl[0];
+                var date = new Date(fechae);
+                chargeDateInputDate(document.getElementById(`Fecha_Soli`), date);
+                fecha = datos.Fecha_Recib.split(' ')[0];
+                fechaspl = fecha.split('/');
+                fechae = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
+                date = new Date(fechae);
+                chargeDateInputDate(document.getElementById(`Fecha_Recib`), date);
+            }
+        }
     } else {
+        var mensaje = '';
+        mensaje = $(`#fechaAlta_${numFil}`).val();
+        if ($(`#${tipoDi}`).val() === '99') {
+            mensaje += Requeridos() + "Seleccione el tipo de diligencia <br>";
+        }
+        if ($(`#fechaAlta_${numFil}`).val() === '') {
+            mensaje += Requeridos() + "Seleccione la fecha de emisión <br>";
+        }
         Swal.fire({
             icon: "warning",
             title: "Advertencia",
-            text: "Seleccione el tipo de diligencia.",
+            html: mensaje,
         });
     }
 }
 
-function CreafrmDetaDiligen(tip) {
+function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja) {
     $('#frmDetaDiligen').empty();
+    var guaD = tip + "," + numF;
     var arregloBlanco = [];
-    var cuerpo1 = '', cuerpo2 = '';
+    var cuerpo1 = '', cuerpo2 = '', desEv3 = '',desEvi = '';
     if (tip !== '3') {
-        cuerpo1 = CreaSelectLabel('viaDil', '', arregloBlanco, '', 'Via: ', '');
-        cuerpo2 = CreaInputs_Con_Label('noOfMe', 'noOfMe', '', 'text', 'Número de Oficio o Memorándum: ', 'textfield', '')
+        cuerpo1 = Requeridos() + CreaSelectLabel('viaDil', '', arregloBlanco, '', 'Via: ', '');
+        cuerpo2 = Requeridos() + CreaInputs_Con_Label('noOfMe', 'noOfMe', '', 'text', 'Número de Oficio o Memorándum: ', 'textfield', '')
             + CreaBR()
-            + CreaInputs_Con_Label('Fecha_Soli', 'Fecha_Soli', '', 'date', 'Fecha de Solicitud: ', 'textfield', '')
+            + Requeridos() + CreaInputs_Con_Label('Fecha_Soli', 'Fecha_Soli', '', 'date', 'Fecha de Solicitud: ', 'textfield', '')
             + CreaBR()
             + Crea_Label('textfield8', 'textfield8', '', 'Evidencia de Atención: ')
-            + '<input type="file" name="archEvAd" multiple id="archEvAd" class="input-file">'
-            + '<div class="input-group col-xs-12">'
+            + ''
+            + '<div class="input-group col-xs-12"><input type="file" name="archEvAd" multiple id="archEvAd" class="input-file">'
             + '<input type="text" class="form-control" disabled placeholder="Cargar archivos">'
             + '<span class="input-group-btn">'
             + '<button id="archEvAdb" class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>'
             + '</span>'
             + '</div>'
-            + CreaInputs_Con_Label('plazo', 'plazo', '', 'number', 'Plazo de Atención: ', 'textfield', '')
+            + Requeridos() + CreaInputs_Con_Label('plazo', 'plazo', '', 'number', 'Plazo de Atención: ', 'textfield', '')
             + Crea_Label('textfield8', 'textfield8', '', ' días.')
             + CreaBR()
-            + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido: ', 'textfield', '')
+            + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido de la Autiridad: ', 'textfield', '')
             + CreaBR()
-            + CreaSelectLabel('atentido', '', arregloBlanco, '', 'Atendido: ', '')
-            + CreaBR();
+            + CreaSelectLabeldisabled('atentido', '', arregloBlanco, '', 'Atendido: ', '');
+        desEv3 = Crea_Label('textfield8', 'textfield8', '', 'Descripción de Evidencia: ') + CreaTextArea('descEvi', '', 'style="width:100%; height:22%"');
+        desEvi = '';
+    } else {
+        desEvi = Crea_Label('textfield8', 'textfield8', '', 'Descripción de Evidencia: ') + CreaTextArea('descEvi', '', 'style="width:100%; height:22%"');
+        desEv3 = '';
     }
     var cuerpo = '<div class="row col-12"><div class="col-6">'
         + cuerpo1
-        + Crea_Label('textfield8', 'textfield8', '', 'Descripción: ')
-        + CreaTextArea('descripcion', '', 'style="width:100%; height:72%"')
+        + Requeridos() + Crea_Label('textfield8', 'textfield8', '', 'Descripción: ')
+        + CreaTextArea('descripcion', '', 'style="width:100%; height:22%"')
+        + desEv3
         + '</div>'
         + '<div class="col-6">'
         + cuerpo2
         + Crea_Label('textfield8', 'textfield8', '', 'Evidencia: ')
-        + '<input type="file" name="archEvAd2" multiple id="archEvAd2" class="input-file">'
-        + '<div class="input-group col-xs-12">'
+        + ''
+        + '<div class="input-group col-xs-12"><input type="file" name="archEvAd2" multiple id="archEvAd2" class="input-file">'
         + '<input type="text" class="form-control" disabled placeholder="Cargar archivos">'
         + '<span class="input-group-btn">'
         + '<button id="archEvAdb2" class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>'
         + '</span>'
+        + CreaInputs('fila', 'fila', '', 'hidden')
+        + CreaInputs('tipodil', 'tipodil', '', 'hidden')
+        + CreaInputs('fecEm', 'fecEm', '', 'hidden')
+        + CreaInputs('idqueja', 'idqueja', '', 'hidden')
         + '</div>'
+        + desEvi
         + '</div></div>'
-        + '<div class="positionCenter">'
-        + CreaBR()
-        + crea_Boton('button', 'Guardar Diligencia', 'guardaDil', 'btn btn-success', 'guardaDil()')
+        + '<div class="positionCenter" style="top:-100px; position: relative;">'
+        + crea_Boton('button', 'Aceptar', 'guardaDil', 'btn btn-success', `guardaDili(${guaD})`)
         + '</div>';
-    var formInnicial = '<form class="text-justify formDetalleDil" id="formDetalleDil" name="formDetalleDil" method="post" style="width:100%; margin-left:2%;">';
-    var fin_form = '</form>';
-
-    let formualarioCompleto = formInnicial + cuerpo + fin_form;
-
-    $('#frmDetaDiligen').append(formualarioCompleto);
-
+    $('#frmDetaDiligen').append('<form class="text-justify formDetalleDil" id="formDetalleDil" name="formDetalleDil" method="post" style="width:100%; margin-left:2%;">' + cuerpo + '</form>');
+    $('#fila').val(numF);
+    $('#tipodil').val(tiD);
+    $('#fecEm').val(FechEm);
+    $('#idqueja').val(idqueja);
 }
 
 function icono_editar(funcion, id) {
@@ -3543,6 +3639,14 @@ function icono_editar(funcion, id) {
 }
 function Requeridos() {
     return '<span style="color: red;">*</span>';
+}
+function chargeDateInputDate(elem, dateObject = new Date()) {
+    var year = dateObject.getFullYear();
+    var month = dateObject.getMonth() + 1;
+    var month = month > 9 ? month : "0" + month;
+    var day = dateObject.getDate() > 9 ? dateObject.getDate() : "0" + dateObject.getDate();
+    var dateFormat = year + "-" + month + "-" + day;
+    elem.value = dateFormat;
 }
 function HabilEdi(id, identif) {
     $(identif).prop('disabled', false);
@@ -3773,24 +3877,35 @@ $(document).ready(function () {
         //DILIGENCIAS
         $('#tablaDiligT tbody tr').each(function (x) {
             x = x + 1;
-            var tipodilig = $(this).find('select[name="tipodilig"]').val();
-            var descrip = $(this).find('textarea[id="descrip"]').val();
-            var fechaAlta = $(this).find('input[name="fechaAlta"]').val();
-            var numOfMe = $(this).find('input[name="numOfMe"]').val();
-            var atencion = $(this).find('textarea[id="atencion"]').val();
-            var archAdj = $(this).find('input[name="archAdjD"]').val();
-            if (tipodilig !== '99' && descrip !== '' && fechaAlta !== '' && numOfMe !== '' && atencion !== '') {
-                Diligen.push({
-                    tipodilig: tipodilig,
-                    descrip: descrip,
-                    fechaAlta: fechaAlta,
-                    numOfMe: numOfMe,
-                    atencion: atencion,
-                    archAdj: archAdj,
-                    idMedCaut: x
-                });
+            var dilig = $(this).find('input[id^="diligenArreg_"]').val();
+            if (dilig!=='') {
+                var combinedDil = JSON.parse(dilig);
+                var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', archEvi = '', fecha_soli = '', desc_evi = '';
+                if (combinedDil.tipodil!=='3') {
+                    numOfMe = combinedDil.noOfMe;
+                    atencion = combinedDil.plazo;
+                    archAdj = combinedDil.archEvAd;
+                    viaint = combinedDil.viaDil;
+                    fecReci = combinedDil.Fecha_Recib;
+                    fecha_soli = combinedDil.Fecha_Soli;
+                }
+                if (combinedDil.descripcion !== '' && combinedDil.fecEm !== '' && combinedDil.tipodil !== '') {
+                    Diligen.push({
+                        tipodilig: combinedDil.tipodil,
+                        descrip: combinedDil.descripcion,
+                        fechaAlta: combinedDil.fecEm,
+                        numOfMe: numOfMe,
+                        atencion: atencion,
+                        archAdj: archAdj,
+                        idMedCaut: x,
+                        viaint: viaint,
+                        fecReci: fecReci,
+                        archEvi: combinedDil.archEvi,
+                        fecha_soli: fecha_soli,
+                        desc_evi: combinedDil.descEvi
+                    });
+                }
             }
-
         });
         //DATOS DQOT
 
@@ -3852,12 +3967,13 @@ $(document).ready(function () {
             //if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si' && formDQOT.longitudtabla2 <= 0) {
             //    htm = htm + Requeridos() + 'Medidas Cuatelares<br>';
             //}
-            //Swal.fire({
-            //    icon: "error",
-            //    html: htm,
+            Swal.fire({
+                icon: "error",
+                html: htm,
 
-            //});
-      /*  } else {*/
+            });
+        }
+        else { 
 
             $.ajax({
                 type: "POST",
@@ -3885,8 +4001,6 @@ $(document).ready(function () {
                             }
                         });
 
-
-
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -3904,15 +4018,95 @@ $(document).ready(function () {
 
 });
 
+function guardaDili(tip, numF) {
+    var mensaje = 'Datos faltantes <br>';
+    if (tip !== 3 && $('#viaDil').val() === '99' || $('#descripcion').val() === '' || $('#noOfMe').val() === '' || $('#Fecha_Soli').val() === '' /*|| $('#archEvAd').val() === ''*/ || $('#plazo').val() === '') {
+        if ($(`#viaDil`).val() === '99') { mensaje += Requeridos() + "Via <br>"; }
+        if ($('#descripcion').val() === '') { mensaje += Requeridos() + "Descripción <br>"; }
+        if ($('#noOfMe').val() === '') { mensaje += Requeridos() + "Número de Oficio o Memorándum <br>"; }
+        if ($('#Fecha_Soli').val() === '') { mensaje += Requeridos() + "Fecha Solicitud <br>"; }
+        //if ($('#archEvAd').val() === '') { mensaje += Requeridos() + "Evidencia <br>"; }
+        //if ($('#descEvi').val() === '') { mensaje += Requeridos() + "Descripción de Evidencia <br>"; }
+        if ($('#plazo').val() === '') { mensaje += Requeridos() + "Plazo de Atención <br>"; }
+
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            html: mensaje,
+        });
+    } else if ($('#descripcion').val() === '') {
+        if ($(`#descripcion`).val() === '') { mensaje += Requeridos() + "Descripción <br>"; }
+        //if ($('#archEvAd').val() === '') { mensaje += Requeridos() + "Evidencia <br>"; }
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            html: mensaje,
+        });
+    } else {
+        $(`#descrip_${numF}`).val($('#descripcion').val());
+        var formDetalleDil = $("#formDetalleDil").serializeArray();
+        var combinedData = formDetalleDil.reduce(function (acc, item) {
+            acc[item.name] = item.value;
+            return acc;
+        }, { archEvAd: $("#archEvAd").val(), archEvi: $("#archEvAd2").val()});
+        var combinedDataJson = JSON.stringify(combinedData);
+        $(`#diligenArreg_${numF}`).val('');
+        $(`#diligenArreg_${numF}`).val(combinedDataJson);
+        closeModal('modalDilig');
+        //$.ajax({
+        //    type: "POST",
+        //    url: "GuarDil",
+        //    data: $('#formDetalleDil').serialize(),
+        //    dataType: "JSON",
+        //    success: function (response) {
+        //        if (response.data = "OK") {
+        //            Swal.fire({
+        //                position: 'center',
+        //                icon: 'success',
+        //                title: 'Diligencia Correctamente Registrada',
+        //                showConfirmButton: false,
+        //                timer: 1500
+        //            });
+        //            $(`#descrip_${numF}`).val($('#descripcion').val());
+        //        } else {
+        //            Swal.fire({
+        //                icon: "error",
+        //                title: "Error",
+        //                text: "No es posible gus radar la diligencia.",
+        //            });
+        //        }
+        //    }
+        //});
+    }
+}
 
 function funcionesEscritoi() {
+    //$(document).on('click', '.upload-field', function () {
+    //    var file = $(this).parent().parent().parent().find('.input-file');
+    //    file.trigger('click');
+    //});
+    //$(document).on('change', '.input-file', function () {
+    //    $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+    //});
+
     $(document).on('click', '.upload-field', function () {
-        var file = $(this).parent().parent().parent().find('.input-file');
-        file.trigger('click');
+        var fileInput;
+        if ($(this).attr('id') === 'archEvAdb') {
+            fileInput = $('#archEvAd');
+        } else if ($(this).attr('id') === 'archEvAdb2') {
+            fileInput = $('#archEvAd2');
+        } else {
+            fileInput = $(this).closest('.input-group').siblings('.input-file');
+        }
+        if (fileInput.length) {
+            fileInput.trigger('click');
+        }
     });
+
     $(document).on('change', '.input-file', function () {
         $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
     });
+
 }
 
 function GuardPrel() {
@@ -4013,22 +4207,34 @@ function GuardPrel() {
     //DILIGENCIAS
     $('#tablaDiligT tbody tr').each(function (x) {
         x = x + 1;
-        var tipodilig = $(this).find('select[name="tipodilig"]').val();
-        var descrip = $(this).find('textarea[id="descrip"]').val();
-        var fechaAlta = $(this).find('input[name="fechaAlta"]').val();
-        var numOfMe = $(this).find('input[name="numOfMe"]').val();
-        var atencion = $(this).find('textarea[id="atencion"]').val();
-        var archAdj = $(this).find('input[name="archAdjD"]').val();
-        if (tipodilig !== '99' && descrip !== '' && fechaAlta !== '' && numOfMe !== '' && atencion !== '') {
-            Diligen.push({
-                tipodilig: tipodilig,
-                descrip: descrip,
-                fechaAlta: fechaAlta,
-                numOfMe: numOfMe,
-                atencion: atencion,
-                archAdj: archAdj,
-                idMedCaut: x
-            });
+        var dilig = $(this).find('input[id^="diligenArreg_"]').val();
+        if (dilig !== '') {
+            var combinedDil = JSON.parse(dilig);
+            var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', archEvi = '', fecha_soli = '', desc_evi = '';
+            if (combinedDil.tipodil !== '3') {
+                numOfMe = combinedDil.noOfMe;
+                atencion = combinedDil.plazo;
+                archAdj = combinedDil.archEvAd;
+                viaint = combinedDil.viaDil;
+                fecReci = combinedDil.Fecha_Recib;
+                fecha_soli = combinedDil.Fecha_Soli;
+            }
+            if (combinedDil.descripcion !== '' && combinedDil.fecEm !== '' && combinedDil.tipodil !== '') {
+                Diligen.push({
+                    tipodilig: combinedDil.tipodil,
+                    descrip: combinedDil.descripcion,
+                    fechaAlta: combinedDil.fecEm,
+                    numOfMe: numOfMe,
+                    atencion: atencion,
+                    archAdj: archAdj,
+                    idMedCaut: x,
+                    viaint: viaint,
+                    fecReci: fecReci,
+                    archEvi: combinedDil.archEvi,
+                    fecha_soli: fecha_soli,
+                    desc_evi: combinedDil.descEvi
+                });
+            }
         }
     });
     //DATOS DQOT
