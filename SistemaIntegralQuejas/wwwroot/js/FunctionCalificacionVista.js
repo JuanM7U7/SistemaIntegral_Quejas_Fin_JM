@@ -3973,7 +3973,7 @@ function GuardPrel() {
             var banderaEstatus = document.getElementById('cumplio1_' + x);
             console.log(banderaEstatus.checked);
 
-            if ($('input[id="cumplio1_' + x + '"]').attr('checked', true)) {
+            if ($('input[id="cumplio1_' + x + '"]').is(":checked")) {
 
                 MedCaute.push({
                     noOficio: noOficioT,
