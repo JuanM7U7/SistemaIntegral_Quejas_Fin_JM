@@ -3546,15 +3546,15 @@ function DetDilig(modDil, tipoDi, numFil, idqueja) {
             var datos = JSON.parse(arre);
             $('#descripcion').val(datos.descripcion);
             $('#descEvi').val(datos.descEvi);
-            $('#archEvAd2').val();
-            if (datos.tipodil!==3) {
+            $('#archEvAd2t').val(datos.archEvi);
+            if (parseInt(datos.tipodil) !== 3) {
                 $('#viaDil').val(datos.viaDil);
                 $('#noOfMe').val(datos.noOfMe);
                 $('#plazo').val(datos.plazo);
                 $('#atentido').val(datos.atentido);
-                $('#archEvAd2').val();//datos.archEvi
+                $('#archEvAdt').val(datos.archEvAd);
 
-                var fecha = datos.Fecha_Soli.split(' ')[0];//'15/08/2024 12:00:00 a. m.'
+                var fecha = datos.Fecha_Soli.split(' ')[0];
                 var fechaspl = fecha.split('/');
                 var fechae = fechaspl[2] + '/' + fechaspl[1] + '/' + fechaspl[0];
                 var date = new Date(fechae);
@@ -3587,57 +3587,55 @@ function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja) {
     $('#frmDetaDiligen').empty();
     var guaD = tip + "," + numF;
     var arregloBlanco = [];
-    var cuerpo1 = '', cuerpo2 = '', desEv3 = '',desEvi = '';
+    var cuerpo1 = '', cuerpo2 = '', nomarch = `$('#archEvAdt').val()`;
     if (tip !== '3') {
-        cuerpo1 = Requeridos() + CreaSelectLabel('viaDil', '', arregloBlanco, '', 'Via: ', '');
-        cuerpo2 = Requeridos() + CreaInputs_Con_Label('noOfMe', 'noOfMe', '', 'text', 'Número de Oficio o Memorándum: ', 'textfield', '')
+        cuerpo1 = Requeridos() + CreaSelectLabel('viaDil', '', arregloBlanco, '', 'Via: ', '')
+            + Requeridos() + CreaInputs_Con_Label('noOfMe', 'noOfMe', '', 'text', 'Número de Oficio o Memorándum: ', 'textfield', '')
             + CreaBR()
             + Requeridos() + CreaInputs_Con_Label('Fecha_Soli', 'Fecha_Soli', '', 'date', 'Fecha de Solicitud: ', 'textfield', '')
             + CreaBR()
-            + Crea_Label('textfield8', 'textfield8', '', 'Evidencia de Atención: ')
-            + ''
-            + '<div class="input-group col-xs-12"><input type="file" name="archEvAd" multiple id="archEvAd" class="input-file">'
-            + '<input type="text" class="form-control" disabled placeholder="Cargar archivos">'
+            + Crea_Label('textfield8', 'textfield8', '', 'Evidencia de Solicitud: ')
+            + '<div class="input-group col-xs-12">'
+            + '<input type="file" name="archEvAd" multiple id="archEvAd" class="input-file" accept=".pdf">'
+            + '<input type="text" class="form-control" id="archEvAdt" disabled placeholder="Cargar archivos">'
             + '<span class="input-group-btn">'
             + '<button id="archEvAdb" class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>'
             + '</span>'
-            + '</div>'
-            + Requeridos() + CreaInputs_Con_Label('plazo', 'plazo', '', 'number', 'Plazo de Atención: ', 'textfield', '')
+            + `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf($('#archEvAdt').val())" class="btn btn-link margin-iconbf">`
+            + '<span class="fa fa-file-pdf-o color-muted fa-1x"></span></button>'
+            + '</div>';
+        cuerpo2 = Requeridos() + CreaInputs_Con_Label('plazo', 'plazo', '', 'number', 'Plazo de Atención: ', 'textfield', '')
             + Crea_Label('textfield8', 'textfield8', '', ' días.')
             + CreaBR()
             + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido de la Autiridad: ', 'textfield', '')
             + CreaBR()
             + CreaSelectLabeldisabled('atentido', '', arregloBlanco, '', 'Atendido: ', '');
-
-        desEv3 = Crea_Label('textfield8', 'textfield8', '', 'Descripción de Evidencia: ') + CreaTextArea('descEvi', '', 'style="width:100%; height:22%"');
-        desEvi = '';
-    } else {
-        desEvi = Crea_Label('textfield8', 'textfield8', '', 'Descripción de Evidencia: ') + CreaTextArea('descEvi', '', 'style="width:100%; height:22%"');
-        desEv3 = '';
-    }
-    var cuerpo = '<div class="row col-12"><div class="col-6">'
+    } 
+    var cuerpo = '<div class="row col-12"><div class="col-6"><h6>Datos de Solicitud</h6>'
         + cuerpo1
-        + Requeridos() + Crea_Label('textfield8', 'textfield8', '', 'Descripción: ')
+        + Requeridos() + Crea_Label('textfield8', 'textfield8', '', 'Descripción de diligencia: ')
         + CreaTextArea('descripcion', '', 'style="width:100%; height:22%"')
-        + desEv3
         + '</div>'
-        + '<div class="col-6">'
+        + '<div class="col-6"><h6>Datos de Atención</h6>'
         + cuerpo2
-        + Crea_Label('textfield8', 'textfield8', '', 'Evidencia: ')
-        + ''
-        + '<div class="input-group col-xs-12"><input type="file" name="archEvAd2" multiple id="archEvAd2" class="input-file">'
-        + '<input type="text" class="form-control" disabled placeholder="Cargar archivos">'
+        + Crea_Label('textfield8', 'textfield8', '', 'Evidencia de Atención: ')
+        + '<div class="input-group col-xs-12">'
+        + '<input type="file" name="archEvAd2" multiple id="archEvAd2" class="input-file" accept=".pdf">'
+        + '<input type="text" class="form-control" id="archEvAd2t" disabled placeholder="Cargar archivos">'
         + '<span class="input-group-btn">'
         + '<button id="archEvAdb2" class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>'
         + '</span>'
+        + `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf($('#archEvAd2t').val())" class="btn btn-link margin-iconbf">`
+        + '<span class="fa fa-file-pdf-o color-muted fa-1x"></span></button>'
+        + '</div>'
+        + Crea_Label('textfield8', 'textfield8', '', 'Descripción de Evidencia: ')
+        + CreaTextArea('descEvi', '', 'style="width:100%; height:22%"')
         + CreaInputs('fila', 'fila', '', 'hidden')
         + CreaInputs('tipodil', 'tipodil', '', 'hidden')
         + CreaInputs('fecEm', 'fecEm', '', 'hidden')
         + CreaInputs('idqueja', 'idqueja', '', 'hidden')
-        + '</div>'
-        + desEvi
         + '</div></div>'
-        + '<div class="positionCenter" style="top:-100px; position: relative;">'
+        + '<div class="positionCenter" style="top:-70px; position: relative;">'
         + crea_Boton('button', 'Aceptar', 'guardaDil', 'btn btn-success', `guardaDili(${guaD})`)
         + '</div>';
     $('#frmDetaDiligen').append('<form class="text-justify formDetalleDil" id="formDetalleDil" name="formDetalleDil" method="post" style="width:100%; margin-left:2%;">' + cuerpo + '</form>');
@@ -3890,7 +3888,7 @@ $(document).ready(function () {
             var dilig = $(this).find('input[id^="diligenArreg_"]').val();
             if (dilig!=='') {
                 var combinedDil = JSON.parse(dilig);
-                var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', archEvi = '', fecha_soli = '', desc_evi = '';
+                var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
                 if (combinedDil.tipodil!=='3') {
                     numOfMe = combinedDil.noOfMe;
                     atencion = combinedDil.plazo;
@@ -4058,7 +4056,7 @@ function guardaDili(tip, numF) {
         var combinedData = formDetalleDil.reduce(function (acc, item) {
             acc[item.name] = item.value;
             return acc;
-        }, { archEvAd: $("#archEvAd").val(), archEvi: $("#archEvAd2").val()});
+        }, { archEvAd: $("#archEvAdt").val(), archEvi: $("#archEvAd2t").val()});
         var combinedDataJson = JSON.stringify(combinedData);
         $(`#diligenArreg_${numF}`).val('');
         $(`#diligenArreg_${numF}`).val(combinedDataJson);
@@ -4237,7 +4235,7 @@ function GuardPrel() {
         var dilig = $(this).find('input[id^="diligenArreg_"]').val();
         if (dilig !== '') {
             var combinedDil = JSON.parse(dilig);
-            var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', archEvi = '', fecha_soli = '', desc_evi = '';
+            var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
             if (combinedDil.tipodil !== '3') {
                 numOfMe = combinedDil.noOfMe;
                 atencion = combinedDil.plazo;
