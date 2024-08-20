@@ -3641,9 +3641,30 @@ namespace SistemaIntegralQuejas.Controllers
 
             return Json(new { status = resultado });
         }
+		[HttpPost]
+		public  ActionResult subirarchivoserver(IFormFile file)
+		{
+            string UploadMessage = "";
+			if (file != null && file.Length > 0)
+			{
+				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos", file.FileName);
 
+				using (var stream = new FileStream(filePath, FileMode.Create))
+				{
+					 file.CopyToAsync(stream);
+				}
 
-        public string ejecutaInsertUpdate(string query)
+				UploadMessage = "File uploaded successfully!";
+			}
+			else
+			{
+				UploadMessage = "Please select a file.";
+			}
+
+			return Json(new { message = UploadMessage,filename= file.FileName });
+		}
+
+		public string ejecutaInsertUpdate(string query)
         {
             string mensaje = "";
             using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
@@ -3668,7 +3689,23 @@ namespace SistemaIntegralQuejas.Controllers
             return mensaje;
         }
 
-        public ActionResult GuardaCalifQuej(IFormCollection form)
+		public IActionResult ConsutlarArchivoCalificación(string fileName)
+		{
+            // Ruta del archivo PDF en el servidor
+            //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/Archivos", fileName);
+           var filePath = Path.Combine(_hostingEnvironment.WebRootPath + "\\Archivos", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+			{
+				return NotFound();
+			}
+
+			// Lee el archivo PDF y devuélvelo al navegador
+			var fileBytes = System.IO.File.ReadAllBytes(filePath);
+			return File(fileBytes, "application/pdf");
+		}
+
+		public ActionResult GuardaCalifQuej(IFormCollection form)
         {
             string query = "";
             int idqueja = 0;

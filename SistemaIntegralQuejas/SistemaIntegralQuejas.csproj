@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\php_\**" />
+    <Content Remove="wwwroot\php_\**" />
+    <EmbeddedResource Remove="wwwroot\php_\**" />
+    <None Remove="wwwroot\php_\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\js\buscadorTabla - Copia.json" />
     <Content Remove="wwwroot\js\buscadorTabla.json" />
   </ItemGroup>
@@ -30,7 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Archivos\calif_atenc\" />
+    <Folder Include="Properties\NewFolder\" />
     <Folder Include="Views\EditarFormatosExp\" />
+    <Folder Include="wwwroot\Archivos\calif_atenc\" />
     <Folder Include="wwwroot\icons\NewFolder\" />
     <Folder Include="wwwroot\Uploads\escrito_inicialdequeja\" />
   </ItemGroup>

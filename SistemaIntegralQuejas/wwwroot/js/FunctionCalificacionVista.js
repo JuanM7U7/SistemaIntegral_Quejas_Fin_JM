@@ -2256,6 +2256,14 @@ function GeneraEscrito_pdf(idEscrito) {
 
 }
 
+
+function GeneraDocumento_pdf(nombreDocumento) {
+
+    let id = nombreDocumento;
+
+    window.open(ExportaDocumentoPDF + id, '_blank');
+}
+
 function turnoAbogado(idquej, idabogad) {
     $.ajax({
         type: "POST",
@@ -3308,8 +3316,10 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 <input type="text" id="archivoEmisionruta_${meta.row}" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>
-                </div>`+ `<textarea id="obsEmision_${meta.row}" class="swal2-input"> </textarea>`
+                </span>`+ `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_emision}')" class="btn btn-link margin-iconbf">
+                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
+                                           </button>`+
+                `</div>`+ `<textarea id="obsEmision_${meta.row}" class="swal2-input"> </textarea>` 
                     }
                 },
                 {
@@ -3331,8 +3341,10 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 <input id="archivoAtencionRuta_${meta.row}" type="text" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>
-                 </div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input"> </textarea></div>`
+                </span>`+ `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_atencion}')" class="btn btn-link margin-iconbf">
+                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
+                                           </button>`+
+                 `</div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input"> </textarea></div>`
                     }
                 },
             ],
@@ -4101,8 +4113,50 @@ function funcionesEscritoi() {
     });
 
     $(document).on('change', '.input-file', function () {
-        $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+        $(this).parent().find('.form-control').val($(this)[0].files[0].name);
+        //event.preventDefault();
+        var fileInput = $(this)[0].files[0];
+        if (!fileInput) {
+            alert('Por favor selecciona un archivo PDF.');
+            $(this).parent().find('.form-control').val();
+            return;
+        }
+
+        if (fileInput.type !== 'application/pdf') {
+            alert('Por favor selecciona un archivo PDF.');
+            $(this).parent().find('.form-control').val();
+            return;
+        }
+        $($(this).parent().find('.btn')[1]).attr('onClick', '');
+        $($(this).parent().find('.btn')[1]).attr('onClick',`GeneraDocumento_pdf('${$(this)[0].files[0].name}')`);
+        var formData = new FormData();
+        formData.append('file', fileInput);
+
+        $.ajax({
+            url: 'subirarchivoserver', // Cambia esto por la URL de tu servidor
+            type: 'POST',
+            data: formData,
+            processData: false, // No procesar los datos
+            contentType: false, // No establecer el content-type
+            success: function (response) {
+                alert('Archivo PDF subido exitosamente');
+
+                console.log(response);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error al subir el archivo');
+                console.error(textStatus, errorThrown);
+            }
+        });
+           
     });
+
+}
+
+
+function subirArchivo()
+{
+   
 
 }
 
