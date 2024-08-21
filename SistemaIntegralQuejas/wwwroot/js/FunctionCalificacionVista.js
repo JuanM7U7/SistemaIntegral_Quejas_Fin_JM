@@ -233,7 +233,8 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 }
 
-function modalShow(id, fecRecep, Tmodal, tip) {
+function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
+    console.log("Expediente al crear el formulario de calificación: " + expedienten);
     document.getElementById(Tmodal).style.display = "block";
     if (tip === 1) {
         closeModal("modaltabCalif");
@@ -244,7 +245,8 @@ function modalShow(id, fecRecep, Tmodal, tip) {
         obtenerDQOT(id, fecRecep, "");
     } else {
         Crear_Formulario_QuejaEdit(id);
-        obtenerDQOT(id, fecRecep, "E");
+        
+        obtenerDQOT(id, fecRecep, "E", expedienten);
     }
 }
 
@@ -290,9 +292,10 @@ function mostrarResTblFormatos(response, response1) {
             {
                 'mRender': function (data, type, full) {
                     if (full.expediente !== 'PENDIENTE') {
-                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif")' class='btn btn-info status-badge rounded'>Modificar</button>`;
+                        //full.expediente
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
                     } else {
-                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif")' class='btn btn-info status-badge rounded'>Calificar</button>`;
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Calificar</button>`;
                     }
                     return btnEscritook
                 }
@@ -470,7 +473,7 @@ function Crear_Formulario_QuejaEdit(id) {
     return formualarioCompleto;
 }
 
-function obtenerDQOT(idqueja, fecRecep, tipo) {
+function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
     var ajaxDQOT = $.ajax({
         type: "POST",
         url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogosCalf",
@@ -566,7 +569,8 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             $('#nivries-frmDatosCalificacion').prop('disabled', true);
         } else {
             if (response.informarcionC.tipo_expediente === 1) {
-                CrearFormuCalificacion(idqueja, tipo, response.informarcionC.estatus_Expediente);
+                console.log(expedienten);
+                CrearFormuCalificacion(idqueja, tipo, response.informarcionC.estatus_Expediente, expedienten);
             } else {
                 var ajaxSelectExpeSC = $.ajax({
                     type: "POST",
@@ -2591,7 +2595,7 @@ function CrearFormuCalificacionApo(tipo) {
     $(`#frmDatosCalificacion${tipo}`).append(frmDatos);
     $('#expedsc-frmDatosCalificacion').select2();
 }
-function CrearFormuCalificacion(idformulario, tipo, paso) {
+function CrearFormuCalificacion(idformulario, tipo, paso,expedienten) {
     $(`#frmDatosCalificacion${tipo}`).empty();
     let eliminarform = document.querySelectorAll('.eliminaformaes');
     for (var i = 0; i < eliminarform.length; i++) {
@@ -2600,7 +2604,9 @@ function CrearFormuCalificacion(idformulario, tipo, paso) {
     let frmDatosPersonales;
     console.log(paso);
     if (paso == 'Calificado') {
-
+        console.log("Paso  calificado:" + expedienten);
+        $("#Titulo_Modal").text(" ");
+        $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
         frmDatosPersonales = crearForumulario(
             {
                 idformulario: "frmDatosCalificacion" + idformulario,
@@ -2934,7 +2940,7 @@ function CrearFormuCalificacion(idformulario, tipo, paso) {
     crearTabla('.tablaAutRe_HecVio', "tablaAutRe_HecVioT", ["Acciones", "Tipo", "Autoridades Responsables", "Autoridad Primaria", "Hechos Violatorios", "Derecho Humano"], idformulario, tipo);
     LlenarTabAutReHecVio('#tablaAutRe_HecVioT', tipo, idformulario);
 
-    crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "No. Oficio", "Fecha/Evidencia Emisión", "Cumplida (Si/No)", "Fecha/Evidencia Atención"], idformulario, tipo);
+    crearTabla('.tablaMedCuate', "tablaMedCuateT", ["Acciones", "No. Oficio", "Evidencia de emisión", "Cumplida (Si/No)", "Evidencia de atención"], idformulario, tipo);
     LlenartablaMedCuate('#tablaMedCuateT', tipo, idformulario);
     $('.tablaMedCuate').hide();
 
@@ -3048,6 +3054,8 @@ function actualizarIndices(nomTab) {
                     var selecTex = $(this).find("option:selected").text();
                     var homoclav = selecTex.split('-');
                     $(this).closest('tr').find('#derecho').val(homoclav[2]);
+                  
+                    
                 });
                 break;
             case "tablaMedCuateT":
@@ -3168,6 +3176,14 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
                     const data = this.data();
                     $(`#autoridadres_${rowIdx}`).val(data.id_autoridad).trigger('change');
                     $(`#hechvio_${rowIdx}`).val(data.id_hechov).trigger('change');
+                    
+                    if ($(`#autoridadres_${rowIdx}`).parent().siblings().find("#tipauto").val() == "")
+                    {
+                        var Primaria = $(`#autoridadres_${rowIdx} option:selected`).text();
+                        $(`#autoridadres_${rowIdx}`).parent().siblings().find("#tipauto").val(Primaria);
+                    }
+                    
+                 
                 });
             },
             order: [1, 'desc'],
@@ -3319,7 +3335,7 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 </span>`+ `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_emision}')" class="btn btn-link margin-iconbf">
                                                 <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
                                            </button>`+
-                `</div>`+ `<textarea id="obsEmision_${meta.row}" class="swal2-input"> </textarea>` 
+                            `</div>` + `<textarea id="obsEmision_${meta.row}" placeholder="Describe la evidencia de emisión" class="swal2-input"> </textarea>` 
                     }
                 },
                 {
@@ -3344,7 +3360,7 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 </span>`+ `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_atencion}')" class="btn btn-link margin-iconbf">
                                                 <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
                                            </button>`+
-                 `</div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input"> </textarea></div>`
+                            `</div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"> </textarea></div>`
                     }
                 },
             ],
