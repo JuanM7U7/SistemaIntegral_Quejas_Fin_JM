@@ -4366,3 +4366,429 @@ function GuardPrel() {
         }
     });
 }
+
+
+function generaPDFCedula() {
+
+
+    try {
+
+    var id = $("#idquejaE").val();
+    var exp = $("#Titulo_Modal").val();
+    var folio = '';
+    var viaI = $("#viainterposE").find('option:selected').text();
+    var programaE = $("#programa-frmDatosCalificacion").find('option:selected').text();
+    var materia = $("#materia-frmDatosCalificacion").find('option:selected').text();
+    var abogadoT = '';
+    var fechaCali = '';
+    var fechaRegistro = $("#Fecha_RegistroE").val();
+    var fechaTurnEle = $("#visitaduriaquejaE").val();
+    var vis = $("#visitaduriaquejaE").val();
+    var fechaFisicaVis = '';
+    var fechaTurnoA = '';
+    var lugarHechos = $("#municipioquejaE").find('option:selected').text();
+    var peticionarios = '';
+    var autoridad = '';
+    var derHV = '';
+    var HechoV = '';
+    var tipoPet = '';
+    var autoridadAmbi = '';
+    var sexoPet = '';
+    var hecho = $("#hechosE").text();
+    var longitudHecho = $("#hechosE").text().length;
+    console.log(hecho);
+    console.log(peticionarios);
+
+    var posicionY1 = 0;
+    var posicionX1 = 0;
+    var posicionY2 = 0;
+    var posicionX2 = 0;
+    var posicionY3 = 0;
+    var posicionX3 = 0;
+
+    /*       for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        
+       }*/
+    /*Nombre del peticionario*/
+
+    var peticionario = peticionarios.split(',');
+    var petici = peticionario[0].split('<');
+    var peti = '';
+    var contadorPeticionarios = 0;
+    for (let index = 0; index < peticionario.length; index++) {
+        peti = peti + peticionario[index].trim() + '\n';
+        contadorPeticionarios = contadorPeticionarios + 1;
+    }
+
+
+
+    var autorida = autoridad.split('-');
+    var autorida1 = autoridad.split('</td>');
+
+    var aut = '';
+
+
+    for (let index = 0; index < autorida.length - 1; index++) {
+        aut = aut + autorida[index].trim() + '\n';
+    }
+
+
+
+    /*
+           var uniqueArr = [...new Set(autorida1)]
+           console.log(uniqueArr);
+           for (let index = 0; index < uniqueArr.length; index++) {
+            var auto=uniqueArr[index].split('<td>');
+            console.log(auto);
+                if(auto.length==2){
+                    console.log(auto);
+                    if (auto[1]=="")
+                    {
+                        
+                    }else {aut=aut+auto[1]+'\n';}
+                }
+            }
+    
+    */
+    //var autor=autorida[0];
+
+    // var auto=autor.split('<td>');
+    /*for (let index = 0; index < autorida.length; index++) {
+     aut=aut+autorida[index].trim()+'\n';
+    }*/
+
+
+    //aut=auto[1];
+
+
+    var deHV = derHV.split(',');
+    var DHV = deHV[0];
+
+    var hechv = HechoV.split('\n');
+    var HV = '';
+
+    for (let index = 0; index < hechv.length; index++) {
+        HV = HV + hechv[index].trim() + '\n';
+    }
+
+    var ambitoA = autoridadAmbi.split(',');
+    var ambito = '';
+    var amb = '';
+    var uniqueArr1 = [...new Set(ambitoA)]
+    for (let index = 0; index < uniqueArr1.length; index++) {
+        ambito = uniqueArr1[index];
+
+        if (ambito == 'M') {
+            amb = amb + 'MUNICIPAL' + '\n';
+        } else if (ambito == 'E') {
+            amb = amb + 'ESTATAL' + '\n';
+        }
+
+
+    }
+
+
+    var sexoPetic = sexoPet.split(',');
+    var sexop = sexoPetic[0];
+    var sexp = '';
+
+    console.log(sexop);
+
+    if (sexop == '1') {
+        sexp = 'PETICIONARIO';
+    } else if (sexop == '2') {
+        sexp = 'PETICIONARIA';
+    } else {
+        sexp = 'OTRO';
+    }
+
+
+
+    var tipoPE = tipoPet.split(',');
+    var tipoP = tipoPE[0];
+    var tipo = "";
+    for (let index = 0; index < tipoPE.length - 1; index++) {
+        if (tipoPE[index] == 'Q') {
+            tipo = tipo + "PETICIONARIO" + '\n';
+        } else {
+            tipo = tipo + "AGRAVIADO" + '\n';
+        }
+    }
+
+
+
+    var NombreV = '';
+    var sexoV = '';
+    console.log(vis);
+    if (vis==1) {
+        NombreV = 'LCDO. VICTOR KURI BUJAIDAR';
+        sexoV = 'PRIMER VISITADOR GENERAL';
+    }
+
+    if (vis == 2) {
+        NombreV = 'MTRO. ISRAEL VILLA COBOS';
+        sexoV = 'SEGUNDO VISITADOR GENERAL';
+    }
+
+    if (vis == 3) {
+        NombreV = 'MTRA. JESSICA CALDERON GARCIA';
+        sexoV = 'TERCERA VISITADORA GENERAL';
+    }
+
+    if (vis == 4) {
+        NombreV = 'MTRO.IVAN ANDRES FLORES CANO';
+        sexoV = 'CUARTO VISITADOR GENERAL';
+    }
+
+
+    /*Función de la longitud del eje y cuando se tengan a mas de 2 peticionarios 08-09-2023*/
+    //doc.setFontType("normal");doc.text(20, 125, tipo); -- Datos de referencia para la posición Inicial
+    //doc.setFontType("normal");doc.text(120,125,  peti);-- Datos de referencia para la posición Inicial
+    /*Posicion que inicia en el campo TIPO para agregar a mas de 2 peticionarios*/
+    posicionX2 = 20;//Posición primera Columna
+    posicionY2 = 125;
+    var sizeFontPet = 10;
+    var sizeFontAut = 8;
+    /*Posicion QUE inicia en el campo Nombre para agregar a mas de 2 peticionarios*/
+    posicionX3 = 120;//Posición Segunda Columna
+    posicionY3 = 125;
+
+    if (peticionario.length > 2) {
+        for (let index = 0; index < peticionario.length; index++) {
+            var sizeFontPet = 7;
+            posicionY2 = posicionY2 + 2.25;//Adición de 14 unidades por cada peticionario extra que exista sobre la primera columna en el eje de las y
+            posicionY3 = posicionY3 + 2.25;//Adición de 14 unidades por cada peticionario extra que exista sobre la Segunda columna en el eje de las y
+        }
+    }
+
+
+    var doc = new jsPDF({ filters: ["ASCIIHexEncode"] });
+
+    /*Colocación del logo izquierdo y derecho*/
+    var logo = new Image();
+    logo.src = "/img/cdh_imagotipo_completo-03.png"
+    //console.log(img)
+
+    //logo=img;
+   doc.addImage(logo, 'JPEG', 20, 1, 15, 18);
+    /*
+ var logo1 = new Image();
+ logo1.src = 'foto.jpg';
+ doc.addImage(logo1, 'JPEG', 15, 40,148,210);
+ */
+
+    /*Colocación del logo izquierdo y derecho*/
+    /*Cuerpo  del Documento*/
+    doc.setFontType("bold");
+    doc.setFontSize(10);
+
+    /*Cominenza el encabezado*/
+    doc.text(20, 20, '____________________________________________________________________________________');
+    doc.text(100, 20, 'CÉDULA DE CALIFICACIÓN', { align: 'center' });
+    doc.text(90, 25, 'EXPEDIENTE:', { align: 'center' });
+    doc.setFontType("normal"); doc.text(110, 25, exp, { align: 'center' });
+    doc.setFontType("bold"); doc.text(20, 30, 'ID:');
+    doc.setFontType("normal"); doc.text(25, 30, id);
+    doc.setFontType("bold"); doc.text(170, 30, 'FOLIO:');
+    doc.setFontType("normal"); doc.text(183, 30, folio);
+    doc.setFontType("bold"); doc.text(100, 40, 'DATOS GENERALES DE LA QUEJA ', { align: 'center' });
+    /*Termina el encabezado*/
+
+    /*Datos Generales de la queja*/
+    doc.setFontType("bold"); doc.text(20, 50, 'FECHA Y HORA DE REGISTRO: ');
+    doc.setFontType("normal"); doc.text(20, 55, fechaRegistro);
+    doc.setFontType("bold"); doc.text(120, 50, 'FECHA TURNO ELECTRONICO A VG: ');
+    doc.setFontType("normal"); doc.text(120, 55, fechaTurnEle);
+    doc.setFontType("bold"); doc.text(20, 65, 'FECHA DE RECEPCIÓN FÍSICA A VG: ');
+    doc.setFontType("normal"); doc.text(20, 70, fechaFisicaVis);
+    doc.setFontType("bold"); doc.text(120, 65, 'FECHA TURNO ABOGADO');
+    doc.setFontType("normal"); doc.text(120, 70, fechaTurnoA);
+    doc.setFontType("bold"); doc.text(20, 80, 'VIA ENTRADA:');
+    doc.setFontType("normal"); doc.text(20, 85, viaI);
+    doc.setFontType("bold"); doc.text(120, 80, 'FECHA CALIFICACIÓN:');
+    doc.setFontType("normal"); doc.text(120, 85, fechaCali);
+    doc.setFontType("bold"); doc.text(20, 95, 'LUGAR DONDE SE COMETIRON LOS HECHOS VIOLATORIOS:');
+    doc.setFontType("normal"); doc.text(20, 100, lugarHechos);
+    /*Termina datos Generales de la queja*/
+
+    var renglonHV = doc.splitTextToSize(HechoV, 70);
+    /*Datos del peticionario*/
+    doc.setFontType("bold"); doc.text(100, 110, 'PETICIONARIO(AS)/AGRAVIADOS(AS)', { align: 'center' });
+    doc.text(20, 120, 'TIPO:');
+    doc.setFontType("bold"); doc.text(120, 120, 'NOMBRE:');
+    doc.setFontSize(sizeFontPet);
+    doc.setFontType("normal"); doc.text(20, 125, tipo);
+    doc.setFontType("normal"); doc.text(120, 125, peti);
+
+    posicionX1 = 120;
+    posicionY1 = 170;
+
+    doc.setFontSize(10);
+
+    // var longitud_Texo_autoridad=aut.length;
+    var longitud_texto_Hecho_vi = HechoV.length;
+    //console.log(longitud_Texo_autoridad);
+    console.log(longitud_texto_Hecho_vi);
+    /*Función de la longitud del eje y cuando se tengan a mas de 2 peticionarios 08-09-2023*/
+
+    posicionY2 = posicionY2 + 10;//posición de los titulos
+    doc.setFontType("bold"); doc.text(20, posicionY2, 'AUTORIDAD RESPONSABLE:');//pos 135
+    doc.setFontSize(10);
+    doc.setFontType("bold"); doc.text(120, posicionY2, 'ASUNTO:');//pos 135
+    posicionY2 = posicionY2 + 5;//posición de las descripciones
+    doc.setFontSize(8);
+    doc.setFontType("normal"); doc.text(20, posicionY2, aut);//pos 140
+    doc.setFontSize(8);
+    doc.setFontType("normal"); doc.text(120, posicionY2, amb);//pos 140
+
+    /* Function del eje Y cuando se tiene  mas de una autoridad 08-09-2023 */
+
+    if (autorida.length > 2) {
+        for (let index = 0; index < autorida.length; index++) {
+            var sizeFontAut = 7;
+            posicionY2 = posicionY2 + 2.25;//Adición de 10 unidades por cada autoridad extra que exista sobre la primera columna en el eje de las y
+            posicionY3 = posicionY3 + 2.25;//Adición de 10 unidades por cada autoridad extra que exista sobre la Segunda columna en el eje de las y
+        }
+    }
+
+    console.log(posicionY2);
+
+    /* Function del eje Y cuando se tiene  mas de una autoridad 08-09-2023 */
+
+    posicionY2 = posicionY2 + 10;//posición de los titulos
+    doc.setFontSize(10);
+    doc.setFontType("bold"); doc.text(20, posicionY2, 'DERECHO HUMANO VULNERADO:');//pos 150
+    doc.setFontSize(10);
+    doc.setFontType("bold"); doc.text(120, posicionY2, 'HECHO VIOLATORIO:');//pos 150
+    posicionY2 = posicionY2 + 5;//posición de las descripciones
+    doc.setFontSize(8);
+    doc.setFontType("normal"); doc.text(20, posicionY2, derHV);//pos 155
+    doc.setFontSize(8);
+    doc.setFontType("normal"); doc.text(120, posicionY2, renglonHV);//pos 155
+
+    /* Function del eje Y cuando se tiene  mas de un Hecho Violatorio  08-09-2023 */
+
+    if (hechv.length > 1) {
+        for (let index = 0; index < autorida.length; index++) {
+            var sizeFontAut = 7;
+            posicionY2 = posicionY2 + 2.25;//Adición de 2.25 unidades por cada autoridad extra que exista sobre la primera columna en el eje de las y
+            posicionY3 = posicionY3 + 2.25;//Adición de 2.25 unidades por cada autoridad extra que exista sobre la Segunda columna en el eje de las y
+        }
+    }
+
+    console.log(posicionY2);
+
+    /* Function del eje Y cuando se tiene  mas de un Hecho Violatorio  08-09-2023 */
+
+
+    /*Metodo para  ajustar el texto del Hecho violatorio*/
+    if (longitud_texto_Hecho_vi <= 156) {
+        posicionY2 = posicionY2 + 10;//posición de los titulos
+        doc.setFontType("bold"); doc.text(120, posicionY2, 'PROGRAMA:');
+        posicionY2 = posicionY2 + 5;//posición de las descripciones
+        doc.setFontType("normal"); doc.text(120, posicionY2, programaE);
+
+    } else if (longitud_texto_Hecho_vi > 156 && longitud_texto_Hecho_vi <= 170) {
+        posicionY2 = posicionY2 + 10;
+        doc.setFontType("bold"); doc.text(posicionX1, posicionY2, 'PROGRAMA:');
+        posicionY2 = posicionY2 + 5;
+        doc.setFontType("normal"); doc.text(posicionX1, posicionY2, programaE);
+
+    } else {
+        posicionY2 = posicionY2 + 20;
+        doc.setFontType("bold"); doc.text(posicionX1, posicionY2, 'PROGRAMA:');
+        posicionY2 = posicionY2 + 5;
+        doc.setFontType("normal"); doc.text(posicionX1, posicionY2, programaE);
+    }
+
+    /*Metodo para  ajustar el texto del Hecho violatorio*/
+    doc.setFontType("bold"); doc.text(20, posicionY2, 'MATERIA:');
+    posicionY2 = posicionY2 + 5;
+    doc.setFontType("normal"); doc.text(20, posicionY2, materia);//pos 175
+    //aqui va el programa
+    posicionY2 = posicionY2 + 10;
+    doc.setFontType("bold"); doc.text(20, posicionY2, 'EL/LA AGRAVIADO/A TIENE EL CARACTER DE:');
+    posicionY2 = posicionY2 + 5;
+    doc.setFontType("normal"); doc.text(20, posicionY2, 'PROBABLE RESPONSABLE');//pos 190
+    posicionY2 = posicionY2 + 10;
+    doc.setFontType("bold"); doc.text(20, posicionY2, 'HECHOS:');//pos 200
+    doc.setFontSize(10);
+    //doc.setFontType("normal");doc.text(20, 205, hecho,{align: 'justify',lineHeightFactor:1,maxWidth:180});
+    /*Datos del peticionario*/
+    doc.setFontSize(10);
+
+    /*Footer de todas las Hojas del sistema de quejas*/
+    doc.text(20, 270, '____________________________________________________________________________________');
+    doc.setFontType("normal"); doc.text(10, 275, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
+    doc.text(100, 280, 'www.cdhpuebla.org.mx', { align: 'center' });
+    doc.text(100, 285, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
+
+    if (peticionario.length > 12) {
+        posicionY2 = posicionY2 + 5;
+        doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { align: 'justify', lineHeightFactor: 1, maxWidth: 180 });
+        doc.addPage();
+        doc.text(20, 40, abogadoT);//20
+        doc.setFontType("bold"); doc.text(20, 45, 'VISITADOR/A ADJUNTO/A');//25
+
+        //Nombre de los visitadores*
+        doc.setFontType("normal"); doc.text(120, 40, NombreV);//20
+        doc.setFontType("bold"); doc.text(120, 45, sexoV);//25
+
+        doc.text(20, 50, '____________________________________________________________________________________');//30
+        doc.setFontType("normal"); doc.text(10, 55, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');//35
+        doc.text(100, 60, 'www.cdhpuebla.org.mx', { align: 'center' });//40
+        doc.text(100, 65, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });//45
+
+        /*Metodo para adicionar la leyenda de abajo dependiendo de la longitud del Hecho  11-09-2023*/
+
+
+
+        /*Metodo para adicionar la leyenda de abajo dependiendo de la longitud del Hecho 11-09-2023*/
+
+    } else {
+        if (longitudHecho > 800) {
+            posicionY2 = posicionY2 + 5;
+            doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { align: 'justify', lineHeightFactor: 1, maxWidth: 180 });
+            doc.addPage();
+
+            doc.text(20, 40, abogadoT);
+            doc.setFontType("bold"); doc.text(20, 45, 'VISITADOR/A ADJUNTO/A');
+
+            doc.setFontType("normal"); doc.text(120, 40, NombreV);
+            doc.setFontType("bold"); doc.text(120, 45, sexoV);
+
+            doc.text(20, 50, '____________________________________________________________________________________');
+            doc.setFontType("normal"); doc.text(10, 55, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
+            doc.text(100, 60, 'www.cdhpuebla.org.mx', { align: 'center' });
+            doc.text(100, 65, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
+        } else {
+            posicionY2 = posicionY2 + 5;
+            doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { lineHeightFactor: 1, maxWidth: 180 });
+            doc.text(20, 250, abogadoT);
+            doc.setFontType("bold"); doc.text(20, 255, 'VISITADOR/A ADJUNTO/A');
+
+            /*Nombre de los visitadores*/
+            doc.setFontType("normal"); doc.text(120, 250, NombreV);
+            doc.setFontType("bold"); doc.text(120, 255, sexoV);
+
+            doc.text(20, 270, '____________________________________________________________________________________');
+            doc.setFontType("normal"); doc.text(10, 275, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
+            doc.text(100, 280, 'www.cdhpuebla.org.mx', { align: 'center' });
+            doc.text(100, 285, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
+        }
+    }
+
+        doc.save(exp + fechaCali + ".pdf");
+    } catch (error) {
+
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Hubo un error al generar la cedula',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        console.error(error);
+    }
+}

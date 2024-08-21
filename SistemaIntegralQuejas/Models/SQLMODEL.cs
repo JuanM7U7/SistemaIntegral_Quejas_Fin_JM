@@ -201,6 +201,41 @@ namespace SistemaIntegralQuejas.Models
 
 			return lista;
 		}
+        public List<SelectGenerico> lista_SelectAutori(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectGenerico> lista = new List<SelectGenerico>();
+            SqlDataReader lector;
+
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+
+                    SelectGenerico modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new SelectGenerico();
+                        modelo.Clave = lector[0].ToString();
+                        modelo.Descripcion = lector[1].ToString();
+                        lista.Add(modelo);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+
+            return lista;
+        }
 
         public List<SelectAUT_HEV> lista_SelectAutHev(string query, ref string mensaje)
         {

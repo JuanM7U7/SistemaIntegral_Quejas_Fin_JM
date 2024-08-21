@@ -15,6 +15,7 @@ let escolaridadFinal = '';
 let contadorSelect = 0;
 let peticionariosGuardados = [];
 let peticionariosGuardadosok = [];
+let SelAutoridad = [];
 let filtradonuevo = [];
 let filtradoadd = [];
 let idqueja = "";
@@ -62,6 +63,8 @@ let crearformularios = 0;
         escolaridadFinal = Escolaridad.slice(10);
 
     })
+
+    fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => { SelAutoridad = data.lista2; })
 
     fetchGet("Expediente/SelectEstadoConyugal", "json", (data) => { EstadoConyugal = data.estadoconyugal; })
 
@@ -379,10 +382,11 @@ let crearformularios = 0;
 
         if ($('#Input_nombres' + npmax).val() != '' || $('#Input_cargo' + npmax).val() != '' || $('#Input_autoridades' + npmax).val() != '') {
             contenedor = Agrega_PersonaAutoridad(nfin);
+
             $('#Contenedor_Cargos_Personas').append(contenedor);
             fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
                 let autoridad = data.lista2;
-                CargaDatosSelectOtro("#Input_autoridades" + nfin, autoridad);
+                CargaDatosSelecAutori("#Input_autoridades" + nfin, autoridad);
             })
         } else {
             Swal.fire({
@@ -912,6 +916,7 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
             $('#ref-frm-frmDatosPersonales1').append(formPetit);
             $('#divformularioEscritoInicial').append(formEscritoInicial2('#', 'frmFromatoQueja'));
             $('#divformularioActaCircunstanciada').append(formActacircunstanciada2c(1));
+            CargaDatosSelecAutori("#catAutoridad1", SelAutoridad);
             $(`#anio${1}`).val(2024);
             if (visibilidadPestaniaRDP) {
                 console.log("RDP");
@@ -975,7 +980,7 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
     }
 
     //$('#Input_autoridades').select2();
-    $('#Input_autoridades1').select2();
+    //$('#Input_autoridades1').select2();
     $(".origenPetExt").css("display", "none");
     $(".origenPetExtedo").css("display", "none");
 
@@ -1481,6 +1486,7 @@ function NuevoNavHrzActac(numconsecutivo) {
                         ${formNavActac}
                         </div>`;
     $('.tabfrmActacircu').append(elementBody);
+    CargaDatosSelecAutori(`#catAutoridad${numconsecutivo}`, SelAutoridad);
     $(`#anio${numconsecutivo}`).val(2024);
     deleteFormularioActac();
 }
@@ -2807,7 +2813,7 @@ function formActacircunstanciada2c(idfrm) {
         + CreaInputs_Con_Label('ubiHechos' + numfrm, 'ubiHechos' + numfrm, 'inputac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"', idfrm)
         + CreaSelectLabel('catMunicipio_hechos' + numfrm, '', {}, '', 'ubicado en el municipio de', '', 'catMunicipio_hechos', idfrm)
         + CreaSelectLabel('catEstado_hechos' + numfrm, '', arreglo_Estados(), '', 'del estado de ', '', 'catEstado_hechos', idfrm)
-        + CreaSelectLabel('catAutoridad' + numfrm, '', arregloEstado(), '', ', la(s) autoridad(es)', '', 'catAutoridad', idfrm)
+        + CreaSelectLabel('catAutoridad' + numfrm, '', [], '', ', la(s) autoridad(es)', '', 'catAutoridad', idfrm)
         + CreaTextArea('hechos' + numfrm, '', 'style="width:100%"', idfrm)
         + CreaInputs_Con_Label('horaTermino' + numfrm, 'horaTermino' + numfrm, 'inputac', 'time', ', dando por terminada la presente actuación a  las', 'textfield10', '', idfrm)
         + CreaInputs_Con_Label('', '', 'inputac', 'text', 'horas.', 'textfield10', 'hidden', idfrm)
@@ -3393,7 +3399,7 @@ function Carga_Informacion_selec_quejas(nfrm) {
         CargaDatosSelectOtro("#lugar" + nfrm, estado);
         CargaDatosSelectOtro("#nomAbogado" + nfrm, abogado);
         CargaDatosSelectOtro("#Input_LugarHechos", estado);
-        CargaDatosSelectOtro("#Input_autoridades1", autoridad);
+        CargaDatosSelecAutori("#Input_autoridades" + nfrm, autoridad);
         CargaDatosSelectOtro("#origenPet" + nfrm, estado);
         CargaDatosSelectOtro("#catMunicipio_hechos" + nfrm, estado);
         CargaDatosSelectOtro("#catEstado_hechos" + nfrm, estadoRM);
@@ -3661,6 +3667,20 @@ function CargaDatosSelectOtro_(select, arreglo, valor) {
     $(select).append(htmld)
     //$(select).select2();
     Seleccionar_ValorSelect(select, valor);//ASIGNAR EL VALOR del select al momento que se le añade información
+}
+
+function CargaDatosSelecAutori(select, arreglo) {
+    var htmld = select;
+    htmld += '';
+    for (let v = 0; v < arreglo.length; v++) {
+        htmld += `
+                <option value="${arreglo[v].clave}">${arreglo[v].descripcion}</option>
+            `;
+    }
+    htmld += "</select>";
+
+    $(select).append(htmld)
+    //$(select).select2();
 }
 function Seleccionar_ValorSelect(nombreSelect, valorPorDefecto) {
     $(nombreSelect + " > option[value='" + valorPorDefecto + "']").attr("selected", true);

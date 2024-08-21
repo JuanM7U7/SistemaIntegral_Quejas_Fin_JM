@@ -3034,7 +3034,7 @@ namespace SistemaIntegralQuejas.Controllers
             query = "exec Sp_Select_Estado";
             listaContenedora4 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
             query = "exec Sp_Select_autoridad";
-            listaContenedora2 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+            listaContenedora2 = conexionsql.lista_SelectAutori(query, ref mensaje);
 
             query = "exec Sp_Select_EstadoRM";
             listaContenedora5 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
@@ -3377,12 +3377,14 @@ namespace SistemaIntegralQuejas.Controllers
             public string Descripcion { get; set; }
             public bool seleccionable { get; set; }
             public string ruta { get; set; }
+            public string Clave { get; set; }
             public SelectGenerico() { }
-            public SelectGenerico(int i1, string s1, bool i2, string s2)
+            public SelectGenerico(int i1, string s1, bool i2, string s2, string s3)
             {
                 this.idSelectGenerico = i1;
                 this.Descripcion = s1;
                 this.seleccionable = i2;
+                this.Clave = s3;
                 if (s2 == "null")
                 {
                     this.ruta = "#";
@@ -3894,6 +3896,12 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
+        public ActionResult RegresaDatos_Cedula(int idqueja)
+        {
+            
+
+            return Json(new { mensaje = "error" });
+        }
         public class SelectAUT_HEV
         {
             public int id_queja { get; set; }
@@ -3948,6 +3956,29 @@ namespace SistemaIntegralQuejas.Controllers
 			}
 		}
 
+        public class cedulaCalificacion
+        {
+            public int id { get; set; }
+            public string Expediente { get; set; }
+            public String fecha_Hora_registro { get; set; }
+            public string fecha_Hora_turnoe { get; set; }
+            public string fecha_RFV { get; set; }
+            public string fecha_TA { get; set; }
+            public string VIA_ENTRADA { get; set; }
+            public string fecha_calificacion { get; set; }
+            public string lugar_Hechos { get; set; }
+            public string [] peticionario_tipo { get; set; }
+            public string [] peticionario_nombre { get; set; }
+            public string [] AUT_RESP { get; set; }
+            public string ASUNTO { get; set; }
+            public string []DH { get; set; }
+            public string []HV { get; set; }
+            public string materia { get; set; }
+            public string programa { get; set; }
+            public string caracter_pet { get; set; }
+            public string hechos { get; set; }
+
+        }
         // Lista obtener datos de tabla Autoridades - Hechos Violatorios
         public ActionResult SelectAutorHech(string idqueja)
         {
