@@ -519,6 +519,7 @@ function funcionesActac(nfrm) {
         var vari24 = $("#ubiHechos" + nfrm).val()
         var vari25 = $("#hechos" + nfrm).val()
         var vari26 = $("#horaTermino" + nfrm).val()
+        $('#id_anio' + nfrm).val($("#anio" + nfrm + " option:selected").val());
 
         if ($("#id_lugar" + nfrm).val() == '' || $("#diaFecha" + nfrm).val() == '' || $("#id_mes" + nfrm).val() == '' || $("#id_anio" + nfrm).val() == '' || $("#horaInicio" + nfrm).val() == ''
             || $("#ubicacion" + nfrm).val() == '' || $("#idpeticionarioelegido" + nfrm).val() == '' || $("#idconsentimiento" + nfrm).val() == ''
@@ -2706,7 +2707,7 @@ function formEscritoInicial2(action, id) {
         + CreaBR()
         + CreaBR()
         //+ CreaInputs_Con_Label('Input_LugarHechos', 'Input_LugarHechos', '', 'text', 'Lugar en donde Ocurrieron los Hechos: ', 'Input_LugarHechos', 'placeholder="Lugar de los Hechos" style ="float:left;"', ' style ="float:left;"')
-        + CreaSelectLabelSelect2('Input_LugarHechos', '', [], '', '&nbsp;&nbsp;&nbsp;LUGAR EN QUE SE SUSCITARON LOS HECHOS:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%;"')
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR EN QUE SE SUSCITARON LOS HECHOS:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"')
         + CreaInputs_Con_Label('CheckDcompleta', 'CheckDcompleta', '', 'checkbox', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¿SABE LA DIRECCIÓN COMPLETA?&nbsp;&nbsp;', 'CheckDcompleta', '', '')
         + '<div id="Contenedor_Datos_LE"></div>'
         + CreaBR()
@@ -3369,7 +3370,7 @@ function CargaDatosSelectOtro(select, arreglo) {
     htmld += "</select>";
 
     $(select).append(htmld)
-    $(select).select2();
+    //$(select).select2();
 }
 function CargaDatosSelectOtroPaises(select, arreglo) {
     var htmld = select;
