@@ -3333,7 +3333,7 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return CreaInputs_Con_Label(`noOficio_${meta.row}`, 'noOficio', '', 'text', '', 'textfield2')
+                        return Requeridos()+CreaInputs_Con_Label(`noOficio_${meta.row}`, 'noOficio', '', 'text', '', 'textfield2')
                     }
                 },
                 {
@@ -3349,12 +3349,12 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                         } else {
                            // visorDocumentos = ``;
                         }
-                        return CreaInputs_Con_Label(`fechaEmision_${meta.row}`, 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision_${meta.row}" class="input-file">
+                        return Requeridos() +CreaInputs_Con_Label(`fechaEmision_${meta.row}`, 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision_${meta.row}" class="input-file">
                 <div class="input-group col-xs-12">
                 <input type="text" id="archivoEmisionruta_${meta.row}" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>`+ visorDocumentos +`</div>` + `<textarea id="obsEmision_${meta.row}" placeholder="Describe la evidencia de emisión" class="swal2-input"> </textarea>` 
+                </span>`+ visorDocumentos + `</div>` + Requeridos() +`<textarea id="obsEmision_${meta.row}" placeholder="Describe la evidencia de emisión" class="swal2-input"> </textarea>` 
                     }
                 },
                 {
@@ -3382,12 +3382,12 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                             //visorDocumentos = ``;
                         }
 
-                        return `<div id="muestra_${meta.row}" style= "display:none">` + CreaInputs_Con_Label(`fechaAtencion_${meta.row}`, 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion_${meta.row}" class="input-file">
+                        return `<div id="muestra_${meta.row}" style= "display:none">` + Requeridos() + CreaInputs_Con_Label(`fechaAtencion_${meta.row}`, 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion_${meta.row}" class="input-file">
                 <div class="input-group col-xs-12">
                 <input id="archivoAtencionRuta_${meta.row}" type="text" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>`+ visorDocumentos + `</div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"> </textarea></div>`
+                </span>`+ visorDocumentos + `</div>` + Requeridos() + `<textarea id="obsAtencion_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"> </textarea></div>`
                     }
                 },
             ],
@@ -3872,7 +3872,9 @@ $(document).ready(function () {
 
         });
         //OBTENER MEDIDAS CUATELARES
+       
         if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
+            var badera_envío = false;
             $('#tablaMedCuateT tbody tr').each(function (x) {
                 console.log(x);
                 /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
@@ -3887,9 +3889,13 @@ $(document).ready(function () {
 
 
                 var banderaEstatus = document.getElementById('cumplio1_' + x).checked;
+                console.log('No_Oficio' + noOficioT);
 
                 if (banderaEstatus) {
+                    if (noOficioT == '' || fechaEmision == '' || fechaAtencion == '' || obsEmision == '' || obsAtencion == '') {
+                        badera_envío = true;
 
+                    }
                     MedCaute.push({
                         noOficio: noOficioT,
                         fechaEmision: fechaEmision,
@@ -3904,7 +3910,10 @@ $(document).ready(function () {
 
 
                 } else {
+                    if (noOficioT == '' || fechaEmision == ''|| obsEmision == '') {
+                        badera_envío = true;
 
+                    }
                     MedCaute.push({
                         noOficio: noOficioT,
                         fechaEmision: fechaEmision,
@@ -3999,7 +4008,7 @@ $(document).ready(function () {
 
         if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacion").val() == '' || formDQOT.visitaduriaqueja == ''
             || $("#materia-frmDatosCalificacion").val() == '' || $("#tipexpediente-frmDatosCalificacion").val() == '' || $("#especializado-frmDatosCalificacion").val() == '' || $("#trancpub-frmDatosCalificacion").val() == ''
-            || $("#nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' /* || formDQOT.longitudtabla2 <= 0*/) {
+            || $("#nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' || badera_envío) {
             var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
             if ($("#programa-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Programa<br>'; }
             if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
@@ -4013,6 +4022,7 @@ $(document).ready(function () {
             if (formDQOT.Fecha_TurnoVG == '') { htm = htm + Requeridos() + 'Fecha de Recepción en VG<br>'; }
             if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
             if (formDQOT.longitudtabla1 <= 0) { htm = htm + Requeridos() + 'Autoridades - Hechos Violatorios<br>'; }
+            if (badera_envío) { htm = htm +'Verificar que los datos Requeridos de la tabla de medidas Cautelares estén completos'; }
             //if (formDQOT.longitudtabla2 <= 0) { htm = htm + Requeridos() + 'Medidas Cautelares<br>'; }
             //var valo = $('input[id=idmedCuate' + idquejaE + ']:checked').val();
             //if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si' && formDQOT.longitudtabla2 <= 0) {
