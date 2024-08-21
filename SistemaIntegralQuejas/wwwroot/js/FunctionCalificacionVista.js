@@ -2769,7 +2769,7 @@ function CrearFormuCalificacion(idformulario, tipo, paso,expedienten) {
 
     } else {
         $("#Titulo_Modal").text(" ");
-        $("#Titulo_Modal").text("Calificación del id de queja");
+        $("#Titulo_Modal").text("Calificación del Escrito Inicial de Queja");
         frmDatosPersonales = crearForumulario(
             {
                 idformulario: "frmDatosCalificacion" + idformulario,
