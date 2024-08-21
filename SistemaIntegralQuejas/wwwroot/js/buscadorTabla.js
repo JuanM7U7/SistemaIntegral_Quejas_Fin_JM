@@ -185,7 +185,7 @@ $(document).ready(function () {
             $('#Contenedor_Cargos_Personas').append(contenedor);
             fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
                 let autoridad = data.lista2;
-                CargaDatosSelectOtro("#Input_autoridades" + nfin, autoridad);
+                CargaDatosSelecAutori("#Input_autoridades" + nfin, autoridad);
             })
             $(`#Input_autoridades${nfin}`).select2();
         } else {
@@ -3762,6 +3762,19 @@ function CargaDatosSelectOtro(select, arreglo) {
     for (let v = 0; v < arreglo.length; v++) {
         htmld += `
                 <option value="${arreglo[v].idSelectGenerico}">${arreglo[v].descripcion}</option>
+            `;
+    }
+    htmld += "</select>";
+
+    $(select).append(htmld)
+    //$(select).select2();
+}
+function CargaDatosSelecAutori(select, arreglo) {
+    var htmld = select;
+    htmld += '';
+    for (let v = 0; v < arreglo.length; v++) {
+        htmld += `
+                <option value="${arreglo[v].Clave}">${arreglo[v].descripcion}</option>
             `;
     }
     htmld += "</select>";

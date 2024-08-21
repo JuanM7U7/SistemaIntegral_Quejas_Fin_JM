@@ -9,7 +9,7 @@ public partial class EnlaceEscritoAutoridad
 
     public int IdEscrito { get; set; }
 
-    public int IdAutoridad { get; set; }
+    public string IdAutoridad { get; set; }
 
     public string NombrePersona { get; set; }
 
