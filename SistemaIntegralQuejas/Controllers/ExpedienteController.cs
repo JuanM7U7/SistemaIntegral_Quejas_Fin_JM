@@ -1964,7 +1964,7 @@ namespace SistemaIntegralQuejas.Controllers
                 TablaGenerica itemformatos = new TablaGenerica();
                 //itemformatos.IdUnionFormatosQueja = Convert.ToInt32(row["ID_UNION_FORMATOS_QUEJA"]);
                 itemformatos.Id = Convert.ToInt32(row["id_expediente"]);
-                itemformatos.Expediente= row["expediente"].ToString();
+                itemformatos.Expediente = row["expediente"].ToString();
                 itemformatos.FechaTurno = (row["fechaturnovisitaduria"]).ToString();
                 itemformatos.Status = (row["status"]).ToString();
                 itemformatos.otro = (row["abogadot"]).ToString();
@@ -1999,78 +1999,94 @@ namespace SistemaIntegralQuejas.Controllers
                 }
                 #endregion
 
+                string paso = "";
+                string mensaje = "";
+                query = "EXEC Sp_GetPaso_ExpedienteSolo " + itemformatos.Id + "";
+                paso = conexionsql.ObtenerReader(query);
                 //CONCLUIDO
                 query = "exec RegistrarConcluidos " + itemformatos.Id;
                 itemformatos.Concluido = conexionsql.ObtenerReader(query);
                 //FIN CONCLUIDO
-                if (itemformatos.FechaCalific.Contains("Sin"))
-                {
-                    if (!itemformatos.FechaTunAbo.Contains("Sin"))
+
+
+
+                    if (itemformatos.FechaCalific.Contains("Sin"))
                     {
-                        DateTime fechaUno = Convert.ToDateTime(itemformatos.FechaTunAbo);
-                        DateTime fechaDos = DateTime.Now;
-                        TimeSpan difFechas = fechaDos - fechaUno;
-                        int diasTrans = difFechas.Days;
-                        //SEMAFORO 1
-                        query = "exec semaforo " + diasTrans + "," + 2 + "," + 4 + "," + 1;
-                        itemformatos.semaforo1 = conexionsql.ObtenerReader(query) + "<small><strong> sin calificar</strong></small>";
-                        //FIN SEMAFORO 1
-                        //SEMAFORO 2
-                        string resultado = "";
-                        if (diasTrans < 0)
+                        if (!itemformatos.FechaTunAbo.Contains("Sin"))
                         {
-                            query = "exec semaforo " + 21 + "," + 10 + "," + 21 + "," + 1;
-                            resultado = conexionsql.ObtenerReader(query).Replace("21", diasTrans.ToString());
-                        }
-                        else
-                        {
-                            query = "exec semaforo " + diasTrans + "," + 10 + "," + 21 + "," + 1;
-                            resultado = conexionsql.ObtenerReader(query);
-                        }
+                            DateTime fechaUno = Convert.ToDateTime(itemformatos.FechaTunAbo);
+                            DateTime fechaDos = DateTime.Now;
+                            TimeSpan difFechas = fechaDos - fechaUno;
+                            int diasTrans = difFechas.Days;
+                            //SEMAFORO 1
+                            query = "exec semaforo " + diasTrans + "," + 2 + "," + 4 + "," + 1;
+                            itemformatos.semaforo1 = conexionsql.ObtenerReader(query) + "<small><strong> sin calificar</strong></small>";
+                            //FIN SEMAFORO 1
+                            //SEMAFORO 2
+                            string resultado = "";
+                            if (diasTrans < 0)
+                            {
+                                query = "exec semaforo " + 21 + "," + 10 + "," + 21 + "," + 1;
+                                resultado = conexionsql.ObtenerReader(query).Replace("21", diasTrans.ToString());
+                            }
+                            else
+                            {
+                                query = "exec semaforo " + diasTrans + "," + 10 + "," + 21 + "," + 1;
+                                resultado = conexionsql.ObtenerReader(query);
+                            }
 
-                        itemformatos.semaforo2 = resultado + "<small><strong> sin actuaciones</strong></small>";
-                        //FIN SEMAFORO 2
+                            itemformatos.semaforo2 = resultado + "<small><strong> sin actuaciones</strong></small>";
+                            //FIN SEMAFORO 2
+                        }
                     }
+                    else
+                    {
+
+                    if (paso == "Calificado")
+                    {
+                        itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Calificado</div>";
+                        itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";
+                    }
+                    else
+                    {
+                        itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Sin calificar</div>";
+                        itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";
+                    }
+                    }
+                    listformatos.Add(itemformatos);
                 }
-                else
+
+                switch (visitaduria)
                 {
-                    itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Calificado</div>";
-                    itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";
+                    case 1:
+                        query = "GET_ABOGADOS 'VAV','PVG'";
+                        data = GetDatosGeneral(query);
+                        break;
+                    case 2:
+                        query = "GET_ABOGADOS 'VAV','SVG'";
+                        data = GetDatosGeneral(query);
+                        break;
+                    case 3:
+                        query = "GET_ABOGADOS 'VAV','TVG'";
+                        data = GetDatosGeneral(query);
+                        break;
+                    case 4:
+                        query = "GET_ABOGADOS 'VAV','CVG'";
+                        data = GetDatosGeneral(query);
+                        break;
+                    default:
+                        break;
+
+            }
+                foreach (DataRow row in data.Rows)
+                {
+                    selectGenerico itemformatos = new selectGenerico();
+                    //itemformatos.IdUnionFormatosQueja = Convert.ToInt32(row["ID_UNION_FORMATOS_QUEJA"]);
+                    itemformatos.s1 = row["nombre"].ToString();
+                    itemformatos.s2 = row["ID_USUARIO"].ToString();
+                    listformatos1.Add(itemformatos);
                 }
-                listformatos.Add(itemformatos);
-            }
-
-            switch (visitaduria)
-            {
-                case 1:
-                    query = "GET_ABOGADOS 'VAV','PVG'";
-                    data = GetDatosGeneral(query);
-                    break;
-                case 2:
-                    query = "GET_ABOGADOS 'VAV','SVG'";
-                    data = GetDatosGeneral(query);
-                    break;
-                case 3:
-                    query = "GET_ABOGADOS 'VAV','TVG'";
-                    data = GetDatosGeneral(query);
-                    break;
-                case 4:
-                    query = "GET_ABOGADOS 'VAV','CVG'";
-                    data = GetDatosGeneral(query);
-                    break;
-                default:
-                    break;
-            }
-
-
-            foreach (DataRow row in data.Rows)
-            {
-                selectGenerico itemformatos = new selectGenerico();
-                //itemformatos.IdUnionFormatosQueja = Convert.ToInt32(row["ID_UNION_FORMATOS_QUEJA"]);
-                itemformatos.s1 = row["nombre"].ToString();
-                itemformatos.s2 = row["ID_USUARIO"].ToString();
-                listformatos1.Add(itemformatos);
-            }
+            
             return Json(new { data = listformatos, data1 = listformatos1 });
         }
         // Fin Buscador Formatos

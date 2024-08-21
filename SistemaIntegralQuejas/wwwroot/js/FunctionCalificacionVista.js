@@ -267,7 +267,7 @@ function mostrarResTblFormatos(response, response1) {
         language: {
             "url": "/js/TablaJson.json"
         },
-        iDisplayLength: 10,
+        iDisplayLength: 20,
         data: response,
         fixedHeader: true,
         orderCellsTop: true,
@@ -291,7 +291,7 @@ function mostrarResTblFormatos(response, response1) {
             { data: 'semaforo2' },
             {
                 'mRender': function (data, type, full) {
-                    if (full.expediente !== 'PENDIENTE') {
+                    if (full.expediente !== 'PENDIENTE' && full.status=='Calificado') {
                         //full.expediente
                         btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
                     } else {
@@ -2264,8 +2264,17 @@ function GeneraEscrito_pdf(idEscrito) {
 function GeneraDocumento_pdf(nombreDocumento) {
 
     let id = nombreDocumento;
-
-    window.open(ExportaDocumentoPDF + id, '_blank');
+    if (nombreDocumento == 'undefined' || nombreDocumento == '') {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'No haz cargado ningun documento.',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    } else {
+        window.open(ExportaDocumentoPDF + id, '_blank');
+    }
 }
 
 function turnoAbogado(idquej, idabogad) {
@@ -2769,7 +2778,7 @@ function CrearFormuCalificacion(idformulario, tipo, paso,expedienten) {
 
     } else {
         $("#Titulo_Modal").text(" ");
-        $("#Titulo_Modal").text("Calificación del id de queja");
+        $("#Titulo_Modal").text("Calificación del Escrito Inicial de Queja");
         frmDatosPersonales = crearForumulario(
             {
                 idformulario: "frmDatosCalificacion" + idformulario,
@@ -3329,15 +3338,23 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full, meta) {
+
+                        var visorDocumentos = `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_emision}')" class="btn btn-link margin-iconbf">
+                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
+                                           </button>`;
+
+                        if (full.archivo_emision == '')
+                        {
+                            //visorDocumentos = '';
+                        } else {
+                           // visorDocumentos = ``;
+                        }
                         return CreaInputs_Con_Label(`fechaEmision_${meta.row}`, 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision_${meta.row}" class="input-file">
                 <div class="input-group col-xs-12">
                 <input type="text" id="archivoEmisionruta_${meta.row}" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>`+ `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_emision}')" class="btn btn-link margin-iconbf">
-                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
-                                           </button>`+
-                            `</div>` + `<textarea id="obsEmision_${meta.row}" placeholder="Describe la evidencia de emisión" class="swal2-input"> </textarea>` 
+                </span>`+ visorDocumentos +`</div>` + `<textarea id="obsEmision_${meta.row}" placeholder="Describe la evidencia de emisión" class="swal2-input"> </textarea>` 
                     }
                 },
                 {
@@ -3354,15 +3371,23 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 {
 
                     'mRender': function (data, type, full, meta) {
+
+                        var visorDocumentos = `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_atencion}')" class="btn btn-link margin-iconbf">
+                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
+                                           </button>`;
+
+                        if (full.archivo_atencion == '') {
+                           // visorDocumentos = '';
+                        } else {
+                            //visorDocumentos = ``;
+                        }
+
                         return `<div id="muestra_${meta.row}" style= "display:none">` + CreaInputs_Con_Label(`fechaAtencion_${meta.row}`, 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion_${meta.row}" class="input-file">
                 <div class="input-group col-xs-12">
                 <input id="archivoAtencionRuta_${meta.row}" type="text" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>`+ `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('${full.archivo_atencion}')" class="btn btn-link margin-iconbf">
-                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
-                                           </button>`+
-                            `</div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"> </textarea></div>`
+                </span>`+ visorDocumentos + `</div>` + `<textarea id="obsAtencion_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"> </textarea></div>`
                     }
                 },
             ],
@@ -4198,6 +4223,7 @@ function GuardPrel() {
     //OBTENER MEDIDAS CUATELARES
     if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si') {
         $('#tablaMedCuateT tbody tr').each(function (x) {
+            console.log(x);
             /* var autoridad = $(this).find('select[name^="autoridadresMC"]').val();*/
             var fechaEmision = $(this).find('input[id="fechaEmision_' + x + '"]').val();
             var archivoEmision = $(this).find('input[id="archivoEmisionruta_' + x + '"]').val();
@@ -4207,6 +4233,7 @@ function GuardPrel() {
             var obsEmision = $(this).find('textarea[id="obsEmision_' + x + '"]').val();
             var obsAtencion = $(this).find('textarea[id="obsAtencion_' + x + '"]').val();
             var statust = 0;
+
 
             var banderaEstatus = document.getElementById('cumplio1_' + x).checked;
 
