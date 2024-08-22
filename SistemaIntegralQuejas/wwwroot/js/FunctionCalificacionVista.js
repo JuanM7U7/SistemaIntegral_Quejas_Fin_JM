@@ -239,11 +239,14 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
     if (tip === 1) {
         closeModal("modaltabCalif");
     }
-    if (Tmodal == "modaltabDetalle") {
+    if (Tmodal == "modaltabDetalle")
+    {
         document.getElementById("defaultOpenD").click();
         Crear_Formulario_Queja(id);
         obtenerDQOT(id, fecRecep, "");
-    } else {
+
+    }
+    else {
         Crear_Formulario_QuejaEdit(id);
         
         obtenerDQOT(id, fecRecep, "E", expedienten);
