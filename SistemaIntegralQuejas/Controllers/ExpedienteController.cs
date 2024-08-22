@@ -3004,6 +3004,22 @@ namespace SistemaIntegralQuejas.Controllers
         }
         // Fin Lista Paises 
         // Lista Via de Interposición
+        public ActionResult CausaConclu()
+        {
+            List<SelectGenericostr> causac = new List<SelectGenericostr>();
+            string mensaje = "";
+            String query = "exec Sp_Select_CausaC";
+            causac = conexionsql.lista_SelectGenericaSelectstr(query, ref mensaje);
+
+            if (causac.Count > 0)
+            {
+                return Json(new { listacausa = causac });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
         public ActionResult SelectViaInter()
         {
             List<SelectGenerico> listaVia = new List<SelectGenerico>();
@@ -3342,6 +3358,30 @@ namespace SistemaIntegralQuejas.Controllers
                 return View();
             }
         }
+
+        public ActionResult ConcluirExpediente(IFormCollection collection)
+        {
+            string query = "";
+            string mensaje = "";
+            string fechaconclu = "",causaconclu="",actorestconclu="",observaconcluobs="";
+            int idexp = 0;
+            idexp = Convert.ToInt32( collection["idexp"].ToString());
+            int longitudtabla1 = Convert.ToInt32(collection["longitudtabla1"].ToString()); ;
+            for (int i = 0; i < longitudtabla1; i++)
+            {
+                fechaconclu = collection["tablaCausasc[" + i + "][fechacon]"].ToString();
+                causaconclu = collection["tablaCausasc[" + i + "][causacon]"].ToString();
+                actorestconclu = collection["tablaCausasc[" + i + "][actorestitu]"].ToString();
+                observaconcluobs = collection["tablaCausasc[" + i + "][observa]"].ToString();
+
+
+                query = "exec Sp_insertCausasC '" + fechaconclu + "','" + causaconclu + "','" + actorestconclu + "','" + observaconcluobs + "'," + idexp;
+                mensaje = ejecutaInsertUpdate(query);
+            }
+
+            return Json(new{ msg=mensaje});
+
+        }
         //Llenar selects para crear formulario
         public ActionResult Llenarselects_tevi()
         {
@@ -3382,6 +3422,31 @@ namespace SistemaIntegralQuejas.Controllers
             public SelectGenerico(int i1, string s1, bool i2, string s2, string s3)
             {
                 this.idSelectGenerico = i1;
+                this.Descripcion = s1;
+                this.seleccionable = i2;
+                this.Clave = s3;
+                if (s2 == "null")
+                {
+                    this.ruta = "#";
+                }
+                else
+                {
+                    this.ruta = s2;
+                }
+
+            }
+        }
+        public class SelectGenericostr
+        {
+            public string idSelect{ get; set; }
+            public string Descripcion { get; set; }
+            public bool seleccionable { get; set; }
+            public string ruta { get; set; }
+            public string Clave { get; set; }
+            public SelectGenericostr() { }
+            public SelectGenericostr(string i1, string s1, bool i2, string s2, string s3)
+            {
+                this.idSelect = i1;
                 this.Descripcion = s1;
                 this.seleccionable = i2;
                 this.Clave = s3;
@@ -3924,6 +3989,27 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
+        public class SelectCausaC 
+        {
+            public int idqueja { get; set; }
+            public string fechac { get; set; }
+            public string causac { get; set; }
+            public string causacdesc { get; set; }
+            public string acto_rest { get; set; }
+            public string obs { get; set; }
+
+            public SelectCausaC() { }
+            public SelectCausaC(int i, string fe,string cau,string caudes,string actor,string ob) 
+            {
+                this.idqueja = i;
+                this.fechac = fe;
+                this.causac = cau;
+                this.causacdesc = caudes;
+                this.acto_rest = actor;
+                this.obs = ob;
+            }
+        }
+
         public class selectMED_CAUT
         { 
 
@@ -3986,6 +4072,23 @@ namespace SistemaIntegralQuejas.Controllers
             String query = "exec Sp_obtener_aut_hecvio " + idqueja;
             string mensaje = "";
             autorhech = conexionsql.SelectAutHec(query, ref mensaje);
+
+            if (autorhech.Count > 0)
+            {
+                return Json(new { autoridhecho = autorhech });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+
+        public ActionResult SelectCausa(string idqueja)
+        {
+            List<SelectCausaC> autorhech = new List<SelectCausaC>();
+            String query = "exec Sp_obtener_causac " + idqueja;
+            string mensaje = "";
+            autorhech = conexionsql.Selectcausa(query, ref mensaje);
 
             if (autorhech.Count > 0)
             {

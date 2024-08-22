@@ -201,6 +201,43 @@ namespace SistemaIntegralQuejas.Models
 
 			return lista;
 		}
+
+        public List<SelectGenericostr> lista_SelectGenericaSelectstr(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectGenericostr> lista = new List<SelectGenericostr>();
+            SqlDataReader lector;
+
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+
+                    SelectGenericostr modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new SelectGenericostr();
+                        modelo.idSelect = lector[0].ToString();
+                        modelo.Descripcion = lector[1].ToString();
+                        modelo.seleccionable = bool.Parse(lector[2].ToString());
+                        lista.Add(modelo);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+
+            return lista;
+        }
         public List<SelectGenerico> lista_SelectAutori(string query, ref string mensaje)
         {
             mensaje = "";
@@ -770,10 +807,37 @@ namespace SistemaIntegralQuejas.Models
 			return lista;
 		}
 
-		
+        public List<SelectCausaC> Selectcausa(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectCausaC> lista = new List<SelectCausaC>();
+            SqlDataReader lector;
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    SelectCausaC modelo;
+                    while (lector.Read())
+                    {//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
+                        modelo = new SelectCausaC(int.Parse(lector[0].ToString()),lector[1].ToString(),lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), lector[5].ToString());
+                        lista.Add(modelo);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return lista;
+        }
 
 
-		public List<inforaportaciones> Obtaport(string query, ref string mensaje)
+        public List<inforaportaciones> Obtaport(string query, ref string mensaje)
         {
             mensaje = "";
             List<inforaportaciones> lista = new List<inforaportaciones>();

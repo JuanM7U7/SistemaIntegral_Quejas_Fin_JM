@@ -19,7 +19,7 @@ var statusTurnoAbogado = '';
 var arregloAbogados = [];
 
 let medcaute = "";
-var AutoridadesSe1 = [], AutoridadesSe2 = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [], temaSe = [], programSe = [], viainter = [], ExpeS_C = [];
+var AutoridadesSe1 = [], AutoridadesSe2 = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [], temaSe = [], programSe = [], viainter = [], ExpeS_C = [],ExpeConc;
 $(document).ready(function () {
     SelectAutoridad(1);
     SelectAutoridad(2);
@@ -30,6 +30,7 @@ $(document).ready(function () {
     fetchGet("Expediente/SelectTema", "json", (data) => { temaSe = data.stemas; })
     fetchGet("Expediente/SelectPrograma", "json", (data) => { programSe = data.sprogramas; })
     fetchGet("Expediente/SelectViaInter", "json", (data) => { viainter = data.listviai; })
+    fetchGet("Expediente/CausaConclu", "json", (data) => { ExpeConc = data.listacausa; })
 
     $("#vistavis").html($("#usuarioL").html());
     $(".alert-danger").remove();
@@ -239,13 +240,16 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
     if (tip === 1) {
         closeModal("modaltabCalif");
     }
-    if (Tmodal == "modaltabDetalle") {
+    if (Tmodal == "modaltabDetalle")
+    {
         document.getElementById("defaultOpenD").click();
         Crear_Formulario_Queja(id);
         obtenerDQOT(id, fecRecep, "");
-    } else {
+
+    }
+    else {
         Crear_Formulario_QuejaEdit(id);
-        
+        Crear_Formulario_Quejaconclusion(id);
         obtenerDQOT(id, fecRecep, "E", expedienten);
     }
 }
@@ -472,6 +476,31 @@ function Crear_Formulario_QuejaEdit(id) {
     $("#municipioquejaE").select2();
     return formualarioCompleto;
 }
+
+function Crear_Formulario_Quejaconclusion(id) {
+    $('#izquierdaEC').empty();
+    //$('#derechaEC').empty();
+    console.log("Entro al método de crear el formulario de conclusión");
+    var arregloBlanco = [];
+    //var cuerpoIzquierda = ``;
+    crearTabla('#izquierdaEC', "tablaconclu", ["Acciones","Fecha de conclusión", "Clave/Causa de conclusión", "Acto Restituido", "Observación"], 'izquierdaEC', '');
+    //LlenarTabAutReHecVio('#tablaAutRe_HecVioT', tipo, idformulario);
+    LlenarTabConclu('#tablaconclu', '-', id);
+    var formInnicial = '<form class="text-justify formCausaC" id="formCausaC" name="formCausaC" method="post" style="width:100%; margin-left:2%;">';
+    var fin_form = '</form>';
+
+    /*
+     * 
+     * 
+     */
+    //let formualarioCompleto = formInnicial  + fin_form;
+   // let formualarioCompleto1 = formInnicial + cuerpoDerecha + fin_form;
+
+    //$('#izquierdaEC').append(formualarioCompleto);
+    //$('#derechaE').append(formualarioCompleto1);
+   // return formualarioCompleto;
+}
+
 
 function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
     var ajaxDQOT = $.ajax({
@@ -2991,12 +3020,16 @@ function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
     thead.appendChild(headerRow);
     table.appendChild(thead);
     $(nomTabla).append(table);
+
+    $
 }
+
+var contc = 0;
 function AgrDil(nomTab, id) {
     var table = $("#" + nomTab).DataTable();
     var newRow;
     var rowIndex = table.rows().count();
-
+  
     switch (nomTab) {
         case "tablaAutRe_HecVioT":
             newRow = table.row.add([
@@ -3039,6 +3072,26 @@ function AgrDil(nomTab, id) {
                 ''
             ]).draw().node();
             break;
+        case "tablaconclu":
+
+            if (rowIndex <2) {
+                newRow = table.row.add([
+                    CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
+                    + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
+                    CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                    CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
+                    `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
+                    `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
+                ]).draw().node();
+                if (contc == 0) {
+                    $("#izquierdaEC").append(`<button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button>`);
+                    contc++;
+                }
+
+
+            }
+
+            break;
     }
     actualizarIndices(nomTab);
     RecargaTab(nomTab);
@@ -3079,14 +3132,79 @@ function actualizarIndices(nomTab) {
                 $row.find('textarea[id^="descrip_"]').attr('id', 'descrip_' + newIndex);
                 $row.find('input[id^="fechaAlta_"]').attr('id', 'fechaAlta_' + newIndex);
                 break;
+            case "tablaconclu":
+                $row.find('input[id^="fechaCausa_"]').attr('id', 'fechaCausa_' + newIndex);
+                $row.find('select[id^="causaccat_"]').attr('id', 'causaccat_' + newIndex);
+                $row.find('textarea[id^="ActoRest_"]').attr('id', 'ActoRest_' + newIndex);
+                $row.find('input[id^="ObsConclu_"]').attr('id', 'ObsConclu_' + newIndex);
+                break;
         }
     });
+}
+
+function Concluirexpediente()
+{
+    /*Obtener   Causas de Cncllusión*/
+    var Causasc = [];
+    var idquejaE = $('#idquejaE').val();
+    //DATOS SELECT
+    var formQueja = $(this).serializeArray();
+    //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
+    $('#tablaconclu tbody tr').each(function (x) {
+        x = x + 1;
+        //var autoridad = $(this).find('select[name="autoridadres"]').val();
+        var fechac = $(this).find('input[id^="fechaCausa_"]').val();
+        var causac = $(this).find('select[id^="causaccat_"] option:selected').val();
+
+        var actorest = $(this).find('textarea[id^="ActoRest_"]').val();
+        var obs = $(this).find('textarea[id^="ObsConclu_"]').val();
+        if (fechac !== '' && causac !== '99' && typeof actorest != 'undefined' && typeof obs != 'undefined') {
+            Causasc.push({
+                fechacon: fechac,
+                causacon: causac ,
+                idquejaE: idquejaE,
+                actorestitu: actorest,
+                observa: obs
+            });
+        }
+
+    });
+
+    formDQOT = {
+        tablaCausasc: Causasc,
+        longitudtabla1: Causasc.length,
+        idexp:idquejaE
+
+    };
+
+    $.ajax({
+    type: "POST",
+    url: "ConcluirExpediente",
+        data: formDQOT,
+    dataType: "JSON",
+        success: function (response) {
+            alert("Concluido");
+    }
+});
+
+    console.log("Concluido");
 }
 
 function RecuperaDaAutHec(id, callback) {
     $.ajax({
         type: "POST",
         url: "SelectAutorHech",
+        data: { idqueja: id },
+        dataType: "JSON",
+        success: function (response) {
+            callback(response.autoridhecho);
+        }
+    });
+}
+function RecuperaDaConclu(id, callback) {
+    $.ajax({
+        type: "POST",
+        url: "SelectCausa",
         data: { idqueja: id },
         dataType: "JSON",
         success: function (response) {
@@ -3216,6 +3334,117 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
             var homoclav = selecTex.split('-');
             $row.find('#derecho').val(homoclav[2]);
         });
+    });
+}
+function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
+    RecuperaDaConclu(id, function (datos) {
+        $(tablaAutRe_HecVioT).DataTable({
+            language: {
+                "url": "/js/TablaJson.json"
+            },
+            iDisplayLength: 10,
+            data: datos,
+            fixedHeader: true,
+            searching: false,
+            orderCellsTop: true,
+            columns: [
+                {
+                    'mRender': function (data, type, full) {
+                        if (tipo !== '') {
+                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i>`;
+                        } else {
+                            return '';
+                        }
+                    }
+
+                },
+                {
+                    'mRender': function (data, type, full,meta) {
+                        if (tipo !== '') {
+                            return CreaInputs_Con_Label(`fechaCausa_${meta.row}`, `fechaCausa_${meta.row}`, 'validatimeac', 'date', '', 'textfield9', '');
+                        } else {
+                            return '';
+                        }
+                    },
+
+                },
+                {
+                    'mRender': function (data, type, full,meta) {
+                        if (tipo !== '') {
+                            return CreaSelectLabel(`causaccat_${meta.row}`, '', ExpeConc, '', '', '');
+                        } else {
+                            return '';
+                        }
+                    },
+
+                },
+                {
+                    'mRender': function (data, type, full,meta) {
+                        if (tipo !== '') {
+                            return `<textarea id="ActoRest_${meta.row}" class="swal2-input" disabled> </textarea>`;
+                        } else {
+                            return '';
+                        }
+                    },
+
+                },
+                {
+                    'mRender': function (data, type, full,meta) {
+                        if (tipo !== '') {
+                            return `<textarea id="ObsConclu_${meta.row}" class="swal2-input" > </textarea>`;
+                        } else {
+                            return '';
+                        }
+                    },
+
+                }
+            ],
+            dom: 'lfrtip',
+            initComplete: function () {
+                const table = $(tablaAutRe_HecVioT).DataTable();
+               
+                    var param = `"${tablaAutRe_HecVioT.replace('#', '')}",${id}`;
+                    const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
+                $(table.table().container()).find('.dataTables_length').append(boton);
+               
+                table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                    const data = this.data();
+                    console.log(data);
+                    var inputDate = document.getElementById(`fechaCausa_${rowIdx}`);
+
+                    var date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(data.fechac));
+                
+                     //date = new Date();
+                    console.log("Fecha Conclu:"+date);
+                    chargeDateInputDate(inputDate, date);
+ 
+                    //$(`#fechaCausa_${rowIdx}`).val(data.fechac);
+                    $(`#causaccat_${rowIdx}`).val(data.causac).trigger('change');
+                    $(`#ActoRest_${rowIdx}`).val(data.acto_rest);
+                    $(`#ObsConclu_${rowIdx}`).val(data.obs);
+                });
+            },
+            order: [1, 'desc'],
+            bDestroy: true
+        });
+
+        $(document).on('change', '.autoridadres-class', function () {
+            var $row = $(this).closest('tr');
+            $row.find('#tipauto').val("");
+            var selecTex = $(this).find('option:selected').text();
+            var homoclav = selecTex.split('/');
+            $row.find('#tipauto').val(homoclav[2]);
+        });
+
+        $(document).on('change', '.hechvio-class', function () {
+            var $row = $(this).closest('tr');
+            $row.find('#derecho').val("");
+            var selecTex = $(this).find('option:selected').text();
+            var homoclav = selecTex.split('-');
+            $row.find('#derecho').val(homoclav[2]);
+        });
+
+
     });
 }
 function generateRadioInputs(row, aut, tipo) {
@@ -3706,9 +3935,11 @@ function HabilEdi(id, identif) {
     $(identif).prop('disabled', false);
 }
 function ElimFilaTab(nomTab) {
-
+    console.log("eliminando ...........");
     var table = $(`${nomTab}`).DataTable();
+    console.log(table);
     var dat = `${nomTab} tbody`;
+    console.log(dat);
     $(dat).on('click', '.delete-btn', function () {
         // Encuentra la fila correspondiente
         var row = $(this).closest('tr');

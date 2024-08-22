@@ -104,16 +104,38 @@
             </div>
         </div>
         <div class="modal-body">
-            <h6 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;"><span style="color: red;">*</span> Campos Requeridos</h6>
-            <div class="row col-12" style="height:75%;">
-                <div id="izquierdaE" class="row col-6"></div>
-                <div id="derechaE" class="row col-6"></div>
-            </div>
             <div class="row col-12">
+                <div class="tab col-4">
+                    <button  class="tablinks active" onclick="openCity(event, 'info')" >Calificación</button>
+                </div>
+                <div class="tab col-2">
+                    <button class="tablinks" onclick="openCity(event, 'info2')">Conclusión</button>
+                </div>
+                <div class="tab col-6"></div>
+            </div>
+
+            <div class="tabcontent" id="info">
+                <h6 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;"><span style="color: red;">*</span> Campos Requeridos</h6>
+                <div class="row col-12" style="height:75%;">
+                    <div id="izquierdaE" class="row col-6"></div>
+                    <div id="derechaE" class="row col-6"></div>
+                </div>
+                <div class="row col-12">
                     <div id="ListAportE" class="col-12"></div>
                     <div id="tipQuejaE" class="col-12"></div>
-                <div id="frmDatosCalificacionE" class="col-12"></div>
+                    <div id="frmDatosCalificacionE" class="col-12"></div>
+                </div>
+
             </div>
+            <div class="tabcontent" id="info2">
+                <h6 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;"><span style="color: red;">*</span> Campos Requeridos</h6>
+                <div class="row col-12" style="height:75%;">
+                    <form class="text-justify formCausaC" id="formCausaC" name="formCausaC" method="post" style="width:100%; margin-left:2%;">
+                    <div id="izquierdaEC"></div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
