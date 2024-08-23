@@ -574,7 +574,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
                 console.log("Respuesta Estatus:" + response.informarcionC.estatus_Expediente);
                 if (tipoExpediente == 1) {
                     var pasot = response.informarcionC.estatus_Expediente;
-                    CrearFormuCalificacion(idqueja, tipo, pasot );
+                    CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, pasot );
                 } else {
                     var ajaxSelectExpeSC = $.ajax({
                         type: "POST",
@@ -593,7 +593,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
 
     $.when(ajaxDQOT).done(function (response) {
         if (tipo === '') {
-            CrearFormuCalificacion(idqueja, tipo, response.informarcionC.estatus_Expediente);
+            CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, response.informarcionC.estatus_Expediente);
             $(`#submitForm-${idqueja}`).hide();
             $('#especializado-frmDatosCalificacion').prop('disabled', true);
             $('#trancpub-frmDatosCalificacion').prop('disabled', true);
@@ -603,7 +603,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
         } else {
             if (response.informarcionC.tipo_expediente === 1) {
                 console.log(expedienten);
-                CrearFormuCalificacion(idqueja, tipo, response.informarcionC.estatus_Expediente, expedienten);
+                CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, response.informarcionC.estatus_Expediente, expedienten);
             } else {
                 var ajaxSelectExpeSC = $.ajax({
                     type: "POST",
@@ -2637,7 +2637,7 @@ function CrearFormuCalificacionApo(tipo) {
     $(`#frmDatosCalificacion${tipo}`).append(frmDatos);
     $('#expedsc-frmDatosCalificacion').select2();
 }
-function CrearFormuCalificacion(idformulario, tipo, paso,expedienten) {
+function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) {
     $(`#frmDatosCalificacion${tipo}`).empty();
     let eliminarform = document.querySelectorAll('.eliminaformaes');
     for (var i = 0; i < eliminarform.length; i++) {
@@ -2645,10 +2645,33 @@ function CrearFormuCalificacion(idformulario, tipo, paso,expedienten) {
     }
     let frmDatosPersonales;
     console.log(paso);
+    $("#Titulo_Modal").text(" ");
+    $("#fecha-hrs-Mod").text(" ");
     if (paso == 'Calificado') {
         console.log("Paso  calificado:" + expedienten);
-        $("#Titulo_Modal").text(" ");
+        if (fechamod!=='NO') {
+            var [fecha, hora, periodo] = fechamod.split(' ');
+            var [dia, mes, año] = fecha.split('/').map(num => parseInt(num, 10));
+            var [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
+
+            horas = (periodo.toLowerCase() === "p." && horas !== 12) ? horas + 12 :
+                (periodo.toLowerCase() === "a." && horas === 12) ? 0 : horas;
+
+            var fechaObj = new Date(año, mes - 1, dia, horas, minutos);
+            fechaObj.setDate(fechaObj.getDate());
+
+            var formattedDate = fechaObj.toLocaleString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            }).replace(',', '');
+
+            $("#fecha-hrs-Mod").text(" F.  y  Hr.  Ult.  Modif. : " + formattedDate + "hrs.");
+        }
         $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
+        
         frmDatosPersonales = crearForumulario(
             {
                 idformulario: "frmDatosCalificacion" + idformulario,
@@ -2810,7 +2833,6 @@ function CrearFormuCalificacion(idformulario, tipo, paso,expedienten) {
         );
 
     } else {
-        $("#Titulo_Modal").text(" ");
         $("#Titulo_Modal").text("Calificación del Escrito Inicial de Queja");
         frmDatosPersonales = crearForumulario(
             {
@@ -3289,7 +3311,7 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full) {
-                        return CreaInputs_Con_Labeldisabled('tipauto', 'tipauto', '', 'text', '', '', '');
+                        return '<div class="tooltipbloated">' + CreaInputs_Con_Labeldisabled('tipauto', 'tipauto', '', 'text', '', '', '') + '<div class="tooltipbloated-content" id="tooltip-content"></div></div>';
                     }
                 },
                 {
@@ -3299,7 +3321,7 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full) {
-                        return CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '');
+                        return '<div class="tooltipbloated">' + CreaInputs_Con_Labeldisabled('derecho', 'derecho', '', 'text', '', '', '') + '<div class="tooltipbloated-content" id="tooltip-content-dere"></div></div>';
                     }
                 },
             ],
@@ -3313,14 +3335,19 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
                 }
                 table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                     const data = this.data();
+                    //$(`#hechvio_${rowIdx}`).select2({
+                    //    width: 'style'
+                    //});
+                    
                     $(`#autoridadres_${rowIdx}`).val(data.id_autoridad).trigger('change');
                     $(`#hechvio_${rowIdx}`).val(data.id_hechov).trigger('change');
                     
-                    if ($(`#autoridadres_${rowIdx}`).parent().siblings().find("#tipauto").val() == "")
-                    {
-                        var Primaria = $(`#autoridadres_${rowIdx} option:selected`).text();
-                        $(`#autoridadres_${rowIdx}`).parent().siblings().find("#tipauto").val(Primaria);
-                    }
+                    //if ($(`#autoridadres_${rowIdx}`).parent().siblings().find("#tipauto").val() == "")
+                    //{
+                    //    var Primaria = $(`#autoridadres_${rowIdx} option:selected`).text();
+                    //    $(`#autoridadres_${rowIdx}`).parent().siblings().find("#tipauto").val(Primaria);
+                    //    $('#tooltip-content').html(Primaria);
+                    //}
                     
                  
                 });
@@ -3328,21 +3355,35 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
             order: [1, 'desc'],
             bDestroy: true
         });
-
+        //$(document).on('select2:open', function (e) {
+        //    if ($(e.target).hasClass('hechvio-class')) {
+        //        let dropdown = $('.select2-dropdown');
+        //        dropdown.css('width', '500px');
+        //    }
+        //});
         $(document).on('change', '.autoridadres-class', function () {
             var $row = $(this).closest('tr');
             $row.find('#tipauto').val("");
+            $row.find('#tooltip-content').html('');
             var selecTex = $(this).find('option:selected').text();
             var homoclav = selecTex.split('/');
-            $row.find('#tipauto').val(homoclav[2]);
+            if (!homoclav[2]) {
+                $row.find('#tooltip-content').html(selecTex);
+                $row.find('#tipauto').val(selecTex);
+            } else {
+                $row.find('#tooltip-content').html(homoclav[2]);
+                $row.find('#tipauto').val(homoclav[2]);
+            }
         });
 
         $(document).on('change', '.hechvio-class', function () {
             var $row = $(this).closest('tr');
             $row.find('#derecho').val("");
+            $row.find('#tooltip-content-dere').html("");
             var selecTex = $(this).find('option:selected').text();
             var homoclav = selecTex.split('-');
             $row.find('#derecho').val(homoclav[2]);
+            $row.find('#tooltip-content-dere').html(homoclav[2]);
         });
     });
 }
@@ -3572,7 +3613,7 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                 },
                 {
                     'mRender': function (data, type, full, meta) {
-                        return Requeridos()+CreaInputs_Con_Label(`noOficio_${meta.row}`, 'noOficio', '', 'text', '', 'textfield2')
+                        return Requeridos() + CreaInputs_Con_Label(`noOficio_${meta.row}`, 'noOficio', '', 'text', '', 'textfield2', 'style="width: 110%;"')
                     }
                 },
                 {
@@ -3588,12 +3629,12 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                         } else {
                            // visorDocumentos = ``;
                         }
-                        return Requeridos() +CreaInputs_Con_Label(`fechaEmision_${meta.row}`, 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision_${meta.row}" class="input-file">
+                        return Requeridos() + CreaInputs_Con_Label(`fechaEmision_${meta.row}`, 'fechaEmision', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoEmision" multiple id="archivoEmision_${meta.row}" class="input-file" accept=".pdf">
                 <div class="input-group col-xs-12">
                 <input type="text" id="archivoEmisionruta_${meta.row}" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>`+ visorDocumentos + `</div>` + Requeridos() +`<textarea id="obsEmision_${meta.row}" placeholder="Describe la evidencia de emisión" class="swal2-input"> </textarea>` 
+                </span>`+ visorDocumentos + `</div>` + Requeridos() + `<textarea id="obsEmision_${meta.row}" placeholder="Describe la evidencia de emisión" class="swal2-input"></textarea>` 
                     }
                 },
                 {
@@ -3606,7 +3647,6 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                         
                     }
                 },
-
                 {
 
                     'mRender': function (data, type, full, meta) {
@@ -3621,14 +3661,18 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id) {
                             //visorDocumentos = ``;
                         }
 
-                        return `<div id="muestra_${meta.row}" style= "display:none">` + Requeridos() + CreaInputs_Con_Label(`fechaAtencion_${meta.row}`, 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion_${meta.row}" class="input-file">
+                        return `<div id="muestra_${meta.row}" style= "display:none">` + Requeridos() + CreaInputs_Con_Label(`fechaAtencion_${meta.row}`, 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + `<input type="file" name="archivoAtencion" multiple id="archivoAtencion_${meta.row}" class="input-file" accept=".pdf">
                 <div class="input-group col-xs-12">
                 <input id="archivoAtencionRuta_${meta.row}" type="text" class="form-control" disabled placeholder="Cargar archivos">
                 <span class="input-group-btn">
                     <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>`+ visorDocumentos + `</div>` + Requeridos() + `<textarea id="obsAtencion_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"> </textarea></div>`
+                </span>`+ visorDocumentos + `</div>` + Requeridos() + `<textarea id="obsAtencion_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"></textarea></div>`
                     }
                 },
+            ],
+            columnDefs: [
+                { width: '35%', targets: 2 },
+                { width: '35%', targets: 4 },
             ],
             initComplete: function () {
 
@@ -4098,7 +4142,7 @@ $(document).ready(function () {
         $('#tablaAutRe_HecVioT tbody tr').each(function (x) {
             x = x + 1;
             //var autoridad = $(this).find('select[name="autoridadres"]').val();
-            var tipo = $(this).find('input[id^="tipauto_"]').val();
+            var tipo = $(this).find('input[id^="tipauto_"]:checked').val();
             var autoridad = $(this).find('select[id^="autoridadres_"]').val();
             var hecho = $(this).find('select[name^="hechvio"]').val();
             if (autoridad !== '99' && hecho !== '99' && typeof autoridad != 'undefined' && typeof hecho != 'undefined') {
@@ -4179,7 +4223,7 @@ $(document).ready(function () {
         $('#tablaDiligT tbody tr').each(function (x) {
             x = x + 1;
             var dilig = $(this).find('input[id^="diligenArreg_"]').val();
-            if (dilig!=='') {
+            if (dilig !== '' && typeof dilig !='undefined') {
                 var combinedDil = JSON.parse(dilig);
                 var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
                 if (combinedDil.tipodil!=='3') {
@@ -4457,7 +4501,7 @@ function GuardPrel() {
     $('#tablaAutRe_HecVioT tbody tr').each(function (x) {
         x = x + 1;
         //var autoridad = $(this).find('select[name="autoridadres"]').val();
-        var tipo = $(this).find('input[id^="tipauto_"]').val();
+        var tipo = $(this).find('input[id^="tipauto_"]:checked').val();
         var autoridad = $(this).find('select[id^="autoridadres_"]').val();
         var hecho = $(this).find('select[name^="hechvio"]').val();
         if (autoridad !== '99' && hecho !== '99' && typeof autoridad != 'undefined' && typeof hecho != 'undefined') {
@@ -4529,7 +4573,7 @@ function GuardPrel() {
     $('#tablaDiligT tbody tr').each(function (x) {
         x = x + 1;
         var dilig = $(this).find('input[id^="diligenArreg_"]').val();
-        if (dilig !== '') {
+        if (dilig !== '' && typeof dilig != 'undefined') {
             var combinedDil = JSON.parse(dilig);
             var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
             if (combinedDil.tipodil !== '3') {

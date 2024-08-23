@@ -150,7 +150,7 @@ namespace SistemaIntegralQuejas.Controllers
             query = "exec Sp_Select_ViaInterposicionQ";
             listaContenedora8 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
             /*Cargar informacion dentro de las pantallas*/
-            query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "'";
+            query = "exec Sp_carga_info_Comp_Calif2 '" + identificadorQueja + "'";
             query1 = "exec Sp_carga_informacion_Complementaria_peticionario '" + identificadorQueja + "'";
             query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
             informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
@@ -229,12 +229,13 @@ namespace SistemaIntegralQuejas.Controllers
         public int id_niv_riesgo { get; set; }
         public int id_programa { get; set; }
         public string estatus_Expediente { get; set; }
+        public string fecha_mod { get; set; }
 
         public List<informacioncomplementariapeticionario> informacioncomplementariapeticionario { get; set; }
         public List<informacioncomplementariaautoridad> informacioncomplementariaautoridad { get; set; }
 
         public informacioncomplementaria() { }
-        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos, List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica, int vi, int vis, string observaciones, int id_especializado, int id_tras_op_pub, int tipo_expediente, int id_materia, int id_niv_riesgo, int id_programa,string statusexp)
+        public informacioncomplementaria(int id_expediente, int id_abogado_recibe, string hechos, string fecha_registro, int id_sede, int id_lugar_hechos, List<informacioncomplementariapeticionario> icp, List<informacioncomplementariaautoridad> ica, int vi, int vis, string observaciones, int id_especializado, int id_tras_op_pub, int tipo_expediente, int id_materia, int id_niv_riesgo, int id_programa,string statusexp,string fecha_mod)
         {
             this.id_expediente = id_expediente;
             this.id_abogado_recibe = id_abogado_recibe;
@@ -255,7 +256,7 @@ namespace SistemaIntegralQuejas.Controllers
             this.id_niv_riesgo = id_niv_riesgo;
             this.id_programa = id_programa;
             this.estatus_Expediente = statusexp;
-
+            this.fecha_mod = fecha_mod;
 		}
     }
 

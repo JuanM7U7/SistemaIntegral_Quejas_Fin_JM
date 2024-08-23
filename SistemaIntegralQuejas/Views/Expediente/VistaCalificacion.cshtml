@@ -86,12 +86,16 @@
         <div class="modal-header headerUpdate">
             <div class="row col-12">
                 <div class="col-2"><img src="\img\logo_horizontal-cdhp.png" height="45px" /></div>
-                <div class="col-7"><h3 class="positionCenter" id="Titulo_Modal">Calificación del Escrito Inicial de Queja</h3></div>
+                <div class="col-5">
+                    <h3 class="positionCenter" id="Titulo_Modal">Calificación del Escrito Inicial de Queja</h3>
+                </div>
+                <div class="col-2">
+                    <h6 class="positionCenter" id="fecha-hrs-Mod"></h6>
+                </div>
                 <div class="col-2">
                     <button type="button" class="close" title="Guardado preliminar" onclick="GuardPrel()">
                         <span aria-hidden="true"><i class="fa fa-floppy-o" style="color: purple;"></i></span>
                     </button>
-
                     <button type="button" class="close" title="Cedula de Calificación" onclick="generaPDFCedula()">
                         <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span>
                     </button>
@@ -287,8 +291,10 @@
 
     .tooltipbloated-content {
         position: absolute;
-        background: url('https://iborra.es/web/wp-content/themes/dfd-ronneby_child/img/tooltipbloated.png') no-repeat center bottom;
+        /*background: linear-gradient(135deg, #5bd1d7, #74b9ff );*/
+        background-color: rgba(200, 200, 200, 0.8);
         background-size: 100% 100%;
+        border-radius: 15px;
         z-index: 9999;
         width: 140px;
         bottom: 100%;
@@ -296,13 +302,14 @@
         margin-left: -100px;
         padding: 50px 30px;
         text-align: center;
-        color: #fff;
+        color: #000000;
+        font-weight: bold;
         opacity: 0;
         cursor: default;
         font-size: 0.75em;
         line-height: 1.4;
         pointer-events: none;
-        font-family: 'Kalam', cursive;
+        font-family: sans-serif;
         -webkit-transform: scale3d(0.1,0.2,1);
         transform: scale3d(0.1,0.2,1);
         -webkit-transform-origin: 50% 120%;
@@ -366,7 +373,7 @@
         cursor: default;
         pointer-events: none;
         border-radius: 5px;
-        font-family: 'Kalam', cursive;
+        font-family: sans-serif;
         -webkit-transform: translate3d(0,-0.5em,0);
         transform: translate3d(0,-0.5em,0);
         -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
@@ -425,6 +432,12 @@
         width: 50px !important;
         margin:0px;
     }
+
+    textarea::placeholder {
+        /*color: #999;*/
+        color: #d3d3d3;
+    }
+
 </style>
 
 @section Scripts
