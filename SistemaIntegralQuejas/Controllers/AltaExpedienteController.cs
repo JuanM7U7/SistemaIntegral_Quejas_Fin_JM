@@ -150,7 +150,7 @@ namespace SistemaIntegralQuejas.Controllers
             query = "exec Sp_Select_ViaInterposicionQ";
             listaContenedora8 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
             /*Cargar informacion dentro de las pantallas*/
-            query = "exec Sp_carga_info_Comp_Calif2 '" + identificadorQueja + "'";
+            query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "'";
             query1 = "exec Sp_carga_informacion_Complementaria_peticionario '" + identificadorQueja + "'";
             query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
             informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
