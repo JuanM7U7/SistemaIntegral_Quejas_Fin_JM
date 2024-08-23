@@ -295,10 +295,14 @@ function mostrarResTblFormatos(response, response1) {
             { data: 'semaforo2' },
             {
                 'mRender': function (data, type, full) {
-                    if (full.expediente !== 'PENDIENTE' && full.status=='Calificado') {
+                    if (full.expediente !== 'PENDIENTE' && full.status == 'Calificado') {
                         //full.expediente
                         btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
-                    } else {
+                    } else if (full.expediente !== 'PENDIENTE' && full.status == 'Concluido')
+                    {
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Consultar</button>`;
+
+                    }else {
                         btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Calificar</button>`;
                     }
                     return btnEscritook
@@ -3183,7 +3187,13 @@ function Concluirexpediente()
         data: formDQOT,
     dataType: "JSON",
         success: function (response) {
-            alert("Concluido");
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Expediente Concluido',
+                showConfirmButton: false,
+                timer: 1500
+            });
     }
 });
 
