@@ -593,8 +593,8 @@ function CreaSelect(id, tiposelect, arreglo, nombreDiv) {
     $(nombreDiv).append(htmld)
     $("#" + id).select2();
 }
-function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel) {
-    let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select id="' + id + '" ' + tiposelect + '> <option value="">Seleccione una opción</option>';
+function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel,onchange) {
+    let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select id="' + id + '" ' + tiposelect + ' onchange ="'+onchange+'"> <option value="">Seleccione una opción</option>';
     for (let v = 0; v < arreglo.length; v++) {
         htmld += `
                 <option value="${arreglo[v].idSelect}">${arreglo[v].descripcion}</option>

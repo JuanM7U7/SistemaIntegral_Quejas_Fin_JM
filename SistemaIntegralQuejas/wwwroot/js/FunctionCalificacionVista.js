@@ -230,6 +230,8 @@ function openCity(evt, cityName) {
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
+
+    console.log(document.getElementById(cityName).value);
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
 }
@@ -248,7 +250,13 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
 
     }
     else {
+
+
+            $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
+
         Crear_Formulario_QuejaEdit(id);
+        $("#defaultOpenD").addClass("active");
+       
         Crear_Formulario_Quejaconclusion(id);
         obtenerDQOT(id, fecRecep, "E", expedienten);
     }
@@ -587,6 +595,13 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
                         CrearFormuCalificacionApo(tipo);
                     });
                 }
+            });
+
+            $('select[id^=causaccat_]').change(function () {
+               // alert(this.value);
+                var causa = `${this.value}`;
+                Habilita_Acto_Rest(causa);
+
             });
         });
     });
@@ -2647,7 +2662,9 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
     console.log(paso);
     $("#Titulo_Modal").text(" ");
     $("#fecha-hrs-Mod").text(" ");
-    if (paso == 'Calificado') {
+    if (paso == 'Calificado' || paso == 'Concluido') {
+
+        $("#Conclu").css("display", "block");
         console.log("Paso  calificado:" + expedienten);
         if (fechamod!=='NO') {
             var [fecha, hora, periodo] = fechamod.split(' ');
@@ -3099,22 +3116,42 @@ function AgrDil(nomTab, id) {
             ]).draw().node();
             break;
         case "tablaconclu":
-
-            if (rowIndex <2) {
-                newRow = table.row.add([
-                    CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
-                    + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
-                    CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
-                    CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
-                    `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
-                    `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
-                ]).draw().node();
-                if (contc == 0) {
-                    $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
-                    contc++;
+            var causacat = '';
+            var divCreadoDinamicamente = document.getElementById('causaccat_0')
+            if (document.body.contains(divCreadoDinamicamente)) { causacat = $("#causaccat_0").val(); }
+            if (causacat == '6.2') {
+                if (rowIndex < 2) {
+                    newRow = table.row.add([
+                        CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
+                        + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
+                        CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                        CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', '', Habilita_Acto_Rest(causacat)),
+                        `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
+                        `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
+                    ]).draw().node();
+                    if (contc == 0) {
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        contc++;
+                    }
                 }
+            } else {
+
+                if (rowIndex < 1) {
+                    newRow = table.row.add([
+                        CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
+                        + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
+                        CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                        CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
+                        `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
+                        `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
+                    ]).draw().node();
+                    if (contc == 0) {
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        contc++;
+                    }
 
 
+                }
             }
 
             break;
@@ -3168,8 +3205,45 @@ function actualizarIndices(nomTab) {
     });
 }
 
-function Concluirexpediente()
+function Habilita_Acto_Rest(causac)
 {
+    alert(causac);
+    if (causac == '8_') {
+        $("textarea[id^=ActoRest_]").removeAttr('disabled');
+        console.log($("textarea[id^=ActoRest_]"));
+    }
+    else if (causac == '6.2') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
+    else if (causac == '6.1') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
+    else
+    {
+        $("#textarea[id^=ActoRest_]").prop('disabled', true);
+    }
+    /*
+            $("#ActoRest_0").prop("disabled", false);
+            break;
+        case "6.2":
+            //$("#ActoRest_0").prop("disabled", "false");
+            //$("#ActoRest_0").removeAttr('disabled');
+            //$("#ActoRest_0").prop("disabled", false);
+            $("textarea[id^=ActoRest_]").removeAttr('disabled');
+            break;
+        case "6.1":
+            //$("#ActoRest_0").prop("disabled", "false");
+            //$("#ActoRest_0").removeAttr('disabled');
+            //$("#ActoRest_0").prop("disabled", false);
+            $("textarea[id^=ActoRest_]").removeAttr('disabled');
+            break;
+        default:
+            //$("#ActoRest_0").attr('disabled', 'disabled');
+            //$("#ActoRest_0").prop("disabled", "true");
+            console.log("Alert");
+            break;
+    }
+    */
+
+}
+
+function Concluirexpediente() {
     /*Obtener   Causas de Cncllusión*/
     var Causasc = [];
     var idquejaE = $('#idquejaE').val();
@@ -3187,7 +3261,7 @@ function Concluirexpediente()
         if (fechac !== '' && causac !== '99' && typeof actorest != 'undefined' && typeof obs != 'undefined') {
             Causasc.push({
                 fechacon: fechac,
-                causacon: causac ,
+                causacon: causac,
                 idquejaE: idquejaE,
                 actorestitu: actorest,
                 observa: obs
@@ -3199,28 +3273,32 @@ function Concluirexpediente()
     formDQOT = {
         tablaCausasc: Causasc,
         longitudtabla1: Causasc.length,
-        idexp:idquejaE
+        idexp: idquejaE
 
     };
 
     $.ajax({
-    type: "POST",
-    url: "ConcluirExpediente",
+        type: "POST",
+        url: "ConcluirExpediente",
         data: formDQOT,
-    dataType: "JSON",
+        dataType: "JSON",
         success: function (response) {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
                 title: 'Expediente Concluido',
-                showConfirmButton: false,
-                timer: 1500
+                showConfirmButton: true,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
             });
-    }
-});
 
-    console.log("Concluido");
-}
+            console.log("Concluido");
+        }
+    })
+   }
 
 function RecuperaDaAutHec(id, callback) {
     $.ajax({
