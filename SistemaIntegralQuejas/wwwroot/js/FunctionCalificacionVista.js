@@ -230,6 +230,8 @@ function openCity(evt, cityName) {
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
+
+    console.log(document.getElementById(cityName).value);
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
 }
@@ -248,7 +250,13 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
 
     }
     else {
+
+
+            $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
+
         Crear_Formulario_QuejaEdit(id);
+        $("#defaultOpenD").addClass("active");
+       
         Crear_Formulario_Quejaconclusion(id);
         obtenerDQOT(id, fecRecep, "E", expedienten);
     }
@@ -2647,7 +2655,9 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
     console.log(paso);
     $("#Titulo_Modal").text(" ");
     $("#fecha-hrs-Mod").text(" ");
-    if (paso == 'Calificado') {
+    if (paso == 'Calificado' || paso == 'Concluido') {
+
+        $("#Conclu").css("display", "block");
         console.log("Paso  calificado:" + expedienten);
         if (fechamod!=='NO') {
             var [fecha, hora, periodo] = fechamod.split(' ');
@@ -3168,8 +3178,7 @@ function actualizarIndices(nomTab) {
     });
 }
 
-function Concluirexpediente()
-{
+function Concluirexpediente() {
     /*Obtener   Causas de Cncllusión*/
     var Causasc = [];
     var idquejaE = $('#idquejaE').val();
@@ -3187,7 +3196,7 @@ function Concluirexpediente()
         if (fechac !== '' && causac !== '99' && typeof actorest != 'undefined' && typeof obs != 'undefined') {
             Causasc.push({
                 fechacon: fechac,
-                causacon: causac ,
+                causacon: causac,
                 idquejaE: idquejaE,
                 actorestitu: actorest,
                 observa: obs
@@ -3199,28 +3208,32 @@ function Concluirexpediente()
     formDQOT = {
         tablaCausasc: Causasc,
         longitudtabla1: Causasc.length,
-        idexp:idquejaE
+        idexp: idquejaE
 
     };
 
     $.ajax({
-    type: "POST",
-    url: "ConcluirExpediente",
+        type: "POST",
+        url: "ConcluirExpediente",
         data: formDQOT,
-    dataType: "JSON",
+        dataType: "JSON",
         success: function (response) {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
                 title: 'Expediente Concluido',
-                showConfirmButton: false,
-                timer: 1500
+                showConfirmButton: true,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
             });
-    }
-});
 
-    console.log("Concluido");
-}
+            console.log("Concluido");
+        }
+    })
+   }
 
 function RecuperaDaAutHec(id, callback) {
     $.ajax({
