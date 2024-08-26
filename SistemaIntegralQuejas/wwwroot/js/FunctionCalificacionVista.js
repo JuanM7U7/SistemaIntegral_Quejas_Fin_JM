@@ -3208,38 +3208,11 @@ function actualizarIndices(nomTab) {
 function Habilita_Acto_Rest(causac)
 {
     alert(causac);
-    if (causac == '8_') {
-        $("textarea[id^=ActoRest_]").removeAttr('disabled');
-        console.log($("textarea[id^=ActoRest_]"));
-    }
+    if (causac == '8_') {$("textarea[id^=ActoRest_]").removeAttr('disabled');console.log($("textarea[id^=ActoRest_]"));}
     else if (causac == '6.2') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
     else if (causac == '6.1') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
-    else
-    {
-        $("#textarea[id^=ActoRest_]").prop('disabled', true);
-    }
-    /*
-            $("#ActoRest_0").prop("disabled", false);
-            break;
-        case "6.2":
-            //$("#ActoRest_0").prop("disabled", "false");
-            //$("#ActoRest_0").removeAttr('disabled');
-            //$("#ActoRest_0").prop("disabled", false);
-            $("textarea[id^=ActoRest_]").removeAttr('disabled');
-            break;
-        case "6.1":
-            //$("#ActoRest_0").prop("disabled", "false");
-            //$("#ActoRest_0").removeAttr('disabled');
-            //$("#ActoRest_0").prop("disabled", false);
-            $("textarea[id^=ActoRest_]").removeAttr('disabled');
-            break;
-        default:
-            //$("#ActoRest_0").attr('disabled', 'disabled');
-            //$("#ActoRest_0").prop("disabled", "true");
-            console.log("Alert");
-            break;
-    }
-    */
+    else { $("textarea[id^=ActoRest_]").attr('disabled', 'disabled'); $("textarea[id^=ActoRest_]").val(''); }
+
 
 }
 
