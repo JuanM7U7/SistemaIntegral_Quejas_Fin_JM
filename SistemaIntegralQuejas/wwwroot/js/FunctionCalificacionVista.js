@@ -2668,7 +2668,7 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
                 minute: '2-digit',
             }).replace(',', '');
 
-            $("#fecha-hrs-Mod").text(" F.  y  Hr.  Ult.  Modif. : " + formattedDate + "hrs.");
+            $("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + "hrs.");
         }
         $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
         
@@ -3110,7 +3110,7 @@ function AgrDil(nomTab, id) {
                     `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                 ]).draw().node();
                 if (contc == 0) {
-                    $("#izquierdaEC").append(`<button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button>`);
+                    $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
                     contc++;
                 }
 
@@ -3933,7 +3933,7 @@ function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja) {
         cuerpo2 = Requeridos() + CreaInputs_Con_Label('plazo', 'plazo', '', 'number', 'Plazo de Atención: ', 'textfield', '')
             + Crea_Label('textfield8', 'textfield8', '', ' días.')
             + CreaBR()
-            + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido de la Autiridad: ', 'textfield', '')
+            + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido de la Autoridad: ', 'textfield', '')
             + CreaBR()
             + CreaSelectLabeldisabled('atentido', '', arregloBlanco, '', 'Atendido: ', '');
     } 
