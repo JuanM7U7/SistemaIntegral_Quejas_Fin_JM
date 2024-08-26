@@ -254,6 +254,7 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
 
             $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
 
+        document.getElementById("defaultOpenCa").click();
         Crear_Formulario_QuejaEdit(id);
         $("#defaultOpenD").addClass("active");
        
@@ -264,6 +265,7 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("defaultOpenD").click();
+    document.getElementById("defaultOpenCa").click();
 });
 
 function closeModal(Tmodal) {
