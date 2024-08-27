@@ -252,8 +252,7 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
     else {
 
 
-            $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
-
+        $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
         document.getElementById("defaultOpenCa").click();
         Crear_Formulario_QuejaEdit(id);
         $("#defaultOpenD").addClass("active");
@@ -2668,7 +2667,8 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
 
         $("#Conclu").css("display", "block");
         console.log("Paso  calificado:" + expedienten);
-        if (fechamod!=='NO') {
+        if (fechamod !== 'NO') {
+            console.log(fechamod);
             var [fecha, hora, periodo] = fechamod.split(' ');
             var [dia, mes, año] = fecha.split('/').map(num => parseInt(num, 10));
             var [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
@@ -3209,7 +3209,7 @@ function actualizarIndices(nomTab) {
 
 function Habilita_Acto_Rest(causac)
 {
-    alert(causac);
+    //alert(causac);
     if (causac == '8_') {$("textarea[id^=ActoRest_]").removeAttr('disabled');console.log($("textarea[id^=ActoRest_]"));}
     else if (causac == '6.2') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
     else if (causac == '6.1') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
@@ -3526,6 +3526,7 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
                     $(`#causaccat_${rowIdx}`).val(data.causac).trigger('change');
                     $(`#ActoRest_${rowIdx}`).val(data.acto_rest);
                     $(`#ObsConclu_${rowIdx}`).val(data.obs);
+                    Habilita_Acto_Rest(data.causac);
                 });
             },
             order: [1, 'desc'],
@@ -3547,7 +3548,6 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
             var homoclav = selecTex.split('-');
             $row.find('#derecho').val(homoclav[2]);
         });
-
 
     });
 }
