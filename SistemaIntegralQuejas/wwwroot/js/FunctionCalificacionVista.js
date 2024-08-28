@@ -454,6 +454,10 @@ function Crear_Formulario_QuejaEdit(id) {
         + CreaBR()
         + CreaSelectLabeldisabled('AbogadoquejaE', '', arregloBlanco, '', 'Abogado quien Recibe: ', '')
         + CreaBR()
+        + CreaInputs_Con_Labeldisabled('Fecha_RegistroE', 'Fecha_RegistroE', '', 'date', 'Fecha de Registro: ', 'textfield', '')
+        + CreaBR()
+        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVGE', 'Fecha_TurnoVGE', '', 'date', Requeridos() + 'Fecha de turno a VG: ', 'textfield', '')
+        + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Hechos: ')
         + icono_editar('hechosE', id)
         + CreaBR()
@@ -463,18 +467,17 @@ function Crear_Formulario_QuejaEdit(id) {
         + CreaBR()
         + CreaSelectLabeldisabled('municipioquejaE', '', arregloBlanco, '', '', '')
         + CreaBR()
+        + Crea_Label('textfield8', 'textfield8', '', 'Peticionario(s): ')
+        + CreaBR()
+        + "<div id='contenedor_Usuarios'></div>"
         + CreaSelectLabeldisabled('visitaduriaquejaE', '', arregloBlanco, '', Requeridos() + 'Visitaduría: ', '')
-        + CreaBR()
-        + CreaInputs_Con_Labeldisabled('Fecha_RegistroE', 'Fecha_RegistroE', '', 'date', 'Fecha de Registro: ', 'textfield', '')
-        + CreaBR()
-        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVGE', 'Fecha_TurnoVGE', '', 'date', Requeridos() + 'Fecha de turno a VG: ', 'textfield', '')
         + CreaBR()
         + CreaSelectLabeldisabled('sedeRegistroE', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQOT: ')
         + icono_editar('observacionesE', id)
         + CreaBR()
-        + CreaTextAreadisabled('observacionesE', '', 'style="width:100%; height:14%"');
+        + CreaTextAreadisabled('observacionesE', '', 'style="width:100%; height:21%"');
     var formInnicial = '<form class="text-justify formQueja" id="formQueja" name="formQueja" method="post" style="width:100%; margin-left:2%;">';
     var fin_form = '</form>';
 
@@ -548,7 +551,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
             var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
             for (var i = 0; i < contadorpeticionarios; i++) {
                 console.log(contadorpeticionarios);
-                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
+                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo));
             }
         }
 
@@ -741,7 +744,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
         }
     });
 }
-function DivPequenios(nombrepeticionario, curp, idpeticionario) {
+function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario) {
     var div = "<div id='Divpequenios'>"
         +
         `
@@ -751,6 +754,7 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario) {
              ID DEL PETIC.: ${idpeticionario}<br>
              CURP:${curp}<br>
              NOMBRE:${nombrepeticionario}<br>
+             TIPO:${tipopeticionario}<br>
             </span></span></span>
             <button id="myBtn" type='button' onclick='btnGenerapdfp(${idpeticionario})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
