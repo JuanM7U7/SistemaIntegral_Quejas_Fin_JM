@@ -247,11 +247,8 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
         document.getElementById("defaultOpenD").click();
         Crear_Formulario_Queja(id);
         obtenerDQOT(id, fecRecep, "");
-
     }
     else {
-
-
         $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
         document.getElementById("defaultOpenCa").click();
         Crear_Formulario_QuejaEdit(id);
@@ -2668,17 +2665,22 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
         $("#Conclu").css("display", "block");
         console.log("Paso  calificado:" + expedienten);
         if (fechamod !== 'NO') {
-            console.log(fechamod);
-            var [fecha, hora, periodo] = fechamod.split(' ');
-            var [dia, mes, año] = fecha.split('/').map(num => parseInt(num, 10));
-            var [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
-
-            horas = (periodo.toLowerCase() === "p." && horas !== 12) ? horas + 12 :
-                (periodo.toLowerCase() === "a." && horas === 12) ? 0 : horas;
-
+            //fechamod = '23/08/2024 16:33:48'
+            var fechaModi = fechamod.replace(/\//g, "-");
+            var [fecha, hora, periodo] = fechaModi.split(' ');
+            var horas, minutos;
+            if (periodo) {
+                var [horasStr, minutosStr] = hora.split(':');
+                horas = parseInt(horasStr, 10);
+                minutos = parseInt(minutosStr, 10);
+                horas = (periodo.toLowerCase() === "p." && horas !== 12) ? horas + 12 :
+                    (periodo.toLowerCase() === "a." && horas === 12) ? 0 : horas;
+            } else {
+                [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
+            }
+            var [dia, mes, año] = fecha.split('-').map(num => parseInt(num, 10));
             var fechaObj = new Date(año, mes - 1, dia, horas, minutos);
             fechaObj.setDate(fechaObj.getDate());
-
             var formattedDate = fechaObj.toLocaleString('es-ES', {
                 day: '2-digit',
                 month: '2-digit',
@@ -2686,8 +2688,7 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
                 hour: '2-digit',
                 minute: '2-digit',
             }).replace(',', '');
-
-            $("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + "hrs.");
+            $("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + " hrs.");
         }
         $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
         
