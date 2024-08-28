@@ -755,6 +755,18 @@ function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelab
     return htmld
     //$("#" + id).select2();
 }
+function CreaSelectLabelinverso(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '', atributos = '') {
+    let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select data-idfrmac="' + atributos + '" class="' + clas + '" name="' + id + '" id="' + id + '" ' + tiposelect + '> <option value="99">Seleccione una opción</option>';
+    for (let v = 0; v < arreglo.length; v++) {
+        htmld += `
+                <option value="${arreglo[v].idSelect}">${arreglo[v].idSelect}</option>
+            `;
+    }
+    htmld += "</select>";
+
+    return htmld
+    //$("#" + id).select2();
+}
 function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '', atributos = '') {
     let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select class="' + clas + '" data-idfrmac="' + atributos + '" name="' + id + '" id="' + id + '" ' + tiposelect + '> <option value="99">Seleccione una opción</option>';
     for (let v = 0; v < arreglo.length; v++) {
