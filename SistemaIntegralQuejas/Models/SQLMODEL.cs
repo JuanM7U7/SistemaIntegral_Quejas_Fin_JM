@@ -332,7 +332,7 @@ namespace SistemaIntegralQuejas.Models
 					informacioncomplementariapeticionario modelo;
 					while (lector.Read())
 					{
-						lista.Add( new informacioncomplementariapeticionario(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString()));
+						lista.Add( new informacioncomplementariapeticionario(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString()));
 
 					}
 				}

@@ -551,7 +551,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
             var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
             for (var i = 0; i < contadorpeticionarios; i++) {
                 console.log(contadorpeticionarios);
-                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo));
+                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet));
             }
         }
 
@@ -746,7 +746,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
         }
     });
 }
-function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario) {
+function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario, idtip_compet) {
     var div = "<div id='Divpequenios'>"
         +
         `
@@ -757,6 +757,7 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
              CURP:${curp}<br>
              NOMBRE:${nombrepeticionario}<br>
              TIPO:${tipopeticionario}<br>
+             <input type="text" id="idtip_compet" value="${idpeticionario}-${idtip_compet}" hidden>
             </span></span></span>
             <button id="myBtn" type='button' onclick='btnGenerapdfp(${idpeticionario})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
@@ -4120,6 +4121,9 @@ function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja) {
     $('#idqueja').val(idqueja);
 }
 
+function checkbox(funcion, id) {
+    return `<label>Confirmación <input type="checkbox" id="${id}" value="C" /></label>`;
+}
 function icono_editar(funcion, id) {
     return `<i class='btn fa fa-pencil-square-o' onclick='HabilEdi(${id}, "#${funcion}")'></i>`;
 }

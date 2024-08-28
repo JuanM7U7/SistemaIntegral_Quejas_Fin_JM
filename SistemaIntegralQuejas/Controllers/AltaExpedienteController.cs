@@ -266,15 +266,17 @@ namespace SistemaIntegralQuejas.Controllers
 		public string nombre_peticionario { get; set; }
 		public string curp { get; set; }
 		public string tipo { get; set; }
+		public string idtip_compet { get; set; }
 
         public informacioncomplementariapeticionario() { }  
 
-		public informacioncomplementariapeticionario(int id_registro, string nombre_peticionario, string curp, string tipo)
+		public informacioncomplementariapeticionario(int id_registro, string nombre_peticionario, string curp, string tipo, string idtip_compet)
 		{
 			this.id_registro = id_registro;
 			this.nombre_peticionario = nombre_peticionario;
 			this.curp = curp;
 			this.tipo = tipo;
+			this.idtip_compet = idtip_compet;
 		}
 	}
 
