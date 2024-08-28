@@ -597,14 +597,16 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
             $('select[id^=causaccatcve_]').change(function (e) {
                 //alert(this.value);
                 console.log("Entró al cambio de causaccatcve_");
-                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
-                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
+                $(this).parent().find('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $(this).val(this.value).trigger('change.select2');
+                var causa = `${this.value}`;
+                Habilita_Acto_Rest(causa);
             });
             $('select[id^=causaccat_]').on("change", (function (e) {
                 console.log("Entró al cambio de causaccat_");
                 // alert(this.value);
-                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
-                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
+                $(this).val(this.value).trigger('change.select2');
+                $(this).parent().find('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
                 var causa = `${this.value}`;
                 Habilita_Acto_Rest(causa);
                 e.stopPropagation();
@@ -3207,14 +3209,16 @@ function AgrDil(nomTab, id) {
             $('select[id^=causaccatcve_]').change(function (e) {
                 //alert(this.value);
                 console.log("Entró al cambio de causaccatcve_");
-                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
-                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
+                $(this).parent().find('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $(this).val(this.value).trigger('change.select2');
+                var causa = `${this.value}`;
+                Habilita_Acto_Rest(causa);
             });
             $('select[id^=causaccat_]').on("change", (function (e) {
                 console.log("Entró al cambio de causaccat_");
                 // alert(this.value);
-                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
-                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
+                $(this).val(this.value).trigger('change.select2');
+                $(this).parent().find('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
                 var causa = `${this.value}`;
                 Habilita_Acto_Rest(causa);
                 e.stopPropagation();
