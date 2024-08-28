@@ -3177,7 +3177,7 @@ function AgrDil(nomTab, id) {
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
                     if (contc == 0) {
-                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
                         contc++;
                     }
                 }
@@ -3193,7 +3193,7 @@ function AgrDil(nomTab, id) {
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
                     if (contc == 0) {
-                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
                         contc++;
                     }
 
@@ -3597,8 +3597,9 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
             ],
             //dom: 'lfrtip',
             columnDefs: [
-                { className: "columnas", targets: 3 },
-                { className: "columnas", targets: 4 },
+                { className: "columnas25", targets: 2 },
+                { className: "columnas25", targets: 3 },
+                { className: "columnas25", targets: 4 },
             ],
             initComplete: function () {
                 const table = $(tablaAutRe_HecVioT).DataTable();
