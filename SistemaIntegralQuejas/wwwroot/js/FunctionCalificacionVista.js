@@ -524,6 +524,20 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
     });
 
     ajaxDQOT.done(function (response) {
+        fetchGet("Expediente/SelectEscolaridad", "json", (data) => {
+            Escolaridad = data.escolaridad;
+            escolaridadInicio = Escolaridad.slice(0, 9);
+            escolaridadFinal = Escolaridad.slice(10);
+        })
+        fetchGet("Expediente/SelectEstadoConyugal", "json", (data) => { EstadoConyugal = data.estadoconyugal; })
+        fetchGet("Expediente/SelectOcupacion", "json", (data) => { Ocupacion = data.ocupacion; })
+        fetchGet("Expediente/SelectDiscapacidad", "json", (data) => { Discapacidad = data.discapacidad; })
+        fetchGet("Expediente/SelectGrupoSocial", "json", (data) => { GrupoSocial = data.gruposocial; })
+        fetchGet("Expediente/SelectHijosVivos", "json", (data) => { HijosVivos = data.hijosvivos; })
+        fetchGet("Expediente/SelectModalidadViolencia", "json", (data) => { ModalidadViolencia = data.modalidadviolencia; })
+        fetchGet("Expediente/SelectTipoViolencia", "json", (data) => { TipoViolencia = data.tipoviolencia; })
+        fetchGet("Expediente/SelectRelacionAgresor", "json", (data) => { RelacionAgresor = data.relacionagresor; })
+        fetchGet("Expediente/SelectVisitadurias", "json", (data) => { visitadurias = data.visitadurias; })
         console.log(response);
         CargaDatosSelectOtro_(`#Abogadoqueja${tipo}`, response.lista_abogado, response.informarcionC.id_abogado_recibe);
         CargaDatosSelectOtro_(`#municipioqueja${tipo}`, response.lista_municipio, response.informarcionC.id_lugar_hechos);
@@ -762,7 +776,12 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
             <button id="myBtn" type='button' onclick='btnGenerapdfp(${idpeticionario})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
                                            </button>
-            
+             <button id="myBtn" type='button' onclick='editFormatDatosPersonalesCalificacion(${idpeticionario},${idtip_compet},"Completo",false)' class='btn btn-link margin-iconbf'>
+                                               <span class="fa fa-pencil color-muted fa-1x"></span></p>
+                                           </button>
+             <button id="myBtn" type='button' onclick='eliminaFormatoDatosPeronsales(${idtip_compet}, this)' class='btn btn-link margin-iconbf'>
+                                               <span class="fa fa-trash color-muted fa-1x"></span></p>
+                                           </button>
 			</div>
         `+ "</div>";
     +"<img id='add' src='/img/signomas.png'>"
@@ -771,6 +790,92 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
 
 
     return div;
+}
+function eliminaFormatoDatosPeronsales(idcomplemento) {
+
+    swal.fire({
+        title: 'Eliminar Peticionario',
+        text: "¿Desea eliminar este peticionario de la calificación del Expediente?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No'
+    }).then(function (resp) {
+        if (resp.isConfirmed) {
+
+            let Frmverificap = new FormData();
+            Frmverificap.append('id_complemento', idcomplemento);
+
+            fetchPost("Expediente/VerificaPetLigado", "json", Frmverificap, (resp) => {
+
+                if (resp.status == 'existe') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: 'No se puede eliminar el peticionario porque esta ligado a una acta circunstanciada',
+                        showConfirmButton: false,
+                        timer: 3500
+                    });
+                } else if (resp.status == 'existei') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: 'No se puede eliminar el peticionario porque esta ligado a un escrito inicial de queja',
+                        showConfirmButton: false,
+                        timer: 3500
+                    });
+                } else if (resp.status == 'noexiste') {
+                    let FrmDelPetit = new FormData();
+                    FrmDelPetit.append('id_complemento', idcomplemento);
+
+                    fetchPost("Expediente/DeleteComPeticionario", "json", FrmDelPetit, (resp) => {
+
+                        if (resp.status) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Peticionario Elimin',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                Swal.fire({
+                                    text: 'Cargando Quejas...',
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    },
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    url: "BuscardorFormatos",
+                                    data: $('#frm_busquedaFormatos').serialize(),
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        mostrarResTblFormatos(response.data);
+                                        Swal.close();
+                                    },
+                                    error: function () {
+                                        Swal.close();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: 'Error al actualizar los datos, informe al área de sistemas'
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+
+            });
+
+        }
+    })
+
 }
 function DivPequeniosautoridad(nombrepeticionario, curp, idpeticionario) {
     var div = "<div id='Divpequenios'>"
@@ -1129,7 +1234,7 @@ function chkNoproporcinado() {
     })
 
 }
-function editFormatDatosPersonales(idregistro, idcomplemento, estatus) {
+function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatus) {
 
     let formPetitn = formPeticionario(1)
     $('.frmEditDatosPersonales').append(formPetitn);
@@ -1223,7 +1328,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus) {
 
 
                 $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].tipoUsuario + "']").prop("checked", true);
-                $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value != '" + response.data[0].tipoUsuario + "']").prop("disabled", true);
+                $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value != '" + response.data[0].tipoUsuario + "']").prop("disabled", false);
                 $("input[name=radsexo_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].fkSexo + "']").prop("checked", true);
                 $("input[name=chknacionalidad_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].nacionalidad + "']").prop("checked", true);
                 $("input[name=chksleer_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].sabeLeer + "']").prop("checked", true);
@@ -1283,6 +1388,50 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus) {
         }
     });
 
+}
+function updateDatosPeticionarios() {
+    // Actualizar Peticionario
+    $('.formularioPeticionario').submit(function (e) {
+        e.preventDefault();
+
+        if (validaTxt() || validaNumero()) {
+            return;
+        }
+
+        let numFrm = 1;
+        let idForm = '#frmDatosPersonales' + numFrm;
+
+        $.ajax({
+            type: "post",
+            url: 'GuardarDataComplPeticionario',
+            content: "application/json; charset=utf-8",
+            data: $(idForm).serialize(),
+            dataType: "json",
+            success: function (data) {
+                //console.log(data)
+
+                if (data.idpeticionario > 0 && data.idcomplemento > 0) {
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Información del peticionario Actualizada de manera Correcta',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error al actualizar los datos, informe al área de sistemas',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            }
+        });
+
+    });
 }
 function formPeticionario(idformulario) {
 
