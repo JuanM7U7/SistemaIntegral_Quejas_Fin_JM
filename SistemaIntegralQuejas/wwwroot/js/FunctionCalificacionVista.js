@@ -762,7 +762,9 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
             <button id="myBtn" type='button' onclick='btnGenerapdfp(${idpeticionario})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
                                            </button>
-            
+             <button id="myBtn" type='button' onclick='editFormatDatosPersonalesCalificacion(${idpeticionario},${idtip_compet},"Completo",false)' class='btn btn-link margin-iconbf'>
+                                               <span class="fa fa-pencil color-muted fa-1x"></span></p>
+                                           </button>
 			</div>
         `+ "</div>";
     +"<img id='add' src='/img/signomas.png'>"
@@ -1129,7 +1131,7 @@ function chkNoproporcinado() {
     })
 
 }
-function editFormatDatosPersonales(idregistro, idcomplemento, estatus) {
+function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatus) {
 
     let formPetitn = formPeticionario(1)
     $('.frmEditDatosPersonales').append(formPetitn);
@@ -1283,6 +1285,78 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus) {
         }
     });
 
+}
+function updateDatosPeticionarios() {
+    // Actualizar Peticionario
+    $('.formularioPeticionario').submit(function (e) {
+        e.preventDefault();
+
+        if (validaTxt() || validaNumero()) {
+            return;
+        }
+
+        let numFrm = 1;
+        let idForm = '#frmDatosPersonales' + numFrm;
+
+        $.ajax({
+            type: "post",
+            url: 'GuardarDataComplPeticionario',
+            content: "application/json; charset=utf-8",
+            data: $(idForm).serialize(),
+            dataType: "json",
+            success: function (data) {
+                //console.log(data)
+
+                if (data.idpeticionario > 0 && data.idcomplemento > 0) {
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Información Actualizada Correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        Swal.fire({
+                            text: 'Cargando Quejas...',
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "BuscardorFormatos",
+                            data: $('#frm_busquedaFormatos').serialize(),
+                            dataType: "JSON",
+                            success: function (response) {
+                                mostrarResTblFormatos(response.data);
+                                $("#modalFormPeticionario").modal("hide");
+                                Swal.close();
+                            },
+                            error: function () {
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Error al actualizar los datos, informe al área de sistemas'
+                                });
+                            }
+                        });
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error al actualizar los datos, informe al área de sistemas',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            }
+        });
+
+    });
 }
 function formPeticionario(idformulario) {
 
