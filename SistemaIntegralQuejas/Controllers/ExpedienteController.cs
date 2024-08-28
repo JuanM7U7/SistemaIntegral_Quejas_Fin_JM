@@ -2042,7 +2042,7 @@ namespace SistemaIntegralQuejas.Controllers
                     else
                     {
 
-                    if (paso == "Calificado")
+                    if (paso == "Calificado"|| paso == "Concluido")
                     {
                         itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Calificado</div>";
                         itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";

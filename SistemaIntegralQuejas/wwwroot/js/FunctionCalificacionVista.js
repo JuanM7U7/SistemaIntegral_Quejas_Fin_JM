@@ -594,9 +594,13 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
                     });
                 }
             });
-
+            $('select[id^=causaccatcve_]').change(function () {
+                //alert(this.value);
+                $('select[id^=causaccat_]').val(this.value).trigger('change');
+            });
             $('select[id^=causaccat_]').change(function () {
                // alert(this.value);
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change');
                 var causa = `${this.value}`;
                 Habilita_Acto_Rest(causa);
 
@@ -947,6 +951,18 @@ function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelab
     for (let v = 0; v < arreglo.length; v++) {
         htmld += `
                 <option value="${arreglo[v].idSelect}">${arreglo[v].descripcion}</option>
+            `;
+    }
+    htmld += "</select>";
+
+    $("#" + id).select2();
+    return htmld
+}
+function CreaSelectLabelinverso(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '') {
+    let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select id="' + id + '" class="' + clas + '" name="' + id + '" ' + tiposelect + '> <option value="99">Selecciona la clave</option>';
+    for (let v = 0; v < arreglo.length; v++) {
+        htmld += `
+                <option value="${arreglo[v].idSelect}">${arreglo[v].idSelect}</option>
             `;
     }
     htmld += "</select>";
@@ -2670,6 +2686,7 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
             var [fecha, hora, periodo] = fechaModi.split(' ');
             var horas, minutos;
             if (periodo) {
+                console.log(periodo);
                 var [horasStr, minutosStr] = hora.split(':');
                 horas = parseInt(horasStr, 10);
                 minutos = parseInt(minutosStr, 10);
@@ -3070,8 +3087,9 @@ function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
     $
 }
 
-var contc = 0;
+
 function AgrDil(nomTab, id) {
+    var contc = 0;
     var table = $("#" + nomTab).DataTable();
     var newRow;
     var rowIndex = table.rows().count();
@@ -3128,7 +3146,7 @@ function AgrDil(nomTab, id) {
                         CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
                         + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
                         CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
-                        CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', '', Habilita_Acto_Rest(causacat)),
+                        CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', '', Habilita_Acto_Rest(causacat)),
                         `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
@@ -3144,7 +3162,7 @@ function AgrDil(nomTab, id) {
                         CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
                         + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
                         CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
-                        CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
+                        CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
                         `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
@@ -3156,6 +3174,26 @@ function AgrDil(nomTab, id) {
 
                 }
             }
+            $('select[id^=causaccatcve_]').change(function (e) {
+                //alert(this.value);
+                console.log("Entró al cambio de causaccatcve_");
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
+               
+            });
+            $('select[id^=causaccat_]').on("change", (function (e) {
+                console.log("Entró al cambio de causaccat_");
+                // alert(this.value);
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
+              
+                var causa = `${this.value}`;
+                Habilita_Acto_Rest(causa);
+                e.stopPropagation();
+               
+                
+
+            }));
 
             break;
     }
@@ -3220,12 +3258,14 @@ function Habilita_Acto_Rest(causac)
 }
 
 function Concluirexpediente() {
+
     /*Obtener   Causas de Cncllusión*/
     var Causasc = [];
     var idquejaE = $('#idquejaE').val();
     //DATOS SELECT
     var formQueja = $(this).serializeArray();
     //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
+    var status = false;
     $('#tablaconclu tbody tr').each(function (x) {
         x = x + 1;
         //var autoridad = $(this).find('select[name="autoridadres"]').val();
@@ -3234,14 +3274,35 @@ function Concluirexpediente() {
 
         var actorest = $(this).find('textarea[id^="ActoRest_"]').val();
         var obs = $(this).find('textarea[id^="ObsConclu_"]').val();
-        if (fechac !== '' && causac !== '99' && typeof actorest != 'undefined' && typeof obs != 'undefined') {
-            Causasc.push({
-                fechacon: fechac,
-                causacon: causac,
-                idquejaE: idquejaE,
-                actorestitu: actorest,
-                observa: obs
-            });
+
+       //obs.trim() != '')
+        if (fechac.trim() !== '' && causac.trim() !== '99')  {
+
+            if (causac.trim() == '6.2' || causac.trim() == '8_' || causac.trim() == '6.1') {
+                if (actorest.trim() != '') {
+                    Causasc.push({
+                        fechacon: fechac,
+                        causacon: causac,
+                        idquejaE: idquejaE,
+                        actorestitu: actorest,
+                        observa: obs
+                    });
+                }
+                else {
+                    status = true;
+                }
+            } else {
+                Causasc.push({
+                    fechacon: fechac,
+                    causacon: causac,
+                    idquejaE: idquejaE,
+                    actorestitu: actorest,
+                    observa: obs
+                });
+            }
+        } else
+        {
+            status = true;
         }
 
     });
@@ -3253,27 +3314,38 @@ function Concluirexpediente() {
 
     };
 
-    $.ajax({
-        type: "POST",
-        url: "ConcluirExpediente",
-        data: formDQOT,
-        dataType: "JSON",
-        success: function (response) {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Expediente Concluido',
-                showConfirmButton: true,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
 
-            console.log("Concluido");
-        }
-    })
+    if (status)
+    {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Tienes que completar todos los campos requeridos para poder concluir el expediente',
+            timer: 2000
+        });
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "ConcluirExpediente",
+            data: formDQOT,
+            dataType: "JSON",
+            success: function (response) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Expediente Concluido',
+                    showConfirmButton: true,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+
+                console.log("Concluido");
+            }
+        })
+    }
    }
 
 function RecuperaDaAutHec(id, callback) {
@@ -3476,7 +3548,7 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
                 {
                     'mRender': function (data, type, full,meta) {
                         if (tipo !== '') {
-                            return CreaSelectLabel(`causaccat_${meta.row}`, '', ExpeConc, '', '', '');
+                            return CreaSelectLabelinverso(`causaccatcve_${meta.row}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${meta.row}`, '', ExpeConc, '', '', '');
                         } else {
                             return '';
                         }
@@ -3525,6 +3597,8 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
  
                     //$(`#fechaCausa_${rowIdx}`).val(data.fechac);
                     $(`#causaccat_${rowIdx}`).val(data.causac).trigger('change');
+                    $(`#causaccatcve_${rowIdx}`).val(data.causac).trigger('change');
+                    
                     $(`#ActoRest_${rowIdx}`).val(data.acto_rest);
                     $(`#ObsConclu_${rowIdx}`).val(data.obs);
                     Habilita_Acto_Rest(data.causac);
