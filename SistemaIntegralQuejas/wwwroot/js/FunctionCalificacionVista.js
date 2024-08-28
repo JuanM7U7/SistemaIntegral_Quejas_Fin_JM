@@ -594,17 +594,21 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
                     });
                 }
             });
-            $('select[id^=causaccatcve_]').change(function () {
+            $('select[id^=causaccatcve_]').change(function (e) {
                 //alert(this.value);
-                $('select[id^=causaccat_]').val(this.value).trigger('change');
+                console.log("Entró al cambio de causaccatcve_");
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
             });
-            $('select[id^=causaccat_]').change(function () {
-               // alert(this.value);
-                $('select[id^=causaccatcve_]').val(this.value).trigger('change');
+            $('select[id^=causaccat_]').on("change", (function (e) {
+                console.log("Entró al cambio de causaccat_");
+                // alert(this.value);
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
                 var causa = `${this.value}`;
                 Habilita_Acto_Rest(causa);
-
-            });
+                e.stopPropagation();
+            }));
         });
     });
 
@@ -3200,18 +3204,20 @@ function AgrDil(nomTab, id) {
 
                 }
             }
-            $('select[id^=causaccatcve_]').change(function () {
+            $('select[id^=causaccatcve_]').change(function (e) {
                 //alert(this.value);
-                $('select[id^=causaccat_]').val(this.value).trigger('change');  
-                event.stopPropagation();
+                console.log("Entró al cambio de causaccatcve_");
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
             });
-            $('select[id^=causaccat_]').on("click",(function () {
+            $('select[id^=causaccat_]').on("change", (function (e) {
+                console.log("Entró al cambio de causaccat_");
                 // alert(this.value);
-                //$('select[id^=causaccatcve_]').val(this.value).trigger('change');
-              
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
                 var causa = `${this.value}`;
                 Habilita_Acto_Rest(causa);
-
+                e.stopPropagation();
             }));
 
             break;
