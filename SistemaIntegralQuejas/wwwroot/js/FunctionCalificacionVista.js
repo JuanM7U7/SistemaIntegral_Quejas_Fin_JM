@@ -594,17 +594,21 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
                     });
                 }
             });
-            $('select[id^=causaccatcve_]').change(function () {
+            $('select[id^=causaccatcve_]').change(function (e) {
                 //alert(this.value);
-                $('select[id^=causaccat_]').val(this.value).trigger('change');
+                console.log("Entró al cambio de causaccatcve_");
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
             });
-            $('select[id^=causaccat_]').change(function () {
-               // alert(this.value);
-                $('select[id^=causaccatcve_]').val(this.value).trigger('change');
+            $('select[id^=causaccat_]').on("change", (function (e) {
+                console.log("Entró al cambio de causaccat_");
+                // alert(this.value);
+                $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
                 var causa = `${this.value}`;
                 Habilita_Acto_Rest(causa);
-
-            });
+                e.stopPropagation();
+            }));
         });
     });
 
@@ -2682,6 +2686,29 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
         console.log("Paso  calificado:" + expedienten);
         if (fechamod !== 'NO') {
             //fechamod = '23/08/2024 16:33:48'
+            //var fechaModi = fechamod.replace(/\//g, "-");
+            //var [fecha, hora, periodo] = fechaModi.split(' ');
+            //var horas, minutos;
+            //if (periodo) {
+            //    var [horasStr, minutosStr] = hora.split(':');
+            //    horas = parseInt(horasStr, 10);
+            //    minutos = parseInt(minutosStr, 10);
+            //    horas = (periodo.toLowerCase() === "p." && horas !== 12) ? horas + 12 :
+            //        (periodo.toLowerCase() === "a." && horas === 12) ? 0 : horas;
+            //} else {
+            //    [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
+            //}
+            //var [dia, mes, año] = fecha.split('-').map(num => parseInt(num, 10));
+            //var fechaObj = new Date(año, mes - 1, dia, horas, minutos);
+            //fechaObj.setDate(fechaObj.getDate());
+            //var formattedDate = fechaObj.toLocaleString('es-ES', {
+            //    day: '2-digit',
+            //    month: '2-digit',
+            //    year: 'numeric',
+            //    hour: '2-digit',
+            //    minute: '2-digit',
+            //}).replace(',', '');
+            //$("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + " hrs.");
             var fechaModi = fechamod.replace(/\//g, "-");
             var [fecha, hora, periodo] = fechaModi.split(' ');
             var horas, minutos;
@@ -2697,14 +2724,19 @@ function CrearFormuCalificacion(idformulario, tipo, fechamod, paso,expedienten) 
             }
             var [dia, mes, año] = fecha.split('-').map(num => parseInt(num, 10));
             var fechaObj = new Date(año, mes - 1, dia, horas, minutos);
-            fechaObj.setDate(fechaObj.getDate());
-            var formattedDate = fechaObj.toLocaleString('es-ES', {
+
+            // Aquí puedes especificar la zona horaria, por ejemplo 'America/Mexico_City'
+            var opciones = {
+                timeZone: 'America/Mexico_City',
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
-            }).replace(',', '');
+                hour12: false
+            };
+
+            var formattedDate = new Intl.DateTimeFormat('es-ES', opciones).format(fechaObj);
             $("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + " hrs.");
         }
         $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
@@ -3083,8 +3115,6 @@ function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
     thead.appendChild(headerRow);
     table.appendChild(thead);
     $(nomTabla).append(table);
-
-    $
 }
 
 
@@ -3151,7 +3181,7 @@ function AgrDil(nomTab, id) {
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
                     if (contc == 0) {
-                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
                         contc++;
                     }
                 }
@@ -3167,7 +3197,7 @@ function AgrDil(nomTab, id) {
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
                     if (contc == 0) {
-                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">concluir expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
                         contc++;
                     }
 
@@ -3179,20 +3209,15 @@ function AgrDil(nomTab, id) {
                 console.log("Entró al cambio de causaccatcve_");
                 $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
                 $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
-               
             });
             $('select[id^=causaccat_]').on("change", (function (e) {
                 console.log("Entró al cambio de causaccat_");
                 // alert(this.value);
                 $('select[id^=causaccat_]').val(this.value).trigger('change.select2');
                 $('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
-              
                 var causa = `${this.value}`;
                 Habilita_Acto_Rest(causa);
                 e.stopPropagation();
-               
-                
-
             }));
 
             break;
@@ -3576,7 +3601,12 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
 
                 }
             ],
-            dom: 'lfrtip',
+            //dom: 'lfrtip',
+            columnDefs: [
+                { className: "columnas25", targets: 2 },
+                { className: "columnas25", targets: 3 },
+                { className: "columnas25", targets: 4 },
+            ],
             initComplete: function () {
                 const table = $(tablaAutRe_HecVioT).DataTable();
                
@@ -3607,23 +3637,6 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
             order: [1, 'desc'],
             bDestroy: true
         });
-
-        $(document).on('change', '.autoridadres-class', function () {
-            var $row = $(this).closest('tr');
-            $row.find('#tipauto').val("");
-            var selecTex = $(this).find('option:selected').text();
-            var homoclav = selecTex.split('/');
-            $row.find('#tipauto').val(homoclav[2]);
-        });
-
-        $(document).on('change', '.hechvio-class', function () {
-            var $row = $(this).closest('tr');
-            $row.find('#derecho').val("");
-            var selecTex = $(this).find('option:selected').text();
-            var homoclav = selecTex.split('-');
-            $row.find('#derecho').val(homoclav[2]);
-        });
-
     });
 }
 function generateRadioInputs(row, aut, tipo) {
