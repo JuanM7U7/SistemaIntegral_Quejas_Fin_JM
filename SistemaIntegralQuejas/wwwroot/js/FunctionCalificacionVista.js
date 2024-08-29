@@ -3853,10 +3853,10 @@ function actualizarIndices(nomTab) {
 function Habilita_Acto_Rest(causac)
 {
     //alert(causac);
-    if (causac == '8_') {$("textarea[id^=ActoRest_]").removeAttr('disabled');console.log($("textarea[id^=ActoRest_]"));}
-    else if (causac == '6.2') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
-    else if (causac == '6.1') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); }
-    else { $("textarea[id^=ActoRest_]").attr('disabled', 'disabled'); $("textarea[id^=ActoRest_]").val(''); }
+    if (causac == '8_') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); console.log($("textarea[id^=ActoRest_]")); }
+    else if (causac == '6.2') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); }
+    else if (causac == '6.1') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); }
+    else { $("textarea[id^=ActoRest_]").attr('disabled', 'disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").val(''); }
 
 
 }
@@ -4142,7 +4142,7 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
                 {
                     'mRender': function (data, type, full,meta) {
                         if (tipo !== '') {
-                            return CreaInputs_Con_Label(`fechaCausa_${meta.row}`, `fechaCausa_${meta.row}`, 'validatimeac', 'date', '', 'textfield9', '');
+                            return Requeridos() + CreaInputs_Con_Label(`fechaCausa_${meta.row}`, `fechaCausa_${meta.row}`, 'validatimeac', 'date', '', 'textfield9', '');
                         } else {
                             return '';
                         }
@@ -4152,7 +4152,7 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
                 {
                     'mRender': function (data, type, full,meta) {
                         if (tipo !== '') {
-                            return CreaSelectLabelinverso(`causaccatcve_${meta.row}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${meta.row}`, '', ExpeConc, '', '', '');
+                            return Requeridos() + CreaSelectLabelinverso(`causaccatcve_${meta.row}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${meta.row}`, '', ExpeConc, '', '', '');
                         } else {
                             return '';
                         }
