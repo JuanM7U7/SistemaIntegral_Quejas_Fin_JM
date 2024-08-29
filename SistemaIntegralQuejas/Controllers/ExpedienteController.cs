@@ -1514,6 +1514,7 @@ namespace SistemaIntegralQuejas.Controllers
         }
 
         public ActionResult ActualizaDatoscompementariosPetVAV(int idqueja,int status)
+        
         {
             int idq = idqueja, stat = status;
 
@@ -2234,15 +2235,6 @@ namespace SistemaIntegralQuejas.Controllers
         public static bool FechaVacio(DateTime? date)
         {
             return date == null ? true : false;
-        }
-
-        public ActionResult UpdateConfirmaDQOT(int idqueja, string hechos, string lugar, string petic)
-        {
-            string query = "";
-            query = "exec Sp_updateConfirmDQOT " + idqueja + ",'" + hechos + "','" + lugar + "','" + petic + "'";
-            bool update = conexionsql.InsertUpdateDelete(query);
-
-            return Json(new { estatus = update });
         }
 
         // Lista Escolaridad

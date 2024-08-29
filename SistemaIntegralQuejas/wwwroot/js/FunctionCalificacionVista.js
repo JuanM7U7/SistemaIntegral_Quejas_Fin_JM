@@ -593,11 +593,14 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
         CargaDatosSelectOtro_(`#sedeRegistro${tipo}`, response.lista_sedes, response.informarcionC.id_sede);
         CargaDatosSelectOtro_(`#viainterpos${tipo}`, response.listavi, response.informarcionC.via_interpos);
         CargaDatosSelectOtro_(`#visitaduriaqueja${tipo}`, response.listavisitadurias, response.informarcionC.visitaduria);
-
+        var iddatospeti = false;
         if (response.datvaldqot.id_queja) {
             $('#confi_hechos').prop('checked', response.datvaldqot.hechos).trigger('change');
             $('#confi_lughec').prop('checked', response.datvaldqot.hechos).trigger('change');
             $('#confi_peticiona').prop('checked', response.datvaldqot.hechos).trigger('change');
+            console.log(response.datvaldqot);
+            iddatospeti = response.datvaldqot.datospeti;
+            console.log(iddatospeti);
         }
 
         var date = new Date();
@@ -620,7 +623,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
             var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
             for (var i = 0; i < contadorpeticionarios; i++) {
                 console.log(contadorpeticionarios);
-                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet));
+                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti));
             }
         }
 
@@ -815,10 +818,33 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
         }
     });
 }
-function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario, idtip_compet) {
-    var div = "<div id='Divpequenios'>"
-        +
-        `
+function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario, idtip_compet, statusComplemento) {
+
+    var div = '';
+    console.log("Estatus complento: "+statusComplemento);
+    if (statusComplemento) {
+        div = "<div id='Divpequenios'>"
+            +
+            `
+			<div class="dummy dummy-text">
+			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
+            <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación del Peticionario</span><br>
+             ID DEL PETIC.: ${idpeticionario}<br>
+             CURP:${curp}<br>
+             NOMBRE:${nombrepeticionario}<br>
+             TIPO:${tipopeticionario}<br>
+             <input type="text" id="idtip_compet" value="${idpeticionario}-${idtip_compet}" hidden>
+            </span></span></span>
+             <button id="myBtn" type='button' onclick='editFormatDatosPersonalesCalificacion(${idpeticionario},${idtip_compet},"Completo","${statusComplemento}")' class='btn btn-link margin-iconbf'>
+                                               <span class="fa fa-search color-muted fa-1x"></span></p>
+                                           </button>
+			</div>
+        `+ "</div>";
+        +"<img id='add' src='/img/signomas.png'>"
+    } else {
+         div = "<div id='Divpequenios'>"
+            +
+            `
 			<div class="dummy dummy-text">
 			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
             <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación del Peticionario</span><br>
@@ -836,10 +862,10 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
                                            </button>
 			</div>
         `+ "</div>";
-    +"<img id='add' src='/img/signomas.png'>"
+        +"<img id='add' src='/img/signomas.png'>"
 
 
-
+    }
     /*            <button id="myBtnpdf" type='button' onclick='btnGenerapdfp(${idtip_compet},'${curp}','${nombrepeticionario}','','')' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
                                            </button>*/
@@ -1288,7 +1314,7 @@ function chkNoproporcinado() {
     })
 
 }
-function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatus) {
+function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatus,esta) {
 
     let formPetitn = formPeticionario(1)
     $('.frmEditDatosPersonales').append(formPetitn);
@@ -1442,6 +1468,11 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
         }
     });
 
+    if (esta) {
+        //var formulario = $('form[id^="frmDatosPersonales1"]');
+        $('form[id^="frmDatosPersonales1"] :input').prop('disabled', true);
+        $('#gpdfForm').prop('disabled', false);
+    }
 
 
 }
@@ -1503,8 +1534,12 @@ function updateDatosPeticionarios() {
                     title: 'Se han cofirmado todos los datos Complementarios del peticionario',
                     showConfirmButton: false,
                     timer: 3000
+                }).then(function () {
+                    console.log("Despues de dar click en el boton, aqui llamarias al submit");
+                    $('button[id^=validapeticionario]').hide();
+                    location.reload();
                 });
-                $('button[id^=validapeticionario]').hide();
+                
             }
         });
 
