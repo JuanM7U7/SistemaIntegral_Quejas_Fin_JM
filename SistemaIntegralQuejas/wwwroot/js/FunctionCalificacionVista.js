@@ -268,7 +268,7 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
                 $('#icomuniE').prop('hidden', true);
                 $('#municipioquejaE').prop('disabled', true);
                 $('#confi_lughec').prop('disabled', true);
-                confirmdatos($('#idquejaE').val(), '','1','');
+                confirmdatos($('#idquejaE').val(), '', '1', '');
             }// else {
             //    $('#icomuniE').prop('hidden', false);
             //}
@@ -596,8 +596,8 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
         var iddatospeti = false;
         if (response.datvaldqot.id_queja) {
             $('#confi_hechos').prop('checked', response.datvaldqot.hechos).trigger('change');
-            $('#confi_lughec').prop('checked', response.datvaldqot.hechos).trigger('change');
-            $('#confi_peticiona').prop('checked', response.datvaldqot.hechos).trigger('change');
+            $('#confi_lughec').prop('checked', response.datvaldqot.lugar).trigger('change');
+            $('#confi_peticiona').prop('checked', response.datvaldqot.petic).trigger('change');
             console.log(response.datvaldqot);
             iddatospeti = response.datvaldqot.datospeti;
             console.log(iddatospeti);
