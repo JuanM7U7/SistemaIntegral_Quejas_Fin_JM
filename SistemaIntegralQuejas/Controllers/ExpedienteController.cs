@@ -1513,6 +1513,16 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { mensaje = "ok" });
         }
 
+        public ActionResult ActualizaDatoscompementariosPetVAV(int idqueja,int status)
+        {
+            int idq = idqueja, stat = status;
+
+                    string queryupdatestatusext = "exec Sp_updateConfirmPet " + idqueja + ","+ status + "";
+                    int sino = conexionsql.InsertUpdateDeleteRegresaid(queryupdatestatusext);
+
+            return Json(new { mensaje = "ok" });
+        }
+
         public ViewAsPdf FormatoRechazo()
         {
             var pdfescritoi = new List<PDF_Formato_Rechazo>();
