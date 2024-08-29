@@ -1062,6 +1062,24 @@ namespace SistemaIntegralQuejas.Controllers
 
             return Json(new { status = statusresp, respidenlacequeja = idenlacequeja });
         }
+
+        public ActionResult DiasAgregar()
+        {
+            string resultado="";
+            string mensaje = "";
+            String query = "exec RegresaDiasFinMes";
+            resultado = conexionsql.ObtenerReader(query);
+
+            if (resultado!= null)
+            {
+                return Json(new { dias = resultado });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+
         public ActionResult InsertEnlaceFormatoQueja(IFormCollection form)
         {
             string idqueja = form["id_queja"].ToString();
@@ -2235,6 +2253,15 @@ namespace SistemaIntegralQuejas.Controllers
         public static bool FechaVacio(DateTime? date)
         {
             return date == null ? true : false;
+        }
+
+        public ActionResult UpdateConfirmaDQOT(int idqueja, string hechos, string lugar, string petic)
+        {
+            string query = "";
+            query = "exec Sp_updateConfirmDQOT " + idqueja + ",'" + hechos + "','" + lugar + "','" + petic + "'";
+            bool update = conexionsql.InsertUpdateDelete(query);
+
+            return Json(new { estatus = update });
         }
 
         // Lista Escolaridad

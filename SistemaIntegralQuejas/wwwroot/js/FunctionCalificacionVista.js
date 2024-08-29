@@ -268,7 +268,7 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
                 $('#icomuniE').prop('hidden', true);
                 $('#municipioquejaE').prop('disabled', true);
                 $('#confi_lughec').prop('disabled', true);
-                confirmdatos($('#idquejaE').val(), '','1','');
+                confirmdatos($('#idquejaE').val(), '', '1', '');
             }// else {
             //    $('#icomuniE').prop('hidden', false);
             //}
@@ -596,8 +596,8 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
         var iddatospeti = false;
         if (response.datvaldqot.id_queja) {
             $('#confi_hechos').prop('checked', response.datvaldqot.hechos).trigger('change');
-            $('#confi_lughec').prop('checked', response.datvaldqot.hechos).trigger('change');
-            $('#confi_peticiona').prop('checked', response.datvaldqot.hechos).trigger('change');
+            $('#confi_lughec').prop('checked', response.datvaldqot.lugar).trigger('change');
+            $('#confi_peticiona').prop('checked', response.datvaldqot.petic).trigger('change');
             console.log(response.datvaldqot);
             iddatospeti = response.datvaldqot.datospeti;
             console.log(iddatospeti);
@@ -1142,6 +1142,44 @@ function EstadoGeneral() {
 function CreaInputs_Con_Label(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
     return "<label for= '" + namelabel + "' " + adicionlabel + " >" + textolabel + "</label ><input type='" + tipo + "' id='" + idParrafo + "' class='" + clas + "' name='" + Name + "' " + adicion + " >"
 }
+function diasEnUnMes(mes, año) {
+    return new Date(año, mes, 0).getDate();
+}
+function CreaInputs_Con_Labeldate(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
+
+    return "<label for= '" + namelabel + "' " + adicionlabel + " >" + textolabel + "</label ><input type='" + tipo + "' id='" + idParrafo + "'  class='" + clas + "' name='" + Name + "' " + adicion + ">"
+}
+
+function calcular(fecha, operacion, dias) {
+    var date = fecha.split("-"),
+        hoy = new Date(date[0], date[1], date[2]),
+        dias = parseInt(dias),
+        calculado = new Date(),
+        dateResul = operacion == "sumar" ? hoy.getDate() + dias : hoy.getDate() - dias;
+    calculado.setDate(dateResul);
+
+    var fechaformateada = '';
+
+    if (calculado.getMonth().toString().length == 1) {
+        if (calculado.getDate().toString().length==1) {
+            fechaformateada = calculado.getFullYear() + "-0" + (calculado.getMonth() + 1) + "-0" + calculado.getDate();
+        } else
+        {
+            fechaformateada = calculado.getFullYear() + "-0" + (calculado.getMonth() + 1) + "-" + calculado.getDate();
+        }
+        
+    } else
+    {
+        if (calculado.getDate().toString().length == 1) {
+            fechaformateada = calculado.getFullYear() + "-" + (calculado.getMonth() + 1) + "-0" + calculado.getDate();
+        } else {
+            fechaformateada = calculado.getFullYear() + "-" + (calculado.getMonth() + 1) + "-" + calculado.getDate();
+        }
+    }
+    return fechaformateada
+}
+
+
 function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '') {
     let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select id="' + id + '" class="' + clas + '" name="' + id + '" ' + tiposelect + '> <option value="99">Seleccione una opción</option>';
     for (let v = 0; v < arreglo.length; v++) {
@@ -3687,7 +3725,7 @@ function AgrDil(nomTab, id) {
                     newRow = table.row.add([
                         CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
                         + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
-                        CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                        CreaInputs_Con_Labeldate(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
                         CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', '', Habilita_Acto_Rest(causacat)),
                         `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
@@ -3703,7 +3741,7 @@ function AgrDil(nomTab, id) {
                     newRow = table.row.add([
                         CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
                         + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
-                        CreaInputs_Con_Label(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                        CreaInputs_Con_Labeldate(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
                         CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
                         `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
@@ -3733,6 +3771,33 @@ function AgrDil(nomTab, id) {
                 Habilita_Acto_Rest(causa);
                 e.stopPropagation();
             }));
+
+
+            var minDate = new Date();
+            //var maxDate = new Date();
+
+            // Configura la fecha mínima (hoy)
+            minDate.setMonth(minDate.getMonth()); // Un año atrás
+
+            // Configura la fecha máxima (un año adelante)
+            // maxDate.setMonth(maxDate.getMonth()); // Un año adelante
+            var mes = minDate.getMonth() + 1;
+            var mes1 = minDate.getMonth();
+            var anio = minDate.getFullYear();
+            var diamax = diasEnUnMes(anio, mes);
+
+            var fechamin = "";
+            console.log(mes.toString().length);
+            if (mes.toString().length == 1) {  fechamin = anio + "-0" + mes + "-01"; } else {  fechamin = anio + "-" + mes + "-01"; }
+            var fechaMax = anio + "-" + mes1 + "-" + diamax;
+            ;
+            //console.info(fecha)
+            console.log(fechamin);
+            console.log(calcular(fechaMax, 'sumar', '3'));
+            var diasAG = 0;
+            fetchGet("Expediente/DiasAgregar", "json", (data) => {
+                diasAG = data.dias; console.log(diasAG); $('input[id^=fechaCausa_]').prop("min", fechamin);$('input[id^=fechaCausa_]').prop("max", calcular(fechaMax, 'sumar', diasAG));})
+
 
             break;
     }

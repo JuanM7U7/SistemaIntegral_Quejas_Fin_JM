@@ -2050,6 +2050,22 @@ function CreaInputs(idParrafo, Name, clas, tipo) {
 function CreaInputs_Con_Label(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
     return "<label for= '" + namelabel + "' " + adicionlabel + " >" + textolabel + "</label ><input type='" + tipo + "' id='" + idParrafo + "' class='" + clas + "' name='" + Name + "' " + adicion + " >"
 }
+function CreaInputs_Con_Labelfecha(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
+    var minDate = new Date();
+    var maxDate = new Date();
+
+    // Configura la fecha mínima (hoy)
+    minDate.setMonth(minDate.getMonth()); // Un mes atrás
+
+    // Configura la fecha máxima (un año adelante)
+    maxDate.setMonth(maxDate.getMonth()); // Un mes adelante
+
+    // Formatea las fechas en formato yyyy-mm-dd
+    var minDateStr = minDate.toISOString().split('T')[0];
+    var maxDateStr = maxDate.toISOString().split('T')[0];
+
+    return "<label for= '" + namelabel + "' " + adicionlabel + " >" + textolabel + "</label ><input type='" + tipo + "' id='" + idParrafo + "' min='" + minDateStr + "' max='" + maxDateStr +"' class='" + clas + "' name='" + Name + "' " + adicion + " >"
+}
 function CreaInputs_Con_LabelID(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
     return "<label for= '" + namelabel + "' " + adicionlabel + " >" + textolabel + "</label ><input type='" + tipo + "' id='" + idParrafo + "' class='" + clas + "' name='" + Name + "' " + adicion + " >"
 }
