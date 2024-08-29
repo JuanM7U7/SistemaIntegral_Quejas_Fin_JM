@@ -773,9 +773,6 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
              TIPO:${tipopeticionario}<br>
              <input type="text" id="idtip_compet" value="${idpeticionario}-${idtip_compet}" hidden>
             </span></span></span>
-            <button id="myBtn" type='button' onclick='btnGenerapdfp(${idpeticionario})' class='btn btn-link margin-iconbf'>
-                                               <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
-                                           </button>
              <button id="myBtn" type='button' onclick='editFormatDatosPersonalesCalificacion(${idpeticionario},${idtip_compet},"Completo",false)' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-pencil color-muted fa-1x"></span></p>
                                            </button>
@@ -788,7 +785,9 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
 
 
 
-
+    /*            <button id="myBtnpdf" type='button' onclick='btnGenerapdfp(${idtip_compet},'${curp}','${nombrepeticionario}','','')' class='btn btn-link margin-iconbf'>
+                                               <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
+                                           </button>*/
     return div;
 }
 function eliminaFormatoDatosPeronsales(idcomplemento) {
@@ -1371,7 +1370,7 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
 
                 }
                 updateDatosPeticionarios();
-                if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar') {
+                if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || estatus =='Concluido') {
                     $('.frmEditDatosPersonales button[type="submit"]').hide();
                 }
             } else {
@@ -1388,12 +1387,12 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
         }
     });
 
+
+
 }
 function updateDatosPeticionarios() {
     // Actualizar Peticionario
     $('.formularioPeticionario').submit(function (e) {
-        e.preventDefault();
-
         if (validaTxt() || validaNumero()) {
             return;
         }
@@ -1432,6 +1431,19 @@ function updateDatosPeticionarios() {
         });
 
     });
+
+    $('button[id^=validapeticionario]').click(function (e) {
+        e.preventDefault();
+        Swal.fire({
+            position: 'center',
+            icon: 'info',
+            title: 'Se han cofirmado todos los datos Complementarios del peticionario',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        $('button[id^=validapeticionario]').hide();
+    });
+   
 }
 function formPeticionario(idformulario) {
 
@@ -2056,6 +2068,15 @@ function formPeticionario(idformulario) {
                         submitLabel: "Guardar",
                         classSpan: "btn-icon-right",
                         icon: "fa fa-check"
+                    },
+                    {
+                        class: "col-md-12 positionCenter",
+                        name: "validapeticionario -" + idformulario,
+                        type: "submiticon",
+                        classSubmit: "eliminaformaes btn btn-success",
+                        submitLabel: "Confirmar Datos del Peticionario",
+                        classSpan: "btn-icon-right",
+                        icon: "fa fa-check"
                     }
                 ]
         }
@@ -2554,8 +2575,241 @@ function GeneraPdfRechazados(id, visd, memo, p1, p2, p3, just, idsa, visitadorGe
     }
     //location.reload();
 }
+function btnGenerapdfp(element) {
 
-function btnGenerapdfp(Idcomplemento, Curpd, Nombrep, Apellidope, Apellidome) {
+    let idform = element.dataset.idform;
+    let wspFrame = document.getElementById('frame').contentWindow;
+    let html = wspFrame.document.all;
+    let fechActual = new Date().getDate() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getFullYear() + ' ' + new Date().getHours() + ':' + new Date().getMinutes();
+    let fechatxt = fechActual.toString();
+
+    let idcomplemento = $("#idcomplementopet1").val()
+    let curpd = $("#CURP_petit-frmDatosPersonales1").val()
+    let nombrep = $("#nombre_petit-frmDatosPersonales1").val()
+    let apellidope = $("#apellidop_petit-frmDatosPersonales1").val()
+    let apellidome = $("#apellidom_petit-frmDatosPersonales1").val()
+
+    if (idcomplemento == '') {
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'Ocurrio un error al obtener los datos, reporte al area de sistemas',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        return;
+    } else if (curpd == '') {
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'Ingrese la CURP o el nombre completo del peticionario',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        return;
+    } else if (curpd == 'No proporcionado' && nombrep == '' && apellidope == '' && apellidome == '') {
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'En caso de no tener CURP ingrese el nombre completo del peticionario',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "GetDataPeticionario",
+        data: { curp: curpd, nombre: nombrep, apellidop: apellidope, apellidom: apellidome, idcomp: idcomplemento },
+        dataType: "JSON",
+        success: function (response) {
+
+            if (response.data.length > 0) {
+                //console.log(response.data[0]);
+                html.dateact.textContent = fechatxt;
+
+                (Array.from(html.chkTipoaq)).forEach(function (input, index) {
+                    if (input.value != response.data[0].tipoUsuario) {
+                        input.checked = false
+                    } else {
+                        input.checked = true;
+                    }
+                });
+                html.txtNombre.textContent = response.data[0].nombre;
+                html.txtApaterno.textContent = response.data[0].apellidoPat;
+                html.txtAmaterno.textContent = response.data[0].apellidoMat;
+                html.txtCalle.textContent = response.data[0].calle;
+                html.numExt.textContent = response.data[0].numExterior;
+                html.numInt.textContent = response.data[0].numInterior;
+                html.txtColonia.textContent = response.data[0].colonia;
+                html.txtCiudadloc.textContent = response.data[0].ciudad;
+                html.txtMunicipio.textContent = response.data[0].municipio;
+                html.txtEstado.textContent = response.data[0].estado;
+                html.txtCp.textContent = response.data[0].codigoPostal;
+                html.txtTelefono.textContent = response.data[0].telefono;
+                html.txtEdad.textContent = response.data[0].edad;
+                html.txtEmail.textContent = response.data[0].email;
+                (Array.from(html.chkTipoaq)).forEach(function (input, index) {
+                    if (input.value != response.data[0].tipoUsuario) {
+                        input.checked = false
+                    } else {
+                        input.checked = true;
+                    }
+                });
+                (Array.from(html.chkSexo)).forEach(function (input, index) {
+                    if (input.value != response.data[0].fkSexo) {
+                        input.checked = false
+                    } else {
+                        input.checked = true;
+                    }
+                });
+                (Array.from(html.chkGenero)).forEach(function (input, index) {
+                    if (input.value != response.data[0].genero) {
+                        input.checked = false
+                    } else {
+                        input.checked = true;
+                    }
+                });
+                html.txtOtroGenero.textContent = response.data[0].otroGenero;
+                (Array.from(html.chkEscolaridad)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].fkEscolaridad) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                (Array.from(html.chkEstadocon)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].fkEstadoConyugal) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                (Array.from(html.chkOcupacion)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].fkOcupacion) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                html.chkOtraocupacion.textContent = response.data[0].otraOcupacion;
+                (Array.from(html.chkNacionalidad)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].nacionalidad) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                (Array.from(html.chkSabeleer)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].sabeLeer) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                (Array.from(html.chkDispacacidad)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].fkDiscapacidad) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                (Array.from(html.chkGsocial)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].fkGrupoSocial) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                html.txtOtroGsoc.textContent = response.data[0].otroGsocial;
+                (Array.from(html.chkHablali)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].hablaLenguai) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                html.txtOtraLengiai.textContent = response.data[0].lenguaIndigena;
+                html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+
+                html.txtOrigenmig.textContent = response.data[0].origenMigrante.length > 0 ? response.data[0].origenMigrante : "";
+                html.txtDestinomig.textContent = response.data[0].destinoMigrante;
+                (Array.from(html.chkPrimeravm)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].primeravmexMigrante) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                (Array.from(html.chkViolenmuj)).forEach(function (persona, index) {
+                    if (persona.value != response.data[0].violenciaVm) {
+                        persona.checked = false
+                    } else {
+                        persona.checked = true;
+                    }
+                });
+                if (response.data[0].violenciaVm == 1) {
+                    html.txtCanalizacionvm.textContent = response.data[0].canalizacionVm;
+                    (Array.from(html.chkEmbarazada)).forEach(function (persona, index) {
+                        if (persona.value != response.data[0].embarazadaVm) {
+                            persona.checked = false
+                        } else {
+                            persona.checked = true;
+                        }
+                    });
+                    (Array.from(html.chkSinhijos)).forEach(function (persona, index) {
+                        if (persona.value != response.data[0].fkHijosVivos) {
+                            persona.checked = false
+                        } else {
+                            persona.checked = true;
+                        }
+                    });
+                    (Array.from(html.chkModalidadv)).forEach(function (persona, index) {
+                        if (persona.value != response.data[0].fkModalidadViolencia) {
+                            persona.checked = false
+                        } else {
+                            persona.checked = true;
+                        }
+                    });
+                    (Array.from(html.chkTipov)).forEach(function (persona, index) {
+                        if (persona.value != response.data[0].fkTipoViolencia) {
+                            persona.checked = false
+                        } else {
+                            persona.checked = true;
+                        }
+                    });
+                    (Array.from(html.chkRelacionAgr)).forEach(function (persona, index) {
+                        if (persona.value != response.data[0].fkRelacionAgresor) {
+                            persona.checked = false
+                        } else {
+                            persona.checked = true;
+                        }
+                    });
+                    html.txtIngresosmens.textContent = '$' + response.data[0].ingresosMensuales;
+                }
+
+
+                wspFrame.focus();
+                wspFrame.print();
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Datos no encontrados, verifique la curp o el nombre del peticionario',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                return;
+            }
+        }
+    });
+}
+
+function btnGenerapdfp1(Idcomplemento, Curpd, Nombrep, Apellidope, Apellidome) {
 
     let wspFrame = document.getElementById('frame').contentWindow;
     let html = wspFrame.document.all;
