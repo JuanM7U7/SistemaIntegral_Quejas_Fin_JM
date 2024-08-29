@@ -253,10 +253,58 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
         document.getElementById("defaultOpenCa").click();
         Crear_Formulario_QuejaEdit(id);
         $("#defaultOpenD").addClass("active");
-       
+        $('#confi_hechos').change(function () {
+            if ($(this).is(':checked')) {
+                $('#icohechosE').prop('hidden', true);
+                $('#hechosE').prop('disabled', true);
+                $('#confi_hechos').prop('disabled', true);
+                confirmdatos($('#idquejaE').val(), '1', '', '');
+            }// else {
+            //    $('#icohechosE').prop('hidden', false);
+            //}
+        });
+        $('#confi_lughec').change(function () {
+            if ($(this).is(':checked')) {
+                $('#icomuniE').prop('hidden', true);
+                $('#municipioquejaE').prop('disabled', true);
+                $('#confi_lughec').prop('disabled', true);
+                confirmdatos($('#idquejaE').val(), '','1','');
+            }// else {
+            //    $('#icomuniE').prop('hidden', false);
+            //}
+        });
+        $('#confi_peticiona').change(function () {
+            if ($(this).is(':checked')) {
+                //$('#icomuniE').prop('hidden', true);
+                $('#confi_peticiona').prop('disabled', true);
+                confirmdatos($('#idquejaE').val(), '', '', '1');
+            } else {
+                //$('#icomuniE').prop('hidden', false);
+            }
+        });
         Crear_Formulario_Quejaconclusion(id);
         obtenerDQOT(id, fecRecep, "E", expedienten);
     }
+}
+function confirmdatos(idquej, hech, lug, pet) {
+    $.ajax({
+        type: "POST",
+        url: "UpdateConfirmaDQOT",
+        data: { idqueja: idquej, hechos: hech, lugar: lug, petic: pet },
+        dataType: "JSON",
+        success: function (response) {
+            if (response.estatus === true) {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'success',
+                //    title: 'Dato Validado',
+                //    showConfirmButton: false,
+                //    timer: 1500
+                //});
+            }
+        }
+    });
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -459,15 +507,16 @@ function Crear_Formulario_QuejaEdit(id) {
         + CreaInputs_Con_Labeldisabled('Fecha_TurnoVGE', 'Fecha_TurnoVGE', '', 'date', Requeridos() + 'Fecha de turno a VG: ', 'textfield', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Hechos: ')
-        + icono_editar('hechosE', id)
+        + icono_editar('hechosE', id, 'icohechosE') + checkbox('Calificación', 'confi_hechos', 'Validar dato:', 'style="transform: scale(1.2);"')
         + CreaBR()
         + CreaTextAreadisabled('hechosE', '', 'style="width:100%; height:26%"');
     var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Lugar de los hechos. Municipio y estado: ')
-        + icono_editar('municipioquejaE', id)
+        + icono_editar('municipioquejaE', id, 'icomuniE') + checkbox('Calificación', 'confi_lughec', 'Validar dato:', 'style="transform: scale(1.2);"')
         + CreaBR()
         + CreaSelectLabeldisabled('municipioquejaE', '', arregloBlanco, '', '', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Peticionario(s): ')
+        + checkbox('Calificación', 'confi_peticiona', 'Validar dato:', 'style="transform: scale(1.2);"')
         + CreaBR()
         + "<div id='contenedor_Usuarios'></div>"
         + CreaSelectLabeldisabled('visitaduriaquejaE', '', arregloBlanco, '', Requeridos() + 'Visitaduría: ', '')
@@ -475,7 +524,7 @@ function Crear_Formulario_QuejaEdit(id) {
         + CreaSelectLabeldisabled('sedeRegistroE', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQOT: ')
-        + icono_editar('observacionesE', id)
+        + icono_editar('observacionesE', id, 'icobservE')
         + CreaBR()
         + CreaTextAreadisabled('observacionesE', '', 'style="width:100%; height:21%"');
     var formInnicial = '<form class="text-justify formQueja" id="formQueja" name="formQueja" method="post" style="width:100%; margin-left:2%;">';
@@ -544,6 +593,12 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
         CargaDatosSelectOtro_(`#sedeRegistro${tipo}`, response.lista_sedes, response.informarcionC.id_sede);
         CargaDatosSelectOtro_(`#viainterpos${tipo}`, response.listavi, response.informarcionC.via_interpos);
         CargaDatosSelectOtro_(`#visitaduriaqueja${tipo}`, response.listavisitadurias, response.informarcionC.visitaduria);
+
+        if (response.datvaldqot.id_queja) {
+            $('#confi_hechos').prop('checked', response.datvaldqot.hechos).trigger('change');
+            $('#confi_lughec').prop('checked', response.datvaldqot.hechos).trigger('change');
+            $('#confi_peticiona').prop('checked', response.datvaldqot.hechos).trigger('change');
+        }
 
         var date = new Date();
         if (response.informarcionC.fecha_registro != null) {
@@ -4536,11 +4591,11 @@ function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja) {
     $('#idqueja').val(idqueja);
 }
 
-function checkbox(funcion, id) {
-    return `<label>Confirmación <input type="checkbox" id="${id}" value="C" /></label>`;
+function checkbox(title, id, label, adichec) {
+    return `<label>${label} <input type="checkbox" id="${id}" title="${title}" ${adichec}/></label>`;
 }
-function icono_editar(funcion, id) {
-    return `<i class='btn fa fa-pencil-square-o' onclick='HabilEdi(${id}, "#${funcion}")'></i>`;
+function icono_editar(funcion, id, idico) {
+    return `<i class='btn fa fa-pencil-square-o' id=${idico} onclick='HabilEdi(${id}, "#${funcion}")'></i>`;
 }
 function Requeridos() {
     return '<span style="color: red;">*</span>';

@@ -130,6 +130,7 @@ namespace SistemaIntegralQuejas.Controllers
             List<espedientetema> informaciontemaexped = new List<espedientetema>();
             List<inforaportaciones> infoaportacioness = new List<inforaportaciones>();
             List<SelectGenerico> paso = new List<SelectGenerico>();
+            validaIinfoDQOT datValDQOT = new validaIinfoDQOT();
 
 
             String query = "exec Sp_Select_Abogado";
@@ -163,7 +164,12 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 query = "exec Sp_Select_Aporta "+ identificadorQueja +", ''";
             }
-            
+
+            #region CONFIRMACION DE DATOS DQOT
+            query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
+            datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje);
+            #endregion
+
             infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
 
             query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
@@ -186,7 +192,8 @@ namespace SistemaIntegralQuejas.Controllers
                         informarcionC = informacioncomplementaria,
                         infoaportaciones = infoaportacioness,
                         lista_tema_expe = informaciontemaexped,
-                        listavi = listaContenedora8
+                        listavi = listaContenedora8,
+                        datvaldqot= datValDQOT
                     });
             }
             else
@@ -293,6 +300,28 @@ namespace SistemaIntegralQuejas.Controllers
             this.id_registro = id_registro;
             this.nombre_autoridad = nombre_peticionario;
             this.ambito = curp;
+        }
+    }
+
+    public class validaIinfoDQOT
+    {
+        public int id_queja { get; set; }
+        public string hechos { get; set; }
+        public string lugar { get; set; }
+        public string petic { get; set; }
+        public string datospeti { get; set; }
+        public int version { get; set; }
+
+        public validaIinfoDQOT() { }
+
+        public validaIinfoDQOT(int id_queja, string hechos, string lugar, string petic, string datospeti, int version)
+        {
+            this.id_queja = id_queja;
+            this.hechos = hechos;
+            this.lugar = lugar;
+            this.petic = petic;
+            this.datospeti = datospeti;
+            this.version = version;
         }
     }
 

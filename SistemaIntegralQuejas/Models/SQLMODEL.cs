@@ -866,5 +866,33 @@ namespace SistemaIntegralQuejas.Models
             }
             return lista;
         }
+
+        public validaIinfoDQOT SelectValDQOT(string query, ref string mensaje)
+        {
+            mensaje = "";
+            validaIinfoDQOT lista = new validaIinfoDQOT();
+            SqlDataReader lector;
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    validaIinfoDQOT modelo;
+                    while (lector.Read())
+                    {
+                        lista = new validaIinfoDQOT(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), int.Parse(lector[5].ToString()));
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return lista;
+        }
     }
 }
