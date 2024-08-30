@@ -236,7 +236,7 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 }
 
-function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
+function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacalif) {
     console.log("Expediente al crear el formulario de calificación: " + expedienten);
     document.getElementById(Tmodal).style.display = "block";
     if (tip === 1) {
@@ -282,7 +282,7 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten) {
                 //$('#icomuniE').prop('hidden', false);
             }
         });
-        Crear_Formulario_Quejaconclusion(id);
+        Crear_Formulario_Quejaconclusion(id,fechaturnoabo,fechacalif);
         obtenerDQOT(id, fecRecep, "E", expedienten);
     }
 }
@@ -351,10 +351,10 @@ function mostrarResTblFormatos(response, response1) {
                 'mRender': function (data, type, full) {
                     if (full.expediente !== 'PENDIENTE' && full.status == 'Calificado') {
                         //full.expediente
-                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
                     } else if (full.expediente !== 'PENDIENTE' && full.status == 'Concluido')
                     {
-                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Consultar</button>`;
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Consultar</button>`;
 
                     }else {
                         btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Calificar</button>`;
@@ -539,7 +539,7 @@ function Crear_Formulario_QuejaEdit(id) {
     return formualarioCompleto;
 }
 
-function Crear_Formulario_Quejaconclusion(id) {
+function Crear_Formulario_Quejaconclusion(id,fechaturno,fechacalif) {
     $('#izquierdaEC').empty();
     //$('#derechaEC').empty();
     console.log("Entro al método de crear el formulario de conclusión");
@@ -547,7 +547,7 @@ function Crear_Formulario_Quejaconclusion(id) {
     //var cuerpoIzquierda = ``;
     crearTabla('#izquierdaEC', "tablaconclu", ["Acciones","Fecha de conclusión", "Clave/Causa de conclusión", "Acto Restituido", "Observación"], 'izquierdaEC', '');
     //LlenarTabAutReHecVio('#tablaAutRe_HecVioT', tipo, idformulario);
-    LlenarTabConclu('#tablaconclu', '-', id);
+    LlenarTabConclu('#tablaconclu', '-', id, fechaturno, fechacalif);
     var formInnicial = '<form class="text-justify formCausaC" id="formCausaC" name="formCausaC" method="post" style="width:100%; margin-left:2%;">';
     var fin_form = '</form>';
 
@@ -3668,7 +3668,7 @@ function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
 }
 
 
-function AgrDil(nomTab, id) {
+function AgrDil(nomTab, id,fechaturno,fechacalif) {
     var contc = 0;
     var table = $("#" + nomTab).DataTable();
     var newRow;
@@ -3725,13 +3725,13 @@ function AgrDil(nomTab, id) {
                     newRow = table.row.add([
                         CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
                         + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
-                        CreaInputs_Con_Labeldate(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
-                        CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', '', Habilita_Acto_Rest(causacat)),
+                        Requeridos() + CreaInputs_Con_Labeldate(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                        Requeridos() + CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + Requeridos() + CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', '', Habilita_Acto_Rest(causacat)),
                         `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
                     if (contc == 0) {
-                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente('${fechaturno}','${fechacalif}')" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
                         contc++;
                     }
                 }
@@ -3741,13 +3741,13 @@ function AgrDil(nomTab, id) {
                     newRow = table.row.add([
                         CreaInputs(`diligenArreg_${rowIndex}`, `diligenArreg_${rowIndex}`, '', 'hidden')
                         + `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#${nomTab}")'></i>`,
-                        CreaInputs_Con_Labeldate(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
-                        CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
+                        Requeridos() + CreaInputs_Con_Labeldate(`fechaCausa_${rowIndex}`, `fechaCausa_${rowIndex}`, 'validatimeac', 'date', '', 'textfield9', ''),
+                        Requeridos() + CreaSelectLabelinverso(`causaccatcve_${rowIndex}`, '', ExpeConc, '', '', '') + Requeridos() +CreaSelectLabel(`causaccat_${rowIndex}`, '', ExpeConc, '', '', ''),
                         `<textarea id="ActoRest_${rowIndex}" class="swal2-input" disabled> </textarea>`,
                         `<textarea id="ObsConclu_${rowIndex}" class="swal2-input" > </textarea>`
                     ]).draw().node();
                     if (contc == 0) {
-                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente()" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
+                        $("#izquierdaEC").append(`<div class="col-md-12 positionCenter eliminaformaes"><button type="button" name="" onclick="Concluirexpediente('${fechaturno}','${fechacalif}')" id="concluir-${id}" class="eliminaformaes eliminaformaes btn btn-success">Concluir Expediente <span class="btn-icon-right eliminaformaes"><i class="fa fa-check eliminaformaes"></i></span></button></div>`);
                         contc++;
                     }
 
@@ -3797,8 +3797,6 @@ function AgrDil(nomTab, id) {
             var diasAG = 0;
             fetchGet("Expediente/DiasAgregar", "json", (data) => {
                 diasAG = data.dias; console.log(diasAG); $('input[id^=fechaCausa_]').prop("min", fechamin);$('input[id^=fechaCausa_]').prop("max", calcular(fechaMax, 'sumar', diasAG));})
-
-
             break;
     }
     actualizarIndices(nomTab);
@@ -3861,7 +3859,7 @@ function Habilita_Acto_Rest(causac)
 
 }
 
-function Concluirexpediente() {
+function Concluirexpediente(fechaturno,fechacalif) {
 
     /*Obtener   Causas de Cncllusión*/
     var Causasc = [];
@@ -3879,11 +3877,26 @@ function Concluirexpediente() {
         var actorest = $(this).find('textarea[id^="ActoRest_"]').val();
         var obs = $(this).find('textarea[id^="ObsConclu_"]').val();
 
-       //obs.trim() != '')
-        if (fechac.trim() !== '' && causac.trim() !== '99')  {
 
-            if (causac.trim() == '6.2' || causac.trim() == '8_' || causac.trim() == '6.1') {
-                if (actorest.trim() != '') {
+
+
+            //obs.trim() != '')
+            if (fechac.trim() !== '' && causac.trim() !== '99') {
+
+                if (causac.trim() == '6.2' || causac.trim() == '8_' || causac.trim() == '6.1') {
+                    if (actorest.trim() != '') {
+                        Causasc.push({
+                            fechacon: fechac,
+                            causacon: causac,
+                            idquejaE: idquejaE,
+                            actorestitu: actorest,
+                            observa: obs
+                        });
+                    }
+                    else {
+                        status = true;
+                    }
+                } else {
                     Causasc.push({
                         fechacon: fechac,
                         causacon: causac,
@@ -3892,24 +3905,12 @@ function Concluirexpediente() {
                         observa: obs
                     });
                 }
-                else {
-                    status = true;
-                }
             } else {
-                Causasc.push({
-                    fechacon: fechac,
-                    causacon: causac,
-                    idquejaE: idquejaE,
-                    actorestitu: actorest,
-                    observa: obs
-                });
+                status = true;
             }
-        } else
-        {
-            status = true;
-        }
 
-    });
+        });
+
 
     formDQOT = {
         tablaCausasc: Causasc,
@@ -3928,27 +3929,44 @@ function Concluirexpediente() {
             timer: 2000
         });
     } else {
-        $.ajax({
-            type: "POST",
-            url: "ConcluirExpediente",
-            data: formDQOT,
-            dataType: "JSON",
-            success: function (response) {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Expediente Concluido',
-                    showConfirmButton: true,
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
+        var fechac1 = $("#tablaconclu").find("input[id^='fechaCausa_']").val();
+        var fechacalifi = fechacalif.split('/');
+        var fechacalifi2 = fechacalifi[2] + '-' + fechacalifi[1] + '-' + fechacalifi[0];
+        var fechacalifi3 = new Date(fechacalifi2);
+        var fecha_Conclu = new Date(fechac1);
+        console.log("Fecha califi:" + fechacalifi3 + "Fecha conclu:" + fecha_Conclu);
 
-                console.log("Concluido");
-            }
-        })
+        if (fecha_Conclu.getTime() < fechacalifi3.getTime()) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'La fecha de conclusión no puede ser menor a la fecha de calificación, por favor verifica tu información antes de continuar',
+                timer: 5000
+            });
+        } else {
+
+            $.ajax({
+                type: "POST",
+                url: "ConcluirExpediente",
+                data: formDQOT,
+                dataType: "JSON",
+                success: function (response) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Expediente Concluido',
+                        showConfirmButton: true,
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+
+                    console.log("Concluido");
+                }
+            })
+        }
     }
    }
 
@@ -4117,7 +4135,7 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id) {
         });
     });
 }
-function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
+function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
     RecuperaDaConclu(id, function (datos) {
         $(tablaAutRe_HecVioT).DataTable({
             language: {
@@ -4189,8 +4207,15 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id) {
             initComplete: function () {
                 const table = $(tablaAutRe_HecVioT).DataTable();
                
-                    var param = `"${tablaAutRe_HecVioT.replace('#', '')}",${id}`;
-                    const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', `AgrDil(${param})`);
+                var param = `"${tablaAutRe_HecVioT.replace('#', '')}",${id}`;
+                var fecha1 = fechaturno.toString();
+                var fecha2 = fechacalif.toString();
+
+                var fecha11 = fecha1.split(' ')[0];
+                var fecha22 = fecha2.split(' ')[0];
+                console.log("Fecha1: " + fecha1 + " Fecha2:" + fecha2);
+
+                const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', "AgrDil(" + param + ",'-','" + fecha11 + "','" + fecha22 +"')");
                 $(table.table().container()).find('.dataTables_length').append(boton);
                
                 table.rows().every(function (rowIdx, tableLoop, rowLoop) {
