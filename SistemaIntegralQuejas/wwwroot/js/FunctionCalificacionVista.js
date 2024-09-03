@@ -255,31 +255,28 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacal
         $("#defaultOpenD").addClass("active");
         $('#confi_hechos').change(function () {
             if ($(this).is(':checked')) {
-                $('#icohechosE').prop('hidden', true);
-                $('#hechosE').prop('disabled', true);
+                //$('#icohechosE').prop('hidden', true);
+                //$('#hechosE').prop('disabled', true);
                 $('#confi_hechos').prop('disabled', true);
+                $('#confi_hechos').removeClass('pulsacion');
                 confirmdatos($('#idquejaE').val(), '1', '', '');
-            }// else {
-            //    $('#icohechosE').prop('hidden', false);
-            //}
+            }
         });
         $('#confi_lughec').change(function () {
             if ($(this).is(':checked')) {
-                $('#icomuniE').prop('hidden', true);
-                $('#municipioquejaE').prop('disabled', true);
+                //$('#icomuniE').prop('hidden', true);
+                //$('#municipioquejaE').prop('disabled', true);
                 $('#confi_lughec').prop('disabled', true);
+                $('#confi_lughec').removeClass('pulsacion');
                 confirmdatos($('#idquejaE').val(), '', '1', '');
-            }// else {
-            //    $('#icomuniE').prop('hidden', false);
-            //}
+            }
         });
         $('#confi_peticiona').change(function () {
             if ($(this).is(':checked')) {
                 //$('#icomuniE').prop('hidden', true);
                 $('#confi_peticiona').prop('disabled', true);
+                $('#confi_peticiona').removeClass('pulsacion');
                 confirmdatos($('#idquejaE').val(), '', '', '1');
-            } else {
-                //$('#icomuniE').prop('hidden', false);
             }
         });
         Crear_Formulario_Quejaconclusion(id,fechaturnoabo,fechacalif);
@@ -354,7 +351,8 @@ function mostrarResTblFormatos(response, response1) {
                         btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
                     } else if (full.expediente !== 'PENDIENTE' && full.status == 'Concluido')
                     {
-                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Consultar</button>`;
+                        btnEscritook = '';
+                        //btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Consultar</button>`;
 
                     }else {
                         btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Calificar</button>`;
@@ -494,11 +492,12 @@ function Crear_Formulario_QuejaEdit(id) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idquejaE', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
+        + '<button type="button" class="" style="border:hidden; background:none;" title="Cedula de Calificación" onclick="generaPDFCedula()"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>'
         + CreaBR()
         + CreaSelectLabeldisabled('viainterposE', '', arregloBlanco, '', 'Via de interposición: ', '')
         + CreaBR()
-        + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada: ', id, 1)
-        + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial: ', id, 2)
+        + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada DQOT: ', id, 1)
+        + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial DQOT: ', id, 2)
         + CreaBR()
         + CreaSelectLabeldisabled('AbogadoquejaE', '', arregloBlanco, '', 'Abogado quien Recibe: ', '')
         + CreaBR()
@@ -507,11 +506,11 @@ function Crear_Formulario_QuejaEdit(id) {
         + CreaInputs_Con_Labeldisabled('Fecha_TurnoVGE', 'Fecha_TurnoVGE', '', 'date', Requeridos() + 'Fecha de turno a VG: ', 'textfield', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Hechos: ')
-        + icono_editar('hechosE', id, 'icohechosE') + checkbox('Calificación', 'confi_hechos', 'Validar dato:', 'style="transform: scale(1.2);"')
+        + icono_editar('hechosE', id, 'icohechosE') + checkbox('Validar info. DQOT', 'confi_hechos', '', '', 'pulsacion')
         + CreaBR()
         + CreaTextAreadisabled('hechosE', '', 'style="width:100%; height:26%"');
     var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Lugar de los hechos. Municipio y estado: ')
-        + icono_editar('municipioquejaE', id, 'icomuniE') + checkbox('Calificación', 'confi_lughec', 'Validar dato:', 'style="transform: scale(1.2);"')
+        + icono_editar('municipioquejaE', id, 'icomuniE') + checkbox('Validar info. DQOT', 'confi_lughec', '', '', 'pulsacion')
         + CreaBR()
         + CreaSelectLabeldisabled('municipioquejaE', '', arregloBlanco, '', '', '')
         + CreaBR()
@@ -520,13 +519,15 @@ function Crear_Formulario_QuejaEdit(id) {
                                                <span class="fa fa-plus color-muted fa-1x"></span></p>
                                            </button>`
         + checkbox('Calificación', 'confi_peticiona', 'Validar dato:', 'style="transform: scale(1.2);"')
+        + checkbox('Validar info. DQOT', 'confi_peticiona', '', '', 'pulsacion')
+        + CreaBR()
         + "<div id='contenedor_Usuarios'></div>"
         + CreaBR()
         + CreaSelectLabeldisabled('visitaduriaquejaE', '', arregloBlanco, '', Requeridos() + 'Visitaduría: ', '')
         + CreaBR()
         + CreaSelectLabeldisabled('sedeRegistroE', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
-        + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQOT: ')
+        + Crea_Label('textfield8', 'textfield8', '', 'Observaciones: ')
         + icono_editar('observacionesE', id, 'icobservE')
         + CreaBR()
         + CreaTextAreadisabled('observacionesE', '', 'style="width:100%; height:21%"');
@@ -598,9 +599,9 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
         CargaDatosSelectOtro_(`#visitaduriaqueja${tipo}`, response.listavisitadurias, response.informarcionC.visitaduria);
         var iddatospeti = false;
         if (response.datvaldqot.id_queja) {
-            $('#confi_hechos').prop('checked', response.datvaldqot.hechos).trigger('change');
-            $('#confi_lughec').prop('checked', response.datvaldqot.lugar).trigger('change');
-            $('#confi_peticiona').prop('checked', response.datvaldqot.petic).trigger('change');
+            if (response.datvaldqot.hechos !== 'False') { $('#confi_hechos').prop('checked', response.datvaldqot.hechos).trigger('change'); $('#confi_hechos').removeClass('pulsacion'); } 
+            if (response.datvaldqot.lugar !== 'False') { $('#confi_lughec').prop('checked', response.datvaldqot.lugar).trigger('change'); $('#confi_lughec').removeClass('pulsacion'); } 
+            if (response.datvaldqot.petic !== 'False') { $('#confi_peticiona').prop('checked', response.datvaldqot.petic).trigger('change'); $('#confi_peticiona').removeClass('pulsacion'); } 
             console.log(response.datvaldqot);
             iddatospeti = response.datvaldqot.datospeti;
             console.log(iddatospeti);
@@ -4175,10 +4176,11 @@ function actualizarIndices(nomTab) {
 function Habilita_Acto_Rest(causac)
 {
     //alert(causac);
-    if (causac == '8_') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); console.log($("textarea[id^=ActoRest_]")); }
-    else if (causac == '6.2') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); }
-    else if (causac == '6.1') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); }
-    else { $("textarea[id^=ActoRest_]").attr('disabled', 'disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").val(''); }
+    if (causac == '8_') {
+        $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); console.log($("textarea[id^=ActoRest_]")); $('#agregaCau').removeAttr('disabled'); $('#agregaCau').attr('disabled', 'disabled'); }
+    else if (causac == '6.2') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); $('#agregaCau').removeAttr('disabled'); }
+    else if (causac == '6.1') { $("textarea[id^=ActoRest_]").removeAttr('disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").before(Requeridos()); $('#agregaCau').removeAttr('disabled'); $('#agregaCau').attr('disabled', 'disabled'); }
+    else { $("textarea[id^=ActoRest_]").attr('disabled', 'disabled'); $("textarea[id^=ActoRest_]").prev('span').remove(); $("textarea[id^=ActoRest_]").val(''); $('#agregaCau').removeAttr('disabled'); $('#agregaCau').attr('disabled', 'disabled'); }
 
 
 }
@@ -4539,7 +4541,7 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
                 var fecha22 = fecha2.split(' ')[0];
                 console.log("Fecha1: " + fecha1 + " Fecha2:" + fecha2);
 
-                const boton = crea_Boton('button', '', 'agregaDil', 'btn btn-info fa fa-plus fa-1x btn-right', "AgrDil(" + param + ",'-','" + fecha11 + "','" + fecha22 +"')");
+                const boton = crea_Boton('button', '', 'agregaCau', 'btn btn-info fa fa-plus fa-1x btn-right', "AgrDil(" + param + ",'-','" + fecha11 + "','" + fecha22 +"')");
                 $(table.table().container()).find('.dataTables_length').append(boton);
                
                 table.rows().every(function (rowIdx, tableLoop, rowLoop) {
@@ -5040,8 +5042,8 @@ function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja) {
     $('#idqueja').val(idqueja);
 }
 
-function checkbox(title, id, label, adichec) {
-    return `<label>${label} <input type="checkbox" id="${id}" title="${title}" ${adichec}/></label>`;
+function checkbox(title, id, label, adichec, clase) {
+    return `<label>${label} <input type="checkbox" class="${clase}" id="${id}" title="${title}" ${adichec}/></label>`;
 }
 function icono_editar(funcion, id, idico) {
     return `<i class='btn fa fa-pencil-square-o' id=${idico} onclick='HabilEdi(${id}, "#${funcion}")'></i>`;
@@ -5124,61 +5126,90 @@ function GuardarAp() {
         descapo: $("#descapo-frmDatosCalificacion").val()
     };
     var combinedData = formDQOT;
-    if (formDQOT.municipioqueja == '' || formDQOT.visitaduriaqueja == '99' || formDQOT.Fecha_TurnoVG == '' || formDQOT.hechos == ''|| $("#tipexpediente-frmDatosCalificacion").val() == '99' || $("#expedsc-frmDatosCalificacion").val() == '99' || $("#descapo-frmDatosCalificacion").val() == '') {
-        var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
-        if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
-        if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
-        if (formDQOT.Fecha_TurnoVG == '') { htm = htm + Requeridos() + 'Fecha de Recepción en VG<br>'; }
-        if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hechos DQOT<br>'; }
-        if ($("#tipexpediente-frmDatosCalificacion").val() == '99') { htm = htm + Requeridos() + 'Tipo Expediente<br>'; }
-        if ($("#expedsc-frmDatosCalificacion").val() == '99') { htm = htm + Requeridos() + 'Expediente a aportar<br>'; }
-        if ($("#descapo-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Descripción de la aportación<br>'; }
+    if ($('#confi_hechos').is(':checked') && $('#confi_lughec').is(':checked') && $('#confi_peticiona').is(':checked')) {
+        if (formDQOT.municipioqueja == '' || formDQOT.visitaduriaqueja == '99' || formDQOT.Fecha_TurnoVG == '' || formDQOT.hechos == '' || $("#tipexpediente-frmDatosCalificacion").val() == '99' || $("#expedsc-frmDatosCalificacion").val() == '99' || $("#descapo-frmDatosCalificacion").val() == '') {
+            var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
+            if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
+            if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
+            if (formDQOT.Fecha_TurnoVG == '') { htm = htm + Requeridos() + 'Fecha de Recepción en VG<br>'; }
+            if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hechos DQOT<br>'; }
+            if ($("#tipexpediente-frmDatosCalificacion").val() == '99') { htm = htm + Requeridos() + 'Tipo Expediente<br>'; }
+            if ($("#expedsc-frmDatosCalificacion").val() == '99') { htm = htm + Requeridos() + 'Expediente a aportar<br>'; }
+            if ($("#descapo-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Descripción de la aportación<br>'; }
 
-        Swal.fire({
-            icon: "error",
-            html: htm,
+            Swal.fire({
+                icon: "error",
+                html: htm,
 
-        });
-    } else {
+            });
+        } else {
 
-        $.ajax({
-            type: "POST",
-            url: "GuardaCalifQuej",
-            data: combinedData,
-            dataType: "JSON",
-            success: function (response) {
-                if (response.status = "OK") {
-                    closeModal('modaltabCalif');
-                    Swal.fire({
-                        icon: "success",
-                        title: "Registro Exitoso",
-                        text: "ID aportado:" + response.no_exp + " a expediente: " + expediente,
-                    });
+            $.ajax({
+                type: "POST",
+                url: "GuardaCalifQuej",
+                data: combinedData,
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status = "OK") {
+                        closeModal('modaltabCalif');
+                        Swal.fire({
+                            icon: "success",
+                            title: "Registro Exitoso",
+                            text: "ID aportado:" + response.no_exp + " a expediente: " + expediente,
+                        });
 
-                    $.ajax({
-                        type: "POST",
-                        url: "listadovisitadorGeneral",
-                        data: { vis: codigoArea, idabogado: idusuario },
-                        dataType: "JSON",
-                        success: function (response) {
-                            console.log(response.data)
-                            mostrarResTblFormatos(response.data, response.data1);
-                        }
-                    });
+                        $.ajax({
+                            type: "POST",
+                            url: "listadovisitadorGeneral",
+                            data: { vis: codigoArea, idabogado: idusuario },
+                            dataType: "JSON",
+                            success: function (response) {
+                                console.log(response.data)
+                                mostrarResTblFormatos(response.data, response.data1);
+                            }
+                        });
 
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Debes de Acpetar y/o Rechazar todos los ID´s",
-                    });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Debes de Acpetar y/o Rechazar todos los ID´s",
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al enviar los datos:", error);
                 }
-            },
-            error: function (error) {
-                console.error("Error al enviar los datos:", error);
-            }
+            });
+        }
+    } else {
+        //var htm = `<div style =" font-weight: bold;">Validar información de la DQOT: ` + `</p>`;
+        //if (!$('#confi_hechos').is(':checked')) { htm = htm + 'Hechos<br>'; }
+        //if (!$('#confi_lughec').is(':checked')) { htm = htm + 'Lugar de los hechos<br>'; }
+        //if (!$('#confi_peticiona').is(':checked')) { htm = htm + 'Peticionario(s)<br>'; }
+        //htm = htm + '</div>'
+        //Swal.fire({
+        //    position: 'center',
+        //    icon: "error",
+        //    html: htm,
+        //});
+
+        var htm = "Validar información de la DQOT: \n";
+        if (!$('#confi_hechos').is(':checked')) { htm += '*Hechos\n'; }
+        if (!$('#confi_lughec').is(':checked')) { htm += '*Lugar de los hechos\n'; }
+        if (!$('#confi_peticiona').is(':checked')) { htm += '*Peticionario(s)\n'; }
+        $.notify(htm, {
+            className: "warn",
+            position: "bottom right",
+            autoHide: false,
+            style: 'bootstrap',
+            globalPosition: 'top center',
+            showDuration: 400,
+            hideDuration: 400,
+            gap: 2
         });
     }
+    
 }
 
 $(document).ready(function () {
@@ -5362,74 +5393,101 @@ $(document).ready(function () {
         var espe = $("#especializado-frmDatosCalificacion").val();
         var tran = $("#trancpub-frmDatosCalificacion").val();
         var niv = $("#nivries-frmDatosCalificacion").val();
+        if ($('#confi_hechos').is(':checked') && $('#confi_lughec').is(':checked') && $('#confi_peticiona').is(':checked')) {
+            if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacion").val() == '' || formDQOT.visitaduriaqueja == ''
+                || $("#materia-frmDatosCalificacion").val() == '' || $("#tipexpediente-frmDatosCalificacion").val() == '' || $("#especializado-frmDatosCalificacion").val() == '' || $("#trancpub-frmDatosCalificacion").val() == ''
+                || $("#nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' || badera_envío) {
+                var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
+                if ($("#programa-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Programa<br>'; }
+                if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
+                if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hechos DQOT <br>'; }
+                if ($("#materia-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Materia<br>'; }
+                if ($("#tipexpediente-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Tipo Expediente<br>'; }
+                if ($("#especializado-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Especializado<br>'; }
+                if ($("#trancpub-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Traciende a la opinión pública<br>'; }
+                if ($("#nivries-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Nivel de Riesgo<br>'; }
+                if (formDQOT.arreglotemas == '') { htm = htm + Requeridos() + 'Tema<br>'; }
+                if (formDQOT.Fecha_TurnoVG == '') { htm = htm + Requeridos() + 'Fecha de Recepción en VG<br>'; }
+                if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
+                if (formDQOT.longitudtabla1 <= 0) { htm = htm + Requeridos() + 'Autoridades - Hechos Violatorios<br>'; }
+                if (badera_envío) { htm = htm + 'Verificar que los datos Requeridos de la tabla de medidas Cautelares estén completos'; }
+                //if (formDQOT.longitudtabla2 <= 0) { htm = htm + Requeridos() + 'Medidas Cautelares<br>'; }
+                //var valo = $('input[id=idmedCuate' + idquejaE + ']:checked').val();
+                //if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si' && formDQOT.longitudtabla2 <= 0) {
+                //    htm = htm + Requeridos() + 'Medidas Cuatelares<br>';
+                //}
+                Swal.fire({
+                    icon: "error",
+                    html: htm,
 
-        if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacion").val() == '' || formDQOT.visitaduriaqueja == ''
-            || $("#materia-frmDatosCalificacion").val() == '' || $("#tipexpediente-frmDatosCalificacion").val() == '' || $("#especializado-frmDatosCalificacion").val() == '' || $("#trancpub-frmDatosCalificacion").val() == ''
-            || $("#nivries-frmDatosCalificacion").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' || badera_envío) {
-            var htm = `<div style ="float:left; font-weight: bold;">Completar los campos requeridos marcados con un ` + Requeridos() + `</p>`;
-            if ($("#programa-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Programa<br>'; }
-            if (formDQOT.visitaduriaqueja == '') { htm = htm + Requeridos() + 'Visitaduría General<br>'; }
-            if (formDQOT.hechos == '') { htm = htm + Requeridos() + 'Hechos DQOT <br>'; }
-            if ($("#materia-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Materia<br>'; }
-            if ($("#tipexpediente-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Tipo Expediente<br>'; }
-            if ($("#especializado-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Especializado<br>'; }
-            if ($("#trancpub-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Traciende a la opinión pública<br>'; }
-            if ($("#nivries-frmDatosCalificacion").val() == '') { htm = htm + Requeridos() + 'Nivel de Riesgo<br>'; }
-            if (formDQOT.arreglotemas == '') { htm = htm + Requeridos() + 'Tema<br>'; }
-            if (formDQOT.Fecha_TurnoVG == '') { htm = htm + Requeridos() + 'Fecha de Recepción en VG<br>'; }
-            if (formDQOT.municipioqueja == '') { htm = htm + Requeridos() + 'Lugar donde Ocurrieron los Hechos<br>'; }
-            if (formDQOT.longitudtabla1 <= 0) { htm = htm + Requeridos() + 'Autoridades - Hechos Violatorios<br>'; }
-            if (badera_envío) { htm = htm +'Verificar que los datos Requeridos de la tabla de medidas Cautelares estén completos'; }
-            //if (formDQOT.longitudtabla2 <= 0) { htm = htm + Requeridos() + 'Medidas Cautelares<br>'; }
-            //var valo = $('input[id=idmedCuate' + idquejaE + ']:checked').val();
-            //if ($('input[id=idmedCuate' + idquejaE + ']:checked').val() == 'Si' && formDQOT.longitudtabla2 <= 0) {
-            //    htm = htm + Requeridos() + 'Medidas Cuatelares<br>';
-            //}
-            Swal.fire({
-                icon: "error",
-                html: htm,
+                });
+            }
+            else {
 
-            });
-        }
-        else { 
+                $.ajax({
+                    type: "POST",
+                    url: "GuardaCalifQuej",
+                    data: combinedData,
+                    dataType: "JSON",
+                    success: function (response) {
+                        if (response.status = "OK") {
+                            closeModal('modaltabCalif');
+                            Swal.fire({
+                                icon: "success",
+                                title: "Expediente Calificado",
+                                text: "Número de expediente :" + response.no_exp + "-2024",
 
-            $.ajax({
-                type: "POST",
-                url: "GuardaCalifQuej",
-                data: combinedData,
-                dataType: "JSON",
-                success: function (response) {
-                    if (response.status = "OK") {
-                        closeModal('modaltabCalif');
-                        Swal.fire({
-                            icon: "success",
-                            title: "Expediente Calificado",
-                            text: "Número de expediente :" + response.no_exp + "-2024",
+                            });
 
-                        });
+                            $.ajax({
+                                type: "POST",
+                                url: "listadovisitadorGeneral",
+                                data: { vis: codigoArea, idabogado: idusuario },
+                                dataType: "JSON",
+                                success: function (response) {
+                                    console.log(response.data)
+                                    mostrarResTblFormatos(response.data, response.data1);
+                                }
+                            });
 
-                        $.ajax({
-                            type: "POST",
-                            url: "listadovisitadorGeneral",
-                            data: { vis: codigoArea, idabogado: idusuario },
-                            dataType: "JSON",
-                            success: function (response) {
-                                console.log(response.data)
-                                mostrarResTblFormatos(response.data, response.data1);
-                            }
-                        });
-
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Debes de Acpetar y/o Rechazar todos los ID´s",
-                        });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Debes de Acpetar y/o Rechazar todos los ID´s",
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error al enviar los datos:", error);
                     }
-                },
-                error: function (error) {
-                    console.error("Error al enviar los datos:", error);
-                }
+                });
+            }
+        } else {
+            //var htm = `<div style =" font-weight: bold;">Validar información de la DQOT: ` + `</p>`;
+            //if (!$('#confi_hechos').is(':checked')) { htm = htm + 'Hechos<br>'; }
+            //if (!$('#confi_lughec').is(':checked')) { htm = htm + 'Lugar de los hechos<br>'; }
+            //if (!$('#confi_peticiona').is(':checked')) { htm = htm + 'Peticionario(s)<br>'; }
+            //htm = htm + '</div>'
+            //Swal.fire({
+            //    position: 'center',
+            //    icon: "error",
+            //    html: htm,
+            //});
+
+            var htm = "Validar información de la DQOT: \n";
+            if (!$('#confi_hechos').is(':checked')) { htm += '-Hechos\n'; }
+            if (!$('#confi_lughec').is(':checked')) { htm += '-Lugar de los hechos\n'; }
+            if (!$('#confi_peticiona').is(':checked')) { htm += '-Peticionario(s)\n'; }
+            $.notify(htm, {
+                className: "warn",
+                position: "bottom right",
+                autoHide: false,
+                style: 'bootstrap',
+                globalPosition: 'top center',
+                showDuration: 400,
+                hideDuration: 400,
+                gap: 2
             });
         }
     });
@@ -5730,413 +5788,418 @@ function generaPDFCedula() {
 
     try {
 
-    var id = $("#idquejaE").val();
-    var exp = $("#Titulo_Modal").val();
-    var folio = '';
-    var viaI = $("#viainterposE").find('option:selected').text();
-    var programaE = $("#programa-frmDatosCalificacion").find('option:selected').text();
-    var materia = $("#materia-frmDatosCalificacion").find('option:selected').text();
-    var abogadoT = '';
-    var fechaCali = '';
-    var fechaRegistro = $("#Fecha_RegistroE").val();
-    var fechaTurnEle = $("#visitaduriaquejaE").val();
-    var vis = $("#visitaduriaquejaE").val();
-    var fechaFisicaVis = '';
-    var fechaTurnoA = '';
-    var lugarHechos = $("#municipioquejaE").find('option:selected').text();
-    var peticionarios = '';
-    var autoridad = '';
-    var derHV = '';
-    var HechoV = '';
-    var tipoPet = '';
-    var autoridadAmbi = '';
-    var sexoPet = '';
-    var hecho = $("#hechosE").text();
-    var longitudHecho = $("#hechosE").text().length;
-    console.log(hecho);
-    console.log(peticionarios);
+        var id = $("#idquejaE").val();
+        var exp = $("#Titulo_Modal").val();
+        var folio = '';
+        var viaI = $("#viainterposE").find('option:selected').text();
+        var programaE = $("#programa-frmDatosCalificacion").find('option:selected').text();
+        var materia = $("#materia-frmDatosCalificacion").find('option:selected').text();
+        var abogadoT = '';
+        var fechaCali = '';
+        var fechaRegistro = $("#Fecha_RegistroE").val();
+        var fechaTurnEle = $("#visitaduriaquejaE").val();
+        var vis = $("#visitaduriaquejaE").val();
+        var fechaFisicaVis = '';
+        var fechaTurnoA = '';
+        var lugarHechos = $("#municipioquejaE").find('option:selected').text();
+        var peticionarios = '';
+        var autoridad = '';
+        var derHV = '';
+        var HechoV = '';
+        var tipoPet = '';
+        var autoridadAmbi = '';
+        var sexoPet = '';
+        var hecho = $("#hechosE").val();
+        var longitudHecho = $("#hechosE").val().length;
+        console.log(hecho);
+        console.log(peticionarios);
 
-    var posicionY1 = 0;
-    var posicionX1 = 0;
-    var posicionY2 = 0;
-    var posicionX2 = 0;
-    var posicionY3 = 0;
-    var posicionX3 = 0;
+        var posicionY1 = 0;
+        var posicionX1 = 0;
+        var posicionY2 = 0;
+        var posicionX2 = 0;
+        var posicionY3 = 0;
+        var posicionX3 = 0;
 
-    /*       for (let index = 0; index < array.length; index++) {
-        const element = array[index];
+        /*       for (let index = 0; index < array.length; index++) {
+            const element = array[index];
         
-       }*/
-    /*Nombre del peticionario*/
+           }*/
+        /*Nombre del peticionario*/
 
-    var peticionario = peticionarios.split(',');
-    var petici = peticionario[0].split('<');
-    var peti = '';
-    var contadorPeticionarios = 0;
-    for (let index = 0; index < peticionario.length; index++) {
-        peti = peti + peticionario[index].trim() + '\n';
-        contadorPeticionarios = contadorPeticionarios + 1;
-    }
-
-
-
-    var autorida = autoridad.split('-');
-    var autorida1 = autoridad.split('</td>');
-
-    var aut = '';
-
-
-    for (let index = 0; index < autorida.length - 1; index++) {
-        aut = aut + autorida[index].trim() + '\n';
-    }
+        var peticionario = peticionarios.split(',');
+        var petici = peticionario[0].split('<');
+        var peti = '';
+        var contadorPeticionarios = 0;
+        for (let index = 0; index < peticionario.length; index++) {
+            peti = peti + peticionario[index].trim() + '\n';
+            contadorPeticionarios = contadorPeticionarios + 1;
+        }
 
 
 
-    /*
-           var uniqueArr = [...new Set(autorida1)]
-           console.log(uniqueArr);
-           for (let index = 0; index < uniqueArr.length; index++) {
-            var auto=uniqueArr[index].split('<td>');
-            console.log(auto);
-                if(auto.length==2){
-                    console.log(auto);
-                    if (auto[1]=="")
-                    {
+        var autorida = autoridad.split('-');
+        var autorida1 = autoridad.split('</td>');
+
+        var aut = '';
+
+
+        for (let index = 0; index < autorida.length - 1; index++) {
+            aut = aut + autorida[index].trim() + '\n';
+        }
+
+
+
+        /*
+               var uniqueArr = [...new Set(autorida1)]
+               console.log(uniqueArr);
+               for (let index = 0; index < uniqueArr.length; index++) {
+                var auto=uniqueArr[index].split('<td>');
+                console.log(auto);
+                    if(auto.length==2){
+                        console.log(auto);
+                        if (auto[1]=="")
+                        {
                         
-                    }else {aut=aut+auto[1]+'\n';}
+                        }else {aut=aut+auto[1]+'\n';}
+                    }
+                }
+    
+        */
+        //var autor=autorida[0];
+
+        // var auto=autor.split('<td>');
+        /*for (let index = 0; index < autorida.length; index++) {
+         aut=aut+autorida[index].trim()+'\n';
+        }*/
+
+
+        //aut=auto[1];
+
+
+        var deHV = derHV.split(',');
+        var DHV = deHV[0];
+
+        var hechv = HechoV.split('\n');
+        var HV = '';
+
+        for (let index = 0; index < hechv.length; index++) {
+            HV = HV + hechv[index].trim() + '\n';
+        }
+
+        var ambitoA = autoridadAmbi.split(',');
+        var ambito = '';
+        var amb = '';
+        var uniqueArr1 = [...new Set(ambitoA)]
+        for (let index = 0; index < uniqueArr1.length; index++) {
+            ambito = uniqueArr1[index];
+
+            if (ambito == 'M') {
+                amb = amb + 'MUNICIPAL' + '\n';
+            } else if (ambito == 'E') {
+                amb = amb + 'ESTATAL' + '\n';
+            }
+
+
+        }
+
+
+        var sexoPetic = sexoPet.split(',');
+        var sexop = sexoPetic[0];
+        var sexp = '';
+
+        console.log(sexop);
+
+        if (sexop == '1') {
+            sexp = 'PETICIONARIO';
+        } else if (sexop == '2') {
+            sexp = 'PETICIONARIA';
+        } else {
+            sexp = 'OTRO';
+        }
+
+
+
+        var tipoPE = tipoPet.split(',');
+        var tipoP = tipoPE[0];
+        var tipo = "";
+        for (let index = 0; index < tipoPE.length - 1; index++) {
+            if (tipoPE[index] == 'Q') {
+                tipo = tipo + "PETICIONARIO" + '\n';
+            } else {
+                tipo = tipo + "AGRAVIADO" + '\n';
+            }
+        }
+
+
+
+        var NombreV = '';
+        var sexoV = '';
+        console.log(vis);
+        if (vis==1) {
+            NombreV = 'LCDO. VICTOR KURI BUJAIDAR';
+            sexoV = 'PRIMER VISITADOR GENERAL';
+        }
+
+        if (vis == 2) {
+            NombreV = 'MTRO. ISRAEL VILLA COBOS';
+            sexoV = 'SEGUNDO VISITADOR GENERAL';
+        }
+
+        if (vis == 3) {
+            NombreV = 'MTRA. JESSICA CALDERON GARCIA';
+            sexoV = 'TERCERA VISITADORA GENERAL';
+        }
+
+        if (vis == 4) {
+            NombreV = 'MTRO.IVAN ANDRES FLORES CANO';
+            sexoV = 'CUARTO VISITADOR GENERAL';
+        }
+
+
+        /*Función de la longitud del eje y cuando se tengan a mas de 2 peticionarios 08-09-2023*/
+        //doc.setFontType("normal");doc.text(20, 125, tipo); -- Datos de referencia para la posición Inicial
+        //doc.setFontType("normal");doc.text(120,125,  peti);-- Datos de referencia para la posición Inicial
+        /*Posicion que inicia en el campo TIPO para agregar a mas de 2 peticionarios*/
+        posicionX2 = 20;//Posición primera Columna
+        posicionY2 = 125;
+        var sizeFontPet = 10;
+        var sizeFontAut = 8;
+        /*Posicion QUE inicia en el campo Nombre para agregar a mas de 2 peticionarios*/
+        posicionX3 = 120;//Posición Segunda Columna
+        posicionY3 = 125;
+
+        if (peticionario.length > 2) {
+            for (let index = 0; index < peticionario.length; index++) {
+                var sizeFontPet = 7;
+                posicionY2 = posicionY2 + 2.25;//Adición de 14 unidades por cada peticionario extra que exista sobre la primera columna en el eje de las y
+                posicionY3 = posicionY3 + 2.25;//Adición de 14 unidades por cada peticionario extra que exista sobre la Segunda columna en el eje de las y
+            }
+        }
+
+
+        var doc = new jsPDF({ filters: ["ASCIIHexEncode"] });
+
+        /*Colocación del logo izquierdo y derecho*/
+        var logo = new Image();
+        logo.src = "/img/cdh_imagotipo_completo-03.png";
+        console.log(logo)
+
+            //logo=img;
+        logo.onload = function () {
+            // Este código se ejecutará una vez que la imagen se haya cargado correctamente
+            doc.addImage(logo, 'JPEG', 20, 1, 15, 18);
+
+            //doc.addImage(logo, 'JPEG', 20, 1, 15, 18);//JPEG
+            /*
+         var logo1 = new Image();
+         logo1.src = 'foto.jpg';
+         doc.addImage(logo1, 'JPEG', 15, 40,148,210);
+         */
+
+            /*Colocación del logo izquierdo y derecho*/
+            /*Cuerpo  del Documento*/
+            doc.setFontType("bold");
+            doc.setFontSize(10);
+
+            /*Cominenza el encabezado*/
+            doc.text(20, 20, '____________________________________________________________________________________');
+            doc.text(100, 20, 'CÉDULA DE CALIFICACIÓN', { align: 'center' });
+            doc.text(90, 25, 'EXPEDIENTE:', { align: 'center' });
+            doc.setFontType("normal"); doc.text(110, 25, exp, { align: 'center' });
+            doc.setFontType("bold"); doc.text(20, 30, 'ID:');
+            doc.setFontType("normal"); doc.text(25, 30, id);
+            doc.setFontType("bold"); doc.text(170, 30, 'FOLIO:');
+            doc.setFontType("normal"); doc.text(183, 30, folio);
+            doc.setFontType("bold"); doc.text(100, 40, 'DATOS GENERALES DE LA QUEJA ', { align: 'center' });
+            /*Termina el encabezado*/
+
+            /*Datos Generales de la queja*/
+            doc.setFontType("bold"); doc.text(20, 50, 'FECHA Y HORA DE REGISTRO: ');
+            doc.setFontType("normal"); doc.text(20, 55, fechaRegistro);
+            doc.setFontType("bold"); doc.text(120, 50, 'FECHA TURNO ELECTRONICO A VG: ');
+            doc.setFontType("normal"); doc.text(120, 55, fechaTurnEle);
+            doc.setFontType("bold"); doc.text(20, 65, 'FECHA DE RECEPCIÓN FÍSICA A VG: ');
+            doc.setFontType("normal"); doc.text(20, 70, fechaFisicaVis);
+            doc.setFontType("bold"); doc.text(120, 65, 'FECHA TURNO ABOGADO');
+            doc.setFontType("normal"); doc.text(120, 70, fechaTurnoA);
+            doc.setFontType("bold"); doc.text(20, 80, 'VIA ENTRADA:');
+            doc.setFontType("normal"); doc.text(20, 85, viaI);
+            doc.setFontType("bold"); doc.text(120, 80, 'FECHA CALIFICACIÓN:');
+            doc.setFontType("normal"); doc.text(120, 85, fechaCali);
+            doc.setFontType("bold"); doc.text(20, 95, 'LUGAR DONDE SE COMETIRON LOS HECHOS VIOLATORIOS:');
+            doc.setFontType("normal"); doc.text(20, 100, lugarHechos);
+            /*Termina datos Generales de la queja*/
+
+            var renglonHV = doc.splitTextToSize(HechoV, 70);
+            /*Datos del peticionario*/
+            doc.setFontType("bold"); doc.text(100, 110, 'PETICIONARIO(AS)/AGRAVIADOS(AS)', { align: 'center' });
+            doc.text(20, 120, 'TIPO:');
+            doc.setFontType("bold"); doc.text(120, 120, 'NOMBRE:');
+            doc.setFontSize(sizeFontPet);
+            doc.setFontType("normal"); doc.text(20, 125, tipo);
+            doc.setFontType("normal"); doc.text(120, 125, peti);
+
+            posicionX1 = 120;
+            posicionY1 = 170;
+
+            doc.setFontSize(10);
+
+            // var longitud_Texo_autoridad=aut.length;
+            var longitud_texto_Hecho_vi = HechoV.length;
+            //console.log(longitud_Texo_autoridad);
+            console.log(longitud_texto_Hecho_vi);
+            /*Función de la longitud del eje y cuando se tengan a mas de 2 peticionarios 08-09-2023*/
+
+            posicionY2 = posicionY2 + 10;//posición de los titulos
+            doc.setFontType("bold"); doc.text(20, posicionY2, 'AUTORIDAD RESPONSABLE:');//pos 135
+            doc.setFontSize(10);
+            doc.setFontType("bold"); doc.text(120, posicionY2, 'ASUNTO:');//pos 135
+            posicionY2 = posicionY2 + 5;//posición de las descripciones
+            doc.setFontSize(8);
+            doc.setFontType("normal"); doc.text(20, posicionY2, aut);//pos 140
+            doc.setFontSize(8);
+            doc.setFontType("normal"); doc.text(120, posicionY2, amb);//pos 140
+
+            /* Function del eje Y cuando se tiene  mas de una autoridad 08-09-2023 */
+
+            if (autorida.length > 2) {
+                for (let index = 0; index < autorida.length; index++) {
+                    var sizeFontAut = 7;
+                    posicionY2 = posicionY2 + 2.25;//Adición de 10 unidades por cada autoridad extra que exista sobre la primera columna en el eje de las y
+                    posicionY3 = posicionY3 + 2.25;//Adición de 10 unidades por cada autoridad extra que exista sobre la Segunda columna en el eje de las y
                 }
             }
-    
-    */
-    //var autor=autorida[0];
 
-    // var auto=autor.split('<td>');
-    /*for (let index = 0; index < autorida.length; index++) {
-     aut=aut+autorida[index].trim()+'\n';
-    }*/
+            console.log(posicionY2);
 
+            /* Function del eje Y cuando se tiene  mas de una autoridad 08-09-2023 */
 
-    //aut=auto[1];
+            posicionY2 = posicionY2 + 10;//posición de los titulos
+            doc.setFontSize(10);
+            doc.setFontType("bold"); doc.text(20, posicionY2, 'DERECHO HUMANO VULNERADO:');//pos 150
+            doc.setFontSize(10);
+            doc.setFontType("bold"); doc.text(120, posicionY2, 'HECHO VIOLATORIO:');//pos 150
+            posicionY2 = posicionY2 + 5;//posición de las descripciones
+            doc.setFontSize(8);
+            doc.setFontType("normal"); doc.text(20, posicionY2, derHV);//pos 155
+            doc.setFontSize(8);
+            doc.setFontType("normal"); doc.text(120, posicionY2, renglonHV);//pos 155
 
+            /* Function del eje Y cuando se tiene  mas de un Hecho Violatorio  08-09-2023 */
 
-    var deHV = derHV.split(',');
-    var DHV = deHV[0];
+            if (hechv.length > 1) {
+                for (let index = 0; index < autorida.length; index++) {
+                    var sizeFontAut = 7;
+                    posicionY2 = posicionY2 + 2.25;//Adición de 2.25 unidades por cada autoridad extra que exista sobre la primera columna en el eje de las y
+                    posicionY3 = posicionY3 + 2.25;//Adición de 2.25 unidades por cada autoridad extra que exista sobre la Segunda columna en el eje de las y
+                }
+            }
 
-    var hechv = HechoV.split('\n');
-    var HV = '';
+            console.log(posicionY2);
 
-    for (let index = 0; index < hechv.length; index++) {
-        HV = HV + hechv[index].trim() + '\n';
-    }
-
-    var ambitoA = autoridadAmbi.split(',');
-    var ambito = '';
-    var amb = '';
-    var uniqueArr1 = [...new Set(ambitoA)]
-    for (let index = 0; index < uniqueArr1.length; index++) {
-        ambito = uniqueArr1[index];
-
-        if (ambito == 'M') {
-            amb = amb + 'MUNICIPAL' + '\n';
-        } else if (ambito == 'E') {
-            amb = amb + 'ESTATAL' + '\n';
-        }
+            /* Function del eje Y cuando se tiene  mas de un Hecho Violatorio  08-09-2023 */
 
 
-    }
+            /*Metodo para  ajustar el texto del Hecho violatorio*/
+            if (longitud_texto_Hecho_vi <= 156) {
+                posicionY2 = posicionY2 + 10;//posición de los titulos
+                doc.setFontType("bold"); doc.text(120, posicionY2, 'PROGRAMA:');
+                posicionY2 = posicionY2 + 5;//posición de las descripciones
+                doc.setFontType("normal"); doc.text(120, posicionY2, programaE);
 
+            } else if (longitud_texto_Hecho_vi > 156 && longitud_texto_Hecho_vi <= 170) {
+                posicionY2 = posicionY2 + 10;
+                doc.setFontType("bold"); doc.text(posicionX1, posicionY2, 'PROGRAMA:');
+                posicionY2 = posicionY2 + 5;
+                doc.setFontType("normal"); doc.text(posicionX1, posicionY2, programaE);
 
-    var sexoPetic = sexoPet.split(',');
-    var sexop = sexoPetic[0];
-    var sexp = '';
+            } else {
+                posicionY2 = posicionY2 + 20;
+                doc.setFontType("bold"); doc.text(posicionX1, posicionY2, 'PROGRAMA:');
+                posicionY2 = posicionY2 + 5;
+                doc.setFontType("normal"); doc.text(posicionX1, posicionY2, programaE);
+            }
 
-    console.log(sexop);
-
-    if (sexop == '1') {
-        sexp = 'PETICIONARIO';
-    } else if (sexop == '2') {
-        sexp = 'PETICIONARIA';
-    } else {
-        sexp = 'OTRO';
-    }
-
-
-
-    var tipoPE = tipoPet.split(',');
-    var tipoP = tipoPE[0];
-    var tipo = "";
-    for (let index = 0; index < tipoPE.length - 1; index++) {
-        if (tipoPE[index] == 'Q') {
-            tipo = tipo + "PETICIONARIO" + '\n';
-        } else {
-            tipo = tipo + "AGRAVIADO" + '\n';
-        }
-    }
-
-
-
-    var NombreV = '';
-    var sexoV = '';
-    console.log(vis);
-    if (vis==1) {
-        NombreV = 'LCDO. VICTOR KURI BUJAIDAR';
-        sexoV = 'PRIMER VISITADOR GENERAL';
-    }
-
-    if (vis == 2) {
-        NombreV = 'MTRO. ISRAEL VILLA COBOS';
-        sexoV = 'SEGUNDO VISITADOR GENERAL';
-    }
-
-    if (vis == 3) {
-        NombreV = 'MTRA. JESSICA CALDERON GARCIA';
-        sexoV = 'TERCERA VISITADORA GENERAL';
-    }
-
-    if (vis == 4) {
-        NombreV = 'MTRO.IVAN ANDRES FLORES CANO';
-        sexoV = 'CUARTO VISITADOR GENERAL';
-    }
-
-
-    /*Función de la longitud del eje y cuando se tengan a mas de 2 peticionarios 08-09-2023*/
-    //doc.setFontType("normal");doc.text(20, 125, tipo); -- Datos de referencia para la posición Inicial
-    //doc.setFontType("normal");doc.text(120,125,  peti);-- Datos de referencia para la posición Inicial
-    /*Posicion que inicia en el campo TIPO para agregar a mas de 2 peticionarios*/
-    posicionX2 = 20;//Posición primera Columna
-    posicionY2 = 125;
-    var sizeFontPet = 10;
-    var sizeFontAut = 8;
-    /*Posicion QUE inicia en el campo Nombre para agregar a mas de 2 peticionarios*/
-    posicionX3 = 120;//Posición Segunda Columna
-    posicionY3 = 125;
-
-    if (peticionario.length > 2) {
-        for (let index = 0; index < peticionario.length; index++) {
-            var sizeFontPet = 7;
-            posicionY2 = posicionY2 + 2.25;//Adición de 14 unidades por cada peticionario extra que exista sobre la primera columna en el eje de las y
-            posicionY3 = posicionY3 + 2.25;//Adición de 14 unidades por cada peticionario extra que exista sobre la Segunda columna en el eje de las y
-        }
-    }
-
-
-    var doc = new jsPDF({ filters: ["ASCIIHexEncode"] });
-
-    /*Colocación del logo izquierdo y derecho*/
-    var logo = new Image();
-    logo.src = "/img/cdh_imagotipo_completo-03.png"
-    //console.log(img)
-
-    //logo=img;
-   doc.addImage(logo, 'JPEG', 20, 1, 15, 18);
-    /*
- var logo1 = new Image();
- logo1.src = 'foto.jpg';
- doc.addImage(logo1, 'JPEG', 15, 40,148,210);
- */
-
-    /*Colocación del logo izquierdo y derecho*/
-    /*Cuerpo  del Documento*/
-    doc.setFontType("bold");
-    doc.setFontSize(10);
-
-    /*Cominenza el encabezado*/
-    doc.text(20, 20, '____________________________________________________________________________________');
-    doc.text(100, 20, 'CÉDULA DE CALIFICACIÓN', { align: 'center' });
-    doc.text(90, 25, 'EXPEDIENTE:', { align: 'center' });
-    doc.setFontType("normal"); doc.text(110, 25, exp, { align: 'center' });
-    doc.setFontType("bold"); doc.text(20, 30, 'ID:');
-    doc.setFontType("normal"); doc.text(25, 30, id);
-    doc.setFontType("bold"); doc.text(170, 30, 'FOLIO:');
-    doc.setFontType("normal"); doc.text(183, 30, folio);
-    doc.setFontType("bold"); doc.text(100, 40, 'DATOS GENERALES DE LA QUEJA ', { align: 'center' });
-    /*Termina el encabezado*/
-
-    /*Datos Generales de la queja*/
-    doc.setFontType("bold"); doc.text(20, 50, 'FECHA Y HORA DE REGISTRO: ');
-    doc.setFontType("normal"); doc.text(20, 55, fechaRegistro);
-    doc.setFontType("bold"); doc.text(120, 50, 'FECHA TURNO ELECTRONICO A VG: ');
-    doc.setFontType("normal"); doc.text(120, 55, fechaTurnEle);
-    doc.setFontType("bold"); doc.text(20, 65, 'FECHA DE RECEPCIÓN FÍSICA A VG: ');
-    doc.setFontType("normal"); doc.text(20, 70, fechaFisicaVis);
-    doc.setFontType("bold"); doc.text(120, 65, 'FECHA TURNO ABOGADO');
-    doc.setFontType("normal"); doc.text(120, 70, fechaTurnoA);
-    doc.setFontType("bold"); doc.text(20, 80, 'VIA ENTRADA:');
-    doc.setFontType("normal"); doc.text(20, 85, viaI);
-    doc.setFontType("bold"); doc.text(120, 80, 'FECHA CALIFICACIÓN:');
-    doc.setFontType("normal"); doc.text(120, 85, fechaCali);
-    doc.setFontType("bold"); doc.text(20, 95, 'LUGAR DONDE SE COMETIRON LOS HECHOS VIOLATORIOS:');
-    doc.setFontType("normal"); doc.text(20, 100, lugarHechos);
-    /*Termina datos Generales de la queja*/
-
-    var renglonHV = doc.splitTextToSize(HechoV, 70);
-    /*Datos del peticionario*/
-    doc.setFontType("bold"); doc.text(100, 110, 'PETICIONARIO(AS)/AGRAVIADOS(AS)', { align: 'center' });
-    doc.text(20, 120, 'TIPO:');
-    doc.setFontType("bold"); doc.text(120, 120, 'NOMBRE:');
-    doc.setFontSize(sizeFontPet);
-    doc.setFontType("normal"); doc.text(20, 125, tipo);
-    doc.setFontType("normal"); doc.text(120, 125, peti);
-
-    posicionX1 = 120;
-    posicionY1 = 170;
-
-    doc.setFontSize(10);
-
-    // var longitud_Texo_autoridad=aut.length;
-    var longitud_texto_Hecho_vi = HechoV.length;
-    //console.log(longitud_Texo_autoridad);
-    console.log(longitud_texto_Hecho_vi);
-    /*Función de la longitud del eje y cuando se tengan a mas de 2 peticionarios 08-09-2023*/
-
-    posicionY2 = posicionY2 + 10;//posición de los titulos
-    doc.setFontType("bold"); doc.text(20, posicionY2, 'AUTORIDAD RESPONSABLE:');//pos 135
-    doc.setFontSize(10);
-    doc.setFontType("bold"); doc.text(120, posicionY2, 'ASUNTO:');//pos 135
-    posicionY2 = posicionY2 + 5;//posición de las descripciones
-    doc.setFontSize(8);
-    doc.setFontType("normal"); doc.text(20, posicionY2, aut);//pos 140
-    doc.setFontSize(8);
-    doc.setFontType("normal"); doc.text(120, posicionY2, amb);//pos 140
-
-    /* Function del eje Y cuando se tiene  mas de una autoridad 08-09-2023 */
-
-    if (autorida.length > 2) {
-        for (let index = 0; index < autorida.length; index++) {
-            var sizeFontAut = 7;
-            posicionY2 = posicionY2 + 2.25;//Adición de 10 unidades por cada autoridad extra que exista sobre la primera columna en el eje de las y
-            posicionY3 = posicionY3 + 2.25;//Adición de 10 unidades por cada autoridad extra que exista sobre la Segunda columna en el eje de las y
-        }
-    }
-
-    console.log(posicionY2);
-
-    /* Function del eje Y cuando se tiene  mas de una autoridad 08-09-2023 */
-
-    posicionY2 = posicionY2 + 10;//posición de los titulos
-    doc.setFontSize(10);
-    doc.setFontType("bold"); doc.text(20, posicionY2, 'DERECHO HUMANO VULNERADO:');//pos 150
-    doc.setFontSize(10);
-    doc.setFontType("bold"); doc.text(120, posicionY2, 'HECHO VIOLATORIO:');//pos 150
-    posicionY2 = posicionY2 + 5;//posición de las descripciones
-    doc.setFontSize(8);
-    doc.setFontType("normal"); doc.text(20, posicionY2, derHV);//pos 155
-    doc.setFontSize(8);
-    doc.setFontType("normal"); doc.text(120, posicionY2, renglonHV);//pos 155
-
-    /* Function del eje Y cuando se tiene  mas de un Hecho Violatorio  08-09-2023 */
-
-    if (hechv.length > 1) {
-        for (let index = 0; index < autorida.length; index++) {
-            var sizeFontAut = 7;
-            posicionY2 = posicionY2 + 2.25;//Adición de 2.25 unidades por cada autoridad extra que exista sobre la primera columna en el eje de las y
-            posicionY3 = posicionY3 + 2.25;//Adición de 2.25 unidades por cada autoridad extra que exista sobre la Segunda columna en el eje de las y
-        }
-    }
-
-    console.log(posicionY2);
-
-    /* Function del eje Y cuando se tiene  mas de un Hecho Violatorio  08-09-2023 */
-
-
-    /*Metodo para  ajustar el texto del Hecho violatorio*/
-    if (longitud_texto_Hecho_vi <= 156) {
-        posicionY2 = posicionY2 + 10;//posición de los titulos
-        doc.setFontType("bold"); doc.text(120, posicionY2, 'PROGRAMA:');
-        posicionY2 = posicionY2 + 5;//posición de las descripciones
-        doc.setFontType("normal"); doc.text(120, posicionY2, programaE);
-
-    } else if (longitud_texto_Hecho_vi > 156 && longitud_texto_Hecho_vi <= 170) {
-        posicionY2 = posicionY2 + 10;
-        doc.setFontType("bold"); doc.text(posicionX1, posicionY2, 'PROGRAMA:');
-        posicionY2 = posicionY2 + 5;
-        doc.setFontType("normal"); doc.text(posicionX1, posicionY2, programaE);
-
-    } else {
-        posicionY2 = posicionY2 + 20;
-        doc.setFontType("bold"); doc.text(posicionX1, posicionY2, 'PROGRAMA:');
-        posicionY2 = posicionY2 + 5;
-        doc.setFontType("normal"); doc.text(posicionX1, posicionY2, programaE);
-    }
-
-    /*Metodo para  ajustar el texto del Hecho violatorio*/
-    doc.setFontType("bold"); doc.text(20, posicionY2, 'MATERIA:');
-    posicionY2 = posicionY2 + 5;
-    doc.setFontType("normal"); doc.text(20, posicionY2, materia);//pos 175
-    //aqui va el programa
-    posicionY2 = posicionY2 + 10;
-    doc.setFontType("bold"); doc.text(20, posicionY2, 'EL/LA AGRAVIADO/A TIENE EL CARACTER DE:');
-    posicionY2 = posicionY2 + 5;
-    doc.setFontType("normal"); doc.text(20, posicionY2, 'PROBABLE RESPONSABLE');//pos 190
-    posicionY2 = posicionY2 + 10;
-    doc.setFontType("bold"); doc.text(20, posicionY2, 'HECHOS:');//pos 200
-    doc.setFontSize(10);
-    //doc.setFontType("normal");doc.text(20, 205, hecho,{align: 'justify',lineHeightFactor:1,maxWidth:180});
-    /*Datos del peticionario*/
-    doc.setFontSize(10);
-
-    /*Footer de todas las Hojas del sistema de quejas*/
-    doc.text(20, 270, '____________________________________________________________________________________');
-    doc.setFontType("normal"); doc.text(10, 275, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
-    doc.text(100, 280, 'www.cdhpuebla.org.mx', { align: 'center' });
-    doc.text(100, 285, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
-
-    if (peticionario.length > 12) {
-        posicionY2 = posicionY2 + 5;
-        doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { align: 'justify', lineHeightFactor: 1, maxWidth: 180 });
-        doc.addPage();
-        doc.text(20, 40, abogadoT);//20
-        doc.setFontType("bold"); doc.text(20, 45, 'VISITADOR/A ADJUNTO/A');//25
-
-        //Nombre de los visitadores*
-        doc.setFontType("normal"); doc.text(120, 40, NombreV);//20
-        doc.setFontType("bold"); doc.text(120, 45, sexoV);//25
-
-        doc.text(20, 50, '____________________________________________________________________________________');//30
-        doc.setFontType("normal"); doc.text(10, 55, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');//35
-        doc.text(100, 60, 'www.cdhpuebla.org.mx', { align: 'center' });//40
-        doc.text(100, 65, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });//45
-
-        /*Metodo para adicionar la leyenda de abajo dependiendo de la longitud del Hecho  11-09-2023*/
-
-
-
-        /*Metodo para adicionar la leyenda de abajo dependiendo de la longitud del Hecho 11-09-2023*/
-
-    } else {
-        if (longitudHecho > 800) {
+            /*Metodo para  ajustar el texto del Hecho violatorio*/
+            doc.setFontType("bold"); doc.text(20, posicionY2, 'MATERIA:');
             posicionY2 = posicionY2 + 5;
-            doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { align: 'justify', lineHeightFactor: 1, maxWidth: 180 });
-            doc.addPage();
-
-            doc.text(20, 40, abogadoT);
-            doc.setFontType("bold"); doc.text(20, 45, 'VISITADOR/A ADJUNTO/A');
-
-            doc.setFontType("normal"); doc.text(120, 40, NombreV);
-            doc.setFontType("bold"); doc.text(120, 45, sexoV);
-
-            doc.text(20, 50, '____________________________________________________________________________________');
-            doc.setFontType("normal"); doc.text(10, 55, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
-            doc.text(100, 60, 'www.cdhpuebla.org.mx', { align: 'center' });
-            doc.text(100, 65, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
-        } else {
+            doc.setFontType("normal"); doc.text(20, posicionY2, materia);//pos 175
+            //aqui va el programa
+            posicionY2 = posicionY2 + 10;
+            doc.setFontType("bold"); doc.text(20, posicionY2, 'EL/LA AGRAVIADO/A TIENE EL CARACTER DE:');
             posicionY2 = posicionY2 + 5;
-            doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { lineHeightFactor: 1, maxWidth: 180 });
-            doc.text(20, 250, abogadoT);
-            doc.setFontType("bold"); doc.text(20, 255, 'VISITADOR/A ADJUNTO/A');
+            doc.setFontType("normal"); doc.text(20, posicionY2, 'PROBABLE RESPONSABLE');//pos 190
+            posicionY2 = posicionY2 + 10;
+            doc.setFontType("bold"); doc.text(20, posicionY2, 'HECHOS:');//pos 200
+            doc.setFontSize(10);
+            //doc.setFontType("normal");doc.text(20, 205, hecho,{align: 'justify',lineHeightFactor:1,maxWidth:180});
+            /*Datos del peticionario*/
+            doc.setFontSize(10);
 
-            /*Nombre de los visitadores*/
-            doc.setFontType("normal"); doc.text(120, 250, NombreV);
-            doc.setFontType("bold"); doc.text(120, 255, sexoV);
-
+            /*Footer de todas las Hojas del sistema de quejas*/
             doc.text(20, 270, '____________________________________________________________________________________');
             doc.setFontType("normal"); doc.text(10, 275, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
             doc.text(100, 280, 'www.cdhpuebla.org.mx', { align: 'center' });
             doc.text(100, 285, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
-        }
-    }
 
-        doc.save(exp + fechaCali + ".pdf");
+            if (peticionario.length > 12) {
+                posicionY2 = posicionY2 + 5;
+                doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { align: 'justify', lineHeightFactor: 1, maxWidth: 180 });
+                doc.addPage();
+                doc.text(20, 40, abogadoT);//20
+                doc.setFontType("bold"); doc.text(20, 45, 'VISITADOR/A ADJUNTO/A');//25
+
+                //Nombre de los visitadores*
+                doc.setFontType("normal"); doc.text(120, 40, NombreV);//20
+                doc.setFontType("bold"); doc.text(120, 45, sexoV);//25
+
+                doc.text(20, 50, '____________________________________________________________________________________');//30
+                doc.setFontType("normal"); doc.text(10, 55, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');//35
+                doc.text(100, 60, 'www.cdhpuebla.org.mx', { align: 'center' });//40
+                doc.text(100, 65, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });//45
+
+                /*Metodo para adicionar la leyenda de abajo dependiendo de la longitud del Hecho  11-09-2023*/
+
+
+
+                /*Metodo para adicionar la leyenda de abajo dependiendo de la longitud del Hecho 11-09-2023*/
+
+            } else {
+                if (longitudHecho > 800) {
+                    posicionY2 = posicionY2 + 5;
+                    doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { align: 'justify', lineHeightFactor: 1, maxWidth: 180 });
+                    doc.addPage();
+
+                    doc.text(20, 40, abogadoT);
+                    doc.setFontType("bold"); doc.text(20, 45, 'VISITADOR/A ADJUNTO/A');
+
+                    doc.setFontType("normal"); doc.text(120, 40, NombreV);
+                    doc.setFontType("bold"); doc.text(120, 45, sexoV);
+
+                    doc.text(20, 50, '____________________________________________________________________________________');
+                    doc.setFontType("normal"); doc.text(10, 55, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
+                    doc.text(100, 60, 'www.cdhpuebla.org.mx', { align: 'center' });
+                    doc.text(100, 65, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
+                } else {
+                    posicionY2 = posicionY2 + 5;
+                    doc.setFontType("normal"); doc.text(20, posicionY2, hecho, { lineHeightFactor: 1, maxWidth: 180 });
+                    doc.text(20, 250, abogadoT);
+                    doc.setFontType("bold"); doc.text(20, 255, 'VISITADOR/A ADJUNTO/A');
+
+                    /*Nombre de los visitadores*/
+                    doc.setFontType("normal"); doc.text(120, 250, NombreV);
+                    doc.setFontType("bold"); doc.text(120, 255, sexoV);
+
+                    doc.text(20, 270, '____________________________________________________________________________________');
+                    doc.setFontType("normal"); doc.text(10, 275, 'Comisión de Derechos Humanos del Estado de Puebla 5 poniente 339, Centro Histórico, Puebla, Pue., C.P. 72000');
+                    doc.text(100, 280, 'www.cdhpuebla.org.mx', { align: 'center' });
+                    doc.text(100, 285, 'TODOS LOS SERVICIOS SON GRATUITOS', { align: 'center' });
+                }
+            }
+
+            doc.save(exp + fechaCali + ".pdf");
+        };
     } catch (error) {
 
         Swal.fire({

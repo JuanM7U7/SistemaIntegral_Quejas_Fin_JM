@@ -110,9 +110,9 @@
                     <button type="button" class="close" title="Guardado preliminar" onclick="GuardPrel()">
                         <span aria-hidden="true"><i class="fa fa-floppy-o" style="color: purple;"></i></span>
                     </button>
-                    <button type="button" class="close" title="Cedula de Calificación" onclick="generaPDFCedula()">
+                    @* <button type="button" class="close" title="Cedula de Calificación" onclick="generaPDFCedula()">
                         <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span>
-                    </button>
+                    </button> *@
                 </div>
                 <div class="col-1">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modaltabCalif')">
@@ -428,8 +428,11 @@
 
 @section Scripts
 {
+    <script src="~/js/plugins/notify.min.js"></script>
+    <script src="~/js/plugins/notify.js"></script>
     <link href="~/css/tabs.css" rel="stylesheet" />
     <link href="~/css/parpadeo.css" rel="stylesheet" />
+    <link href="~/css/pulsaciones.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
