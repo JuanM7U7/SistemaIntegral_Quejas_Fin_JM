@@ -250,7 +250,8 @@
     #contenedor_Usuarios {
         width: 100%;
         border: solid .5px lightgray;
-        min-height: 15%;
+        height:auto;
+        min-height: 20%;
         background: white;
         border-radius: 7px;
     }
@@ -447,6 +448,8 @@
 
     var ExportaDocumento = '@Url.Action("VerPDF", "Expediente")?idescrito=';
         var ExportaDocumentoPDF = '@Url.Action("ConsutlarArchivoCalificación", "Expediente")?fileName=';
+        var ExportaDocumentoPDFEI = '@Url.Action("ConsutlarArchivoEI", "Expediente")?fileName=';
+        var ExportaDocumentoPDFAC = '@Url.Action("ConsutlarArchivoAC", "Expediente")?fileName=';
     var ExportaDocumentoacta = '@Url.Action("ActaPDF", "Expediente")?idactac=';
     var ExportaDocumentorechazo = '@Url.Action("verPDFRechazo", "Expediente")';
    // var ExportaDocumentorechazo = '@Url.Action("verPDFRechazo", "Expediente")?idqueja=&vis=&memo=&p1=&p2=&p3=';

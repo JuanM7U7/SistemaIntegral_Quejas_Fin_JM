@@ -34,6 +34,7 @@ using System.Runtime.Serialization;
 using static SistemaIntegralQuejas.Controllers.ExpedienteController;
 using System.Numerics;
 
+
 namespace SistemaIntegralQuejas.Controllers
 {
     public class ExpedienteController : Controller
@@ -1615,8 +1616,10 @@ namespace SistemaIntegralQuejas.Controllers
             };
         }
 
+
         public ViewAsPdf Escrito_Inicial_de_Queja()
         {
+            
             var pdfescritoi = new List<PDF_Escrito_Inical>();
 
             string query_petiexp = "";
@@ -1706,18 +1709,23 @@ namespace SistemaIntegralQuejas.Controllers
                 pdfescritoi.Add(itemPdfei);
             }
 
-
-
+            //return Content("PDF saved successfully");
+            var nombrePDF = "Escrito_I_" + idei;
             return new ViewAsPdf("VerPDF", pdfescritoi)
             {
                 PageSize = Rotativa.AspNetCore.Options.Size.Letter,
                 PageMargins = { Left = 20, Right = 20 },
-
+               // FileName=nombrePDF,
+                SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF+".pdf"),
                 //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
                 CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index --header-spacing 30 --margin-bottom 4cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
 
             };
         }
+
+
+
+
         // Inicio Buscardor Formatos
         public ActionResult UpdateComPetExpQujoso(IFormCollection form)
         {
@@ -3130,12 +3138,13 @@ namespace SistemaIntegralQuejas.Controllers
             actaC = conexionsql.regresaActaCircunstanciada(1, query, ref mensaje);
             string mensajet = "ok";
             //return new ViewAsPdf("VerPDF", escrito) 
+            var nombrePDF = "acta_c_" + idacta;
             return new ViewAsPdf("ActaPDF", actaC)
             {
                 PageSize = Rotativa.AspNetCore.Options.Size.Letter,
                 PageMargins = { Left = 20, Right = 20 },
                 //CustomSwitches= "  --page-offset 0 --footer-center [page] --footer-font-size 8"
-
+                SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/AC", nombrePDF + ".pdf"),
                 //CustomSwitches= "--header-html https://www.cdhpuebla.org.mx/images/COVID19.png"
                 //PageMargins = new Rotativa.AspNetCore.Options.Margins(2, 3, 2, 3)
                 //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
@@ -3179,6 +3188,20 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { status = statusresp });
         }
         // Fin Eliminar Peticionario
+
+
+
+        // Eliminar Peticionario 
+        public ActionResult DeleteComPeticionarioCalificacion(IFormCollection form)
+        {
+            string idcomplemento = form["id_complemento"].ToString();
+            string quey_insertqueja = "EXEC Sp_DeleteComPeticionarioSp_DeleteComPeticionariocalifi '" + idcomplemento + "'";
+            conexionsql.InsertUpdateDelete(quey_insertqueja);
+
+            return Json(new { status = "OK" });
+        }
+        // Fin Eliminar Peticionario
+
 
         // Eliminar Peticionario 
         public ActionResult DeleteExpediente(IFormCollection form)
@@ -3809,8 +3832,52 @@ namespace SistemaIntegralQuejas.Controllers
 
 			return Json(new { message = UploadMessage,filename= file.FileName });
 		}
+        [HttpPost]
+        public ActionResult subirarchivoserverAC(IFormFile file)
+        {
+            string UploadMessage = "";
+            if (file != null && file.Length > 0)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/AC", file.FileName);
 
-		public string ejecutaInsertUpdate(string query)
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyToAsync(stream);
+                }
+
+                UploadMessage = "File uploaded successfully!";
+            }
+            else
+            {
+                UploadMessage = "Please select a file.";
+            }
+
+            return Json(new { message = UploadMessage, filename = file.FileName });
+        }
+        [HttpPost]
+        public ActionResult subirarchivoserverEI(IFormFile file)
+        {
+            string UploadMessage = "";
+            if (file != null && file.Length > 0)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", file.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyToAsync(stream);
+                }
+
+                UploadMessage = "File uploaded successfully!";
+            }
+            else
+            {
+                UploadMessage = "Please select a file.";
+            }
+
+            return Json(new { message = UploadMessage, filename = file.FileName });
+        }
+
+        public string ejecutaInsertUpdate(string query)
         {
             string mensaje = "";
             using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
@@ -3850,8 +3917,40 @@ namespace SistemaIntegralQuejas.Controllers
 			var fileBytes = System.IO.File.ReadAllBytes(filePath);
 			return File(fileBytes, "application/pdf");
 		}
+        public IActionResult ConsutlarArchivoAC(string fileName)
+        {
+            // Ruta del archivo PDF en el servidor
+            //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/Archivos", fileName);
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath + "\\Archivos\\AC", fileName);
 
-		public ActionResult GuardaCalifQuej(IFormCollection form)
+            if (!System.IO.File.Exists(filePath))
+            {
+                return View("Error");
+            }
+
+            // Lee el archivo PDF y devuélvelo al navegador
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, "application/pdf");
+        }
+
+        public IActionResult ConsutlarArchivoEI(string fileName)
+        {
+            // Ruta del archivo PDF en el servidor
+            //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "/wwwroot/Archivos", fileName);
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath + "\\Archivos\\EI", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                //return NotFound();
+                return View("Error");
+            }
+
+            // Lee el archivo PDF y devuélvelo al navegador
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, "application/pdf");
+        }
+
+        public ActionResult GuardaCalifQuej(IFormCollection form)
         {
             string query = "";
             int idqueja = 0;

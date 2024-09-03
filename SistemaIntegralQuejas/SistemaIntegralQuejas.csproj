@@ -41,6 +41,8 @@
     <Folder Include="Properties\NewFolder\" />
     <Folder Include="Views\EditarFormatosExp\" />
     <Folder Include="wwwroot\Archivos\calif_atenc\" />
+    <Folder Include="wwwroot\Archivos\EI\" />
+    <Folder Include="wwwroot\Archivos\AC\" />
     <Folder Include="wwwroot\icons\NewFolder\" />
     <Folder Include="wwwroot\Uploads\escrito_inicialdequeja\" />
   </ItemGroup>

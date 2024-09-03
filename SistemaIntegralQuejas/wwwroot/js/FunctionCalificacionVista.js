@@ -283,7 +283,7 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacal
             }
         });
         Crear_Formulario_Quejaconclusion(id,fechaturnoabo,fechacalif);
-        obtenerDQOT(id, fecRecep, "E", expedienten);
+        obtenerDQOTModifica(id, fecRecep, "E", expedienten);
     }
 }
 function confirmdatos(idquej, hech, lug, pet) {
@@ -516,9 +516,12 @@ function Crear_Formulario_QuejaEdit(id) {
         + CreaSelectLabeldisabled('municipioquejaE', '', arregloBlanco, '', '', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Peticionario(s): ')
+        + `<button id="myBtn" type='button' onclick='AddFormatDatosPersonales(${id})' class='btn btn-link margin-iconbf'>
+                                               <span class="fa fa-plus color-muted fa-1x"></span></p>
+                                           </button>`
         + checkbox('Calificación', 'confi_peticiona', 'Validar dato:', 'style="transform: scale(1.2);"')
-        + CreaBR()
         + "<div id='contenedor_Usuarios'></div>"
+        + CreaBR()
         + CreaSelectLabeldisabled('visitaduriaquejaE', '', arregloBlanco, '', Requeridos() + 'Visitaduría: ', '')
         + CreaBR()
         + CreaSelectLabeldisabled('sedeRegistroE', '', arregloBlanco, '', 'Sede de Registro: ', '')
@@ -623,7 +626,175 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
             var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
             for (var i = 0; i < contadorpeticionarios; i++) {
                 console.log(contadorpeticionarios);
-                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti));
+                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti,idqueja));
+            }
+        }
+
+        if (response.informarcionC.informacioncomplementariaautoridad != null) {
+            var contadorautoridades = response.informarcionC.informacioncomplementariaautoridad.length;
+            for (var i = 0; i < contadorautoridades; i++) {
+                console.log(contadorautoridades);
+                $("#contenedor_Autoridades").html($("#contenedor_Autoridades").html() +DivPequeniosautoridad(response.informarcionC.informacioncomplementariaautoridad[i].nombre_autoridad, response.informarcionC.informacioncomplementariaautoridad[i].ambito, response.informarcionC.informacioncomplementariaautoridad[i].id_registro));
+            }
+        }
+        RecorreInput('.formulariodatoscomplementariosqueja');
+        $("#modaldatoscomplementariosqueja").modal("show");
+        $(`#ListAport${tipo}`).empty();
+        if (response.infoaportaciones.length > 0 && response.informarcionC.tipo_expediente === 1) {
+            $(`#ListAport${tipo}`).append(Crea_Label('textfield8', 'textfield8', '', 'ID´s aportados: '));
+            const listaAport = response.infoaportaciones;
+            listaAport.forEach(item => {
+                $(`#ListAport${tipo}`).append(`<button id="myBtn${item.id_expediente}" type="button" onclick='modalShow(${item.id_expediente}, "${fecRecep}", "modaltabDetalle", 1)' class="btn btn-link margin-iconbf">
+                                            ${item.id_expediente}
+                                          </button>`);
+            });
+        }
+        $(`#tipQueja${tipo}`).empty();
+        $(`#tipQueja${tipo}`).append(Requeridos() + CreaSelectLabel(`tipexpediente-frmDatosCalificacion`, 'required', TipExpeSe, '', 'Tipo de expediente', '', ''));
+
+        $(document).ready(function () {
+            $('#tipexpediente-frmDatosCalificacion').change(function () {
+                var tipoExpediente = $(this).val();
+                console.log("Respuesta Estatus:" + response.informarcionC.estatus_Expediente);
+                if (tipoExpediente == 1) {
+                    var pasot = response.informarcionC.estatus_Expediente;
+                    CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, pasot );
+                } else {
+                    var ajaxSelectExpeSC = $.ajax({
+                        type: "POST",
+                        url: "SelectExpeSC",
+                        data: { vis: response.informarcionC.visitaduria },
+                        dataType: "JSON"
+                    });
+                    $.when(ajaxSelectExpeSC).done(function (data) {
+                        ExpeS_C = data.lisexsiconc;
+                        CrearFormuCalificacionApo(tipo);
+                    });
+                }
+            });
+            $('select[id^=causaccatcve_]').change(function (e) {
+                //alert(this.value);
+                console.log("Entró al cambio de causaccatcve_");
+                $(this).parent().find('select[id^=causaccat_]').val(this.value).trigger('change.select2');
+                $(this).val(this.value).trigger('change.select2');
+                var causa = `${this.value}`;
+                Habilita_Acto_Rest(causa);
+            });
+            $('select[id^=causaccat_]').on("change", (function (e) {
+                console.log("Entró al cambio de causaccat_");
+                // alert(this.value);
+                $(this).val(this.value).trigger('change.select2');
+                $(this).parent().find('select[id^=causaccatcve_]').val(this.value).trigger('change.select2');
+                var causa = `${this.value}`;
+                Habilita_Acto_Rest(causa);
+                e.stopPropagation();
+            }));
+        });
+    });
+
+    $.when(ajaxDQOT).done(function (response) {
+        if (tipo === '') {
+            CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, response.informarcionC.estatus_Expediente);
+            $(`#submitForm-${idqueja}`).hide();
+            $('#especializado-frmDatosCalificacion').prop('disabled', true);
+            $('#trancpub-frmDatosCalificacion').prop('disabled', true);
+            $('#tipexpediente-frmDatosCalificacion').prop('disabled', true);
+            $('#materia-frmDatosCalificacion').prop('disabled', true);
+            $('#nivries-frmDatosCalificacion').prop('disabled', true);
+        } else {
+            if (response.informarcionC.tipo_expediente === 1) {
+                console.log(expedienten);
+                CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, response.informarcionC.estatus_Expediente, expedienten);
+            } else {
+                var ajaxSelectExpeSC = $.ajax({
+                    type: "POST",
+                    url: "SelectExpeSC",
+                    data: { vis: response.informarcionC.visitaduria },
+                    dataType: "JSON"
+                });
+                $.when(ajaxSelectExpeSC).done(function (data) {
+                    ExpeS_C = data.lisexsiconc;
+                    CrearFormuCalificacionApo(tipo);
+                    if (response.infoaportaciones.length == 1) {
+                        response.infoaportaciones.forEach(function (i, y) {
+                            $('#expedsc-frmDatosCalificacion').val(i.id_expediente_apor === '' ? 99 : i.id_expediente_apor).trigger('change.select2');
+                            $('#descapo-frmDatosCalificacion').val(i.descripcion);
+                        });
+                    }
+                });
+            }
+        }
+
+        $('#tema-frmDatosCalificacion').val(response.lista_tema_expe.map(function (item) { return item.id_tema; })).trigger('change');
+        $('#programa-frmDatosCalificacion').val(response.informarcionC.id_programa === '' ? 99 : response.informarcionC.id_programa).trigger('change.select2');
+        $('#especializado-frmDatosCalificacion').val(response.informarcionC.id_especializado === '' ? 99 : response.informarcionC.id_especializado);
+        $('#trancpub-frmDatosCalificacion').val(response.informarcionC.id_tras_op_pub === '' ? 99 : response.informarcionC.id_tras_op_pub);
+        $('#tipexpediente-frmDatosCalificacion').val(response.informarcionC.tipo_expediente === '' ? 99 : response.informarcionC.tipo_expediente);
+        $('#materia-frmDatosCalificacion').val(response.informarcionC.id_materia === '' ? 99 : response.informarcionC.id_materia);
+        $('#nivries-frmDatosCalificacion').val(response.informarcionC.id_niv_riesgo === '' ? 99 : response.informarcionC.id_niv_riesgo);
+    });
+}
+
+function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
+    var ajaxDQOT = $.ajax({
+        type: "POST",
+        url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogosCalfModifi",
+        data: { identificadorQueja: idqueja },
+        dataType: "JSON"
+    });
+
+    ajaxDQOT.done(function (response) {
+        fetchGet("Expediente/SelectEscolaridad", "json", (data) => {
+            Escolaridad = data.escolaridad;
+            escolaridadInicio = Escolaridad.slice(0, 9);
+            escolaridadFinal = Escolaridad.slice(10);
+        })
+        fetchGet("Expediente/SelectEstadoConyugal", "json", (data) => { EstadoConyugal = data.estadoconyugal; })
+        fetchGet("Expediente/SelectOcupacion", "json", (data) => { Ocupacion = data.ocupacion; })
+        fetchGet("Expediente/SelectDiscapacidad", "json", (data) => { Discapacidad = data.discapacidad; })
+        fetchGet("Expediente/SelectGrupoSocial", "json", (data) => { GrupoSocial = data.gruposocial; })
+        fetchGet("Expediente/SelectHijosVivos", "json", (data) => { HijosVivos = data.hijosvivos; })
+        fetchGet("Expediente/SelectModalidadViolencia", "json", (data) => { ModalidadViolencia = data.modalidadviolencia; })
+        fetchGet("Expediente/SelectTipoViolencia", "json", (data) => { TipoViolencia = data.tipoviolencia; })
+        fetchGet("Expediente/SelectRelacionAgresor", "json", (data) => { RelacionAgresor = data.relacionagresor; })
+        fetchGet("Expediente/SelectVisitadurias", "json", (data) => { visitadurias = data.visitadurias; })
+        console.log(response);
+        CargaDatosSelectOtro_(`#Abogadoqueja${tipo}`, response.lista_abogado, response.informarcionC.id_abogado_recibe);
+        CargaDatosSelectOtro_(`#municipioqueja${tipo}`, response.lista_municipio, response.informarcionC.id_lugar_hechos);
+        CargaDatosSelectOtro_(`#sedeRegistro${tipo}`, response.lista_sedes, response.informarcionC.id_sede);
+        CargaDatosSelectOtro_(`#viainterpos${tipo}`, response.listavi, response.informarcionC.via_interpos);
+        CargaDatosSelectOtro_(`#visitaduriaqueja${tipo}`, response.listavisitadurias, response.informarcionC.visitaduria);
+        var iddatospeti = false;
+        if (response.datvaldqot.id_queja) {
+            $('#confi_hechos').prop('checked', response.datvaldqot.hechos).trigger('change');
+            $('#confi_lughec').prop('checked', response.datvaldqot.lugar).trigger('change');
+            $('#confi_peticiona').prop('checked', response.datvaldqot.petic).trigger('change');
+            console.log(response.datvaldqot);
+            iddatospeti = response.datvaldqot.datospeti;
+            console.log(iddatospeti);
+        }
+
+        var date = new Date();
+        if (response.informarcionC.fecha_registro != null) {
+            date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(response.informarcionC.fecha_registro));
+        }
+        chargeDateInputDate(document.getElementById(`Fecha_Registro${tipo}`), date);
+        if (fecRecep != null) {
+            date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(fecRecep));
+        }
+        chargeDateInputDate(document.getElementById(`Fecha_TurnoVG${tipo}`), date);
+        $(`#idqueja${tipo}`).val(response.informarcionC.id_expediente);
+        $(`#hechos${tipo}`).val(response.informarcionC.hechos);
+        $(`#observaciones${tipo}`).val(response.informarcionC.observaciones);
+
+        console.log('valores')
+        console.log(response.informarcionC.id_expediente)
+        console.log(response.informarcionC.hechos)
+        if (response.informarcionC.informacioncomplementariapeticionario != null) {
+            var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
+            for (var i = 0; i < contadorpeticionarios; i++) {
+                console.log(contadorpeticionarios);
+                $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti, idqueja));
             }
         }
 
@@ -655,7 +826,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo,expedienten) {
                 console.log("Respuesta Estatus:" + response.informarcionC.estatus_Expediente);
                 if (tipoExpediente == 1) {
                     var pasot = response.informarcionC.estatus_Expediente;
-                    CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, pasot );
+                    CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, pasot);
                 } else {
                     var ajaxSelectExpeSC = $.ajax({
                         type: "POST",
@@ -798,7 +969,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
                 var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
                 for (var i = 0; i < contadorpeticionarios; i++) {
                     console.log(contadorpeticionarios);
-                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
+                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, idqueja));
                 }
             }
 
@@ -818,7 +989,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
         }
     });
 }
-function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario, idtip_compet, statusComplemento) {
+function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario, idtip_compet, statusComplemento,idqueja) {
 
     var div = '';
     console.log("Estatus complento: "+statusComplemento);
@@ -842,7 +1013,7 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
         `+ "</div>";
         +"<img id='add' src='/img/signomas.png'>"
     } else {
-         div = "<div id='Divpequenios'>"
+        div = "<div id='Divpequenios'>"
             +
             `
 			<div class="dummy dummy-text">
@@ -861,8 +1032,8 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
                                                <span class="fa fa-trash color-muted fa-1x"></span></p>
                                            </button>
 			</div>
-        `+ "</div>";
-        +"<img id='add' src='/img/signomas.png'>"
+
+        `+ `</div>`;
 
 
     }
@@ -870,6 +1041,199 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
                                                <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
                                            </button>*/
     return div;
+}
+
+function AddFormatDatosPersonales(idExpediente) {
+
+    let formPetitn = formPeticionario(1)
+    $('.frmEditDatosPersonales').append(formPetitn);
+    chkNoproporcinado();
+    seltxt();
+    keypresscp();
+    buscapeticionariocurpnom();
+    fetchGet("Expediente/SelectPaises", "json", (data) => {
+        let Paises = data.relacionpaises;
+        //console.log(Paises)
+        AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
+        AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
+    })
+
+    let idform = 1;
+    let curpd = '';
+    let nombrep = '';
+    let apellidope = '';
+    let apellidome = '';
+    let violenciamujer = '';
+
+    $('#idquejagenerado').val(idExpediente);
+    $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value = 'Agraviado']").prop("disabled", true);
+    $("#modalFormPeticionario").modal("show");
+    updateDatosPeticionarios();
+}
+
+function buscapeticionariocurpnom() {
+
+    $('.bucaporcurp').keypress(function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+
+            let idform = this.dataset.idfrmit;
+            let curpd = $("#CURP_petit-frmDatosPersonales" + idform).val()
+            let nombrep = $("#nombre_petit-frmDatosPersonales" + idform).val()
+            let apellidope = $("#apellidop_petit-frmDatosPersonales" + idform).val()
+            let apellidome = $("#apellidom_petit-frmDatosPersonales" + idform).val()
+
+            if (curpd == '') {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Ingrese la CURP o el nombre completo del peticionario',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                return;
+            } else if (curpd == 'No proporcionado' && nombrep == '' && apellidope == '' && apellidome == '') {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'En caso de no tener CURP ingrese el nombre completo del peticionario',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "GetDataPeticionario",
+                data: { curp: curpd, nombre: nombrep, apellidop: apellidope, apellidom: apellidome },
+                dataType: "JSON",
+                success: function (response) {
+
+                    if (response.data.length > 0) {
+                        //console.log(response.data)
+
+                        $("#CURP_petit-frmDatosPersonales" + idform).val(response.data[0].docIdentificatorio)
+                        $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].nombre)
+                        $("#apellidop_petit-frmDatosPersonales" + idform).val(response.data[0].apellidoPat)
+                        $("#apellidom_petit-frmDatosPersonales" + idform).val(response.data[0].apellidoMat)
+                        $("#calle_petit-frmDatosPersonales" + idform).val(response.data[0].calle)
+                        $("#nexterior_petit-frmDatosPersonales" + idform).val(response.data[0].numExterior)
+                        $("#ninterior_petit-frmDatosPersonales" + idform).val(response.data[0].numInterior)
+                        $("#edad_petit-frmDatosPersonales" + idform).val(response.data[0].edad)
+                        $("#telefono_petit-frmDatosPersonales" + idform).val(response.data[0].telefono)
+                        $("#email_petit-frmDatosPersonales" + idform).val(response.data[0].email)
+                        $("#vmcanadep_petit-frmDatosPersonales" + idform).val(response.data[0].canalizacionVm)
+                        $("#vmingrmen_petit-frmDatosPersonales" + idform).val(response.data[0].ingresosMensuales)
+                        let fecha_nac = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('YYYY-MM-DD');
+                        $("#fenac_petit-frmDatosPersonales" + idform).val(fecha_nac)
+                        $("#genero_petit-frmDatosPersonales" + idform).val(response.data[0].genero)
+                        if (response.data[0].otroGenero != '') {
+                            $('#ogenero_petit-frmDatosPersonales' + idform).prop('disabled', false);
+                            $('#ogenero_petit-frmDatosPersonales' + idform).removeClass('d-none')
+                            $('#ogenero_petit-frmDatosPersonales' + idform).val(response.data[0].otroGenero)
+                        }
+                        $("#escosel_petit-frmDatosPersonales" + idform).val(response.data[0].fkEscolaridad)
+                        $("#econyugal_petit-frmDatosPersonales" + idform).val(response.data[0].fkEstadoConyugal)
+                        $("#ocupacion_petit-frmDatosPersonales" + idform).val(response.data[0].fkOcupacion)
+                        if (response.data[0].otraOcupacion != '') {
+                            $('#ocupacioninpt_petit-frmDatosPersonales' + idform).prop('disabled', false);
+                            $('#ocupacioninpt_petit-frmDatosPersonales' + idform).removeClass('d-none')
+                            $('#ocupacioninpt_petit-frmDatosPersonales' + idform).val(response.data[0].otraOcupacion)
+                        }
+                        $("#gsoci_petit-frmDatosPersonales" + idform).val(response.data[0].fkGrupoSocial)
+                        if (response.data[0].otroGsocial != '') {
+                            $('#gsociinpt_petit-frmDatosPersonales' + idform).prop('disabled', false);
+                            $('#gsociinpt_petit-frmDatosPersonales' + idform).removeClass('d-none')
+                            $('#gsociinpt_petit-frmDatosPersonales' + idform).val(response.data[0].otraOcupacion)
+                        }
+                        $("#leindi_petit-frmDatosPersonales" + idform).val(response.data[0].hablaLenguai)
+                        if (response.data[0].lenguaIndigena != '') {
+                            $('#oleindi_petit-frmDatosPersonales' + idform).prop('disabled', false);
+                            $('#oleindi_petit-frmDatosPersonales' + idform).removeClass('d-none')
+                            $('#oleindi_petit-frmDatosPersonales' + idform).val(response.data[0].otraOcupacion)
+                        }
+                        $("#discapacidad_petit-frmDatosPersonales" + idform).val(response.data[0].fkDiscapacidad)
+                        $("#vmembara_petit-frmDatosPersonales" + idform).val(response.data[0].embarazadaVm)
+                        $("#vmhijos_petit-frmDatosPersonales" + idform).val(response.data[0].fkHijosVivos)
+                        $("#vmmodvio_petit-frmDatosPersonales" + idform).val(response.data[0].fkModalidadViolencia)
+                        $("#vmtvio_petit-frmDatosPersonales" + idform).val(response.data[0].fkTipoViolencia)
+                        $("#vmreviagr_petit-frmDatosPersonales" + idform).val(response.data[0].fkSexofkRelacionAgresor)
+
+                        if (response.data[0].violenciaVm == 1) {
+                            violenciamujer = 'Si';
+
+                            $("input[name=radsinoviomu_petit-frmDatosPersonales" + idform + "][value='" + violenciamujer + "']").prop("checked", true);
+                            $("#vmembara_petit-frmDatosPersonales" + idform).val(response.data[0].embarazadaVm)
+                            $("#vmhijos_petit-frmDatosPersonales" + idform).val(response.data[0].fkHijosVivos)
+                            $("#vmmodvio_petit-frmDatosPersonales" + idform).val(response.data[0].fkModalidadViolencia)
+                            $("#vmtvio_petit-frmDatosPersonales" + idform).val(response.data[0].fkTipoViolencia)
+                            $("#vmreviagr_petit-frmDatosPersonales" + idform).val(response.data[0].fkRelacionAgresor)
+
+                            document.querySelectorAll('.frmviolenciam' + idform).forEach(p => p.classList.remove("dis-none"));
+                        } else {
+                            violenciamujer = 'No';
+                            $("input[name=radsinoviomu_petit-frmDatosPersonales" + idform + "][value='" + violenciamujer + "']").prop("checked", true);
+                            document.querySelectorAll('.frmviolenciam' + idform).forEach(p => p.classList.add("dis-none"));
+                        }
+
+                        $("input[name=radsexo_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].fkSexo + "']").prop("checked", true);
+                        $("input[name=chknacionalidad_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].nacionalidad + "']").prop("checked", true);
+                        $("input[name=chksleer_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].sabeLeer + "']").prop("checked", true);
+
+
+                        if (response.data[0].codigoPostal != "") {
+                            $("#cp_petit-frmDatosPersonales" + idform).val(response.data[0].codigoPostal)
+
+                            let estado = '';
+                            let municipio = '';
+
+                            $.getJSON("https://api.copomex.com/query/info_cp/" + response.data[0].codigoPostal + "?type=simplified&token=pruebas", function (copomex) {
+                                estado = copomex.response.estado;
+                                municipio = copomex.response.municipio;
+                                $("#municipio_petit-frmDatosPersonales" + idform).val(municipio);
+                                $("#estado_petit-frmDatosPersonales" + idform).val(estado);
+                                $("#cp_petit-frmDatosPersonales" + idform).val(copomex.response.cp);
+                                AgregarOptionSelect(idform, 'deloptioncolonia', '#colonia_petit-frmDatosPersonales' + idform, copomex.response.asentamiento);
+                            }).done(function () {
+
+                                $.getJSON("https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=" + estado + "&municipio=" + municipio + "&token=pruebas", function (copomex) {
+                                    let localidadaes = Object.keys(copomex.response.localidad_clave);
+                                    AgregarOptionSelect(idform, 'deloptionloca', '#ciudad_petit-frmDatosPersonales' + idform, localidadaes);
+                                }).done(function () {
+                                    $("#estado_petit-frmDatosPersonales" + idform).val(response.data[0].estado)
+                                    $("#municipio_petit-frmDatosPersonales" + idform).val(response.data[0].municipio)
+                                    $("#colonia_petit-frmDatosPersonales" + idform).val(response.data[0].colonia)
+                                    $("#ciudad_petit-frmDatosPersonales" + idform).val(response.data[0].ciudad)
+
+                                    $("#colonia_petit-frmDatosPersonales" + idform).selectpicker('refresh');
+                                    $("#ciudad_petit-frmDatosPersonales" + idform).selectpicker('refresh');
+
+                                }).fail(function () { console.log('Ha ocurrido un error en obtener las localidades') });
+
+                            }).fail(function () { console.log('Ha ocurrido un error al obtener datos de un cp') });
+
+
+                        }
+
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'warning',
+                            title: 'Datos no encontrados, verifique la curp o el nombre del peticionario',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        return;
+                    }
+                }
+            });
+        }
+    });
+
 }
 function eliminaFormatoDatosPeronsales(idcomplemento) {
 
@@ -884,76 +1248,21 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
         cancelButtonText: 'No'
     }).then(function (resp) {
         if (resp.isConfirmed) {
-
-            let Frmverificap = new FormData();
-            Frmverificap.append('id_complemento', idcomplemento);
-
-            fetchPost("Expediente/VerificaPetLigado", "json", Frmverificap, (resp) => {
-
-                if (resp.status == 'existe') {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'warning',
-                        title: 'No se puede eliminar el peticionario porque esta ligado a una acta circunstanciada',
-                        showConfirmButton: false,
-                        timer: 3500
-                    });
-                } else if (resp.status == 'existei') {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'warning',
-                        title: 'No se puede eliminar el peticionario porque esta ligado a un escrito inicial de queja',
-                        showConfirmButton: false,
-                        timer: 3500
-                    });
-                } else if (resp.status == 'noexiste') {
-                    let FrmDelPetit = new FormData();
-                    FrmDelPetit.append('id_complemento', idcomplemento);
-
-                    fetchPost("Expediente/DeleteComPeticionario", "json", FrmDelPetit, (resp) => {
-
-                        if (resp.status) {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Peticionario Elimin',
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(() => {
-                                Swal.fire({
-                                    text: 'Cargando Quejas...',
-                                    didOpen: () => {
-                                        Swal.showLoading();
-                                    },
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false
-                                });
-                                $.ajax({
-                                    type: "POST",
-                                    url: "BuscardorFormatos",
-                                    data: $('#frm_busquedaFormatos').serialize(),
-                                    dataType: "JSON",
-                                    success: function (response) {
-                                        mostrarResTblFormatos(response.data);
-                                        Swal.close();
-                                    },
-                                    error: function () {
-                                        Swal.close();
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: 'Error al actualizar los datos, informe al área de sistemas'
-                                        });
-                                    }
-                                });
-                            });
-                        }
-                    });
-                }
-
-            });
-
+            let FrmDelPetit = new FormData();
+            FrmDelPetit.append('id_complemento', idcomplemento);
+            fetchPost("Expediente/DeleteComPeticionarioCalificacion", "json", FrmDelPetit, (resp) => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'El peticionario se eliminó de la calificación Correctamente',
+                    showConfirmButton: true
+                }).then(function () {
+                    console.log("Despues de dar click en el boton, aqui llamarias al submit");
+                    location.reload();
+                });
+            })
         }
+
     })
 
 }
@@ -1221,7 +1530,7 @@ function Crea_Label_Icono(idParrafo, Name, clas, texto, idexpediente, modo) {
             dataType: "JSON",
             success: function (response) {
                 for (var i = 0; i < response.lista2.length; i++) {
-                    complmento += `<button id="myBtn" type="button" onclick="GeneraActaC_pdf(${response.lista2[i].idActaC})" class="btn btn-link margin-iconbf">
+                    complmento += `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('acta_c_${response.lista2[i].idActaC}.pdf','AC')" class="btn btn-link margin-iconbf">
                                                 <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
                                            </button>`;
 
@@ -1238,7 +1547,7 @@ function Crea_Label_Icono(idParrafo, Name, clas, texto, idexpediente, modo) {
                 dataType: "JSON",
                 success: function (response) {
                     for (var i = 0; i < response.lista3.length; i++) {
-                        complmento += `<button id="myBtn" type="button" onclick="GeneraEscrito_pdf(${response.lista3[i].idActaC})" class="btn btn-link margin-iconbf">
+                        complmento += `<button id="myBtn" type="button" onclick="GeneraDocumento_pdf('Escrito_I_${response.lista3[i].idActaC}.pdf','EI')" class="btn btn-link margin-iconbf">
                                                 <span class="fa fa-file-pdf-o color-muted fa-1x"></span>
                                            </button>`;
 
@@ -1516,7 +1825,37 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
 }
 function updateDatosPeticionarios() {
     // Actualizar Peticionario
+
+    $('button[id^=validapeticionario]').click(function (e) {
+        e.preventDefault();
+        var idquejaE = $('#idquejaE').val();
+        $.ajax({
+            type: "POST",
+            url: "ActualizaDatoscompementariosPetVAV",
+            data: { idqueja: idquejaE, status: 1 },
+            dataType: "JSON",
+            success: function (response) {
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'Se han cofirmado todos los datos Complementarios del peticionario',
+                    showConfirmButton: false,
+                    timer: 3000
+                }).then(function () {
+                    console.log("Despues de dar click en el boton, aqui llamarias al submit");
+                    $('button[id^=validapeticionario]').hide();
+                    location.reload();
+                });
+
+            }
+        });
+
+
+    });
+
     $('.formularioPeticionario').submit(function (e) {
+        e.preventDefault();
         if (validaTxt() || validaNumero()) {
             return;
         }
@@ -1541,7 +1880,10 @@ function updateDatosPeticionarios() {
                         title: 'Información del peticionario Actualizada de manera Correcta',
                         showConfirmButton: false,
                         timer: 1500
-                    })
+                    }).then(function () {
+                        console.log("Despues de dar click en el boton, aqui llamarias al submit");
+                        location.reload();
+                    });
                 } else {
                     Swal.fire({
                         position: 'center',
@@ -1553,36 +1895,12 @@ function updateDatosPeticionarios() {
                 }
             }
         });
+        
+     
 
     });
 
-    $('button[id^=validapeticionario]').click(function (e) {
-        e.preventDefault();
-        var idquejaE = $('#idquejaE').val();
-        $.ajax({
-            type: "POST",
-            url: "ActualizaDatoscompementariosPetVAV",
-            data: { idqueja: idquejaE, status: 1 },
-            dataType: "JSON",
-            success: function (response) {
-                /* ActualizaDatoscompementariosPetVAV*/
-                Swal.fire({
-                    position: 'center',
-                    icon: 'info',
-                    title: 'Se han cofirmado todos los datos Complementarios del peticionario',
-                    showConfirmButton: false,
-                    timer: 3000
-                }).then(function () {
-                    console.log("Despues de dar click en el boton, aqui llamarias al submit");
-                    $('button[id^=validapeticionario]').hide();
-                    location.reload();
-                });
-                
-            }
-        });
-
-
-    });
+ 
    
 }
 function formPeticionario(idformulario) {
@@ -2644,7 +2962,7 @@ function GeneraEscrito_pdf(idEscrito) {
 }
 
 
-function GeneraDocumento_pdf(nombreDocumento) {
+function GeneraDocumento_pdf(nombreDocumento,tipo) {
 
     let id = nombreDocumento;
     if (nombreDocumento == 'undefined' || nombreDocumento == '') {
@@ -2656,9 +2974,15 @@ function GeneraDocumento_pdf(nombreDocumento) {
             timer: 1500
         });
     } else {
-        window.open(ExportaDocumentoPDF + id, '_blank');
+        if (tipo == 'AC') {
+            window.open(ExportaDocumentoPDFAC + id, '_blank');
+        } else if (tipo == 'EI') { window.open(ExportaDocumentoPDFEI + id, '_blank'); } else { window.open(ExportaDocumentoPDF + id, '_blank'); }
+        
     }
 }
+//var ExportaDocumentoPDFEI = '@Url.Action("ConsutlarArchivoEI", "Expediente")?fileName=';
+//var ExportaDocumentoPDFAC = '@Url.Action("ConsutlarArchivoAC", "Expediente")?fileName=';
+
 
 function turnoAbogado(idquej, idabogad) {
     $.ajax({
