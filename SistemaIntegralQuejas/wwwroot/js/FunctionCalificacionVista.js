@@ -492,7 +492,7 @@ function Crear_Formulario_QuejaEdit(id) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idquejaE', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
-        + '<button type="button" class="" style="border:hidden; background:none;" title="Cedula de Calificación" onclick="generaPDFCedula()"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>'
+        + '<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="generaPDFCedula()"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>'
         + CreaBR()
         + CreaSelectLabeldisabled('viainterposE', '', arregloBlanco, '', 'Via de interposición: ', '')
         + CreaBR()
@@ -518,7 +518,6 @@ function Crear_Formulario_QuejaEdit(id) {
         + `<button id="myBtn" type='button' onclick='AddFormatDatosPersonales(${id})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-plus color-muted fa-1x"></span></p>
                                            </button>`
-        + checkbox('Calificación', 'confi_peticiona', 'Validar dato:', 'style="transform: scale(1.2);"')
         + checkbox('Validar info. DQOT', 'confi_peticiona', '', '', 'pulsacion')
         + CreaBR()
         + "<div id='contenedor_Usuarios'></div>"
@@ -1255,7 +1254,7 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'El peticionario se eliminó de la calificación Correctamente',
+                    title: 'El peticionario se eliminó del ID Correctamente',
                     showConfirmButton: true
                 }).then(function () {
                     console.log("Despues de dar click en el boton, aqui llamarias al submit");
@@ -1691,7 +1690,7 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
         success: function (response) {
             console.log(response)
             if (response.data.length > 0) {
-
+                $("#versioncomplementopeticionario").val("versioncalificacion");
                 $("#idcomplementopet1").val(idcomplemento)
                 $('#idpeticionarioi1').val(idregistro);
                 $("#CURP_petit-frmDatosPersonales" + idform).val(response.data[0].docIdentificatorio)
@@ -1922,6 +1921,11 @@ function formPeticionario(idformulario) {
                     {
                         valhidden: idformulario,
                         name: "numFrm",
+                        type: "hidden"
+                    },
+                    {
+                        valhidden: "",
+                         name: "versioncomplementopeticionario",
                         type: "hidden"
                     },
                     {
@@ -5183,17 +5187,6 @@ function GuardarAp() {
             });
         }
     } else {
-        //var htm = `<div style =" font-weight: bold;">Validar información de la DQOT: ` + `</p>`;
-        //if (!$('#confi_hechos').is(':checked')) { htm = htm + 'Hechos<br>'; }
-        //if (!$('#confi_lughec').is(':checked')) { htm = htm + 'Lugar de los hechos<br>'; }
-        //if (!$('#confi_peticiona').is(':checked')) { htm = htm + 'Peticionario(s)<br>'; }
-        //htm = htm + '</div>'
-        //Swal.fire({
-        //    position: 'center',
-        //    icon: "error",
-        //    html: htm,
-        //});
-
         var htm = "Validar información de la DQOT: \n";
         if (!$('#confi_hechos').is(':checked')) { htm += '*Hechos\n'; }
         if (!$('#confi_lughec').is(':checked')) { htm += '*Lugar de los hechos\n'; }
@@ -5464,17 +5457,6 @@ $(document).ready(function () {
                 });
             }
         } else {
-            //var htm = `<div style =" font-weight: bold;">Validar información de la DQOT: ` + `</p>`;
-            //if (!$('#confi_hechos').is(':checked')) { htm = htm + 'Hechos<br>'; }
-            //if (!$('#confi_lughec').is(':checked')) { htm = htm + 'Lugar de los hechos<br>'; }
-            //if (!$('#confi_peticiona').is(':checked')) { htm = htm + 'Peticionario(s)<br>'; }
-            //htm = htm + '</div>'
-            //Swal.fire({
-            //    position: 'center',
-            //    icon: "error",
-            //    html: htm,
-            //});
-
             var htm = "Validar información de la DQOT: \n";
             if (!$('#confi_hechos').is(':checked')) { htm += '-Hechos\n'; }
             if (!$('#confi_lughec').is(':checked')) { htm += '-Lugar de los hechos\n'; }

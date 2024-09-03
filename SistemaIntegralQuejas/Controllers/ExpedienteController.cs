@@ -2296,7 +2296,9 @@ namespace SistemaIntegralQuejas.Controllers
             string idcomplementopet = form["idcomplementopet" + numFrm].ToString();
             string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
             string id_queja = form["idquejagenerado"].ToString();
-
+            string VersionComplemento = "";
+            if (form["versioncomplementopeticionario"].Count>0) { VersionComplemento = form["versioncomplementopeticionario"].ToString(); }
+             
             int violenciamujer = 0;
             string Canalizaciondepen = "";
             string idEmbarazada = "";
@@ -2458,7 +2460,8 @@ namespace SistemaIntegralQuejas.Controllers
                     "'" + IngresosMensuales + "'," +
                     "" + idPetit + "," +
                     "'" + genero + "'," +
-                    "'" + otroGenero + "'";
+                    "'" + otroGenero + "',"+
+                    "'" + VersionComplemento + "'";
 
                 }
                 // Si el id de queja ya existe entonces se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
