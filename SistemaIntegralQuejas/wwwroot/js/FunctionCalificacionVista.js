@@ -518,7 +518,6 @@ function Crear_Formulario_QuejaEdit(id) {
         + `<button id="myBtn" type='button' onclick='AddFormatDatosPersonales(${id})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-plus color-muted fa-1x"></span></p>
                                            </button>`
-        + checkbox('Calificación', 'confi_peticiona', 'Validar dato:', 'style="transform: scale(1.2);"')
         + checkbox('Validar info. DQOT', 'confi_peticiona', '', '', 'pulsacion')
         + CreaBR()
         + "<div id='contenedor_Usuarios'></div>"
@@ -5183,17 +5182,6 @@ function GuardarAp() {
             });
         }
     } else {
-        //var htm = `<div style =" font-weight: bold;">Validar información de la DQOT: ` + `</p>`;
-        //if (!$('#confi_hechos').is(':checked')) { htm = htm + 'Hechos<br>'; }
-        //if (!$('#confi_lughec').is(':checked')) { htm = htm + 'Lugar de los hechos<br>'; }
-        //if (!$('#confi_peticiona').is(':checked')) { htm = htm + 'Peticionario(s)<br>'; }
-        //htm = htm + '</div>'
-        //Swal.fire({
-        //    position: 'center',
-        //    icon: "error",
-        //    html: htm,
-        //});
-
         var htm = "Validar información de la DQOT: \n";
         if (!$('#confi_hechos').is(':checked')) { htm += '*Hechos\n'; }
         if (!$('#confi_lughec').is(':checked')) { htm += '*Lugar de los hechos\n'; }
@@ -5464,17 +5452,6 @@ $(document).ready(function () {
                 });
             }
         } else {
-            //var htm = `<div style =" font-weight: bold;">Validar información de la DQOT: ` + `</p>`;
-            //if (!$('#confi_hechos').is(':checked')) { htm = htm + 'Hechos<br>'; }
-            //if (!$('#confi_lughec').is(':checked')) { htm = htm + 'Lugar de los hechos<br>'; }
-            //if (!$('#confi_peticiona').is(':checked')) { htm = htm + 'Peticionario(s)<br>'; }
-            //htm = htm + '</div>'
-            //Swal.fire({
-            //    position: 'center',
-            //    icon: "error",
-            //    html: htm,
-            //});
-
             var htm = "Validar información de la DQOT: \n";
             if (!$('#confi_hechos').is(':checked')) { htm += '-Hechos\n'; }
             if (!$('#confi_lughec').is(':checked')) { htm += '-Lugar de los hechos\n'; }
