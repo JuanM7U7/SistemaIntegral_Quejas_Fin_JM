@@ -1,4 +1,5 @@
-﻿
+﻿@model List<SistemaIntegralQuejas.Controllers.ExpedienteController.CedulaQuejas>
+
 
 
 @{
@@ -7,6 +8,8 @@
 
 
 <body>
+        @foreach (var itemp in Model)
+{
     <div class="container receipt-wrap" id="receipt-wrap">
         <div class="row rowpapa">
             <div class="receipt-main col-xs-12 col-sm-12 col-md-12">
@@ -18,13 +21,14 @@
                     </div>
                     <div style="margin-top: 30px;" class="col-xs-10 col-sm-10 col-md-10 text-right">
                         <div class="receipt-right">
-                            <h5 class="titulodoc">Datos Recabados por la DQOT</h5>
+                            <h5 class="titulodoc">Datos Recabados por la DQOT @itemp.id_expediente</h5>
                         </div>
                     </div>
                      </div>
             </div>
         </div>
     </div>
+    }
 
 
 </body>

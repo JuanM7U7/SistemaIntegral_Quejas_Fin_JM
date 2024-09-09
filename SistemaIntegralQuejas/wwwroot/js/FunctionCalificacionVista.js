@@ -409,7 +409,7 @@ function Crear_Formulario_Queja(id) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idqueja', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
-        + `<button type="button" class="" style="border:hidden; background:none;" title="Información recabada por la DQOT" onclick="GeneraDocumento_pdf('pilin','IDQOT')"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
+        + `<button type="button" class="" style="border:hidden; background:none;" title="Información recabada por la DQOT" onclick="GeneraDocumento_pdf('pilin','IDQOT',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
         + CreaSelectLabeldisabled('viainterpos', '', arregloBlanco, '', 'Via de interposición: ', '')
         + CreaBR()
@@ -467,7 +467,7 @@ function Crear_Formulario_QuejaEdit(id) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idquejaE', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
-        + `<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="GeneraDocumento_pdf('pilin','IDCC')"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
+        + `<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="GeneraDocumento_pdf('pilin','IDCC',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
         + CreaSelectLabeldisabled('viainterposE', '', arregloBlanco, '', 'Via de interposición: ', '')
         + CreaBR()
@@ -3088,7 +3088,7 @@ function GeneraEscrito_pdf(idEscrito) {
 }
 
 
-function GeneraDocumento_pdf(nombreDocumento,tipo) {
+function GeneraDocumento_pdf(nombreDocumento,tipo,idq) {
 
     let id = nombreDocumento;
     if (nombreDocumento == 'undefined' || nombreDocumento == '') {
@@ -3105,11 +3105,11 @@ function GeneraDocumento_pdf(nombreDocumento,tipo) {
         } else if (tipo == 'EI') { window.open(ExportaDocumentoPDFEI + id, '_blank'); }
         else if (tipo == 'IDQOT')
         {
-            window.open(ExportaDocumentoDQOT, '_blank'); 
+            window.open(ExportaDocumentoDQOT + idq, '_blank'); 
 
         }
         else if (tipo == 'IDCC') {
-            window.open(ExportaDocumentoCCA, '_blank');
+            window.open(ExportaDocumentoCCA + idq, '_blank');
         }
         else { window.open(ExportaDocumentoPDF + id, '_blank'); }
         //
