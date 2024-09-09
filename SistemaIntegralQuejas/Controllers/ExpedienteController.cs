@@ -1478,6 +1478,18 @@ namespace SistemaIntegralQuejas.Controllers
             return RedirectToAction("Escrito_Inicial_de_Queja");
         }
 
+        public ActionResult Plantilla_Datos_DQOT()
+        {
+            //TempData["idescritort"] = idescrito;
+            return RedirectToAction("InfoRecabadaDQOT");
+        }
+
+        public ActionResult Plantilla_Cedula_Calificacion()
+        {
+            //TempData["idescritort"] = idescrito;
+            return RedirectToAction("Cedulac");
+        }
+
         public ActionResult verPDFRechazo(int idqueja, string visd, string memo, string p1, string p2, string p3, string just, string idsa, string vg, string acep)
         {
             string[] desarrolloidsaacpt = null;
@@ -1616,6 +1628,35 @@ namespace SistemaIntegralQuejas.Controllers
             };
         }
 
+        public ViewAsPdf InfoRecabadaDQOT() 
+        {
+            
+            return new ViewAsPdf("Plantilla_Datos_DQOT")
+            {
+                PageSize = Rotativa.AspNetCore.Options.Size.Letter,
+                PageMargins = { Left = 20, Right = 20 },
+                // FileName=nombrePDF,
+                //SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF + ".pdf"),
+                //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
+                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index --header-spacing 30 --margin-bottom 4cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+
+            };
+        }
+
+        public ViewAsPdf Cedulac()
+        {
+
+            return new ViewAsPdf("Plantilla_Cedula_Calificacion")
+            {
+                PageSize = Rotativa.AspNetCore.Options.Size.Letter,
+                PageMargins = { Left = 20, Right = 20 },
+                // FileName=nombrePDF,
+                //SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF + ".pdf"),
+                //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
+                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index --header-spacing 30 --margin-bottom 4cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+
+            };
+        }
 
         public ViewAsPdf Escrito_Inicial_de_Queja()
         {

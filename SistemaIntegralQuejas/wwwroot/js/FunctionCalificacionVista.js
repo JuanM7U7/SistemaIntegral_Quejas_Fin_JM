@@ -409,6 +409,7 @@ function Crear_Formulario_Queja(id) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idqueja', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
+        + `<button type="button" class="" style="border:hidden; background:none;" title="Información recabada por la DQOT" onclick="GeneraDocumento_pdf('pilin','IDQOT')"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
         + CreaSelectLabeldisabled('viainterpos', '', arregloBlanco, '', 'Via de interposición: ', '')
         + CreaBR()
@@ -466,7 +467,7 @@ function Crear_Formulario_QuejaEdit(id) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idquejaE', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
-        + '<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="generaPDFCedula()"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>'
+        + `<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="GeneraDocumento_pdf('pilin','IDCC')"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
         + CreaSelectLabeldisabled('viainterposE', '', arregloBlanco, '', 'Via de interposición: ', '')
         + CreaBR()
@@ -1061,7 +1062,7 @@ function DivPequenioss(nombrepeticionario, curp, idpeticionario, tipopeticionari
                                     <button id="myBtn" type='button' onclick='eliminaFormatoDatosPeronsales(6803, this)' class='btn btn-link margin-iconbf'>
                                         <span class="fa fa-trash color-muted fa-1x"></span>
                                     </button>
-                                    <button id="myBtn" type='button' onclick='warnningpet()' class='btn btn-link margin-iconbf'>
+                                    <button id="myBtn" type='button' onclick='warnningpet()' class='btn btn-link margin-iconbf pulsacionwar'>
                                         <span class="fa fa-exclamation-triangle color-muted fa-1x"></span>
                                     </button>
                                 </p>
@@ -3101,7 +3102,17 @@ function GeneraDocumento_pdf(nombreDocumento,tipo) {
     } else {
         if (tipo == 'AC') {
             window.open(ExportaDocumentoPDFAC + id, '_blank');
-        } else if (tipo == 'EI') { window.open(ExportaDocumentoPDFEI + id, '_blank'); } else { window.open(ExportaDocumentoPDF + id, '_blank'); }
+        } else if (tipo == 'EI') { window.open(ExportaDocumentoPDFEI + id, '_blank'); }
+        else if (tipo == 'IDQOT')
+        {
+            window.open(ExportaDocumentoDQOT, '_blank'); 
+
+        }
+        else if (tipo == 'IDCC') {
+            window.open(ExportaDocumentoCCA, '_blank');
+        }
+        else { window.open(ExportaDocumentoPDF + id, '_blank'); }
+        //
         
     }
 }
