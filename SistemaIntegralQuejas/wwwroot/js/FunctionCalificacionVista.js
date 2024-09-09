@@ -1061,7 +1061,7 @@ function DivPequenioss(nombrepeticionario, curp, idpeticionario, tipopeticionari
                                     <button id="myBtn" type='button' onclick='eliminaFormatoDatosPeronsales(6803, this)' class='btn btn-link margin-iconbf'>
                                         <span class="fa fa-trash color-muted fa-1x"></span>
                                     </button>
-                                    <button id="myBtn" type='button' onclick='warnningpet()' class='btn btn-link margin-iconbf'>
+                                    <button id="myBtn" type='button' onclick='warnningpet()' class='btn btn-link margin-iconbf pulsacionwar'>
                                         <span class="fa fa-exclamation-triangle color-muted fa-1x"></span>
                                     </button>
                                 </p>
