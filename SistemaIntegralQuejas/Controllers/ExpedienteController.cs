@@ -2597,6 +2597,17 @@ namespace SistemaIntegralQuejas.Controllers
 
         }
 
+        public async Task<ActionResult> Sp_Get_Auto_Pet(IFormCollection form)
+        {
+            string curp = form["curp"].ToString();
+            string idcomp = form["idcomp"].ToString();
+            string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre"].ToString().ToLower()));
+            string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop"].ToString().ToLower()));
+            string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom"].ToString().ToLower()));
+            string numRepPet = conexionsql.ObtenerReader("exec Sp_Get_Auto_Pet '" + idcomp + "','" + curp.ToUpper() + "','" + nombre + "','" + apellidop + "','" + apellidom + "'");
+            return Json(new { numrep = numRepPet });
+        }
+
         public List<PdfDatosPeticionario> ObtenerlistPeticionario(DataTable data)
         {
             List<PdfDatosPeticionario> lPeticionario = new List<PdfDatosPeticionario>();
@@ -4079,13 +4090,12 @@ namespace SistemaIntegralQuejas.Controllers
                         noexp = Convert.ToInt32(row["numeroexp"].ToString());
                     }
                 }
-                /*Actualizacion de tabla de diligencias*/
                 return Json(new { status = mensaje, no_exp = noexp });
             }
             else if (tipoexp == "2")
             {
                 if (expedsc=="99"){expedsc = "";}
-                query = "exec Sp_insertAporta " + idqueja + ",'" + expedsc + "','" + descapo + "'";
+                query = "exec Sp_insertAporta " + idqueja + ",'" + expedsc + "','" + descapo + "', '"+ hechos + "', '" + municipoqueja + "', '" + observaciones + "'";
                 mensaje = ejecutaInsertUpdate(query);
                 
                 if (TiGua != "preliminar")

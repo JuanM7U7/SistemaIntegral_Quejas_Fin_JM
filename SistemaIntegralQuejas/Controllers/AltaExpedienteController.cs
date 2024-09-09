@@ -92,10 +92,9 @@ namespace SistemaIntegralQuejas.Controllers
 			query1 = "exec Sp_carga_informacion_Complementaria_peticionario '"+ identificadorQueja + "'";
             query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
             informacioncomplementaria = conexionsql.datoscomplementarios(query, ref mensaje,query1, query2);
-			/*Cargar informacion dentro de las pantallas*/
-
-
-			if (listaContenedora3.Count > 0)
+            /*Cargar informacion dentro de las pantallas*/
+            
+            if (listaContenedora3.Count > 0)
             {
                 return Json(
                     new
@@ -164,13 +163,12 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 query = "exec Sp_Select_Aporta "+ identificadorQueja +", ''";
             }
+            infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
 
             #region CONFIRMACION DE DATOS DQOT
             query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
             datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje);
             #endregion
-
-            infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
 
             query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
             informaciontemaexped = conexionsql.datostemaExpediente(query, ref mensaje);
@@ -249,20 +247,17 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 query = "exec Sp_Select_Aporta " + identificadorQueja + ", ''";
             }
-
+            infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
             #region CONFIRMACION DE DATOS DQOT
             query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
             datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje);
             #endregion
-
-            infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
 
             query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
             informaciontemaexped = conexionsql.datostemaExpediente(query, ref mensaje);
 
             query = "EXEC Sp_GetPaso_Expediente " + identificadorQueja + "";
             paso = conexionsql.lista_SelectGenerica(query, ref mensaje); ;
-
             if (listaContenedora3.Count > 0)
             {
                 return Json(
@@ -359,16 +354,18 @@ namespace SistemaIntegralQuejas.Controllers
 		public string curp { get; set; }
 		public string tipo { get; set; }
 		public string idtip_compet { get; set; }
+		public int conreg { get; set; }
 
         public informacioncomplementariapeticionario() { }  
 
-		public informacioncomplementariapeticionario(int id_registro, string nombre_peticionario, string curp, string tipo, string idtip_compet)
+		public informacioncomplementariapeticionario(int id_registro, string nombre_peticionario, string curp, string tipo, string idtip_compet, int conreg)
 		{
 			this.id_registro = id_registro;
 			this.nombre_peticionario = nombre_peticionario;
 			this.curp = curp;
 			this.tipo = tipo;
 			this.idtip_compet = idtip_compet;
+			this.conreg = conreg;
 		}
 	}
 
