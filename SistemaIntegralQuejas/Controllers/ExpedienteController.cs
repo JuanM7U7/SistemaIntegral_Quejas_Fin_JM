@@ -1544,12 +1544,12 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { mensaje = "ok" });
         }
 
-        public ActionResult ActualizaDatoscompementariosPetVAV(int idqueja,int status)
+        public ActionResult ActualizaDatoscompementariosPetVAV(int idqueja,int status, int peticionario)
         
         {
             int idq = idqueja, stat = status;
 
-                    string queryupdatestatusext = "exec Sp_updateConfirmPet " + idqueja + ","+ status + "";
+                    string queryupdatestatusext = "exec Sp_updateConfirmPet " + idqueja + ","+ status + "," + peticionario;
                     int sino = conexionsql.InsertUpdateDeleteRegresaid(queryupdatestatusext);
 
             return Json(new { mensaje = "ok" });

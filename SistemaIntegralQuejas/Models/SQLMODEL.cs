@@ -365,7 +365,7 @@ namespace SistemaIntegralQuejas.Models
                     informacioncomplementariaautoridad modelo;
                     while (lector.Read())
                     {
-                        lista.Add(new informacioncomplementariaautoridad(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString()));
+                        lista.Add(new informacioncomplementariaautoridad(lector[0].ToString(), lector[1].ToString(), lector[2].ToString()));
 
                     }
                 }
@@ -867,7 +867,7 @@ namespace SistemaIntegralQuejas.Models
             return lista;
         }
 
-        public validaIinfoDQOT SelectValDQOT(string query, ref string mensaje)
+        public validaIinfoDQOT SelectValDQOT(string query, ref string mensaje, string query1)
         {
             mensaje = "";
             validaIinfoDQOT lista = new validaIinfoDQOT();
@@ -882,9 +882,10 @@ namespace SistemaIntegralQuejas.Models
                     cmd.Connection = conn;
                     lector = cmd.ExecuteReader();
                     validaIinfoDQOT modelo;
+                    List<validaIinfoDQOTpet> modelo1 = SelectValDQOTpeticionario(query1, ref mensaje);
                     while (lector.Read())
                     {
-                        lista = new validaIinfoDQOT(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), int.Parse(lector[5].ToString()));
+                        lista = new validaIinfoDQOT(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), int.Parse(lector[5].ToString()), modelo1);
                     }
                     return lista;
                 }
@@ -892,6 +893,39 @@ namespace SistemaIntegralQuejas.Models
             catch (Exception)
             {
             }
+            return lista;
+        }
+
+        public List<validaIinfoDQOTpet> SelectValDQOTpeticionario(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<validaIinfoDQOTpet> lista = new List<validaIinfoDQOTpet>();
+            SqlDataReader lector;
+
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    validaIinfoDQOTpet modelo;
+                    while (lector.Read())
+                    {
+                        lista.Add(new validaIinfoDQOTpet(int.Parse(lector[0].ToString()), lector[1].ToString(), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString())));
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+
             return lista;
         }
     }

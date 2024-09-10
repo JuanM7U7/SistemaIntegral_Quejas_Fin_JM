@@ -167,7 +167,8 @@ namespace SistemaIntegralQuejas.Controllers
 
             #region CONFIRMACION DE DATOS DQOT
             query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
-            datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje);
+            query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja;
+            datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
             #endregion
 
             query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
@@ -250,7 +251,8 @@ namespace SistemaIntegralQuejas.Controllers
             infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
             #region CONFIRMACION DE DATOS DQOT
             query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
-            datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje);
+            query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja;
+            datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
             #endregion
 
             query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
@@ -371,13 +373,13 @@ namespace SistemaIntegralQuejas.Controllers
 
     public class informacioncomplementariaautoridad 
     {
-        public int id_registro { get; set; }
+        public string id_registro { get; set; }
         public string nombre_autoridad { get; set; }
         public string ambito { get; set; }
 
         public informacioncomplementariaautoridad() { }
 
-        public informacioncomplementariaautoridad(int id_registro, string nombre_peticionario, string curp)
+        public informacioncomplementariaautoridad(string id_registro, string nombre_peticionario, string curp)
         {
             this.id_registro = id_registro;
             this.nombre_autoridad = nombre_peticionario;
@@ -394,9 +396,11 @@ namespace SistemaIntegralQuejas.Controllers
         public string datospeti { get; set; }
         public int version { get; set; }
 
+        public List<validaIinfoDQOTpet> infodatpeticio { get; set; }
+
         public validaIinfoDQOT() { }
 
-        public validaIinfoDQOT(int id_queja, string hechos, string lugar, string petic, string datospeti, int version)
+        public validaIinfoDQOT(int id_queja, string hechos, string lugar, string petic, string datospeti, int version, List<validaIinfoDQOTpet> infodatpeticio)
         {
             this.id_queja = id_queja;
             this.hechos = hechos;
@@ -404,6 +408,25 @@ namespace SistemaIntegralQuejas.Controllers
             this.petic = petic;
             this.datospeti = datospeti;
             this.version = version;
+            this.infodatpeticio = infodatpeticio;
+        }
+    }
+
+    public class validaIinfoDQOTpet
+    {
+        public int id_queja { get; set; }
+        public string datospet { get; set; }
+        public int version { get; set; }
+        public int id_peticionario { get; set; }
+
+        public validaIinfoDQOTpet() { }
+
+        public validaIinfoDQOTpet(int id_queja, string datospet, int version, int id_peticionario)
+        {
+            this.id_queja = id_queja;
+            this.datospet = datospet;
+            this.version = version;
+            this.id_peticionario = id_peticionario;
         }
     }
 

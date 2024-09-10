@@ -83,11 +83,17 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header headerUpdate">
-                <h5 class="modal-title" id="titleModal">Actualizar Datos Personales</h5>
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="row col-12">
+                    <div class="col-2"><img src="\img\logo_horizontal-cdhp.png" height="45px"/></div>
+                    <div class="col-9 text-center">
+                        <h5 class="modal-title" id="titleModal">Actualizar Datos Personales</h5>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"@*  onclick="closeModal('modaltabCalif')" *@>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="modal-body frmEditDatosPersonales">
             </div>
