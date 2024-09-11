@@ -1419,7 +1419,7 @@ function DivPequeniosautoridad(nombrepeticionario, curp, idpeticionario) {
             <p>
                 <span class="tooltipbox tooltipbox-effect-1">
                     <span class="tooltipbox-item">${nombrepeticionario}</span>
-                    <span class="tooltipbox-content clearfix">
+                    <span class="tooltipbox-content clearfix" style="max-width: 120% !important;">
                         <span class="tooltipbox-text">
                             <span style="color:black;font-weight: bold;">Infromación de la autoridad</span><br>
                             ID DE LA AUTORIDAD.: ${idpeticionario}<br>
