@@ -781,7 +781,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
             $('#icomuniE').prop('hidden', false);
             $('#confi_peticiona').prop('disabled', true);
             $('#confi_peticiona').removeClass('pulsacionrellow');
-            $('#btnaddpers').prop('hidden', false);
+            $('#btnaddpers').prop('hidden', true);
         }
 
         var date = new Date();
@@ -789,10 +789,12 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
             date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(response.informarcionC.fecha_registro));
         }
         chargeDateInputDate(document.getElementById(`Fecha_Registro${tipo}`), date);
-        if (fecRecep != null) {
+        if (fecRecep != null && !fecRecep.includes('-')) {
             date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(fecRecep));
+            chargeDateInputDate(document.getElementById(`Fecha_TurnoVG${tipo}`), date);
+        } else if (fecRecep != null && fecRecep.includes('-')) {
+            $(`#Fecha_TurnoVG${tipo}`).val(fecRecep);
         }
-        chargeDateInputDate(document.getElementById(`Fecha_TurnoVG${tipo}`), date);
         $(`#idqueja${tipo}`).val(response.informarcionC.id_expediente);
         $(`#hechos${tipo}`).val(response.informarcionC.hechos);
         $(`#observaciones${tipo}`).val(response.informarcionC.observaciones);
@@ -934,8 +936,8 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
         else { $('#icomuniE').prop('hidden', false); $('#confi_lughec').addClass("pulsacionrellow"); confirmdatos($('#idquejaE').val(), '', '0', ''); }
     });
     $('#confi_peticiona').change(function () {
-        if ($(this).is(':checked')) { $('#btnaddpers').prop('hidden', true); $('#confi_peticiona').removeClass('pulsacionrellow'); confirmdatos($('#idquejaE').val(), '', '', '1'); }
-        else { $('#btnaddpers').prop('hidden', false); $('#confi_peticiona').addClass("pulsacionrellow"); confirmdatos($('#idquejaE').val(), '', '', '0'); }
+        if ($(this).is(':checked')) { $('#confi_peticiona').removeClass('pulsacionrellow'); confirmdatos($('#idquejaE').val(), '', '', '1'); }
+        else { $('#confi_peticiona').addClass("pulsacionrellow"); confirmdatos($('#idquejaE').val(), '', '', '0'); }
     });
 }
 
@@ -1113,7 +1115,6 @@ function DivPequenioss(nombrepeticionario, curp, idpeticionario, tipopeticionari
                             </div>
                         </div>`;
     }
-
     return div;
 }
 
@@ -1386,6 +1387,8 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
         if (resp.isConfirmed) {
             let FrmDelPetit = new FormData();
             FrmDelPetit.append('id_complemento', idcomplemento);
+            var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
+            var Titulo_Modal = $('#Titulo_Modal').html();
             fetchPost("Expediente/DeleteComPeticionarioCalificacion", "json", FrmDelPetit, (resp) => {
                 Swal.fire({
                     position: 'center',
@@ -1394,7 +1397,14 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
                     showConfirmButton: true
                 }).then(function () {
                     console.log("Despues de dar click en el boton, aqui llamarias al submit");
-                    location.reload();
+                    $('#contenedor_AutoridadesE').html('');
+                    $('#contenedor_UsuariosE').html('');
+                    var expedi = 'PENDIENTE';
+                    if (!Titulo_Modal.includes('Calificación')) {
+                        expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
+                    }
+                    obtenerDQOTModifica($('#idquejaE').val(), Fecha_TurnoVGE, 'E', expedi);
+                    //location.reload();
                 });
             })
         }
@@ -1403,21 +1413,25 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
 
 }
 function DivPequeniosautoridad(nombrepeticionario, curp, idpeticionario) {
-    var div = "<div id='Divpequenios'>"
-        +
-        `
-			<div class="dummy dummy-text">
-			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
-            <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación de la autoridad</span><br>
-             ID DE LA AUTORIDAD.: ${idpeticionario}<br>
-             ÁMBITO:${curp}<br>
-             NOMBRE:${nombrepeticionario}<br>
-            </span></span></span></p>
-			</div>
-        `+ "</div>";
+    var div =
+   `<div id='Divpequenios'>
+        <div class="dummy dummy-text">
+            <p>
+                <span class="tooltipbox tooltipbox-effect-1">
+                    <span class="tooltipbox-item">${nombrepeticionario}</span>
+                    <span class="tooltipbox-content clearfix">
+                        <span class="tooltipbox-text">
+                            <span style="color:black;font-weight: bold;">Infromación de la autoridad</span><br>
+                            ID DE LA AUTORIDAD.: ${idpeticionario}<br>
+                            ÁMBITO:${curp}<br>
+                            NOMBRE:${nombrepeticionario}<br>
+                        </span>
+                    </span>
+                </span>
+            </p>
+        </div>
+    </div>`;
     +"<img id='add' src='/img/signomas.png'>"
-
-
     return div;
 }
 function CargaDatosSelectOtro_(select, arreglo, valor) {
@@ -1969,8 +1983,9 @@ function updateDatosPeticionarios() {
     $('button[id^=validapeticionario]').click(function (e) {
         e.preventDefault();
         var idquejaE = $('#idquejaE').val();
-        //var idcomplemento = $("#idcomplementopet1").val();
-        var idpeticionarioi=$('#idpeticionarioi1').val();
+        var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
+        var idpeticionarioi = $('#idpeticionarioi1').val();
+        var Titulo_Modal = $('#Titulo_Modal').html();
         $.ajax({
             type: "POST",
             url: "ActualizaDatoscompementariosPetVAV",
@@ -1981,13 +1996,21 @@ function updateDatosPeticionarios() {
                 Swal.fire({
                     position: 'center',
                     icon: 'info',
-                    title: 'Se han cofirmado todos los datos Complementarios del peticionario',
+                    title: 'Se han validado los datos del peticionario.',
                     showConfirmButton: false,
                     timer: 3000
                 }).then(function () {
                     console.log("Despues de dar click en el boton, aqui llamarias al submit");
                     $('button[id^=validapeticionario]').hide();
-                    location.reload();
+                    $('#contenedor_AutoridadesE').html('');
+                    $('#contenedor_UsuariosE').html('');
+                    $('#modalFormPeticionario').modal('hide');
+                    var expedi = 'PENDIENTE';
+                    if (!Titulo_Modal.includes('Calificación')) {
+                        expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
+                    }
+                    obtenerDQOTModifica(idquejaE, Fecha_TurnoVGE, 'E', expedi);
+                    //location.reload();
                 });
 
             }
@@ -2002,7 +2025,8 @@ function updateDatosPeticionarios() {
 
         let numFrm = 1;
         let idForm = '#frmDatosPersonales' + numFrm;
-
+        var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
+        var Titulo_Modal = $('#Titulo_Modal').html();
         $.ajax({
             type: "post",
             url: 'GuardarDataComplPeticionario',
@@ -2013,11 +2037,6 @@ function updateDatosPeticionarios() {
                 //console.log(data)
 
                 if (data.idpeticionario > 0 && data.idcomplemento > 0) {
-                    $('#confi_peticiona').prop('checked', false).trigger('change');
-                    $('#confi_peticiona').removeClass('pulsacionrellow');
-                    $('#confi_peticiona').prop('disabled', true);
-                    confirmdatos($('#idquejaE').val(), '', '', '3');
-
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
@@ -2026,7 +2045,19 @@ function updateDatosPeticionarios() {
                         timer: 1500
                     }).then(function () {
                         console.log("Despues de dar click en el boton, aqui llamarias al submit");
-                        location.reload();
+                        $('#confi_peticiona').prop('checked', false).trigger('change');
+                        $('#confi_peticiona').removeClass('pulsacionrellow');
+                        $('#confi_peticiona').prop('disabled', true);
+                        confirmdatos($('#idquejaE').val(), '', '', '3');
+                        $('#contenedor_AutoridadesE').html('');
+                        $('#contenedor_UsuariosE').html('');
+                        $('#modalFormPeticionario').modal('hide');
+                        var expedi = 'PENDIENTE';
+                        if (!Titulo_Modal.includes('Calificación')) {
+                            expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
+                        }
+                        obtenerDQOTModifica($('#idquejaE').val(), Fecha_TurnoVGE, 'E', expedi);
+                        //location.reload();
                     });
                 } else {
                     Swal.fire({
