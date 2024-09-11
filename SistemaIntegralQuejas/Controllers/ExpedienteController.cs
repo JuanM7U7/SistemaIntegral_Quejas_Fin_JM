@@ -1650,7 +1650,7 @@ namespace SistemaIntegralQuejas.Controllers
                 itemPdfei.id_abogado_recibe = row["abogadorecibe"].ToString();
                 itemPdfei.hechos = row["hechos"].ToString();
                 itemPdfei.id_lugar_hechos = row["lugar_hechos"].ToString();
-                itemPdfei.visitaduria = row["clavevisitaduria"].ToString();
+                itemPdfei.visitaduria = row["visitaduria"].ToString();
                 itemPdfei.fecha_registro = row["fecha_registrro"].ToString();
                 itemPdfei.fecha_turno_vg = row["fechaturnovisitaduria"].ToString();
                 itemPdfei.id_sede = row["sede"].ToString();
@@ -1790,11 +1790,11 @@ namespace SistemaIntegralQuejas.Controllers
             return new ViewAsPdf("Plantilla_Cedula_Calificacion", pdfescritoi)
             {
                 PageSize = Rotativa.AspNetCore.Options.Size.Letter,
-                PageMargins = { Left = 20, Right = 20 },
+                PageMargins = { Left = 5, Right = 5 },
                 // FileName=nombrePDF,
                 //SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF + ".pdf"),
                 //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
-                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index --header-spacing 30 --margin-bottom 4cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index --header-spacing 15 --margin-bottom 3cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
 
             };
         }

@@ -4,15 +4,19 @@
     Layout = null;
 }
 <style>
+    *{
+        font-family:Arial;
+    }
     .cedula-left
     {
-        width:50%;
+        margin-left:15%;
+        width:42%;
         float:left;
     }
 
     .cedula-right
     {
-        width: 50%;
+        width: 42%;
         float: left;
     }
 
@@ -52,7 +56,7 @@
 
     .titulodoc
     {
-        font-size: 25px;
+        font-size: 20px;
     }
 
     .titulodocsec
@@ -92,14 +96,21 @@
     .cedula-left p {
         font-style:normal;
         font-weight:100;
-        font-size: 18px;
+        font-size: 15px;
+        line-height: 1.0;
+        margin-top: 0;
+        margin-bottom: 10px;
+
 
     }
 
     .cedula-right p {
         font-style: normal;
         font-weight: 100;
-        font-size: 18px;
+        font-size: 15px;
+        line-height: 1.0;
+        margin-top: 0;
+        margin-bottom: 10px;
     }
 
     .datosfinales {
@@ -112,14 +123,33 @@
     {   text-align:center;
         float:left;
         width:50%;
+        text-transform: uppercase;
     }
 
         .datosfinales .rigth {
             text-align: center; float: left;
         width: 50%;
+            text-transform: uppercase;
+    }
+    h5
+    {
+        margin-top: 0;
+        margin-bottom: 8px;
     }
 
+        h5 P
+        {
+            line-height: 1.0;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
 
+
+    .NOEXP
+    {
+        text-align:center;
+        margin-bottom:15px;
+    }
 </style>
 
 <body>
@@ -135,24 +165,23 @@
                         </div>
                     </div>                
                         <div class="cedula-completo">
-                            <h5 class="titulodoc">CEDULA DE CALIFICACIÓN</h5>
+                            <h5 class="titulodoc">CÉDULA DE CALIFICACIÓN POR VISITADURÍA GENERAL</h5>
                            <div class="linea"></div>
                         </div>
 
-                        <h5 class="NOEXP titulos"><b>EXPEDIENTE:   </b>@itemp.Expediente - 2024</h5>
+                        <h5 class="NOEXP titulos"><b>EXPEDIENTE:   </b>@itemp.Expediente - 2024<p>ID:@itemp.id</p></h5>
                         <div class="cedula-left">
                             <h5 class="FOR titulos"><b>FECHA Y HORA DE REGISTRO:</b><p>@itemp.fecha_Hora_registro</p></h5>
-                            <h5 class="FRVG titulos"><b>FECHA DE RECEPCIÓN EN VG:</b><p>@itemp.fecha_RFV</p></h5>
-                            <h5 class="VI titulos"><b>VIA DE ENTRADA:</b><p>@itemp.VIA_ENTRADA   </p></h5>
+                            <h5 class="FRVG titulos"><b>FECHA DE RECEPCIÓN EN VISITADURÍA:</b><p>@itemp.fecha_RFV</p></h5>
+                            <h5 class="VI titulos"><b>VIA DE INTERPOSICIÓN:</b><p>@itemp.VIA_ENTRADA   </p></h5>
                             <h5 class="MAT titulos"><b>MATERIA:</b><p>@itemp.materia   </p></h5>
-                            <h5 class="LHV titulos"><b>LUGAR DONDE OCURRIERON LOS HECHOS VIOLATORIOS:</b><p>@itemp.lugar_Hechos   </p></h5>
+                            <h5 class="LHV titulos"><b>LUGAR DONDE OCURRIERON LOS HECHOS:</b><p>@itemp.lugar_Hechos   </p></h5>
                         </div>
                         <div class="cedula-right">
-                            <h5 class="FOR titulos"><b>FECHA TURNO ELECTRÓNICO A VG:</b><p>@itemp.fecha_Hora_turnoe   </p></h5>
-                            <h5 class="FOR titulos"><b>FECHA TURNO ABOGADO:</b><p> @itemp.fecha_TA  </p></h5>
+                            <h5 class="FOR titulos"><b>FECHA TURNO ELECTRÓNICO A VISITADURÍA:</b><p>@itemp.fecha_Hora_turnoe   </p></h5>
+                            <h5 class="FOR titulos"><b>FECHA TURNO ABOGADO(A):</b><p> @itemp.fecha_TA  </p></h5>
                             <h5 class="FOR titulos"><b>FECHA CALIFICACIÓN:</b><p> @itemp.fecha_calificacion  </p></h5>
                             <h5 class="PROG titulos"><b>PROGRAMA:</b><p> @itemp.programa  </p></h5>
-                            <h5 class="PROG titulos"><b>ID:</b>@itemp.id</h5>
                         </div>
 
                         <div class="cedula-completo1">
@@ -160,9 +189,9 @@
                         <div class="linea"></div>
                            <table>
                                <thead>
-                                    <th>ID DEL PETICIONARIO</th>
-                                <th>TIPO DEL PETICIONARIO</th>
-                                <th>NOMBRE DEL PETICIONARIO</th>
+                                    <th>ID DEL PETICIONARIO(A)</th>
+                                <th>TIPO DEL PETICIONARIO(A)</th>
+                                <th>NOMBRE DEL PETICIONARIO(A)</th>
                                </thead>
                                <tbody>
                                     @foreach (var itemuser in @itemp.listpet)
