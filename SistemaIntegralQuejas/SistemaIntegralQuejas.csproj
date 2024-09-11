@@ -40,6 +40,7 @@
     <Folder Include="Archivos\calif_atenc\" />
     <Folder Include="Properties\NewFolder\" />
     <Folder Include="Views\EditarFormatosExp\" />
+    <Folder Include="Views\NewFolder\" />
     <Folder Include="wwwroot\Archivos\calif_atenc\" />
     <Folder Include="wwwroot\Archivos\EI\" />
     <Folder Include="wwwroot\Archivos\AC\" />

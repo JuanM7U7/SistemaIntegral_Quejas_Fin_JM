@@ -5,13 +5,19 @@
 }
 
 <style>
+
+    * {
+        font-family: Arial;
+    }
+
     .cedula-left {
-        width: 50%;
+        margin-left: 15%;
+        width: 42%;
         float: left;
     }
 
     .cedula-right {
-        width: 50%;
+        width: 42%;
         float: left;
     }
 
@@ -46,7 +52,7 @@
     }
 
     .titulodoc {
-        font-size: 25px;
+        font-size: 20px;
     }
 
     .titulodocsec {
@@ -84,13 +90,19 @@
     .cedula-left p {
         font-style: normal;
         font-weight: 100;
-        font-size: 18px;
+        font-size: 15px;
+        line-height: 1.0;
+        margin-top: 0;
+        margin-bottom: 10px;
     }
 
     .cedula-right p {
         font-style: normal;
         font-weight: 100;
-        font-size: 18px;
+        font-size: 15px;
+        line-height: 1.0;
+        margin-top: 0;
+        margin-bottom: 10px;
     }
 
     .datosfinales {
@@ -104,13 +116,37 @@
             text-align: center;
             float: left;
             width: 50%;
+            text-transform: uppercase;
         }
 
         .datosfinales .rigth {
             text-align: center;
             float: left;
             width: 50%;
+            text-transform: uppercase;
         }
+
+    h5 {
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+        h5 P {
+            line-height: 1.0;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+    .hechos_observaciones {
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .texto_largos {
+        font-weight: normal;
+        text-align: justify;
+        font-size: 18px;
+    }
 </style>
 
 <body>
@@ -125,26 +161,25 @@
                             </div>
                         </div>
                         <div class="cedula-completo">
-                            <h5 class="titulodoc">CEDULA DE INFORMACIÓN RECABADA POR LA DQOT</h5>
+                            <h5 class="titulodoc">CÉDULA DE INFORMACIÓN RECABADA POR LA DQOT</h5>
                             <div class="linea"></div>
+                            <h5 class="FOR titulos"><b>ID: @itemp.id_expediente</h5><br>
                         </div>
                         <div class="cedula-left">
-                            <h5 class="FOR titulos"><b>ID: <p>@itemp.id_expediente</p></h5>
-                            <h5 class="FRVG titulos"><b>Vía de interposición: :</b><p>@itemp.Via_interpos</p></h5>
-                            <h5 class="VI titulos"><b>Abogado quien Recibe: </b><p>@itemp.id_abogado_recibe</p></h5>
-                            <h5 class="MAT titulos"><b>Hechos:</b><p>@itemp.hechos</p></h5>
-                            <h5 class="FOR titulos"><b>Lugar de los hechos. Municipio y Estado:</b><p>@itemp.id_lugar_hechos</p></h5>
+                            <br><h5 class="FOR titulos"><b>VISITADURÍA:</b><p> @itemp.visitaduria</p></h5>
+                            <h5 class="FRVG titulos"><b>VÍA DE INTERPOSICIÓN:</b><p>@itemp.Via_interpos</p></h5>
+                            <h5 class="VI titulos"><b>ABOGADO QUE RECIBE: </b><p>@itemp.id_abogado_recibe</p></h5>
+                            <h5 class="FOR titulos"><b>LUGAR DE LOS HECHOS. MUNICIPIO Y ESTADO:</b><p>@itemp.id_lugar_hechos</p></h5>
                         </div>
                         <div class="cedula-right">
-                            <h5 class="FOR titulos"><b>Visitaduría:</b><p> @itemp.visitaduria</p></h5>
-                            <h5 class="FOR titulos"><b>Fecha de Registro:</b><p> @itemp.fecha_registro</p></h5>
-                            <h5 class="PROG titulos"><b>Fecha de turno a VG:</b><p> @itemp.fecha_turno_vg </p></h5>
-                            <h5 class="PROG titulos"><b>Sede de registro:</b><p>@itemp.id_sede</p></h5>
-                            <h5 class="PROG titulos"><b>Observaciones DQOT:</b><p>@itemp.observaciones</p></h5>
+                            <br><h5 class="FOR titulos"><b>FECHA DE REGISTRO:</b><p> @itemp.fecha_registro</p></h5>
+                            <h5 class="PROG titulos"><b>FECHA DE TURNO A VISITADURÍA:</b><p> @itemp.fecha_turno_vg </p></h5>
+                            <h5 class="PROG titulos"><b>SEDE DE REGISTRO:</b><p>@itemp.id_sede</p></h5>
                         </div>
-
                         <div class="cedula-completo">
-                            <h5 class="titulodocsec">AUTORIDAD(ES)</h5>
+                            <br><h5 class="hechos_observaciones"><b>HECHOS:</b><p class="texto_largos">@itemp.hechos</p></h5>
+                            <br><h5 class="hechos_observaciones"><b>OBSERVACIONES DQOT:</b><p class="texto_largos">@itemp.observaciones</p></h5>
+                            <br><h5 class="titulodocsec">AUTORIDAD(ES)</h5>
                             <div class="linea"></div>
                             <table>
                                 <thead>
@@ -167,20 +202,20 @@
 
 
                         <div class="cedula-completo1">
-                            <h5 class="titulodocsec">PETICIONARIOS(AS)</h5>
+                            <br><h5 class="titulodocsec">PETICIONARIOS(AS)</h5>
                             <div class="linea"></div>
                             <table>
                                 <thead>
-                                <th>ID DEL PETICIONARIO</th>
-                                <th>TIPO DEL PETICIONARIO</th>
-                                <th>NOMBRE DEL PETICIONARIO</th>
+                                <th>ID DEL PETICIONARIO(A)</th>
+                                <th>TIPO DEL PETICIONARIO(A)</th>
+                                <th>NOMBRE DEL PETICIONARIO(A)</th>
                                 </thead>
                                 <tbody>
                                     @foreach (var itemuser in @itemp.listpeti)
                                     {
                                         <tr>
                                             <td>@itemuser.id</td>
-                                            <td>@itemuser.tipopet</td>
+                                            <td>@itemuser.tipopet (a)</td>
                                             <td>@itemuser.nombrepet</td>
                                         </tr>
 
