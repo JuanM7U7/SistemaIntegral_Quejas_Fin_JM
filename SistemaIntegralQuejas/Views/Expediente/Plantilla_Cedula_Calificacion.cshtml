@@ -25,8 +25,8 @@
         width:100%;
         text-align:center;
         margin-bottom:0px;
-        float: left
- 
+        float: left;
+        margin-top:0px;
     }
 
     .cedula-completo1 {
@@ -67,6 +67,7 @@
     .cedula-completo table
     {
         width:100%;
+        margin-top: 0px;
     }
 
     .cedula-completo1 table {
@@ -76,10 +77,21 @@
 
     .cedula-completo1 > th,td {
       text-align:center;
+        width: 30%;
     }
 
     .cedula-completo > td {
         text-align: left;
+        margin-top: 0px;
+        padding-top:0px;
+        width: 30%;
+  
+    }
+
+    .cedula-completo > th {
+        margin-top: 0px;
+        padding-top: 0px;
+        width: 30%;
     }
 
     .cedula-completo-izquierda {
@@ -174,7 +186,7 @@
                         <div class="cedula-left">
                             <h5 class="FOR titulos"><b>FECHA Y HORA DE REGISTRO:</b><p>@itemp.fecha_Hora_registro</p></h5>
                             <h5 class="FRVG titulos"><b>FECHA DE RECEPCIÓN EN VISITADURÍA:</b><p>@itemp.fecha_RFV</p></h5>
-                            <h5 class="VI titulos"><b>VIA DE INTERPOSICIÓN:</b><p>@itemp.VIA_ENTRADA   </p></h5>
+                            <h5 class="VI titulos"><b>VÍA DE INTERPOSICIÓN:</b><p>@itemp.VIA_ENTRADA   </p></h5>
                             <h5 class="MAT titulos"><b>MATERIA:</b><p>@itemp.materia   </p></h5>
                             <h5 class="LHV titulos"><b>LUGAR DONDE OCURRIERON LOS HECHOS:</b><p>@itemp.lugar_Hechos   </p></h5>
                         </div>
