@@ -59,6 +59,12 @@ namespace SistemaIntegralQuejas.Controllers
             return View();
         }
 
+
+        public ActionResult Index1()
+        {
+            return View();
+        }
+
         public ActionResult PlantillaDPeticionario()
         {
             return View();
@@ -1706,7 +1712,7 @@ namespace SistemaIntegralQuejas.Controllers
                 // FileName=nombrePDF,
                 //SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF + ".pdf"),
                 //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
-                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index --header-spacing 15 --margin-bottom 3cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index1 --header-spacing 15 --margin-bottom 3cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index1 --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
 
             };
         }
@@ -1794,7 +1800,7 @@ namespace SistemaIntegralQuejas.Controllers
                 // FileName=nombrePDF,
                 //SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF + ".pdf"),
                 //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
-                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index --header-spacing 15 --margin-bottom 3cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index1 --header-spacing 15 --margin-bottom 3cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index1 --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
 
             };
         }
