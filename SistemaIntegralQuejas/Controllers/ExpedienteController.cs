@@ -4216,7 +4216,8 @@ namespace SistemaIntegralQuejas.Controllers
 
                 for (int i = 0; i < arreglotemas.Length; i++)
                 {
-                    query = "exec Sp_insertaTema " + idqueja + "," + arreglotemas[i].ToString() + "," + "'" + otrotema + "'";
+                    string version = "CALIFICACION";//Ver la manera de cambiar modificación
+                    query = "exec Sp_insertaTema " + idqueja + "," + arreglotemas[i].ToString() + "," + "'" + otrotema + "','"+ version + "'";
                     mensaje = ejecutaInsertUpdate(query);
                 }
 
