@@ -56,13 +56,18 @@
         </div>
         <div class="modal-body">
             <div class="row col-12">
-                <div class="tab col-4">
+                <div class="tab col-3">
                     <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpenD">Información recabada por la DQOT</button>
                 </div>
-                <div class="tab col-2">
-                    <button class="tablinks" onclick="openCity(event, 'Detalle_Calificar')">Calificación Queja</button>
+                <div class="tab col-3">
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Calificar')">Calificación Expediente</button>
                 </div>
-                <div class="tab col-6"></div>
+                <div class="tab col-3">
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Modificacion')">Modificación de Expediente</button>
+                </div>
+                <div class="tab col-3">
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Conclusion')">Conclusión de Expediente</button>
+                </div>
             </div>
 
             <div id="Detalle_Quejak" class="tabcontent">
@@ -75,6 +80,12 @@
                 <div id="ListAport" class="col-12"></div>
                 <div id="tipQueja" class="col-12"></div>
                 <div id="frmDatosCalificacion" class=" row col-12"></div>
+            </div>
+            <div id="Detalle_Modificacion" class="tabcontent">
+                
+            </div>
+            <div id="Detalle_Conclusion" class="tabcontent">
+                
             </div>
         </div>
     </div>

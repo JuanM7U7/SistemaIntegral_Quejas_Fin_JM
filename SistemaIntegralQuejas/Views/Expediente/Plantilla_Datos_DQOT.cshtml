@@ -69,13 +69,21 @@
 
 
     .cedula-completo1 > th, td {
+        vertical-align: top;
         text-align: center;
+        width: 30%;
     }
 
     .cedula-completo > td {
         text-align: left;
+        margin: 0px;
+        width: 30%;
     }
 
+    .cedula-completo > th {
+        margin: 0px;
+        width: 30%;
+    }
     .cedula-completo-izquierda {
         float: left;
         width: 100%;
@@ -168,7 +176,7 @@
                         <div class="cedula-left">
                             <br><h5 class="FOR titulos"><b>VISITADURÍA:</b><p> @itemp.visitaduria</p></h5>
                             <h5 class="FRVG titulos"><b>VÍA DE INTERPOSICIÓN:</b><p>@itemp.Via_interpos</p></h5>
-                            <h5 class="VI titulos"><b>ABOGADO QUE RECIBE: </b><p>@itemp.id_abogado_recibe</p></h5>
+                            <h5 class="VI titulos"><b>ABOGADO(A) QUE RECIBE: </b><p>@itemp.id_abogado_recibe</p></h5>
                             <h5 class="FOR titulos"><b>LUGAR DE LOS HECHOS. MUNICIPIO Y ESTADO:</b><p>@itemp.id_lugar_hechos</p></h5>
                         </div>
                         <div class="cedula-right">

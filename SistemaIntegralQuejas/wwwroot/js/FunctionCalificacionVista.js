@@ -416,7 +416,11 @@ function Crear_Formulario_Queja(id) {
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada: ', id, 1)
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial: ', id, 2)
         + CreaBR()
-        + CreaSelectLabeldisabled('Abogadoqueja', '', arregloBlanco, '', 'Abogado que Recibe: ', '')
+        + CreaSelectLabeldisabled('Abogadoqueja', '', arregloBlanco, '', 'Abogado(a) que recibe: ', '')
+        + CreaBR()
+        + CreaInputs_Con_Labeldisabled('Fecha_Registro', 'Fecha_Registro', '', 'date', 'Fecha de Registro: ', 'textfield', '')
+        + CreaBR()
+        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVG', 'Fecha_TurnoVG', '', 'date', 'Fecha de turno a VG: ', 'textfield')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Hechos: ')
         + CreaBR()
@@ -425,7 +429,7 @@ function Crear_Formulario_Queja(id) {
         + Crea_Label('textfield8', 'textfield8', '', 'Autoridad(es): ')
         + CreaBR()
         + "<div id='contenedor_Autoridades'></div>";
-    var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', 'Lugar de los hechos. Municipio y estado: ')
+    var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', 'Lugar de los hechos. Municipio y Estado: ')
         + CreaBR()
         + CreaSelectLabeldisabled('municipioqueja', '', arregloBlanco, '', '', '')
         + Crea_Label('textfield8', 'textfield8', '', 'Peticionario(s): ')
@@ -438,19 +442,16 @@ function Crear_Formulario_Queja(id) {
         + "<div id='contenedor_Usuarios'></div>"
         + CreaBR()
         + CreaSelectLabeldisabled('visitaduriaqueja', '', arregloBlanco, '', 'Visitaduría: ', '')
-        + CreaBR()
-        + CreaInputs_Con_Labeldisabled('Fecha_Registro', 'Fecha_Registro', '', 'date', 'Fecha de Registro: ', 'textfield', '')
-        + CreaBR()
-        + CreaInputs_Con_Labeldisabled('Fecha_TurnoVG', 'Fecha_TurnoVG', '', 'date', 'Fecha de turno a VG: ', 'textfield')
+        
         + CreaBR()
         + CreaSelectLabeldisabled('sedeRegistro', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQOT: ')
         + CreaBR()
-        + CreaTextAreadisabled('observaciones', '', 'style="width:100%; height:20%"')
+        + CreaTextAreadisabled('observaciones', '', 'style="width:100%; height:28%"')
         + CreaBR()
         + CreaBR();
-    var formInnicial = '<form class="text-justify formQueja" id="formQueja" name="formQueja" method="post" style="width:90%; margin-left:5%" >';
+    var formInnicial = '<form class="text-justify formQueja" id="formQueja" name="formQueja" method="post" style="width:100%; margin-left:5%" >';
     var fin_form = '</form>';
 
     let formualarioCompleto = formInnicial + cuerpoIzquierda + fin_form;
@@ -474,7 +475,7 @@ function Crear_Formulario_QuejaEdit(id) {
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada DQOT: ', id, 1)
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial DQOT: ', id, 2)
         + CreaBR()
-        + CreaSelectLabeldisabled('AbogadoquejaE', '', arregloBlanco, '', 'Abogado que Recibe: ', '')
+        + CreaSelectLabeldisabled('AbogadoquejaE', '', arregloBlanco, '', 'Abogado(a) que recibe: ', '')
         + CreaBR()
         + CreaInputs_Con_Labeldisabled('Fecha_RegistroE', 'Fecha_RegistroE', '', 'date', 'Fecha de Registro: ', 'textfield', '')
         + CreaBR()
@@ -488,7 +489,7 @@ function Crear_Formulario_QuejaEdit(id) {
         + Crea_Label('textfield8', 'textfield8', '', 'Autoridad(es): ')
         + CreaBR()
         + "<div id='contenedor_AutoridadesE'></div>";
-    var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Lugar de los hechos. Municipio y estado: ')
+    var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', Requeridos() + 'Lugar de los hechos. Municipio y Estado: ')
         + icono_editar('municipioquejaE', id, 'icomuniE') + checkbox('Validar info. DQOT', 'confi_lughec', '', '', 'pulsacionrellow')
         + CreaBR()
         + CreaSelectLabeldisabled('municipioquejaE', '', arregloBlanco, '', '', '')
