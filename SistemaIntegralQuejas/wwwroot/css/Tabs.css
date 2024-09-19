@@ -34,7 +34,12 @@
         .tab button:hover {
             background-color: #ddd;
             color: #000;
+
         }
+        .tab button:focus {
+            outline: none;
+        }
+
 .tabcontent {
     display: none;
     padding: 6px 12px;

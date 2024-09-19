@@ -411,7 +411,7 @@ function Crear_Formulario_Queja(id) {
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idqueja', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
         + `<button type="button" class="" style="border:hidden; background:none;" title="Información recabada por la DQOT" onclick="GeneraDocumento_pdf('pilin','IDQOT',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
-        + CreaSelectLabeldisabled('viainterpos', '', arregloBlanco, '', 'Via de interposición: ', '')
+        + CreaSelectLabeldisabled('viainterpos', '', arregloBlanco, '', 'Vía de interposición: ', '')
         + CreaBR()
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada: ', id, 1)
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial: ', id, 2)
@@ -470,7 +470,7 @@ function Crear_Formulario_QuejaEdit(id) {
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idquejaE', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
         + `<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="GeneraDocumento_pdf('pilin','IDCC',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
-        + CreaSelectLabeldisabled('viainterposE', '', arregloBlanco, '', 'Via de interposición: ', '')
+        + CreaSelectLabeldisabled('viainterposE', '', arregloBlanco, '', 'Vía de interposición: ', '')
         + CreaBR()
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada DQOT: ', id, 1)
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial DQOT: ', id, 2)
@@ -498,7 +498,7 @@ function Crear_Formulario_QuejaEdit(id) {
         + `<button id="btnaddpers" type='button' onclick='AddFormatDatosPersonales(${id})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-plus color-muted fa-1x"></span></p>
                                            </button>`
-        + checkbox('Validar info. DQOT', 'confi_peticiona', '', 'disabled', 'pulsacionrellow') + '<span id="cont_pet" style="font-size: 12px;">0/0</span><span style="font-size: 12px;"> peticionarios(a) confirmados</span>'
+        + checkbox('Validar info. DQOT', 'confi_peticiona', '', '', 'pulsacionrellow') + '<span id="cont_pet" style="font-size: 12px;">0/0</span><span style="font-size: 12px;"> peticionarios(a) confirmados</span>'
         + CreaBR()
         + "<div id='contenedor_UsuariosE'></div>"
         + CreaBR()
@@ -913,6 +913,11 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                         response.infoaportaciones.forEach(function (i, y) {
                             $('#expedsc-frmDatosCalificacion').val(i.id_expediente_apor === '' ? 99 : i.id_expediente_apor).trigger('change.select2');
                             $('#descapo-frmDatosCalificacion').val(i.descripcion);
+
+                            $('#Titulo_Modal').html(' ');
+                            $('#Titulo_Modal').html('APORTACIÓN AL EXPEDIENTE: ' + $('select[id="expedsc-frmDatosCalificacion"] option:selected').text());
+                            
+
                         });
                     }
                 });
@@ -924,6 +929,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
         $('#especializado-frmDatosCalificacion').val(response.informarcionC.id_especializado === '' ? 99 : response.informarcionC.id_especializado);
         $('#trancpub-frmDatosCalificacion').val(response.informarcionC.id_tras_op_pub === '' ? 99 : response.informarcionC.id_tras_op_pub);
         $('#tipexpediente-frmDatosCalificacion').val(response.informarcionC.tipo_expediente === '' ? 99 : response.informarcionC.tipo_expediente);
+           
         $('#materia-frmDatosCalificacion').val(response.informarcionC.id_materia === '' ? 99 : response.informarcionC.id_materia);
         $('#nivries-frmDatosCalificacion').val(response.informarcionC.id_niv_riesgo === '' ? 99 : response.informarcionC.id_niv_riesgo);
     });
@@ -5388,11 +5394,12 @@ function GuardarAp() {
         var htm = "Validar información de la DQOT: \n";
         if (!$('#confi_hechos').is(':checked') && !$('#confi_hechos').is(':disabled')) { htm += '-Hechos\n'; }
         if (!$('#confi_lughec').is(':checked') && !$('#confi_lughec').is(':disabled')) { htm += '-Lugar de los hechos\n'; }
-        if (!$('#confi_peticiona').is(':checked') && !$('#confi_peticiona').is(':disabled')) { htm += '-Peticiona\n'; }
+        if (!$('#confi_peticiona').is(':checked') && !$('#confi_peticiona').is(':disabled')) { htm += '-Peticionarios\n'; }
         $.notify(htm, {
             className: "warn",
             position: "bottom right",
-            autoHide: false,
+            autoHide: true,
+            autoHideDelay: 5000,
             style: 'bootstrap',
             globalPosition: 'top center',
             showDuration: 400,
@@ -5658,11 +5665,12 @@ $(document).ready(function () {
             var htm = "Validar información de la DQOT: \n";
             if (!$('#confi_hechos').is(':checked') && !$('#confi_hechos').is(':disabled')) { htm += '-Hechos\n'; }
             if (!$('#confi_lughec').is(':checked') && !$('#confi_lughec').is(':disabled')) { htm += '-Lugar de los hechos\n'; }
-            if (!$('#confi_peticiona').is(':checked') && !$('#confi_peticiona').is(':disabled')) { htm += '-Peticiona\n'; }
+            if (!$('#confi_peticiona').is(':checked') && !$('#confi_peticiona').is(':disabled')) { htm += '-Peticionarios\n'; }
             $.notify(htm, {
                 className: "warn",
                 position: "bottom right",
-                autoHide: false,
+                autoHide: true,
+                autoHideDelay: 5000,
                 style: 'bootstrap',
                 globalPosition: 'top center',
                 showDuration: 400,
