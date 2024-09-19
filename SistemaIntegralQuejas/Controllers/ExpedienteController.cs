@@ -4370,11 +4370,11 @@ namespace SistemaIntegralQuejas.Controllers
             public int id_autoridad { get; set; }
             public int id_hechov { get; set; }
             public int id_linea { get; set; }
-            public int Version { get; set; }
+            public string Version { get; set; }
             public int Eliminado { get; set; }
             public int tipo { get; set; }
             public SelectAUT_HEV() { }
-            public SelectAUT_HEV(int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo)
+            public SelectAUT_HEV(int id_queja, int id_autoridad, int id_hechov, int id_linea, string Version, int Eliminado, int tipo)
             {
                 this.id_queja = id_queja;
                 this.id_autoridad = id_autoridad;
@@ -4497,12 +4497,19 @@ namespace SistemaIntegralQuejas.Controllers
         
         public ActionResult SelectAutorHech(string idqueja, string version)
         {
+            string version2 = "";
             List<SelectAUT_HEV> autorhech = new List<SelectAUT_HEV>();
-            if (version=="DQOT")
+            String query = "";
+            if (version == "EDICION")
             {
-                version = "1";
+                //version2 = "CALIFICACION";
+                query = "exec Sp_obtener_aut_hecvio " + idqueja;
             }
-            String query = "exec Sp_obtener_aut_hecvio_version " + idqueja+ ",'"+ version + "'";
+            else
+            {
+                query = "exec Sp_obtener_aut_hecvio_version " + idqueja+",'"+ version + "'";
+            }
+
             string mensaje = "";
             autorhech = conexionsql.SelectAutHec(query, ref mensaje);
 
@@ -4543,7 +4550,7 @@ namespace SistemaIntegralQuejas.Controllers
             public string plaz_aten { get; set; }
             public string ruta_archivo { get; set; }
             public int id_fila { get; set; }
-            public int version { get; set; }
+            public string version { get; set; }
             public int eliminado { get; set; }
             public int id_viainter { get; set; }
             public string fecharecibo { get; set; }
@@ -4552,7 +4559,7 @@ namespace SistemaIntegralQuejas.Controllers
             public string desc_evi { get; set; }
             public string semaforo { get; set; }
             public SelectDILIG() { }
-            public SelectDILIG(int id_queja, int Tipo_diligencia, string descripcion, string fecha_emi, string oficioMemo, string plaz_aten, string ruta_archivo, int id_fila, int version, int eliminado, int id_viainter, string fecharecibo, string ruta_arch_eviden, string fecha_soli, string desc_evi, string semaforo)
+            public SelectDILIG(int id_queja, int Tipo_diligencia, string descripcion, string fecha_emi, string oficioMemo, string plaz_aten, string ruta_archivo, int id_fila, string version, int eliminado, int id_viainter, string fecharecibo, string ruta_arch_eviden, string fecha_soli, string desc_evi, string semaforo)
             {
                 this.id_queja = id_queja;
                 this.Tipo_diligencia = Tipo_diligencia;
@@ -4576,12 +4583,18 @@ namespace SistemaIntegralQuejas.Controllers
         
         public ActionResult SelectDiligencias(string idqueja, string version)
         {
+
+            String query = "";
             List<SelectDILIG> diligen = new List<SelectDILIG>();
-            if (version == "DQOT")
+            if (version == "EDICION")
             {
-                version = "1";
+                query = "exec Sp_obtener_diligen " + idqueja;
             }
-            String query = "exec Sp_obtener_diligen_version " + idqueja + ",'"+ version + "'";
+            else
+            {
+                query = "exec Sp_obtener_diligen_version " + idqueja+",'"+ version + "'";
+            }
+             
             string mensaje = "";
             diligen = conexionsql.SelectDilig(query, ref mensaje);
 
@@ -4620,12 +4633,19 @@ namespace SistemaIntegralQuejas.Controllers
 
         public ActionResult SelectMedc(string idqueja, string version)
         {
+            String query = "";
+            
             List<selectMED_CAUT> autorhech = new List<selectMED_CAUT>();
-            if (version == "DQOT")
+            if (version == "EDICION")
             {
-                version = "1";
+                query = "exec Sp_obtener_med_caut " + idqueja;
+
             }
-            String query = "exec Sp_obtener_med_caut_version " + idqueja+",'"+ version + "'";
+            else
+            {
+                query = "exec Sp_obtener_med_caut_version " + idqueja+",'"+ version + "'";
+            }
+            
             string mensaje = "";
             autorhech = conexionsql.Selectmedcaut(query, ref mensaje);
             if (autorhech.Count > 0)

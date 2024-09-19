@@ -12,13 +12,14 @@ namespace SistemaIntegralQuejas.Models
     public class SQLMODEL
     {
         //string ConnectionString = @"Data Source=192.168.1.14; Initial Catalog=DB_SistemaIntegralQuejas;TrustServerCertificate=True; User Id=sbdquejasok; Password=123456";
-       public static string ConnectionString = @"Data Source=192.168.1.50; Initial Catalog=DB_SistemaIntegralQuejasQA;TrustServerCertificate=True; User Id=CDHDPITQA; Password=Cdhp2022*-+;";
+        public static string ConnectionString = @"Data Source=192.168.1.50; Initial Catalog=DB_SistemaIntegralQuejasQA;TrustServerCertificate=True; User Id=CDHDPITQA; Password=Cdhp2022*-+;";
         //public static string ConnectionString = @"Data Source=20.246.13.106; Initial Catalog=DB_SistemaIntegralQuejas;TrustServerCertificate=True; User Id=CDHPDPIT; Password=Cdhp2022*-+;";
 
 
         public string ConnectionStrng()
-        { 
-        return ConnectionString; }
+        {
+            return ConnectionString;
+        }
         public SqlConnection conexion(ref string mensaje)
         {
 
@@ -41,8 +42,8 @@ namespace SistemaIntegralQuejas.Models
         public bool InsertUpdateDelete(string query)
         {
             bool respuesta = false;
-            string  mensaje = "";
-			try
+            string mensaje = "";
+            try
             {
                 using (SqlConnection conn = conexion(ref mensaje))
                 {
@@ -52,11 +53,11 @@ namespace SistemaIntegralQuejas.Models
                     cmd.Connection = conn;
                     cmd.ExecuteNonQuery();
                 }
-				respuesta = true;
+                respuesta = true;
             }
             catch (Exception ex)
             {
-				respuesta = false;
+                respuesta = false;
             }
             return respuesta;
         }
@@ -127,80 +128,80 @@ namespace SistemaIntegralQuejas.Models
             return lista;
         }
 
-		public List<SelectGenerico> lista_SelectGenerica(string query, ref string mensaje)
-		{
-			mensaje = "";
-			List<SelectGenerico> lista = new List<SelectGenerico>();
-			SqlDataReader lector;
+        public List<SelectGenerico> lista_SelectGenerica(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectGenerico> lista = new List<SelectGenerico>();
+            SqlDataReader lector;
 
-			try
-			{
-				using (SqlConnection conn = conexion(ref mensaje))
-				{
-					SqlCommand cmd = new SqlCommand();
-					cmd.CommandType = CommandType.Text;
-					cmd.CommandText = query;
-					cmd.Connection = conn;
-					lector = cmd.ExecuteReader();
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
 
-					SelectGenerico modelo;
-					while (lector.Read())
-					{
-						modelo = new SelectGenerico();
-						modelo.idSelectGenerico = int.Parse(lector[0].ToString());
-						modelo.Descripcion = lector[1].ToString();
-						modelo.seleccionable = bool.Parse(lector[2].ToString());
-						modelo.ruta = lector[3].ToString();
-						lista.Add(modelo);
-					}
-				}
-			}
-			catch (Exception)
-			{
-
-
-			}
+                    SelectGenerico modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new SelectGenerico();
+                        modelo.idSelectGenerico = int.Parse(lector[0].ToString());
+                        modelo.Descripcion = lector[1].ToString();
+                        modelo.seleccionable = bool.Parse(lector[2].ToString());
+                        modelo.ruta = lector[3].ToString();
+                        lista.Add(modelo);
+                    }
+                }
+            }
+            catch (Exception)
+            {
 
 
-			return lista;
-		}
-
-		public List<SelectGenerico> lista_SelectGenericaSelect(string query, ref string mensaje)
-		{
-			mensaje = "";
-			List<SelectGenerico> lista = new List<SelectGenerico>();
-			SqlDataReader lector;
-
-			try
-			{
-				using (SqlConnection conn = conexion(ref mensaje))
-				{
-					SqlCommand cmd = new SqlCommand();
-					cmd.CommandType = CommandType.Text;
-					cmd.CommandText = query;
-					cmd.Connection = conn;
-					lector = cmd.ExecuteReader();
-
-					SelectGenerico modelo;
-					while (lector.Read())
-					{
-						modelo = new SelectGenerico();
-						modelo.idSelectGenerico = int.Parse(lector[0].ToString());
-						modelo.Descripcion = lector[1].ToString();
-						modelo.seleccionable = bool.Parse(lector[2].ToString());
-						lista.Add(modelo);
-					}
-				}
-			}
-			catch (Exception)
-			{
+            }
 
 
-			}
+            return lista;
+        }
+
+        public List<SelectGenerico> lista_SelectGenericaSelect(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectGenerico> lista = new List<SelectGenerico>();
+            SqlDataReader lector;
+
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+
+                    SelectGenerico modelo;
+                    while (lector.Read())
+                    {
+                        modelo = new SelectGenerico();
+                        modelo.idSelectGenerico = int.Parse(lector[0].ToString());
+                        modelo.Descripcion = lector[1].ToString();
+                        modelo.seleccionable = bool.Parse(lector[2].ToString());
+                        lista.Add(modelo);
+                    }
+                }
+            }
+            catch (Exception)
+            {
 
 
-			return lista;
-		}
+            }
+
+
+            return lista;
+        }
 
         public List<SelectGenericostr> lista_SelectGenericaSelectstr(string query, ref string mensaje)
         {
@@ -298,7 +299,7 @@ namespace SistemaIntegralQuejas.Models
                         modelo.id_autoridad = int.Parse(lector[1].ToString());
                         modelo.id_hechov = int.Parse(lector[2].ToString());
                         modelo.id_linea = int.Parse(lector[3].ToString());
-                        modelo.Version = int.Parse(lector[4].ToString());
+                        modelo.Version = lector[4].ToString();
                         modelo.Eliminado = int.Parse(lector[5].ToString());
                         lista.Add(modelo);
                     }
@@ -314,43 +315,43 @@ namespace SistemaIntegralQuejas.Models
             return lista;
         }
 
-        public List< informacioncomplementariapeticionario> datoscomplementariospeticionario(string query, ref string mensaje)
-		{
-			mensaje = "";
-			List<informacioncomplementariapeticionario> lista = new List<informacioncomplementariapeticionario>();
-			SqlDataReader lector;
+        public List<informacioncomplementariapeticionario> datoscomplementariospeticionario(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<informacioncomplementariapeticionario> lista = new List<informacioncomplementariapeticionario>();
+            SqlDataReader lector;
 
-			try
-			{
-				using (SqlConnection conn = conexion(ref mensaje))
-				{
-					SqlCommand cmd = new SqlCommand();
-					cmd.CommandType = CommandType.Text;
-					cmd.CommandText = query;
-					cmd.Connection = conn;
-					lector = cmd.ExecuteReader();
-					informacioncomplementariapeticionario modelo;
-					while (lector.Read())
-					{
-						lista.Add( new informacioncomplementariapeticionario(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), int.Parse(lector[5].ToString())));
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    informacioncomplementariapeticionario modelo;
+                    while (lector.Read())
+                    {
+                        lista.Add(new informacioncomplementariapeticionario(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), int.Parse(lector[5].ToString())));
 
-					}
-				}
-			}
-			catch (Exception)
-			{
-
-
-			}
+                    }
+                }
+            }
+            catch (Exception)
+            {
 
 
-			return lista;
-		}
+            }
+
+
+            return lista;
+        }
 
         public List<informacioncomplementariaautoridad> datoscomplementariosautoridad(string query, ref string mensaje)
         {
             mensaje = "";
-            List < informacioncomplementariaautoridad >lista = new List<informacioncomplementariaautoridad>();
+            List<informacioncomplementariaautoridad> lista = new List<informacioncomplementariaautoridad>();
             SqlDataReader lector;
 
             try
@@ -376,43 +377,43 @@ namespace SistemaIntegralQuejas.Models
             return lista;
         }
 
-        public informacioncomplementaria datoscomplementarios(string query, ref string mensaje,string query1, string query2)
-		{
-			mensaje = "";
-			informacioncomplementaria lista = new informacioncomplementaria();
-			SqlDataReader lector;
+        public informacioncomplementaria datoscomplementarios(string query, ref string mensaje, string query1, string query2)
+        {
+            mensaje = "";
+            informacioncomplementaria lista = new informacioncomplementaria();
+            SqlDataReader lector;
 
-			try
-			{
-				using (SqlConnection conn = conexion(ref mensaje))
-				{
-					SqlCommand cmd = new SqlCommand();
-					cmd.CommandType = CommandType.Text;
-					cmd.CommandText = query;
-					cmd.Connection = conn;
-					lector = cmd.ExecuteReader();
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
 
-					informacioncomplementaria modelo;
-                   List< informacioncomplementariapeticionario> modelo1 = datoscomplementariospeticionario(query1,ref mensaje);
-                   List< informacioncomplementariaautoridad> modelo2 = datoscomplementariosautoridad(query2, ref mensaje);
+                    informacioncomplementaria modelo;
+                    List<informacioncomplementariapeticionario> modelo1 = datoscomplementariospeticionario(query1, ref mensaje);
+                    List<informacioncomplementariaautoridad> modelo2 = datoscomplementariosautoridad(query2, ref mensaje);
                     while (lector.Read())
-					{
-						lista = new informacioncomplementaria(int.Parse(lector[0].ToString()),int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()),modelo1,modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()),lector[8].ToString(), 0,0,0,0,0,0,"","");
+                    {
+                        lista = new informacioncomplementaria(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), modelo1, modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()), lector[8].ToString(), 0, 0, 0, 0, 0, 0, "", "");
 
-					}
+                    }
 
-                   return lista;
-				}
-			}
-			catch (Exception)
-			{
-
-
-			}
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
 
 
-			return lista;
-		}
+            }
+
+
+            return lista;
+        }
 
         public informacioncomplementaria datoscomplementariosCalif(string query, ref string mensaje, string query1, string query2)
         {
@@ -442,7 +443,7 @@ namespace SistemaIntegralQuejas.Models
     lector[12] != DBNull.Value ? int.Parse(lector[12].ToString()) : 99,
     lector[13] != DBNull.Value ? int.Parse(lector[13].ToString()) : 99,
     lector[14] != DBNull.Value ? int.Parse(lector[14].ToString()) : 99,
-	lector[15] != DBNull.Value ? lector[15].ToString() : "PASO-ERRONEO-FAVOR-VERIFICARLO-ADMINISTRADOR",
+    lector[15] != DBNull.Value ? lector[15].ToString() : "PASO-ERRONEO-FAVOR-VERIFICARLO-ADMINISTRADOR",
                             lector[16] != DBNull.Value ? lector[16].ToString() : "NO");
                     }
 
@@ -735,10 +736,10 @@ namespace SistemaIntegralQuejas.Models
                     cmd.CommandText = query;
                     cmd.Connection = conn;
                     lector = cmd.ExecuteReader();
-					selectMED_CAUT modelo;
+                    selectMED_CAUT modelo;
                     while (lector.Read())
                     {//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
-                        modelo = new selectMED_CAUT(int.Parse(lector[0].ToString()), lector[1].ToString(),lector[2].ToString(),lector[3].ToString(),lector[4].ToString(),lector[5].ToString(), lector[6].ToString(),lector[7].ToString(),int.Parse(lector[8].ToString()));
+                        modelo = new selectMED_CAUT(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), lector[5].ToString(), lector[6].ToString(), lector[7].ToString(), int.Parse(lector[8].ToString()));
                         lista.Add(modelo);
                     }
                     return lista;
@@ -749,7 +750,7 @@ namespace SistemaIntegralQuejas.Models
             }
             return lista;
         }
-        
+
         public List<SelectDILIG> SelectDilig(string query, ref string mensaje)
         {
             mensaje = "";
@@ -767,7 +768,7 @@ namespace SistemaIntegralQuejas.Models
                     SelectDILIG modelo;
                     while (lector.Read())
                     {
-                        modelo = new SelectDILIG(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), lector[5].ToString(), lector[6].ToString(), int.Parse(lector[7].ToString()), int.Parse(lector[8].ToString()), int.Parse(lector[9].ToString()), int.Parse(lector[10].ToString()), lector[11].ToString(), lector[12].ToString(), lector[13].ToString(), lector[14].ToString(), "");
+                        modelo = new SelectDILIG(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), lector[5].ToString(), lector[6].ToString(), int.Parse(lector[7].ToString()), lector[8].ToString(), int.Parse(lector[9].ToString()), int.Parse(lector[10].ToString()), lector[11].ToString(), lector[12].ToString(), lector[13].ToString(), lector[14].ToString(), "");
                         lista.Add(modelo);
                     }
                     return lista;
@@ -779,34 +780,34 @@ namespace SistemaIntegralQuejas.Models
             return lista;
         }
 
-		public List<SelectAUT_HEV> SelectAutHec(string query, ref string mensaje)
-		{
-			mensaje = "";
-			List<SelectAUT_HEV> lista = new List<SelectAUT_HEV>();
-			SqlDataReader lector;
-			try
-			{
-				using (SqlConnection conn = conexion(ref mensaje))
-				{
-					SqlCommand cmd = new SqlCommand();
-					cmd.CommandType = CommandType.Text;
-					cmd.CommandText = query;
-					cmd.Connection = conn;
-					lector = cmd.ExecuteReader();
-					SelectAUT_HEV modelo;
-					while (lector.Read())
-					{//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
-						modelo = new SelectAUT_HEV(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString()), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), int.Parse(lector[6].ToString()));
-						lista.Add(modelo);
-					}
-					return lista;
-				}
-			}
-			catch (Exception)
-			{
-			}
-			return lista;
-		}
+        public List<SelectAUT_HEV> SelectAutHec(string query, ref string mensaje)
+        {
+            mensaje = "";
+            List<SelectAUT_HEV> lista = new List<SelectAUT_HEV>();
+            SqlDataReader lector;
+            try
+            {
+                using (SqlConnection conn = conexion(ref mensaje))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = query;
+                    cmd.Connection = conn;
+                    lector = cmd.ExecuteReader();
+                    SelectAUT_HEV modelo;
+                    while (lector.Read())
+                    {//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
+                        modelo = new SelectAUT_HEV(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString()), lector[4].ToString(), int.Parse(lector[5].ToString()), int.Parse(lector[6].ToString()));
+                        lista.Add(modelo);
+                    }
+                    return lista;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return lista;
+        }
 
         public List<SelectCausaC> Selectcausa(string query, ref string mensaje)
         {
@@ -825,7 +826,7 @@ namespace SistemaIntegralQuejas.Models
                     SelectCausaC modelo;
                     while (lector.Read())
                     {//int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo
-                        modelo = new SelectCausaC(int.Parse(lector[0].ToString()),lector[1].ToString(),lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), lector[5].ToString());
+                        modelo = new SelectCausaC(int.Parse(lector[0].ToString()), lector[1].ToString(), lector[2].ToString(), lector[3].ToString(), lector[4].ToString(), lector[5].ToString());
                         lista.Add(modelo);
                     }
                     return lista;
