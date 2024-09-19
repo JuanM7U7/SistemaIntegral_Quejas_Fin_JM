@@ -482,7 +482,7 @@ function Crear_Formulario_QuejaEdit(id, tipo) {
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled(`idqueja${tipo}`, 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
         + `<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="GeneraDocumento_pdf('pilin','IDCC',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
-        + CreaSelectLabeldisabled(`viainterpos${tipo}`, '', arregloBlanco, '', 'Via de interposición: ', '')
+        + CreaSelectLabeldisabled(`viainterpos${tipo}`, '', arregloBlanco, '', 'Vía de interposición: ', '')
         + CreaBR()
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Acta Circunstanciada DQOT: ', id, 1)
         + Crea_Label_Icono('textfield8', 'textfield8', '', 'Escrito Inicial DQOT: ', id, 2)
@@ -855,6 +855,10 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                             response.infoaportaciones.forEach(function (i, y) {
                                 $(`#expedsc-frmDatosCalificacion${tipo}`).val(i.id_expediente_apor === '' ? 99 : i.id_expediente_apor).trigger('change.select2');
                                 $(`#descapo-frmDatosCalificacion${tipo}`).val(i.descripcion);
+
+                                $('#Titulo_Modal').html(' ');
+                                $('#Titulo_Modal').html('APORTACIÓN AL EXPEDIENTE: ' + $('select[id="expedsc-frmDatosCalificacion"] option:selected').text());
+
                             });
                         }
                     });
