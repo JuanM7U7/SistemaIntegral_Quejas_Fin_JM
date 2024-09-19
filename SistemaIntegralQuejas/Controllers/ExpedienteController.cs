@@ -4494,10 +4494,15 @@ namespace SistemaIntegralQuejas.Controllers
             public string DH { get; set; }
         }
         // Lista obtener datos de tabla Autoridades - Hechos Violatorios
-        public ActionResult SelectAutorHech(string idqueja)
+        
+        public ActionResult SelectAutorHech(string idqueja, string version)
         {
             List<SelectAUT_HEV> autorhech = new List<SelectAUT_HEV>();
-            String query = "exec Sp_obtener_aut_hecvio " + idqueja;
+            if (version=="DQOT")
+            {
+                version = "1";
+            }
+            String query = "exec Sp_obtener_aut_hecvio_version " + idqueja+ ",'"+ version + "'";
             string mensaje = "";
             autorhech = conexionsql.SelectAutHec(query, ref mensaje);
 
@@ -4568,10 +4573,15 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Lista obtener datos de tabla Diligencias
-        public ActionResult SelectDiligencias(string idqueja)
+        
+        public ActionResult SelectDiligencias(string idqueja, string version)
         {
             List<SelectDILIG> diligen = new List<SelectDILIG>();
-            String query = "exec Sp_obtener_diligen " + idqueja;
+            if (version == "DQOT")
+            {
+                version = "1";
+            }
+            String query = "exec Sp_obtener_diligen_version " + idqueja + ",'"+ version + "'";
             string mensaje = "";
             diligen = conexionsql.SelectDilig(query, ref mensaje);
 
@@ -4608,10 +4618,14 @@ namespace SistemaIntegralQuejas.Controllers
         }
         // Fin obtener datos de tabla Diligencias
 
-        public ActionResult SelectMedc(string idqueja)
+        public ActionResult SelectMedc(string idqueja, string version)
         {
             List<selectMED_CAUT> autorhech = new List<selectMED_CAUT>();
-            String query = "exec Sp_obtener_med_caut " + idqueja;
+            if (version == "DQOT")
+            {
+                version = "1";
+            }
+            String query = "exec Sp_obtener_med_caut_version " + idqueja+",'"+ version + "'";
             string mensaje = "";
             autorhech = conexionsql.Selectmedcaut(query, ref mensaje);
             if (autorhech.Count > 0)
@@ -4623,6 +4637,7 @@ namespace SistemaIntegralQuejas.Controllers
                 return Json(new { mensaje = "error" });
             }
         }
+
         // Fin obtener datos de tabla Diligencias
     }
 }

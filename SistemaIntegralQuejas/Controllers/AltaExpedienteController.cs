@@ -115,7 +115,7 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
-        public async Task<ActionResult> RegresaListaCatalogosCalf(int identificadorQueja)
+        public async Task<ActionResult> RegresaListaCatalogosCalf(int identificadorQueja, string version, int candado)
         {
             List<SelectGenerico> listaContenedora2 = new List<SelectGenerico>();
             List<SelectGenerico> listaContenedora3 = new List<SelectGenerico>();
@@ -150,7 +150,7 @@ namespace SistemaIntegralQuejas.Controllers
             query = "exec Sp_Select_ViaInterposicionQ";
             listaContenedora8 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
             /*Cargar informacion dentro de las pantallas*/
-            query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "'";
+            query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "','" + version + "', '" + "'";
             query1 = "exec Sp_carga_informacion_Complementaria_peticionario '" + identificadorQueja + "'";
             query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
             informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
@@ -200,7 +200,91 @@ namespace SistemaIntegralQuejas.Controllers
                 return Json(new { mensaje = "error" + mensaje });
             }
         }
-        public async Task<ActionResult> RegresaListaCatalogosCalfModifi(int identificadorQueja)
+        //public async Task<ActionResult> RegresaListaCatalogosCalfModifi(int identificadorQueja)
+        //{
+        //    List<SelectGenerico> listaContenedora2 = new List<SelectGenerico>();
+        //    List<SelectGenerico> listaContenedora3 = new List<SelectGenerico>();
+        //    List<SelectGenerico> listaContenedora4 = new List<SelectGenerico>();
+        //    List<SelectGenerico> listaContenedora5 = new List<SelectGenerico>();
+        //    List<SelectGenerico> listaContenedora6 = new List<SelectGenerico>();
+        //    List<SelectGenerico> listaContenedora7 = new List<SelectGenerico>();
+        //    List<SelectGenerico> listaContenedora8 = new List<SelectGenerico>();
+
+        //    informacioncomplementaria informacioncomplementaria = new informacioncomplementaria();
+        //    List<espedientetema> informaciontemaexped = new List<espedientetema>();
+        //    List<inforaportaciones> infoaportacioness = new List<inforaportaciones>();
+        //    List<SelectGenerico> paso = new List<SelectGenerico>();
+        //    validaIinfoDQOT datValDQOT = new validaIinfoDQOT();
+
+
+        //    String query = "exec Sp_Select_Abogado";
+        //    String query1 = "";
+        //    String query2 = "";
+        //    string mensaje = "";
+        //    listaContenedora2 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+        //    query = "exec Sp_Select_EstadoRM";
+        //    listaContenedora3 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+        //    query = "exec Sp_Select_Estado";
+        //    listaContenedora4 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+        //    query = "exec Sp_Select_autoridad";
+        //    listaContenedora5 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+        //    query = "exec Sp_Select_sedes";
+        //    listaContenedora6 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+        //    query = "exec Sp_Select_visitadurias";
+        //    listaContenedora7 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+        //    query = "exec Sp_Select_ViaInterposicionQ";
+        //    listaContenedora8 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
+        //    /*Cargar informacion dentro de las pantallas*/
+        //    query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "'";
+        //    query1 = "exec Sp_carga_informacion_Complementaria_peticionario_Calif '" + identificadorQueja + "'";
+        //    query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
+        //    informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
+        //    /*Cargar informacion dentro de las pantallas*/
+        //    if (informacioncomplementaria.tipo_expediente == 1)
+        //    {
+        //        query = "exec Sp_Select_Aporta ''," + identificadorQueja;
+        //    }
+        //    else
+        //    {
+        //        query = "exec Sp_Select_Aporta " + identificadorQueja + ", ''";
+        //    }
+        //    infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
+        //    #region CONFIRMACION DE DATOS DQOT
+        //    query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
+        //    query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja;
+        //    datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
+        //    #endregion
+
+        //    query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
+        //    informaciontemaexped = conexionsql.datostemaExpediente(query, ref mensaje);
+
+        //    query = "EXEC Sp_GetPaso_Expediente " + identificadorQueja + "";
+        //    paso = conexionsql.lista_SelectGenerica(query, ref mensaje); ;
+        //    if (listaContenedora3.Count > 0)
+        //    {
+        //        return Json(
+        //            new
+        //            {
+        //                lista_abogado = listaContenedora2,
+        //                lista_estado = listaContenedora3,
+        //                lista_municipio = listaContenedora4,
+        //                lista_autoridad = listaContenedora5,
+        //                lista_sedes = listaContenedora6,
+        //                listavisitadurias = listaContenedora7,
+        //                informarcionC = informacioncomplementaria,
+        //                infoaportaciones = infoaportacioness,
+        //                lista_tema_expe = informaciontemaexped,
+        //                listavi = listaContenedora8,
+        //                datvaldqot = datValDQOT
+        //            });
+        //    }
+        //    else
+        //    {
+        //        return Json(new { mensaje = "error" + mensaje });
+        //    }
+        //}
+
+        public async Task<ActionResult> RegresaListaCatalogosCalfModifi(int identificadorQueja, string version, int candado)
         {
             List<SelectGenerico> listaContenedora2 = new List<SelectGenerico>();
             List<SelectGenerico> listaContenedora3 = new List<SelectGenerico>();
@@ -235,8 +319,8 @@ namespace SistemaIntegralQuejas.Controllers
             query = "exec Sp_Select_ViaInterposicionQ";
             listaContenedora8 = conexionsql.lista_SelectGenericaSelect(query, ref mensaje);
             /*Cargar informacion dentro de las pantallas*/
-            query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "'";
-            query1 = "exec Sp_carga_informacion_Complementaria_peticionario_Calif '" + identificadorQueja + "'";
+            query = "exec Sp_carga_info_Comp_Calif '" + identificadorQueja + "','"+ version+"',"+ candado;
+            query1 = "exec Sp_carga_informacion_Complementaria_peticionario_Calif '" + identificadorQueja + "','" + version + "'";
             query2 = "exec Sp_carga_informacion_Complementaria_Autoridad '" + identificadorQueja + "'";
             informacioncomplementaria = conexionsql.datoscomplementariosCalif(query, ref mensaje, query1, query2);
             /*Cargar informacion dentro de las pantallas*/
@@ -255,7 +339,7 @@ namespace SistemaIntegralQuejas.Controllers
             datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
             #endregion
 
-            query = "EXEC Sp_expe_tema '" + identificadorQueja + "'";
+            query = "EXEC Sp_expe_tema '" + identificadorQueja + "','" + version + "'";
             informaciontemaexped = conexionsql.datostemaExpediente(query, ref mensaje);
 
             query = "EXEC Sp_GetPaso_Expediente " + identificadorQueja + "";
