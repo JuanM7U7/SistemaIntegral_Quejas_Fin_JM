@@ -480,7 +480,7 @@ function Crear_Formulario_QuejaEdit(id, tipo) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled(`idqueja${tipo}`, 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
-        + `<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="GeneraDocumento_pdf('pilin','IDCC',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
+        + `<button id="botonpdf${tipo}" type="button" class="" style="border:hidden; background:none;" title="Cédula de Calificación" onclick="GeneraDocumento_pdf('pilin','IDCC',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
         + CreaSelectLabeldisabled(`viainterpos${tipo}`, '', arregloBlanco, '', 'Vía de interposición: ', '')
         + CreaBR()
@@ -667,10 +667,12 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
         case 'V':
             version = 'CALIFICACION';
             candado = 1;
+            $(`#botonpdf${tipo}`).attr("onclick", `GeneraDocumento_pdf('pilin','IDCC',${idqueja})`);
             break;
         case 'M':
             version = 'MODIFICACION';
             candado = 1;
+            $(`#botonpdf${ tipo }`).attr("onclick", `GeneraDocumento_pdf('pilin','IDCM',${idqueja})`);
             break;
     }
     if (version !== "") {
@@ -3099,6 +3101,10 @@ function GeneraDocumento_pdf(nombreDocumento,tipo,idq) {
         else if (tipo == 'IDCC') {
             window.open(ExportaDocumentoCCA + idq, '_blank');
         }
+        else if (tipo == 'IDCM')
+        {
+            window.open(ExportaDocumentoCMO + idq, '_blank');
+        }
         else { window.open(ExportaDocumentoPDF + id, '_blank'); }
         //
         
@@ -3776,6 +3782,11 @@ function CrearFormuCalificacion(idform, tipo, fechamod, paso,expedienten, versio
             $("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + " hrs.");
         }
         $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
+        console.log(version);
+        if (paso == 'Calificado')
+        {
+            $(`#botonpdf${tipo}`).attr("onclick", `GeneraDocumento_pdf('pilin','IDCM',${idform})`);
+        }
         
         frmDatosPersonales = crearForumulario(
             {
