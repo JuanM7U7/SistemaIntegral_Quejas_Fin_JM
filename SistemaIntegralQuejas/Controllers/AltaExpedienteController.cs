@@ -167,7 +167,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             #region CONFIRMACION DE DATOS DQOT
             query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
-            query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja;
+            query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja + "','DQOT'"; ;
             datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
             #endregion
 
@@ -346,7 +346,7 @@ namespace SistemaIntegralQuejas.Controllers
                     infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
                     #region CONFIRMACION DE DATOS DQOT
                     query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
-                    query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja;
+                    query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja + "','" + version + "'";
                     datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
                     #endregion
 
@@ -373,7 +373,7 @@ namespace SistemaIntegralQuejas.Controllers
                     infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
                     #region CONFIRMACION DE DATOS DQOT
                     query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
-                    query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja;
+                    query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja + "','" + version + "'"; ;
                     datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
                     #endregion
 
@@ -383,7 +383,7 @@ namespace SistemaIntegralQuejas.Controllers
                     query = "EXEC Sp_GetPaso_Expediente " + identificadorQueja + "";
                     paso = conexionsql.lista_SelectGenerica(query, ref mensaje);
                     break;
-                    break;
+                 
                 case "EDICION":
                     string version2 = "DQOT";
 
@@ -403,7 +403,7 @@ namespace SistemaIntegralQuejas.Controllers
                     infoaportacioness = conexionsql.Obtaport(query, ref mensaje);
                     #region CONFIRMACION DE DATOS DQOT
                     query = "exec Sp_SELECT_ConfirmDQOT " + identificadorQueja;
-                    query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja;
+                    query1 = "exec Sp_SELECT_ConfirmDQOT_pet " + identificadorQueja + "','" + version + "'"; ;
                     datValDQOT = conexionsql.SelectValDQOT(query, ref mensaje, query1);
                     #endregion
 
