@@ -1534,7 +1534,7 @@ namespace SistemaIntegralQuejas.Controllers
                 itemPdfei.abogado = row["abogado"].ToString();
                 itemPdfei.visitador = row["visitador"].ToString();
                 itemPdfei.hechos = row["hechos"].ToString();
-                DateTime fechaActual = DateTime.Now;
+                itemPdfei.fechactual = DateTime.Now;
 
 
                 pdfescritoi.Add(itemPdfei);
@@ -4577,6 +4577,7 @@ namespace SistemaIntegralQuejas.Controllers
             public string abogado { get; set; }
             public string visitador { get; set; }
             public List<SelectCausaC> listacasa { get; set; }
+            public DateTime? fechactual { get; set; }
 
 
             public cedulaCalificacion() { }
