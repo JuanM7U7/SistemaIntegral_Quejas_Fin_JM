@@ -1496,6 +1496,122 @@ namespace SistemaIntegralQuejas.Controllers
             return RedirectToAction("Cedulac");
         }
 
+        public ActionResult Plantilla_Cedula_Modificacion(int idq)
+        {
+            TempData["idescritort"] = idq;
+            return RedirectToAction("modificacion");
+        }
+
+        public ViewAsPdf modificacion()
+        {
+            var pdfescritoi = new List<cedulaCalificacion>();
+            var pdfescritoipet = new List<peticionariocedula>();
+            var pdfescritoiAHV = new List<authecCedula>();
+            var pdfescritoconclu=new List<SelectCausaC>();
+
+            int? idei = (int?)TempData["idescritort"];
+
+
+            /*Primera parte*/
+            string query = "exec Sp_regresa_DQOT_Cedula " + idei+",'MODIFICACION'";
+            var data = GetDatosGeneral(query);
+            foreach (DataRow row in data.Rows)
+            {
+
+                cedulaCalificacion itemPdfei = new cedulaCalificacion();
+                itemPdfei.Expediente = row["expediente"].ToString();
+                itemPdfei.fecha_Hora_registro = row["fecha_registrro"].ToString();
+                itemPdfei.fecha_RFV = row["fechaturnovisitaduria"].ToString();
+                itemPdfei.VIA_ENTRADA = row["viainter"].ToString();
+                itemPdfei.materia = row["materia"].ToString();
+                itemPdfei.lugar_Hechos = row["lugar_hechos"].ToString();
+                itemPdfei.fecha_Hora_turnoe = row["fechaturnovisitaduriaelectronico"].ToString();
+                itemPdfei.fecha_TA = row["fechaturnoabogadovg"].ToString();
+                itemPdfei.fecha_calificacion = row["fecha_calificacion"].ToString();
+                itemPdfei.programa = row["programa"].ToString();
+                itemPdfei.id = int.Parse(row["id_expediente"].ToString());
+                itemPdfei.visitaduría = row["visitaduria"].ToString();
+                itemPdfei.abogado = row["abogado"].ToString();
+                itemPdfei.visitador = row["visitador"].ToString();
+                itemPdfei.hechos = row["hechos"].ToString();
+                DateTime fechaActual = DateTime.Now;
+
+
+                pdfescritoi.Add(itemPdfei);
+            }
+            /*Primera parte*/
+
+            /*Segunda parte*/
+            query = "exec Sp_regresa_peticionario_Cedula " + idei + ",'MODIFICACION'";
+            data = GetDatosGeneral(query);
+
+            foreach (DataRow row in data.Rows)
+            {
+
+                peticionariocedula itemPdfei = new peticionariocedula();
+
+                itemPdfei.id = int.Parse(row["ID_REGISTRO"].ToString());
+                itemPdfei.tipopet = row["TIPO_USUARIO"].ToString();
+                itemPdfei.nombrepet = row["nombre_completo"].ToString();
+
+                pdfescritoipet.Add(itemPdfei);
+            }
+            /*Segunda parte*/
+
+
+            /*Tercera parte */
+            query = "exec Sp_regresa_AutHV_Cedula " + idei + ",'MODIFICACION'"; ;
+            data = GetDatosGeneral(query);
+
+            foreach (DataRow row in data.Rows)
+            {
+
+                authecCedula itemPdfei = new authecCedula();
+
+                itemPdfei.autoridad = row["AUTORIDAD"].ToString();
+                itemPdfei.HV = row["MATERIA"].ToString();
+                itemPdfei.DH = row["DESDH"].ToString();
+
+                pdfescritoiAHV.Add(itemPdfei);
+            }
+            /*Tercera parte */
+            /*Cuarta parte*/
+            query = "exec Sp_regresa_causac_Cedula " + idei + ",'MODIFICACION'"; ;
+            data = GetDatosGeneral(query);
+
+            foreach (DataRow row in data.Rows)
+            {
+
+                SelectCausaC itemPdfei = new SelectCausaC();
+
+                itemPdfei.fechac = row["fechaa"].ToString();
+                itemPdfei.causac= row["causaa"].ToString();
+                itemPdfei.causacdesc = row["conclusion"].ToString();
+                itemPdfei.acto_rest = row["actorest"].ToString();
+                itemPdfei.obs = row["observar"].ToString();
+
+
+                pdfescritoconclu.Add(itemPdfei);
+            }
+            /*Cuarta parte*/
+
+
+            pdfescritoi[0].listpet = pdfescritoipet;
+            pdfescritoi[0].listauth = pdfescritoiAHV;
+            pdfescritoi[0].listacasa = pdfescritoconclu;
+
+            return new ViewAsPdf("Plantilla_Cedula_Modificacion", pdfescritoi)
+            {
+                PageSize = Rotativa.AspNetCore.Options.Size.Letter,
+                PageMargins = { Left = 5, Right = 5 },
+                // FileName=nombrePDF,
+                //SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF + ".pdf"),
+                //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
+                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index1 --header-spacing 15 --margin-bottom 3cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index1 --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+
+            };
+        }
+
         public ActionResult verPDFRechazo(int idqueja, string visd, string memo, string p1, string p2, string p3, string just, string idsa, string vg, string acep)
         {
             string[] desarrolloidsaacpt = null;
@@ -1727,7 +1843,7 @@ namespace SistemaIntegralQuejas.Controllers
 
 
             /*Primera parte*/
-            string query = "exec Sp_regresa_DQOT_Cedula " + idei;
+            string query = "exec Sp_regresa_DQOT_Cedula " + idei+ ",'CALIFICACION'";
             var data = GetDatosGeneral(query);
             foreach (DataRow row in data.Rows)
             {
@@ -1754,7 +1870,7 @@ namespace SistemaIntegralQuejas.Controllers
             /*Primera parte*/
 
             /*Segunda parte*/
-            query = "exec Sp_regresa_peticionario_Cedula " + idei;
+            query = "exec Sp_regresa_peticionario_Cedula " + idei + ",'CALIFICACION'"; 
              data = GetDatosGeneral(query);
 
             foreach (DataRow row in data.Rows)
@@ -1772,7 +1888,7 @@ namespace SistemaIntegralQuejas.Controllers
 
 
             /*Tercera parte */
-            query = "exec Sp_regresa_AutHV_Cedula " + idei;
+            query = "exec Sp_regresa_AutHV_Cedula " + idei + ",'CALIFICACION'";
             data = GetDatosGeneral(query);
 
             foreach (DataRow row in data.Rows)
@@ -4370,11 +4486,11 @@ namespace SistemaIntegralQuejas.Controllers
             public int id_autoridad { get; set; }
             public int id_hechov { get; set; }
             public int id_linea { get; set; }
-            public int Version { get; set; }
+            public string Version { get; set; }
             public int Eliminado { get; set; }
             public int tipo { get; set; }
             public SelectAUT_HEV() { }
-            public SelectAUT_HEV(int id_queja, int id_autoridad, int id_hechov, int id_linea, int Version, int Eliminado, int tipo)
+            public SelectAUT_HEV(int id_queja, int id_autoridad, int id_hechov, int id_linea, string Version, int Eliminado, int tipo)
             {
                 this.id_queja = id_queja;
                 this.id_autoridad = id_autoridad;
@@ -4460,6 +4576,7 @@ namespace SistemaIntegralQuejas.Controllers
             public string visitaduría { get; set; }
             public string abogado { get; set; }
             public string visitador { get; set; }
+            public List<SelectCausaC> listacasa { get; set; }
 
 
             public cedulaCalificacion() { }
@@ -4494,10 +4611,22 @@ namespace SistemaIntegralQuejas.Controllers
             public string DH { get; set; }
         }
         // Lista obtener datos de tabla Autoridades - Hechos Violatorios
-        public ActionResult SelectAutorHech(string idqueja)
+        
+        public ActionResult SelectAutorHech(string idqueja, string version)
         {
+            string version2 = "";
             List<SelectAUT_HEV> autorhech = new List<SelectAUT_HEV>();
-            String query = "exec Sp_obtener_aut_hecvio " + idqueja;
+            String query = "";
+            if (version == "EDICION")
+            {
+                //version2 = "CALIFICACION";
+                query = "exec Sp_obtener_aut_hecvio " + idqueja;
+            }
+            else
+            {
+                query = "exec Sp_obtener_aut_hecvio_version " + idqueja+",'"+ version + "'";
+            }
+
             string mensaje = "";
             autorhech = conexionsql.SelectAutHec(query, ref mensaje);
 
@@ -4538,7 +4667,7 @@ namespace SistemaIntegralQuejas.Controllers
             public string plaz_aten { get; set; }
             public string ruta_archivo { get; set; }
             public int id_fila { get; set; }
-            public int version { get; set; }
+            public string version { get; set; }
             public int eliminado { get; set; }
             public int id_viainter { get; set; }
             public string fecharecibo { get; set; }
@@ -4547,7 +4676,7 @@ namespace SistemaIntegralQuejas.Controllers
             public string desc_evi { get; set; }
             public string semaforo { get; set; }
             public SelectDILIG() { }
-            public SelectDILIG(int id_queja, int Tipo_diligencia, string descripcion, string fecha_emi, string oficioMemo, string plaz_aten, string ruta_archivo, int id_fila, int version, int eliminado, int id_viainter, string fecharecibo, string ruta_arch_eviden, string fecha_soli, string desc_evi, string semaforo)
+            public SelectDILIG(int id_queja, int Tipo_diligencia, string descripcion, string fecha_emi, string oficioMemo, string plaz_aten, string ruta_archivo, int id_fila, string version, int eliminado, int id_viainter, string fecharecibo, string ruta_arch_eviden, string fecha_soli, string desc_evi, string semaforo)
             {
                 this.id_queja = id_queja;
                 this.Tipo_diligencia = Tipo_diligencia;
@@ -4568,10 +4697,21 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Lista obtener datos de tabla Diligencias
-        public ActionResult SelectDiligencias(string idqueja)
+        
+        public ActionResult SelectDiligencias(string idqueja, string version)
         {
+
+            String query = "";
             List<SelectDILIG> diligen = new List<SelectDILIG>();
-            String query = "exec Sp_obtener_diligen " + idqueja;
+            if (version == "EDICION")
+            {
+                query = "exec Sp_obtener_diligen " + idqueja;
+            }
+            else
+            {
+                query = "exec Sp_obtener_diligen_version " + idqueja+",'"+ version + "'";
+            }
+             
             string mensaje = "";
             diligen = conexionsql.SelectDilig(query, ref mensaje);
 
@@ -4608,10 +4748,21 @@ namespace SistemaIntegralQuejas.Controllers
         }
         // Fin obtener datos de tabla Diligencias
 
-        public ActionResult SelectMedc(string idqueja)
+        public ActionResult SelectMedc(string idqueja, string version)
         {
+            String query = "";
+            
             List<selectMED_CAUT> autorhech = new List<selectMED_CAUT>();
-            String query = "exec Sp_obtener_med_caut " + idqueja;
+            if (version == "EDICION")
+            {
+                query = "exec Sp_obtener_med_caut " + idqueja;
+
+            }
+            else
+            {
+                query = "exec Sp_obtener_med_caut_version " + idqueja+",'"+ version + "'";
+            }
+            
             string mensaje = "";
             autorhech = conexionsql.Selectmedcaut(query, ref mensaje);
             if (autorhech.Count > 0)
@@ -4623,6 +4774,7 @@ namespace SistemaIntegralQuejas.Controllers
                 return Json(new { mensaje = "error" });
             }
         }
+
         // Fin obtener datos de tabla Diligencias
     }
 }

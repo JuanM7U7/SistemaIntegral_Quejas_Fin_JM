@@ -66,7 +66,7 @@
                     <button class="tablinks" onclick="openCity(event, 'Detalle_Modificacion')">Modificación de Expediente</button>
                 </div>
                 <div class="tab col-3">
-                    <button class="tablinks" onclick="openCity(event, 'Detalle_Conclusion')">Conclusión de Expediente</button>
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Conclusion')" id="Det_Conclusion">Conclusión de Expediente</button>
                 </div>
             </div>
 
@@ -77,15 +77,34 @@
                 </div>
             </div>
             <div id="Detalle_Calificar" class="tabcontent">
-                <div id="ListAport" class="col-12"></div>
-                <div id="tipQueja" class="col-12"></div>
-                <div id="frmDatosCalificacion" class=" row col-12"></div>
+                <div class="row col-12" style="height:75%;">
+                    <div id="izquierdaV" class="row col-6"></div>
+                    <div id="derechaV" class="row col-6"></div>
+                </div>
+                <div class="row col-12">
+                    <div id="ListAportV" class="col-12"></div>
+                    <div id="tipQuejaV" class="col-12"></div>
+                    <div id="frmDatosCalificacionV" class="col-12"></div>
+                </div>
             </div>
             <div id="Detalle_Modificacion" class="tabcontent">
-                
+                <div class="row col-12" style="height:75%;">
+                    <div id="izquierdaM" class="row col-6"></div>
+                    <div id="derechaM" class="row col-6"></div>
+                </div>
+                <div class="row col-12">
+                    <div id="ListAportM" class="col-12"></div>
+                    <div id="tipQuejaM" class="col-12"></div>
+                    <div id="frmDatosCalificacionM" class="col-12"></div>
+                </div>
             </div>
             <div id="Detalle_Conclusion" class="tabcontent">
-                
+                <div class="row col-12" @* style="height:75%;" *@>
+                    <div id="izquierdaMC" class="col-12"></div>
+                    @* <form class="text-justify formCausaC" id="formCausaC" name="formCausaC" method="post" style="width:100%; margin-left:2%;">
+                        
+                    </form> *@
+                </div>
             </div>
         </div>
     </div>
@@ -163,10 +182,11 @@
             </div>
             <div class="tabcontent" id="info2">
                 <h6 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;"><span style="color: red;">*</span> Campos Requeridos</h6>
-                <div class="row col-12" style="height:75%;">
-                    <form class="text-justify formCausaC" id="formCausaC" name="formCausaC" method="post" style="width:100%; margin-left:2%;">
-                    <div id="izquierdaEC"></div>
-                    </form>
+                <div class="row col-12" @* style="height:75%;" *@>
+                    <div id="izquierdaEC" class="col-12"></div>
+                    @* <form class="text-justify formCausaEC" id="formCausaEC" name="formCausaEC" method="post" style="width:100%; margin-left:2%;">
+                    
+                    </form> *@
                 </div>
             </div>
 
@@ -488,6 +508,7 @@
     var ExportaDocumentorechazo = '@Url.Action("verPDFRechazo", "Expediente")';
         var ExportaDocumentoDQOT = '@Url.Action("Plantilla_Datos_DQOT", "Expediente")?idq=';
         var ExportaDocumentoCCA = '@Url.Action("Plantilla_Cedula_Calificacion", "Expediente")?idq=';
+        var ExportaDocumentoCMO = '@Url.Action("Plantilla_Cedula_Modificacion", "Expediente")?idq=';
    // var ExportaDocumentorechazo = '@Url.Action("verPDFRechazo", "Expediente")?idqueja=&vis=&memo=&p1=&p2=&p3=';
 
 
