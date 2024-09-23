@@ -4385,7 +4385,21 @@ namespace SistemaIntegralQuejas.Controllers
                 {
                     //if (TiGua != "preliminar")
                     //{
-                    query = "exec Sp_insertTblDil " + idqueja + ",'" + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + "','" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0," + form["tablaDilig[" + i + "][viaint]"].ToString() + ", '" + form["tablaDilig[" + i + "][fecReci]"].ToString() + "','" + form["tablaDilig[" + i + "][archEvi]"].ToString() + "','" + form["tablaDilig[" + i + "][fecha_soli]"].ToString() + "','" + form["tablaDilig[" + i + "][desc_evi]"].ToString() + "','" + TiGua + "'" + ";";
+                    query = "exec Sp_insertTblDil " 
+                             + idqueja + ",'" 
+                             + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + "','" 
+                             + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" 
+                             + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" 
+                             + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" 
+                             + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" 
+                             + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," 
+                             + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0," 
+                             + form["tablaDilig[" + i + "][viaint]"].ToString() + ", '" 
+                             + form["tablaDilig[" + i + "][fecReci]"].ToString() + "','"
+                             + form["tablaDilig[" + i + "][archEvi]"].ToString() + "','" 
+                             + form["tablaDilig[" + i + "][fecha_soli]"].ToString() + "','" 
+                             + form["tablaDilig[" + i + "][desc_evi]"].ToString() + "','" 
+                             + TiGua + "'" + ";";
                     //}
                     //else
                     //{
