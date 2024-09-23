@@ -2589,7 +2589,7 @@ function formPeticionario(idformulario) {
                         checked: [
                             'idNoviolenciamujer' + idformulario
                         ],
-                        name: "radsinoviomu_petit-frmDatosCalificacion" + tipo + idformulario,
+                        name: "radsinoviomu_petit-frmDatosCalificacion"+ idformulario,
                         classControl: "ob max-300 eliminaformaes"
                     },
                     {
@@ -5155,11 +5155,16 @@ function LlenartablaDilig(tablaDilig, tipo, id, version) {
                     $(`#diligenArreg${tipo}_${rowIdx}`).val(JSON.stringify(dat));
                     $(`#tipodilig${tipo}_${rowIdx}`).val(data.tipo_diligencia).trigger('change');
                     $(`#descrip${tipo}_${rowIdx}`).val(data.descripcion);
-                    var fecha = data.fecha_emi.split(' ')[0];
-                    var fechaspl = fecha.split('/');
-                    var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
-                    var date = new Date(fechaemi);
-                    chargeDateInputDate(document.getElementById(`fechaAlta${tipo}_${rowIdx}`), date);
+                    if (data.fecha_emi.includes('/')) {
+                        var fecha = data.fecha_emi.split(' ')[0];
+                        var fechaspl = fecha.split('/');
+                        var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
+                        var date = new Date(fechaemi);
+                        chargeDateInputDate(document.getElementById(`fechaAlta${tipo}_${rowIdx}`), date);
+                    } else {
+                        $(`#fechaAlta${tipo}_${rowIdx}`).val(data.fecha_emi);
+                    }
+                    
                 });
             },
             order: [1, 'desc'],
@@ -5461,7 +5466,7 @@ function GuardarAp() {
 }
 
 $(document).ready(function () {
-    $(document).on('submit', 'form[id^="frmDatosCalificacion"]', function (event) {
+    $(document).on('submit', 'form[id^="frmDatosCalificacionE"]', function (event) {
         event.preventDefault();
 
 
@@ -5489,6 +5494,7 @@ $(document).ready(function () {
         var idquejaE = $('#idquejaE').val();
         //DATOS SELECT
         var formQueja = $(this).serializeArray();
+
         //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
         $('#tablaAutRe_HecVioTE tbody tr').each(function (x) {
             x = x + 1;
@@ -5577,7 +5583,7 @@ $(document).ready(function () {
             if (dilig !== '' && typeof dilig !='undefined') {
                 var combinedDil = JSON.parse(dilig);
                 var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
-                if (combinedDil.tipodil!=='3') {
+                if (parseInt(combinedDil.tipodil) !== 3) {
                     numOfMe = combinedDil.noOfMe;
                     atencion = combinedDil.plazo;
                     archAdj = combinedDil.archEvAd;
@@ -5641,6 +5647,8 @@ $(document).ready(function () {
         var espe = $("#especializado-frmDatosCalificacionE").val();
         var tran = $("#trancpub-frmDatosCalificacionE").val();
         var niv = $("#nivries-frmDatosCalificacionE").val();
+
+
         if (($('#confi_hechosE').is(':checked') || $('#confi_hechosE').is(':disabled')) && ($('#confi_lughecE').is(':checked') || $('#confi_lughecE').is(':disabled')) && ($('#confi_peticionaE').is(':checked') || $('#confi_peticionaE').is(':disabled'))) {
             if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacionE").val() == '' || formDQOT.visitaduriaqueja == ''
                 || $("#materia-frmDatosCalificacionE").val() == '' || $("#tipexpediente-frmDatosCalificacionE").val() == '' || $("#especializado-frmDatosCalificacionE").val() == '' || $("#trancpub-frmDatosCalificacionE").val() == ''
@@ -5757,7 +5765,7 @@ function guardaDili(tip, numF) {
             html: mensaje,
         });
     } else {
-        $(`#descrip_${numF}`).val($('#descripcion').val());
+        $(`#descripE_${numF}`).val($('#descripcion').val());
         var formDetalleDil = $("#formDetalleDil").serializeArray();
         var combinedData = formDetalleDil.reduce(function (acc, item) {
             acc[item.name] = item.value;
@@ -5864,7 +5872,8 @@ function GuardPrel() {
     var AutRe_HecVioT = [], MedCaute = [], Diligen = [];
     var idquejaE = $('#idquejaE').val();
     //DATOS SELECT
-    var formQueja = $(this).serializeArray();
+    var formQueja = $(`#frmDatosCalificacionE${idquejaE}`).serializeArray();
+    console.log(formQueja);
     //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
     $('#tablaAutRe_HecVioTE tbody tr').each(function (x) {
         x = x + 1;
@@ -5944,7 +5953,7 @@ function GuardPrel() {
         if (dilig !== '' && typeof dilig != 'undefined') {
             var combinedDil = JSON.parse(dilig);
             var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
-            if (combinedDil.tipodil !== '3') {
+            if (parseInt(combinedDil.tipodil) !== 3) {
                 numOfMe = combinedDil.noOfMe;
                 atencion = combinedDil.plazo;
                 archAdj = combinedDil.archEvAd;
