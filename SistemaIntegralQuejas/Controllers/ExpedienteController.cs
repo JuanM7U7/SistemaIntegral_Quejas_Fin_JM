@@ -4330,8 +4330,8 @@ namespace SistemaIntegralQuejas.Controllers
                 query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "','" + programa + "','"+ TiGua + "'";
                 mensaje = ejecutaInsertUpdate(query);
 
-                query = "Sp_deleteTema " + idqueja;
-                mensaje = ejecutaInsertUpdate(query);
+                //query = "Sp_deleteTema " + idqueja;
+               // mensaje = ejecutaInsertUpdate(query);
                 for (int i = 0; i < arreglotemas.Length; i++)
                 {
                     string version = "CALIFICACION";//Ver la manera de cambiar modificación
@@ -4342,8 +4342,8 @@ namespace SistemaIntegralQuejas.Controllers
 
                 /*Sección de la actualización de la tabla de una queja*/
                 /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
-                query = "Sp_deleteAutoridad " + idqueja;
-                mensaje = ejecutaInsertUpdate(query);
+               // query = "Sp_deleteAutoridad " + idqueja;
+                //mensaje = ejecutaInsertUpdate(query);
                 for (int i = 0; i < longitudtabla1; i++)
                 {
                     autoridad = form["tablaAutRe_HecVio[" + i + "][autoridad]"].ToString();
@@ -4355,8 +4355,8 @@ namespace SistemaIntegralQuejas.Controllers
                 }
                 /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
                 /*Actualizacion de tabla de medidas Cautelares*/
-                query = "Sp_deleteMedcaut " + idqueja;
-                mensaje = ejecutaInsertUpdate(query);
+                //query = "Sp_deleteMedcaut " + idqueja;
+                //mensaje = ejecutaInsertUpdate(query);
 
                 for (int i = 0; i < longitudtabla2; i++)
                 {
@@ -4378,8 +4378,8 @@ namespace SistemaIntegralQuejas.Controllers
                 /*Actualizacion de tabla de medidas Cautelares*/
                 #region Actualizacion de tabla de diligencias
 
-                query = "Sp_deleteTblDil " + idqueja;
-                mensaje = ejecutaInsertUpdate(query);
+                //query = "Sp_deleteTblDil " + idqueja;
+                //mensaje = ejecutaInsertUpdate(query);
 
                 for (int i = 0; i < longitudtabla3; i++)
                 {
