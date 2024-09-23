@@ -228,31 +228,43 @@
                            </table>
                     </div>
                <div class="cedula-completo">
-               <h5 class="titulodocsec">AUTORIDAD(ES) / HECHOS VIOLATORIOS</h5>
-                    <div class="linea"></div>
-                       <table>
-                           <thead>
-                            <th>AUTORIDAD(ES)</th>
-                            <th>HECHOS VIOLATORIOS</th>
-                            <th>DERECHO HUMANO</th>
-                       </thead>
-                       <tbody>
-                        @foreach (var itemuser in @itemp.listauth)
+                            <h5 class="titulodocsec">AUTORIDAD(ES) / HECHOS VIOLATORIOS</h5>
+                            <div class="linea"></div>
+                            <table>
+                                <thead>
+                                <th>AUTORIDAD(ES)</th>
+                                <th>HECHOS VIOLATORIOS</th>
+                                <th>DERECHO HUMANO</th>
+                                </thead>
+                                <tbody>
+                                    @if (@itemp.listauth == null || @itemp.listauth.Count <= 0)
                                     {
                                         <tr>
-                                            <td>@itemuser.autoridad</td>
-                                            <td>@itemuser.HV</td>
-                                            <td>@itemuser.DH</td>
+                                            <td>NO APLICA</td>
+                                            <td>NO APLICA</td>
+                                            <td>NO APLICA</td>
                                         </tr>
                                     }
-                                </tbody>
-                       </table>
-                            <div class="linea"></div>
-                    </div>
+                                    else
+                                    {
+                                        @foreach (var itemuser in @itemp.listauth)
+                                        {
+                                            <tr>
+                                                <td>@itemuser.autoridad</td>
+                                                <td>@itemuser.HV</td>
+                                                <td>@itemuser.DH</td>
+                                            </tr>
+                                        }
+                                    }
 
-               <div class="cedula-completo-izquierda">
+                                </tbody>
+                            </table>
+                            <div class="linea"></div>
+                        </div>
+
+                        <div class="cedula-completo-izquierda">
                             <h5 class="FOR titulos"><b>HECHOS:</b><p>@itemp.hechos</p></h5>
-                    </div>
+                        </div>
 
 
                         <div class="cedula-completo">
@@ -267,15 +279,29 @@
                                 <th>OBSERVACIONES</th>
                                 </thead>
                                 <tbody>
-                                    @foreach (var itemuser in @itemp.listacasa)
+
+                                    @if (@itemp.listacasa == null || @itemp.listacasa.Count <= 0)
                                     {
                                         <tr>
-                                            <td>@itemuser.fechac</td>
-                                            <td>@itemuser.causac</td>
-                                            <td>@itemuser.causacdesc</td>
-                                            <td>@itemuser.acto_rest</td>
-                                            <td>@itemuser.obs</td>
+                                            <td>NO APLICA</td>
+                                            <td>NO APLICA</td>
+                                            <td>NO APLICA</td>
+                                            <td>NO APLICA</td>
+                                            <td>NO APLICA</td>
                                         </tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var itemuser in @itemp.listacasa)
+                                        {
+                                            <tr>
+                                                <td>@itemuser.fechac</td>
+                                                <td>@itemuser.causac</td>
+                                                <td>@itemuser.causacdesc</td>
+                                                <td>@itemuser.acto_rest</td>
+                                                <td>@itemuser.obs</td>
+                                            </tr>
+                                        }
                                     }
                                 </tbody>
                             </table>
