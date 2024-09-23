@@ -1534,7 +1534,7 @@ namespace SistemaIntegralQuejas.Controllers
                 itemPdfei.abogado = row["abogado"].ToString();
                 itemPdfei.visitador = row["visitador"].ToString();
                 itemPdfei.hechos = row["hechos"].ToString();
-                DateTime fechaActual = DateTime.Now;
+                itemPdfei.fechactual = DateTime.Now;
 
 
                 pdfescritoi.Add(itemPdfei);
@@ -4317,39 +4317,47 @@ namespace SistemaIntegralQuejas.Controllers
             descapo = form["descapo"].ToString();
             TiGua = form["tipGuarda"].ToString();
             /*Sección de la actualización de la tabla de una queja*/
-            if (form["especializado-frmDatosCalificacion"].ToString() == "Si") { especializado = 1; }
-            if (form["trancpub-frmDatosCalificacion"].ToString() == "Si") { trasOpPublica = 1; }
-            materia = form["materia-frmDatosCalificacion"].ToString();
-            nivriesgo = form["nivries-frmDatosCalificacion"].ToString();
-            programa = form["programa-frmDatosCalificacion"].ToString();
+            if (form["especializado-frmDatosCalificacionE"].ToString() == "Si") { especializado = 1; }
+            if (form["trancpub-frmDatosCalificacionE"].ToString() == "Si") { trasOpPublica = 1; }
+            materia = form["materia-frmDatosCalificacionE"].ToString();
+            nivriesgo = form["nivries-frmDatosCalificacionE"].ToString();
+            programa = form["programa-frmDatosCalificacionE"].ToString();
             tema = form["arreglotemas[]"].ToString();
             arreglotemas = tema.Split(',');
             
             if (tipoexp=="1")
             {
-                query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "','" + programa + "'";
+                query = "exec Sp_ActualizaRegistroCalificacionQueja " + idqueja + ",'" + hechos + "'," + "'" + municipoqueja + "'," + "'" + observaciones + "'," + "" + especializado + "," + "" + trasOpPublica + "," + "'" + tipoexp + "'," + "'" + materia + "'," + "'" + nivriesgo + "','" + programa + "','"+ TiGua + "'";
                 mensaje = ejecutaInsertUpdate(query);
 
+                query = "Sp_deleteTema " + idqueja;
+                mensaje = ejecutaInsertUpdate(query);
                 for (int i = 0; i < arreglotemas.Length; i++)
                 {
                     string version = "CALIFICACION";//Ver la manera de cambiar modificación
-                    query = "exec Sp_insertaTema " + idqueja + "," + arreglotemas[i].ToString() + "," + "'" + otrotema + "','"+ version + "'";
+
+                    query = "exec Sp_insertaTema " + idqueja + "," + arreglotemas[i].ToString() + "," + "'" + otrotema + "','"+ version + "'" + ",'" + TiGua + "',"+ i + "";
                     mensaje = ejecutaInsertUpdate(query);
                 }
 
                 /*Sección de la actualización de la tabla de una queja*/
                 /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
+                query = "Sp_deleteAutoridad " + idqueja;
+                mensaje = ejecutaInsertUpdate(query);
                 for (int i = 0; i < longitudtabla1; i++)
                 {
                     autoridad = form["tablaAutRe_HecVio[" + i + "][autoridad]"].ToString();
                     hecho = form["tablaAutRe_HecVio[" + i + "][hecho]"].ToString();
                     tipo = form["tablaAutRe_HecVio[" + i + "][tipoA]"].ToString();
                     linea = int.Parse(form["tablaAutRe_HecVio[" + i + "][idAutoHec]"].ToString());
-                    query = "exec Sp_insertaAutoridad " + idqueja + "," + autoridad + "," + hecho + "," + linea + "," + tipo;
+                    query = "exec Sp_insertaAutoridad " + idqueja + "," + autoridad + "," + hecho + "," + linea + "," + tipo + ",'" + TiGua + "'";
                     mensaje = ejecutaInsertUpdate(query);
                 }
                 /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
                 /*Actualizacion de tabla de medidas Cautelares*/
+                query = "Sp_deleteMedcaut " + idqueja;
+                mensaje = ejecutaInsertUpdate(query);
+
                 for (int i = 0; i < longitudtabla2; i++)
                 {
 
@@ -4363,17 +4371,21 @@ namespace SistemaIntegralQuejas.Controllers
 					statust= Convert.ToInt32( form["tablaMedCaut[" + i + "][status]"].ToString());
                     nomedidadC = Convert.ToInt32(form["tablaMedCaut[" + i + "][idMedCaut]"].ToString());
 					//{ [tablaMedCaut[0][fechaEmision], { 2024 - 08 - 21}]}
-					query = "exec Sp_insertTblMedidas '"+ fechaemi + "','" + archemi + "','" + fechaate + "','" + archate + "'," + idqueja + ",'" + noofic + "','" + obsemi + "','" + obsate + "',"+ statust + ","+ nomedidadC + "";
+					query = "exec Sp_insertTblMedidas '"+ fechaemi + "','" + archemi + "','" + fechaate + "','" + archate + "'," + idqueja + ",'" + noofic + "','" + obsemi + "','" + obsate + "',"+ statust + ","+ nomedidadC + "" + ",'" + TiGua + "'";
 
 					mensaje = ejecutaInsertUpdate(query);
                 }
                 /*Actualizacion de tabla de medidas Cautelares*/
                 #region Actualizacion de tabla de diligencias
+
+                query = "Sp_deleteTblDil " + idqueja;
+                mensaje = ejecutaInsertUpdate(query);
+
                 for (int i = 0; i < longitudtabla3; i++)
                 {
                     //if (TiGua != "preliminar")
                     //{
-                    query = "exec Sp_insertTblDil " + idqueja + ",'" + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + "','" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0," + form["tablaDilig[" + i + "][viaint]"].ToString() + ", '" + form["tablaDilig[" + i + "][fecReci]"].ToString() + "','" + form["tablaDilig[" + i + "][archEvi]"].ToString() + "','" + form["tablaDilig[" + i + "][fecha_soli]"].ToString() + "','" + form["tablaDilig[" + i + "][desc_evi]"].ToString() + "';";
+                    query = "exec Sp_insertTblDil " + idqueja + ",'" + int.Parse(form["tablaDilig[" + i + "][tipodilig]"].ToString()) + "','" + form["tablaDilig[" + i + "][descrip]"].ToString() + "','" + form["tablaDilig[" + i + "][fechaAlta]"].ToString() + "','" + form["tablaDilig[" + i + "][numOfMe]"].ToString() + "','" + form["tablaDilig[" + i + "][atencion]"].ToString() + "','" + form["tablaDilig[" + i + "][archAdj]"].ToString() + "'," + form["tablaDilig[" + i + "][idMedCaut]"].ToString() + ",1,0," + form["tablaDilig[" + i + "][viaint]"].ToString() + ", '" + form["tablaDilig[" + i + "][fecReci]"].ToString() + "','" + form["tablaDilig[" + i + "][archEvi]"].ToString() + "','" + form["tablaDilig[" + i + "][fecha_soli]"].ToString() + "','" + form["tablaDilig[" + i + "][desc_evi]"].ToString() + "','" + TiGua + "'" + ";";
                     //}
                     //else
                     //{
@@ -4577,6 +4589,7 @@ namespace SistemaIntegralQuejas.Controllers
             public string abogado { get; set; }
             public string visitador { get; set; }
             public List<SelectCausaC> listacasa { get; set; }
+            public DateTime? fechactual { get; set; }
 
 
             public cedulaCalificacion() { }

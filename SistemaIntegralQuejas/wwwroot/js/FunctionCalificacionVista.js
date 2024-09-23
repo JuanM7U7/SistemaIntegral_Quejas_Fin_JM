@@ -641,7 +641,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             }
         }
 
-        if (response.informarcionC.informacioncomplementariaautoridad.length > 0) {
+        if (response.informarcionC.informacioncomplementariaautoridad !== null && response.informarcionC.informacioncomplementariaautoridad !== undefined && response.informarcionC.informacioncomplementariaautoridad.length > 0) {
             var contadorautoridades = response.informarcionC.informacioncomplementariaautoridad.length;
             for (var i = 0; i < contadorautoridades; i++) {
                 console.log(contadorautoridades);
@@ -717,6 +717,15 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 iddatospeti = response.datvaldqot.infodatpeticio;
                 console.log(iddatospeti);
             }
+            if (tipo !== 'E') {
+                $(`#confi_hechos${tipo}`).prop('disabled', true);
+                $(`#icohechos${tipo}`).prop('hidden', true);
+                $(`#confi_lughec${tipo}`).prop('disabled', true);
+                $(`#icomuni${tipo}`).prop('hidden', true);
+                $(`#confi_peticiona${tipo}`).prop('disabled', true);
+                $(`#btnaddpers${tipo}`).prop('hidden', true);
+                $(`#icobserv${tipo}`).prop('hidden', true);
+            }
             if (response.informarcionC.estatus_Expediente == 'Calificado' || response.informarcionC.estatus_Expediente == 'Concluido') {
                 $(`#confi_hechos${tipo}`).prop('disabled', true);
                 $(`#confi_hechos${tipo}`).removeClass('pulsacionrellow');
@@ -766,7 +775,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 }
             }
 
-            if (response.informarcionC.informacioncomplementariaautoridad.length > 0) {
+            if (response.informarcionC.informacioncomplementariaautoridad !== null && response.informarcionC.informacioncomplementariaautoridad !== undefined && response.informarcionC.informacioncomplementariaautoridad.length > 0) {
                 var contadorautoridades = response.informarcionC.informacioncomplementariaautoridad.length;
                 for (var i = 0; i < contadorautoridades; i++) {
                     console.log(contadorautoridades);
@@ -874,6 +883,48 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
             $(`#materia-frmDatosCalificacion${tipo}`).val(response.informarcionC.id_materia === '' ? 99 : response.informarcionC.id_materia);
             $(`#nivries-frmDatosCalificacion${tipo}`).val(response.informarcionC.id_niv_riesgo === '' ? 99 : response.informarcionC.id_niv_riesgo);
         });
+        $(`#confi_hechos${tipo}`).change(function () {
+            if (tipo === 'E') {
+                if ($(this).is(':checked')) {
+                    $(`#icohechosE`).prop('hidden', true);
+                    $('#hechosE').prop('disabled', true);
+                    $(`#confi_hechos${tipo}`).removeClass('pulsacionrellow');
+                    confirmdatos($('#idquejaE').val(), '1', '', '');
+                }
+                else {
+                    $('#icohechosE').prop('hidden', false);
+                    $(`#confi_hechos${tipo}`).addClass("pulsacionrellow");
+                    confirmdatos($('#idquejaE').val(), '0', '', '');
+                }
+            }
+        });
+        $(`#confi_lughec${tipo}`).change(function () {
+            if (tipo === 'E') {
+                if ($(this).is(':checked')) {
+                    $('#icomuniE').prop('hidden', true);
+                    $('#municipioquejaE').prop('disabled', true);
+                    $(`#confi_lughec${tipo}`).removeClass('pulsacionrellow');
+                    confirmdatos($('#idquejaE').val(), '', '1', '');
+                }
+                else {
+                    $('#icomuniE').prop('hidden', false);
+                    $(`#confi_lughec${tipo}`).addClass("pulsacionrellow");
+                    confirmdatos($('#idquejaE').val(), '', '0', '');
+                }
+            }
+        });
+        $(`#confi_peticiona${tipo}`).change(function () {
+            if (tipo === 'E') {
+                if ($(this).is(':checked')) {
+                    $(`#confi_peticiona${tipo}`).removeClass('pulsacionrellow');
+                    confirmdatos($('#idquejaE').val(), '', '', '1');
+                }
+                else {
+                    $(`#confi_peticiona${tipo}`).addClass("pulsacionrellow");
+                    confirmdatos($('#idquejaE').val(), '', '', '0');
+                }
+            }
+        });
     }
 }
 
@@ -948,7 +999,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
                 }
             }
 
-            if (response.informarcionC.informacioncomplementariaautoridad.length > 0) {
+            if (response.informarcionC.informacioncomplementariaautoridad !== null && response.informarcionC.informacioncomplementariaautoridad !== undefined && response.informarcionC.informacioncomplementariaautoridad.length > 0) {
                 var contadorautoridades = response.informarcionC.informacioncomplementariaautoridad.length;
                 for (var i = 0; i < contadorautoridades; i++) {
                     console.log(contadorautoridades);
@@ -2538,7 +2589,7 @@ function formPeticionario(idformulario) {
                         checked: [
                             'idNoviolenciamujer' + idformulario
                         ],
-                        name: "radsinoviomu_petit-frmDatosCalificacion" + tipo + idformulario,
+                        name: "radsinoviomu_petit-frmDatosCalificacion"+ idformulario,
                         classControl: "ob max-300 eliminaformaes"
                     },
                     {
@@ -5104,11 +5155,16 @@ function LlenartablaDilig(tablaDilig, tipo, id, version) {
                     $(`#diligenArreg${tipo}_${rowIdx}`).val(JSON.stringify(dat));
                     $(`#tipodilig${tipo}_${rowIdx}`).val(data.tipo_diligencia).trigger('change');
                     $(`#descrip${tipo}_${rowIdx}`).val(data.descripcion);
-                    var fecha = data.fecha_emi.split(' ')[0];
-                    var fechaspl = fecha.split('/');
-                    var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
-                    var date = new Date(fechaemi);
-                    chargeDateInputDate(document.getElementById(`fechaAlta${tipo}_${rowIdx}`), date);
+                    if (data.fecha_emi.includes('/')) {
+                        var fecha = data.fecha_emi.split(' ')[0];
+                        var fechaspl = fecha.split('/');
+                        var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
+                        var date = new Date(fechaemi);
+                        chargeDateInputDate(document.getElementById(`fechaAlta${tipo}_${rowIdx}`), date);
+                    } else {
+                        $(`#fechaAlta${tipo}_${rowIdx}`).val(data.fecha_emi);
+                    }
+                    
                 });
             },
             order: [1, 'desc'],
@@ -5241,7 +5297,7 @@ function checkbox(title, id, label, adichec, clase) {
     return `<label>${label} <input type="checkbox" class="${clase}" id="${id}" title="${title}" ${adichec}/></label>`;
 }
 function icono_editar(funcion, id, idico, tipo) {
-    return `<i class='btn fa fa-pencil-square-o' id=${idico} onclick='HabilEdi(${id}, "#${funcion}",${tipo})'></i>`;
+    return `<i class='btn fa fa-pencil-square-o' id=${idico} onclick='HabilEdi(${id}, "#${funcion}","${tipo}")'></i>`;
 }
 function Requeridos() {
     return '<span style="color: red;">*</span>';
@@ -5410,7 +5466,7 @@ function GuardarAp() {
 }
 
 $(document).ready(function () {
-    $(document).on('submit', 'form[id^="frmDatosCalificacion"]', function (event) {
+    $(document).on('submit', 'form[id^="frmDatosCalificacionE"]', function (event) {
         event.preventDefault();
 
 
@@ -5438,6 +5494,7 @@ $(document).ready(function () {
         var idquejaE = $('#idquejaE').val();
         //DATOS SELECT
         var formQueja = $(this).serializeArray();
+
         //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
         $('#tablaAutRe_HecVioTE tbody tr').each(function (x) {
             x = x + 1;
@@ -5526,7 +5583,7 @@ $(document).ready(function () {
             if (dilig !== '' && typeof dilig !='undefined') {
                 var combinedDil = JSON.parse(dilig);
                 var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
-                if (combinedDil.tipodil!=='3') {
+                if (parseInt(combinedDil.tipodil) !== 3) {
                     numOfMe = combinedDil.noOfMe;
                     atencion = combinedDil.plazo;
                     archAdj = combinedDil.archEvAd;
@@ -5590,6 +5647,8 @@ $(document).ready(function () {
         var espe = $("#especializado-frmDatosCalificacionE").val();
         var tran = $("#trancpub-frmDatosCalificacionE").val();
         var niv = $("#nivries-frmDatosCalificacionE").val();
+
+
         if (($('#confi_hechosE').is(':checked') || $('#confi_hechosE').is(':disabled')) && ($('#confi_lughecE').is(':checked') || $('#confi_lughecE').is(':disabled')) && ($('#confi_peticionaE').is(':checked') || $('#confi_peticionaE').is(':disabled'))) {
             if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacionE").val() == '' || formDQOT.visitaduriaqueja == ''
                 || $("#materia-frmDatosCalificacionE").val() == '' || $("#tipexpediente-frmDatosCalificacionE").val() == '' || $("#especializado-frmDatosCalificacionE").val() == '' || $("#trancpub-frmDatosCalificacionE").val() == ''
@@ -5706,7 +5765,7 @@ function guardaDili(tip, numF) {
             html: mensaje,
         });
     } else {
-        $(`#descrip_${numF}`).val($('#descripcion').val());
+        $(`#descripE_${numF}`).val($('#descripcion').val());
         var formDetalleDil = $("#formDetalleDil").serializeArray();
         var combinedData = formDetalleDil.reduce(function (acc, item) {
             acc[item.name] = item.value;
@@ -5813,7 +5872,8 @@ function GuardPrel() {
     var AutRe_HecVioT = [], MedCaute = [], Diligen = [];
     var idquejaE = $('#idquejaE').val();
     //DATOS SELECT
-    var formQueja = $(this).serializeArray();
+    var formQueja = $(`#frmDatosCalificacionE${idquejaE}`).serializeArray();
+    console.log(formQueja);
     //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
     $('#tablaAutRe_HecVioTE tbody tr').each(function (x) {
         x = x + 1;
@@ -5893,7 +5953,7 @@ function GuardPrel() {
         if (dilig !== '' && typeof dilig != 'undefined') {
             var combinedDil = JSON.parse(dilig);
             var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
-            if (combinedDil.tipodil !== '3') {
+            if (parseInt(combinedDil.tipodil) !== 3) {
                 numOfMe = combinedDil.noOfMe;
                 atencion = combinedDil.plazo;
                 archAdj = combinedDil.archEvAd;
