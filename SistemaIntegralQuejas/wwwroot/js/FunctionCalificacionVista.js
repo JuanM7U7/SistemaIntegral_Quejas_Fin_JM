@@ -5155,11 +5155,16 @@ function LlenartablaDilig(tablaDilig, tipo, id, version) {
                     $(`#diligenArreg${tipo}_${rowIdx}`).val(JSON.stringify(dat));
                     $(`#tipodilig${tipo}_${rowIdx}`).val(data.tipo_diligencia).trigger('change');
                     $(`#descrip${tipo}_${rowIdx}`).val(data.descripcion);
-                    var fecha = data.fecha_emi.split(' ')[0];
-                    var fechaspl = fecha.split('/');
-                    var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
-                    var date = new Date(fechaemi);
-                    chargeDateInputDate(document.getElementById(`fechaAlta${tipo}_${rowIdx}`), date);
+                    if (data.fecha_emi.includes('/')) {
+                        var fecha = data.fecha_emi.split(' ')[0];
+                        var fechaspl = fecha.split('/');
+                        var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
+                        var date = new Date(fechaemi);
+                        chargeDateInputDate(document.getElementById(`fechaAlta${tipo}_${rowIdx}`), date);
+                    } else {
+                        $(`#fechaAlta${tipo}_${rowIdx}`).val(data.fecha_emi);
+                    }
+                    
                 });
             },
             order: [1, 'desc'],
@@ -5577,7 +5582,7 @@ $(document).ready(function () {
             if (dilig !== '' && typeof dilig !='undefined') {
                 var combinedDil = JSON.parse(dilig);
                 var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
-                if (combinedDil.tipodil!=='3') {
+                if (parseInt(combinedDil.tipodil) !== 3) {
                     numOfMe = combinedDil.noOfMe;
                     atencion = combinedDil.plazo;
                     archAdj = combinedDil.archEvAd;
@@ -5944,7 +5949,7 @@ function GuardPrel() {
         if (dilig !== '' && typeof dilig != 'undefined') {
             var combinedDil = JSON.parse(dilig);
             var numOfMe = '', atencion = '', archAdj = '', viaint = 0, fecReci = '', fecha_soli = '';
-            if (combinedDil.tipodil !== '3') {
+            if (parseInt(combinedDil.tipodil) !== 3) {
                 numOfMe = combinedDil.noOfMe;
                 atencion = combinedDil.plazo;
                 archAdj = combinedDil.archEvAd;
