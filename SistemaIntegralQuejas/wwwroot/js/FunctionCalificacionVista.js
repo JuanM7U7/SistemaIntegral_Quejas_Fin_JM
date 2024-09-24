@@ -3834,7 +3834,7 @@ function CrearFormuCalificacion(idform, tipo, fechamod, paso,expedienten, versio
         }
         $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
         console.log(version);
-        if (paso == 'Calificado')
+        if (version == 'MODIFICACION')
         {
             $(`#botonpdf${tipo}`).attr("onclick", `GeneraDocumento_pdf('pilin','IDCM',${idform})`);
         }
