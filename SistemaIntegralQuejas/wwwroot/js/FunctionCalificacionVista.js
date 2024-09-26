@@ -4811,8 +4811,12 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
                 const table = $(tablaAutRe_HecVioT).DataTable();
                
                 var param = `"${tablaAutRe_HecVioT.replace('#', '')}",${id}`;
-                var fecha1 = fechaturno.toString();
-                var fecha2 = fechacalif.toString();
+                var fecha1 = '';
+                var fecha2 = '';
+                if (fechaturno !== null) { fecha1 ='1999/01/01' } else { fecha1 = fechaturno.toString(); }
+                if (fechacalif !== null) { fecha1='1999/01/01'} else { fecha1 = fechaturno.toString(); }
+                 
+                 fecha2 = fechacalif.toString();
 
                 var fecha11 = fecha1.split(' ')[0];
                 var fecha22 = fecha2.split(' ')[0];

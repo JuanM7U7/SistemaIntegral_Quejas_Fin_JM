@@ -4132,12 +4132,19 @@ namespace SistemaIntegralQuejas.Controllers
 		public  ActionResult subirarchivoserver(IFormFile file)
 		{
             string UploadMessage = "";
-			if (file != null && file.Length > 0)
-			{
-				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos", file.FileName);
+            if (file != null && file.Length > 0)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos", file.FileName);
 
-				using (var stream = new FileStream(filePath, FileMode.Create))
+               if( System.IO.File.Exists(filePath))
+               {
+                    System.IO.File.Delete(filePath);
+
+
+                }
+                using (var stream = new FileStream(filePath, FileMode.Create,FileAccess.ReadWrite))
 				{
+                    
 					 file.CopyToAsync(stream);
 				}
 
