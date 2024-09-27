@@ -20,6 +20,7 @@ let filtradonuevo = [];
 let filtradoadd = [];
 let idqueja = "";
 let crearformularios = 0;
+let Morales = "";
 
 (function ($) {
     "use strict"
@@ -31,7 +32,7 @@ let crearformularios = 0;
         console.log(res)
         console.log(viainterposicion)
 
-        let html = '<select id="select_tipoescritoc" class="form-control form-control-lg"> <option value="" selected>Seleccione una opción</option> ';
+        let html = '<select id="select_tipoescritoc" class="form-control form-control-lg"> ';
         for (let i = 0; i < res.length; i++) {
             html += `
                 <option value="${res[i].idSelect}">${res[i].descripcion}</option>
@@ -81,6 +82,8 @@ let crearformularios = 0;
     fetchGet("Expediente/SelectTipoViolencia", "json", (data) => { TipoViolencia = data.tipoviolencia; })
 
     fetchGet("Expediente/SelectRelacionAgresor", "json", (data) => { RelacionAgresor = data.relacionagresor; })
+
+    fetchGet("Expediente/SelectMorales", "json", (data) => { Morales = data.tipomorales; })
 
     $(document).on('change', '#selectTipoQueja', function (event) {
 
@@ -854,16 +857,189 @@ function changeselects() {
             case "6":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
                 crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab4").show();
+                Swal.fire({
+                    title: 'Tipo de Peticionario(a)',
+                    html: `
+                                <label for="options">Selecciona una opción:</label>
+                                <select id="options" class="swal2-input">
+                                <option value="opcion1">Moral</option>
+                                <option value="opcion2">Física</option>
+                                </select>
+                             `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar',
+                    preConfirm: () => {
+                        const selectedOption = document.getElementById('options').value;
+                        return selectedOption;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        if (result.value == 'opcion2') {
+                            $("#tab1").show();
+                            $("#tab2").show();
+                            $("#tab4").show();
+                        }
+                        else {
+                            var $input = $('#nombre_petit-frmDatosPersonales1');
+
+                            // Creamos el nuevo select con las mismas clases y atributos que el input
+                            var $select = $('<select></select>')
+                                .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
+                                .attr({
+                                    'data-idfrmit': '',
+                                    'name': $input.attr('name'),
+                                    'id': $input.attr('id'),
+                                    'required': true
+                                });
+
+                            // Llenamos el select con las opciones del arreglo
+                            $.each(Morales, function (index, item) {
+                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+                            });
+
+                            // Reemplazamos el input con el select
+                            $input.replaceWith($select);
+
+                            $('.noproporcionado').prop('checked', true).trigger('change');
+                            $("#frmDatosPersonales1 input[type='checkbox'].noproporcionado").prop("disabled", true);
+                            $("#frmDatosPersonales1 input[type='text']").prop("disabled", true);
+                            $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
+                            $("#frmDatosPersonales1 input[type='date']").prop("disabled", true);
+                            $("#frmDatosPersonales1 select").prop("disabled", true);
+                            $("#colonia_petit-frmDatosPersonales1").val('No proporcionado');
+                            $("#ciudad_petit-frmDatosPersonales1").val('No proporcionado');
+                            $("#genero_petit-frmDatosPersonales1").val('No proporcionado');
+                            $("#escosel_petit-frmDatosPersonales1").val(14);
+                            $("#econyugal_petit-frmDatosPersonales1").val(8);
+                            $("#ocupacion_petit-frmDatosPersonales1").val(9);
+                            $("#discapacidad_petit-frmDatosPersonales1").val(7);
+                            $("#gsoci_petit-frmDatosPersonales1").val(9);
+                            $("#leindi_petit-frmDatosPersonales1").val('No');
+                            $("#idQuejoso").prop("checked", true);
+                            $("#idNosexo").prop("checked", true);
+                            $("#idNoGenero").prop("checked", true);
+                            $("#idNopSabeLeer").prop("checked", true);
+                            $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
+                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
+
+                            $("#tab1").show();
+                            $("#tab2").show();
+                            $("#tab4").show();
+                        }
+                    }
+                });
                 break;
             case "7":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
                 crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab4").show();
+                Swal.fire({
+                    title: 'Tipo de Peticionario(a)',
+                    html: `
+                                <label for="options">Selecciona una opción:</label>
+                                <select id="options" class="swal2-input">
+                                <option value="opcion1">Moral</option>
+                                <option value="opcion2">Física</option>
+                                </select>
+                             `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar',
+                    preConfirm: () => {
+                        const selectedOption = document.getElementById('options').value;
+                        return selectedOption;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        if (result.value == 'opcion2') {
+                            $("#tab1").show();
+                            $("#tab2").show();
+                            $("#tab4").show();
+                        }
+                        else {
+                            /*let options = {};
+                            $.map(Morales, function (o) {
+                                options[o.idSelect] = o.descripcion;
+                            });
+
+                            Swal.fire({
+                                title: "Selecciona el Peticionario Moral",
+                                input: 'select',
+                                inputOptions: options,
+                                showCancelButton: true,
+                                confirmButtonText: 'Aceptar',
+                                cancelButtonText: 'Cancelar',
+                                allowOutsideClick: false,
+                                inputValidator: function (value) {
+                                    return new Promise(function (resolve, reject) {
+                                        if (value !== '') {
+                                            resolve();
+                                        } else {
+                                            resolve('Debes seleccionar un elemento');
+                                        }
+                                    });
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    
+                                    $("#tab2").show();
+                                    $("#tab4").show();
+                                }
+                            });*/
+
+                            //$('select').prop('disabled', true);
+                            //$('input[type="radio"]').prop('disabled', true);
+
+                            var $input = $('#nombre_petit-frmDatosPersonales1');
+
+                            // Creamos el nuevo select con las mismas clases y atributos que el input
+                            var $select = $('<select></select>')
+                                .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
+                                .attr({
+                                    'data-idfrmit': '',
+                                    'name': $input.attr('name'),
+                                    'id': $input.attr('id'),
+                                    'required': true
+                                });
+
+                            // Llenamos el select con las opciones del arreglo
+                            $.each(Morales, function (index, item) {
+                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+                            });
+
+                            // Reemplazamos el input con el select
+                            $input.replaceWith($select);
+
+                            $('.noproporcionado').prop('checked', true).trigger('change');
+                            $("#frmDatosPersonales1 input[type='checkbox'].noproporcionado").prop("disabled", true);
+                            $("#frmDatosPersonales1 input[type='text']").prop("disabled", true);
+                            $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
+                            $("#frmDatosPersonales1 input[type='date']").prop("disabled", true);
+                            $("#frmDatosPersonales1 select").prop("disabled", true);
+                            $("#colonia_petit-frmDatosPersonales1").val('No proporcionado');
+                            $("#ciudad_petit-frmDatosPersonales1").val('No proporcionado');
+                            $("#genero_petit-frmDatosPersonales1").val('No proporcionado');
+                            $("#escosel_petit-frmDatosPersonales1").val(14);
+                            $("#econyugal_petit-frmDatosPersonales1").val(8);
+                            $("#ocupacion_petit-frmDatosPersonales1").val(9);
+                            $("#discapacidad_petit-frmDatosPersonales1").val(7);
+                            $("#gsoci_petit-frmDatosPersonales1").val(9);
+                            $("#leindi_petit-frmDatosPersonales1").val('No');
+                            $("#idQuejoso").prop("checked", true);
+                            $("#idNosexo").prop("checked", true);
+                            $("#idNoGenero").prop("checked", true);
+                            $("#idNopSabeLeer").prop("checked", true);
+                            $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
+                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
+
+                            $("#tab1").show();
+                            $("#tab2").show();
+                            $("#tab4").show();
+                        }
+                    }
+                });
                 break;
             case "8":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
@@ -1946,7 +2122,7 @@ function formPeticionario(idformulario) {
                         ids: {
                             0: 'idMexicano',
                             1: 'idExtranjero',
-                            1: 'idNoGenero'
+                            2: 'idNoGenero'
                         },
                         values: {
                             0: 'Mexicano',
@@ -2280,7 +2456,7 @@ function guardarDatosPeticionarios() {
         // Se guardan los datos del peticionario en la tabla Reg_Recepcion si no estan registrados(si ya existen, se actualiza)
         // De igual forma se crea una version de su complemento de peticionario
 
-        if ($('#fenac_petit-frmDatosPersonales' + numFrm).val() == '' || $('#genero_petit-frmDatosPersonales' + numFrm).val() == '' || $('#escosel_petit-frmDatosPersonales' + numFrm).val() == ''
+        if (/*$('#fenac_petit-frmDatosPersonales' + numFrm).val() == '' ||*/ $('#genero_petit-frmDatosPersonales' + numFrm).val() == '' || $('#escosel_petit-frmDatosPersonales' + numFrm).val() == ''
             || $('#ocupacion_petit-frmDatosPersonales' + numFrm).val() == '' || $('#gsoci_petit-frmDatosPersonales' + numFrm).val() == '' || $('#leindi_petit-frmDatosPersonales' + numFrm).val() == '') {
 
             Swal.fire({
@@ -2318,11 +2494,18 @@ function guardarDatosPeticionarios() {
 }
 
 function guardaDataComplPeticionario(idForm, numFrm) {
+    $("#frmDatosPersonales1 input[type='text']").prop('disabled', false);
+    $("#frmDatosPersonales1 input[type='radio']").prop('disabled', false);
+    $("#frmDatosPersonales1 input[type='date']").prop('disabled', false);
+    $("#frmDatosPersonales1 select").prop('disabled', false);
+
+    let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
+
     $.ajax({
         type: "post",
         url: 'GuardarDataComplPeticionario',
         content: "application/json; charset=utf-8",
-        data: $(idForm).serialize(),
+        data: $(idForm).serialize() + '&nombreS=' + nombre,
         dataType: "json",
         success: function (data) {
 
