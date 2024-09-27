@@ -219,6 +219,8 @@ $(document).ready(function () {
     //        $('#tablaMedCuate').hide();
     //    }
     //});
+
+    funcionesEscritoi();
 });
 
 function openCity(evt, cityName) {
@@ -270,6 +272,8 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacal
         $("#defaultOpenD").addClass("active");
         Crear_Formulario_Quejaconclusion(id, fechaturnoabo, fechacalif, "E");
         obtenerDQOTModifica(id, fecRecep, "E", expedienten);
+        console.log("Ingresando a la subida de archivos en edición");
+
     }
 }
 function confirmdatos(idquej, hech, lug, pet) {
@@ -426,7 +430,7 @@ function Crear_Formulario_Queja(id) {
     console.log("Entro al método de crear el formulario de queja");
     var arregloBlanco = [];
     var cuerpoIzquierda = CreaInputs_Con_Labeldisabled('idqueja', 'idqueja', '', 'text', 'ID:', 'textfield', 'mes')
-        + `<button type="button" class="" style="border:hidden; background:none;" title="Información recabada por la DQOT" onclick="GeneraDocumento_pdf('pilin','IDQOT',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
+        + `<button type="button" class="" style="border:hidden; background:none;" title="Cédula de Información recabada por la DQOT" onclick="GeneraDocumento_pdf('pilin','IDQOT',${id})"> <span aria-hidden="true"><i class="fa fa-file-pdf-o" style="color: red;"></i></span> </button>`
         + CreaBR()
         + CreaSelectLabeldisabled('viainterpos', '', arregloBlanco, '', 'Vía de interposición: ', '')
         + CreaBR()
@@ -515,7 +519,7 @@ function Crear_Formulario_QuejaEdit(id, tipo) {
         + `<button id="btnaddpers${tipo}" type='button' onclick='AddFormatDatosPersonales(${id})' class='btn btn-link margin-iconbf'>
                                                <span class="fa fa-plus color-muted fa-1x"></span></p>
                                            </button>`
-        + checkbox('Validar info. DQOT', `confi_peticiona${tipo}`, '', 'disabled', 'pulsacionrellow') + `<span id="cont_pet${tipo}" style="font-size: 12px;">0/0</span><span style="font-size: 12px;"> peticionarios(a) confirmados</span>`
+        + checkbox('Validar info. DQOT', `confi_peticiona${tipo}`, '', 'disabled', 'pulsacionrellow') + `<span id="cont_pet${tipo}" style="font-size: 12px;">0/0</span><span id ="cont_pet_desc${tipo}"style="font-size: 12px;"> peticionarios(a) confirmados</span>`
         + CreaBR()
         + `<div id='contenedor_Usuarios${tipo}'></div>`
         + CreaBR()
@@ -618,8 +622,15 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             $('#icomuniE').prop('hidden', false);
             $(`#confi_peticiona${tipo}`).prop('disabled', true);
             $(`#confi_peticiona${tipo}`).removeClass('pulsacionrellow');
-           // $('#btnaddpersE').prop('hidden', false);
-        }
+            // $('#btnaddpersE').prop('hidden', false);
+            $('#guardadropre').prop('hidden', true);
+            $('#cont_petE').prop('hidden', true);
+            $('#cont_pet_descE').prop('hidden', true);
+            $('#confi_peticionaE').prop('hidden', true);
+
+
+        } else {
+            $('#guardadropre').prop('hidden', false); $('#cont_petE').prop('hidden', false); $('#cont_pet_descE').prop('hidden', false); $('#confi_peticionaE').prop('hidden', false); }
 
         var date = new Date();
         if (response.informarcionC.fecha_registro != null) {
@@ -642,7 +653,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
             for (var i = 0; i < contadorpeticionarios; i++) {
                 console.log(contadorpeticionarios);
-                $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti,idqueja));
+                $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti,idqueja));
             }
             console.log($("#contenedor_Usuarios").find(".btn"));
             $("#contenedor_Usuarios").find(".btn").remove();
@@ -749,6 +760,14 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 $(`#confi_peticiona${tipo}`).prop('disabled', true);
                 $(`#confi_peticiona${tipo}`).removeClass('pulsacionrellow');
                 //$('#btnaddpersE').prop('hidden', true);
+                $('#guardadropre').prop('hidden', true);
+                $('#cont_petE').prop('hidden', true);
+                $('#cont_pet_descE').prop('hidden', true);
+                $('#confi_peticionaE').prop('hidden', true);
+
+
+            } else {
+                $('#guardadropre').prop('hidden', false); $('#cont_petE').prop('hidden', false); $('#cont_pet_descE').prop('hidden', false); $('#confi_peticionaE').prop('hidden', false);
             }
 
             var date = new Date();
@@ -2165,7 +2184,7 @@ function updateDatosPeticionarios() {
         let idForm = '#frmDatosPersonales' + numFrm;
         let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
         $('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
-        $('#idquejagenerado').prop('disabled', false);
+        $('#idquejagenerado, #versioncomplementopeticionario').prop('disabled', false);
         // Primer AJAX para verificar peticionarios
         $.ajax({
             type: "post",
@@ -2187,7 +2206,7 @@ function updateDatosPeticionarios() {
                 }
                 $('#CURP_petit-frmDatosPersonales1, #apellidop_petit-frmDatosPersonales1, #apellidom_petit-frmDatosPersonales1, #cp_petit-frmDatosPersonales1, #estado_petit-frmDatosPersonales1, #colonia_petit-frmDatosPersonales1, #municipio_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #calle_petit-frmDatosPersonales1, #nexterior_petit-frmDatosPersonales1, #ninterior_petit-frmDatosPersonales1, #fenac_petit-frmDatosPersonales1, #edad_petit-frmDatosPersonales1, #telefono_petit-frmDatosPersonales1, #email_petit-frmDatosPersonales1, #qatu_petit-frmDatosPersonales1, #radsexo_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #chknacionalidad_petit-frmDatosPersonales1, #chksleer_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
                 //$('#colonia_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
-                $('#numFrm,#idcomplementopet1,#idpeticionarioi1,#idquejagenerado,#versioncomplementopeticionario').prop('disabled', false);
+                $('#numFrm,#idcomplementopet1,#idpeticionarioi1,#idquejagenerado').prop('disabled', false);
                 
                 $('input[type=radio][name="radsexo_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
                 $('input[type=radio][name="chknacionalidad_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
@@ -3123,7 +3142,7 @@ function formActacircunstanciada2c() {
 /*apartado modal Escrito Inicial*/
 function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente) {
     /* Funciones escritoi */
-    funcionesEscritoi();
+    //funcionesEscritoi();
     let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
     $('.formularioEscritoInicial').empty()
     $('.formularioEscritoInicial').append(iformEscritoInicial);
@@ -3958,7 +3977,10 @@ function CrearFormuCalificacion(idform, tipo, fechamod, paso,expedienten, versio
 
         $("#Conclu").css("display", "block");
         $("#Titulo_Modal").text("Modificación del Exp: " + expedienten);
-        $(`#botonpdf${tipo}`).attr("onclick", `GeneraDocumento_pdf('pilin','IDCM',${idform})`);
+        if (tipo == 'E') {
+            $(`#botonpdf${tipo}`).attr("onclick", `GeneraDocumento_pdf('pilin','IDCM',${idform})`);
+            $(`#botonpdf${tipo}`).attr("title","Cédula de modificación")
+        }
         //$("#defaultOpenCa").('');
         var elemento = document.getElementById("defaultOpenCa");
         console.log(elemento.innerHTML);
@@ -4381,7 +4403,7 @@ function CrearFormuCalificacion(idform, tipo, fechamod, paso,expedienten, versio
             }
         });
     });
-    funcionesEscritoi();
+
 
     $(`#tema-frmDatosCalificacion${tipo}`).select2();
     $(`#programa-frmDatosCalificacion${tipo}`).select2();
@@ -5442,6 +5464,17 @@ function DetDilig(modDil, tipoDi, numFil, idqueja, tipo) {
         document.getElementById(modDil).style.display = "block";
         CreafrmDetaDiligen($(`#${tipoDi}`).val(), numFil, $(`#tipodilig${tipo}_${numFil}`).val(), $(`#fechaAlta${tipo}_${numFil}`).val(), idqueja, tipo);
         if (tipo !== 3) {
+            if ($('#Fecha_Recib').val() == "") {
+                console.log(fecha);
+                $("#archEvAdb2").attr("disabled", "disabled");
+                $("#descEvi").attr("disabled", "disabled");
+
+            } else {
+                console.log(fecha);
+                $("#archEvAdb2").removeAttr("disabled");
+                $("#descEvi").removeAttr("disabled");
+            }
+
             $('#Fecha_Recib').change(function () {
                 console.log(this);
                 if ($(this).val() == "") {
@@ -5483,6 +5516,17 @@ function DetDilig(modDil, tipoDi, numFil, idqueja, tipo) {
                 fechae = fechaspl[2] + '/' + fechaspl[1] + '/' + fechaspl[0];
                 date = new Date(fecha);
                 chargeDateInputDate(document.getElementById(`Fecha_Recib`), date);
+
+                if (fecha == "") {
+                    console.log(fecha);
+                    $("#archEvAdb2").attr("disabled", "disabled");
+                    $("#descEvi").attr("disabled", "disabled");
+
+                } else {
+                    console.log(fecha);
+                    $("#archEvAdb2").removeAttr("disabled");
+                    $("#descEvi").removeAttr("disabled");
+                }
             }
         }
     } else {
@@ -5933,7 +5977,20 @@ $(document).ready(function () {
         var niv = $("#nivries-frmDatosCalificacionE").val();
 
 
-        if (($('#confi_hechosE').is(':checked') || $('#confi_hechosE').is(':disabled')) && ($('#confi_lughecE').is(':checked') || $('#confi_lughecE').is(':disabled')) && ($('#confi_peticionaE').is(':checked'))) {
+        var titulo = $('#Titulo_Modal').html().toString();
+        console.log(titulo);
+        var validacionpet = false;
+        if (titulo.includes("Modificación")) {
+
+            validacionpet = true;
+        } else
+        {
+            if ($('#confi_peticionaE').is(':checked'))
+            {
+                validacionpet = true;
+            }
+        }
+        if (($('#confi_hechosE').is(':checked') || $('#confi_hechosE').is(':disabled')) && ($('#confi_lughecE').is(':checked') || $('#confi_lughecE').is(':disabled')) && validacionpet ) {
             if (formDQOT.longitudtabla1 <= 0 || formDQOT.arreglotemas == '' || $("#programa-frmDatosCalificacionE").val() == '' || formDQOT.visitaduriaqueja == ''
                 || $("#materia-frmDatosCalificacionE").val() == '' || $("#tipexpediente-frmDatosCalificacionE").val() == '' || $("#especializado-frmDatosCalificacionE").val() == '' || $("#trancpub-frmDatosCalificacionE").val() == ''
                 || $("#nivries-frmDatosCalificacionE").val() == '' || formDQOT.Fecha_TurnoVG == '' || formDQOT.municipioqueja == '' || formDQOT.hechos == '' || badera_envío || banderaFechaMedida) {
@@ -6007,25 +6064,36 @@ $(document).ready(function () {
                 });
             }
         } else {
-            var htm = "Validar información de la DQOT: \n";
-            if (!$('#confi_peticionaE').is(':checked')) { htm += '-Peticionarios\n'; }
-            if (!$('#confi_hechosE').is(':checked') && !$('#confi_hechosE').is(':disabled')) { htm += '-Hechos\n'; }
-            if (!$('#confi_lughecE').is(':checked') && !$('#confi_lughecE').is(':disabled')) { htm += '-Lugar de los hechos\n'; }
-            $.notify(htm, {
-                className: "warn",
-                position: "bottom right",
-                autoHide: true,
-                autoHideDelay: 5000,
-                style: 'bootstrap',
-                globalPosition: 'top center',
-                showDuration: 400,
-                hideDuration: 400,
-                gap: 2
-            });
+
+            var titulo = $('#Titulo_Modal').html().toString();
+            console.log(titulo);
+            if (titulo.includes("Modificación"))
+            {
+
+            }
+            else {
+                var htm = "Validar información de la DQOT: \n";
+                if (!$('#confi_peticionaE').is(':checked')) { htm += '-Peticionarios\n'; }
+                if (!$('#confi_hechosE').is(':checked') && !$('#confi_hechosE').is(':disabled')) { htm += '-Hechos\n'; }
+                if (!$('#confi_lughecE').is(':checked') && !$('#confi_lughecE').is(':disabled')) { htm += '-Lugar de los hechos\n'; }
+                $.notify(htm, {
+                    className: "warn",
+                    position: "bottom right",
+                    autoHide: true,
+                    autoHideDelay: 5000,
+                    style: 'bootstrap',
+                    globalPosition: 'top center',
+                    showDuration: 400,
+                    hideDuration: 400,
+                    gap: 2
+                });
+            }
         }
-    });
+        });
+
 
 });
+
 
 function guardaDili(tip, numF) {
     var mensaje = 'Datos faltantes <br>';
@@ -6090,7 +6158,7 @@ function funcionesEscritoi() {
     //$(document).on('change', '.input-file', function () {
     //    $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
     //});
-
+    $(".upload-field").off();
     $(document).one('click', '.upload-field', function () {
         var fileInput;
         if ($(this).attr('id') === 'archEvAdb') {
@@ -6121,8 +6189,8 @@ function funcionesEscritoi() {
             $(this).parent().find('.form-control').val();
             return;
         }
-        $($(this).parent().find('.btn')[1]).attr('onClick', '');
-        $($(this).parent().find('.btn')[1]).attr('onClick',`GeneraDocumento_pdf('${$(this)[0].files[0].name}')`);
+        //($(this).parent().find('.btn')[1]).attr('onClick', '');
+        //$($(this).parent().find('.btn')[1]).attr('onClick',`GeneraDocumento_pdf('${$(this)[0].files[0].name}')`);
         var formData = new FormData();
         formData.append('file', fileInput);
 

@@ -4203,20 +4203,17 @@ namespace SistemaIntegralQuejas.Controllers
 		public  ActionResult subirarchivoserver(IFormFile file)
 		{
             string UploadMessage = "";
+            DateTime fechahoy = new DateTime();
             if (file != null && file.Length > 0)
             {
+                
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos", file.FileName);
 
-               if( System.IO.File.Exists(filePath))
-               {
-                    System.IO.File.Delete(filePath);
-
-
-                }
-                using (var stream = new FileStream(filePath, FileMode.Create,FileAccess.ReadWrite))
+                if ( System.IO.File.Exists(filePath)){System.IO.File.Delete(filePath);}
+                using (var stream = new FileStream(filePath, FileMode.Create,FileAccess.Write))
 				{
-                    
-					 file.CopyToAsync(stream);
+
+                     file.CopyToAsync(stream);
 				}
 
 				UploadMessage = "File uploaded successfully!";
@@ -4837,7 +4834,12 @@ namespace SistemaIntegralQuejas.Controllers
                     dil.semaforo = "<div class=\"badge status-badge badge-success\">SI</div>";
                     int diasTrans = (fechaDos - fechaUno).Days;
                     int plazAten = Convert.ToInt16(dil.plaz_aten);
-                    if (diasTrans != plazAten || (diasTrans == plazAten && string.IsNullOrEmpty(dil.fecharecibo)))
+                    //Verificar el archivo de evidencia
+                    if (!string.IsNullOrEmpty(dil.fecharecibo)) 
+                    {
+                        dil.semaforo = "<div class=\"badge status-badge badge-success\">SI</div>";
+                    }
+                    else if (diasTrans != plazAten || (diasTrans == plazAten && string.IsNullOrEmpty(dil.fecharecibo)))
                     {
                         query = $"exec semaforo {diasTrans}, {plazAten - 1}, {plazAten}, 1";
                         dil.semaforo = conexionsql.ObtenerReader(query) + "<small><strong> sin atender</strong></small>";
@@ -4886,7 +4888,6 @@ namespace SistemaIntegralQuejas.Controllers
         {
             string numFrm = form["numFrm"].ToString();
             string id_queja = form["idquejagenerado"].ToString();
-            string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
             string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
             string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
@@ -4899,9 +4900,13 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 tipouser = "Peticionario";
             }
-            if (curp==""&& nombre ==""&& apellidop == ""&& apellidom == "")
+            if ((curp == "" || curp.ToUpper() == "NO PROPORCIONADO") && (apellidop == "" || apellidop.ToUpper() == "NO PROPORCIONADO") && (apellidom == "" || apellidom.ToUpper() == "NO PROPORCIONADO"))
             {
-                nombre = nombreS;
+                curp = ""; apellidop = ""; apellidom = "";
+            }
+            else if ((curp == "" || curp.ToUpper() == "NO PROPORCIONADO") && (nombre == "" || nombre.ToUpper() == "NO PROPORCIONADO") && (apellidop == "" || apellidop.ToUpper() == "NO PROPORCIONADO") && (apellidom == "" || apellidom.ToUpper() == "NO PROPORCIONADO"))
+            {
+                curp = ""; apellidop = ""; apellidom = ""; nombre = nombreS;
             }
 
             query = "EXEC Sp_VerificarPeticionariosQueja '" + id_queja + "', '" + curp + "', '" + nombre + "', '" + apellidop + "', '" + apellidom + "', '" + email + "', '" + tipouser + "';";
