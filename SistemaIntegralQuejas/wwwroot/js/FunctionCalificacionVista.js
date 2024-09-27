@@ -642,7 +642,7 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
             for (var i = 0; i < contadorpeticionarios; i++) {
                 console.log(contadorpeticionarios);
-                $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti,idqueja));
+                $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, iddatospeti,idqueja));
             }
             console.log($("#contenedor_Usuarios").find(".btn"));
             $("#contenedor_Usuarios").find(".btn").remove();
@@ -2165,7 +2165,7 @@ function updateDatosPeticionarios() {
         let idForm = '#frmDatosPersonales' + numFrm;
         let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
         $('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
-        $('#idquejagenerado').prop('disabled', false);
+        $('#idquejagenerado, #versioncomplementopeticionario').prop('disabled', false);
         // Primer AJAX para verificar peticionarios
         $.ajax({
             type: "post",
@@ -2187,7 +2187,7 @@ function updateDatosPeticionarios() {
                 }
                 $('#CURP_petit-frmDatosPersonales1, #apellidop_petit-frmDatosPersonales1, #apellidom_petit-frmDatosPersonales1, #cp_petit-frmDatosPersonales1, #estado_petit-frmDatosPersonales1, #colonia_petit-frmDatosPersonales1, #municipio_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #calle_petit-frmDatosPersonales1, #nexterior_petit-frmDatosPersonales1, #ninterior_petit-frmDatosPersonales1, #fenac_petit-frmDatosPersonales1, #edad_petit-frmDatosPersonales1, #telefono_petit-frmDatosPersonales1, #email_petit-frmDatosPersonales1, #qatu_petit-frmDatosPersonales1, #radsexo_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #chknacionalidad_petit-frmDatosPersonales1, #chksleer_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
                 //$('#colonia_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
-                $('#numFrm,#idcomplementopet1,#idpeticionarioi1,#idquejagenerado,#versioncomplementopeticionario').prop('disabled', false);
+                $('#numFrm,#idcomplementopet1,#idpeticionarioi1,#idquejagenerado').prop('disabled', false);
                 
                 $('input[type=radio][name="radsexo_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
                 $('input[type=radio][name="chknacionalidad_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);

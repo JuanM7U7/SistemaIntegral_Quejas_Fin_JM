@@ -4886,7 +4886,6 @@ namespace SistemaIntegralQuejas.Controllers
         {
             string numFrm = form["numFrm"].ToString();
             string id_queja = form["idquejagenerado"].ToString();
-            string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
             string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
             string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
@@ -4899,9 +4898,13 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 tipouser = "Peticionario";
             }
-            if (curp==""&& nombre ==""&& apellidop == ""&& apellidom == "")
+            if ((curp == "" || curp.ToUpper() == "NO PROPORCIONADO") && (apellidop == "" || apellidop.ToUpper() == "NO PROPORCIONADO") && (apellidom == "" || apellidom.ToUpper() == "NO PROPORCIONADO"))
             {
-                nombre = nombreS;
+                curp = ""; apellidop = ""; apellidom = "";
+            }
+            else if ((curp == "" || curp.ToUpper() == "NO PROPORCIONADO") && (nombre == "" || nombre.ToUpper() == "NO PROPORCIONADO") && (apellidop == "" || apellidop.ToUpper() == "NO PROPORCIONADO") && (apellidom == "" || apellidom.ToUpper() == "NO PROPORCIONADO"))
+            {
+                curp = ""; apellidop = ""; apellidom = ""; nombre = nombreS;
             }
 
             query = "EXEC Sp_VerificarPeticionariosQueja '" + id_queja + "', '" + curp + "', '" + nombre + "', '" + apellidop + "', '" + apellidom + "', '" + email + "', '" + tipouser + "';";
