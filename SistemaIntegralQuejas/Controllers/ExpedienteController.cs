@@ -2594,7 +2594,24 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin Lista Escolaridad
-        public ActionResult GuardarDataComplPeticionario(IFormCollection form)
+
+        public ActionResult SelectMorales()
+        {
+            List<GeneralModel.Selectmaster> tipoMorales = new List<GeneralModel.Selectmaster>();
+            String query = "exec Sp_Select_Morales";
+            string mensaje = "";
+            tipoMorales = conexionsql.selectMaestro(query, ref mensaje);
+
+            if (tipoMorales.Count > 0)
+            {
+                return Json(new { tipomorales = tipoMorales });
+            }
+            else
+            {
+                return Json(new { tipomorales = "error" });
+            }
+        }
+        public ActionResult GuardarDataComplPeticionario(IFormCollection form, string nombreS)
         {
             string numFrm = form["numFrm"].ToString();
             string idcomplementopet = form["idcomplementopet" + numFrm].ToString();
@@ -2621,6 +2638,10 @@ namespace SistemaIntegralQuejas.Controllers
             string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado")
+            {
+                nombre = nombreS;
+            }
 
             string calle = form["calle_petit-frmDatosPersonales" + numFrm].ToString();
             string nexterior = form["nexterior_petit-frmDatosPersonales" + numFrm].ToString();
@@ -2633,22 +2654,52 @@ namespace SistemaIntegralQuejas.Controllers
             string telefono = form["telefono_petit-frmDatosPersonales" + numFrm].ToString();
             string edad = form["edad_petit-frmDatosPersonales" + numFrm].ToString();
             string email = form["email_petit-frmDatosPersonales" + numFrm].ToString();
-            int idSexo = int.Parse(form["radsexo_petit-frmDatosPersonales" + numFrm].ToString());
+            int idSexo = 3;
+            if (form["radsexo_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idSexo = int.Parse(form["radsexo_petit-frmDatosPersonales" + numFrm].ToString());
+            }
             string genero = form["genero_petit-frmDatosPersonales" + numFrm].ToString();
             string otroGenero = form["ogenero_petit-frmDatosPersonales" + numFrm].ToString();
-            int idEscolaridad = int.Parse(form["escosel_petit-frmDatosPersonales" + numFrm].ToString());
-            int idEstadoconyugal = int.Parse(form["econyugal_petit-frmDatosPersonales" + numFrm].ToString());
-            int idOcupacion = int.Parse(form["ocupacion_petit-frmDatosPersonales" + numFrm].ToString());
+            int idEscolaridad = 14;
+            if (form["escosel_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idEscolaridad = int.Parse(form["escosel_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            int idEstadoconyugal = 8;
+            if (form["econyugal_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idEstadoconyugal = int.Parse(form["econyugal_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            int idOcupacion = 9;
+            if (form["ocupacion_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idOcupacion = int.Parse(form["ocupacion_petit-frmDatosPersonales" + numFrm].ToString());
+            }
             string Otraocupacion = form["ocupacioninpt_petit-frmDatosPersonales" + numFrm].ToString();
             string nacionalidad = form["chknacionalidad_petit-frmDatosPersonales" + numFrm].ToString();
             string sabeleer = form["chksleer_petit-frmDatosPersonales" + numFrm].ToString();
-            int idDiscapacidad = int.Parse(form["discapacidad_petit-frmDatosPersonales" + numFrm].ToString());
-            int idGruposocial = int.Parse(form["gsoci_petit-frmDatosPersonales" + numFrm].ToString());
+            int idDiscapacidad = 7;
+            if (form["discapacidad_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idDiscapacidad = int.Parse(form["discapacidad_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            int idGruposocial = 9;
+            if (form["gsoci_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idGruposocial = int.Parse(form["gsoci_petit-frmDatosPersonales" + numFrm].ToString());
+            }
             string otroGruposocial = form["gsociinpt_petit-frmDatosPersonales" + numFrm].ToString();
             string idLenguaindigena = form["leindi_petit-frmDatosPersonales" + numFrm].ToString();
             string otraLenguaindigena = form["oleindi_petit-frmDatosPersonales" + numFrm].ToString();
             string fechanac = form["fenac_petit-frmDatosPersonales" + numFrm].ToString();
-            DateTime fechafin = DateTime.ParseExact(fechanac, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            //DateTime fechafin = DateTime.ParseExact(fechanac, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             if (nacionalidad == "Extranjero")
             {
@@ -2682,7 +2733,7 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 queryPeticionario = "EXEC Sp_GetPeticionarioxid " + "'" + idreg_recepcion + "'";
             }
-            else if (curp != "" && curp != "No proporcionado")
+            else if (curp != "" && curp.ToUpper() != "NO PROPORCIONADO")
             {
                 queryPeticionario = "EXEC Sp_GetPeticionarioc " + "'" + curp + "'";
             }
