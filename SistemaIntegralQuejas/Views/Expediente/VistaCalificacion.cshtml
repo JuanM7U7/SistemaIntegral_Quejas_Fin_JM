@@ -60,10 +60,10 @@
                     <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpenD">Información recabada por la DQOT</button>
                 </div>
                 <div class="tab col-3">
-                    <button class="tablinks" onclick="openCity(event, 'Detalle_Calificar')">Calificación Expediente</button>
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Calificar')" id="Det_Calificacion">Calificación Expediente</button>
                 </div>
                 <div class="tab col-3">
-                    <button class="tablinks" onclick="openCity(event, 'Detalle_Modificacion')">Modificación de Expediente</button>
+                    <button class="tablinks" onclick="openCity(event, 'Detalle_Modificacion')" id="Det_Modificacion">Modificación de Expediente</button>
                 </div>
                 <div class="tab col-3">
                     <button class="tablinks" onclick="openCity(event, 'Detalle_Conclusion')" id="Det_Conclusion">Conclusión de Expediente</button>
@@ -474,6 +474,40 @@
 
     .columnas25 {
         width: 25% !important;
+    }
+
+    .tablaAutRe_HecVioV
+    {overflow:auto;
+    }
+
+        .tablaAutRe_HecVioV .select2 {
+        max-width:150px;
+    }
+
+    .tablaAutRe_HecVioM {
+        overflow: auto;
+    }
+
+
+    .tablaAutRe_HecVioM .select2 {
+            max-width: 150px;
+      }
+
+    #tablaconcluM{
+        overflow: auto;
+    }
+
+    #tablaDiligTM
+    {
+        overflow: auto;
+    }
+
+   #tablaDiligTM .select2 {
+        max-width: 150px;
+    }
+
+    #tablaconcluM .select2 {
+        max-width: 150px;
     }
 </style>
 

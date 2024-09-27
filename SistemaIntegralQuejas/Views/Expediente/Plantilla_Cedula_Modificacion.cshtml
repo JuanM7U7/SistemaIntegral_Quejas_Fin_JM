@@ -169,6 +169,15 @@
     .Fecha_Imp {
         text-align: right;
     }
+
+    .conclusion .pequenio
+    {
+        width:12.5%;
+    }
+
+    .conclusion .grande {
+        width:25%;
+    }
 </style>
 
 <body>
@@ -240,9 +249,9 @@
                                     @if (@itemp.listauth == null || @itemp.listauth.Count <= 0)
                                     {
                                         <tr>
-                                            <td>NO APLICA</td>
-                                            <td>NO APLICA</td>
-                                            <td>NO APLICA</td>
+                                            <td> <em>No aplica</em></td>
+                                            <td> <em>No aplica</em></td>
+                                            <td> <em>No aplica</em></td>
                                         </tr>
                                     }
                                     else
@@ -267,27 +276,27 @@
                         </div>
 
 
-                        <div class="cedula-completo">
+                        <div class="cedula-completo conclusion">
                             <h5 class="titulodocsec">CONCLUSIÓN DEL EXPEDIENTE</h5>
                             <div class="linea"></div>
                             <table>
                                 <thead>
-                                <th>FECHA</th>
-                                <th>CLAVE DE C.</th>
-                                <th>CAUSA DE C.</th>
-                                <th>ACTO REST</th>
-                                <th>OBSERVACIONES</th>
+                                    <th>FECHA</th>
+                                    <th>CLAVE DE C.</th>
+                                    <th>CAUSA DE C.</th>
+                                    <th>ACTO REST</th>
+                                    <th>OBSERVACIONES</th>
                                 </thead>
                                 <tbody>
 
                                     @if (@itemp.listacasa == null || @itemp.listacasa.Count <= 0)
                                     {
                                         <tr>
-                                            <td>NO APLICA</td>
-                                            <td>NO APLICA</td>
-                                            <td>NO APLICA</td>
-                                            <td>NO APLICA</td>
-                                            <td>NO APLICA</td>
+                                            <td> <em>No aplica</em></td>
+                                            <td> <em>No aplica</em></td>
+                                            <td> <em>No aplica</em></td>
+                                            <td> <em>No aplica</em></td>
+                                            <td> <em>No aplica</em></td>
                                         </tr>
                                     }
                                     else
@@ -295,11 +304,11 @@
                                         @foreach (var itemuser in @itemp.listacasa)
                                         {
                                             <tr>
-                                                <td>@itemuser.fechac</td>
-                                                <td>@itemuser.causac</td>
-                                                <td>@itemuser.causacdesc</td>
-                                                <td>@itemuser.acto_rest</td>
-                                                <td>@itemuser.obs</td>
+                                                <td class="pequenio">@itemuser.fechac</td>
+                                                <td class="pequenio">@itemuser.causac</td>
+                                                <td class="grande">@itemuser.causacdesc</td>
+                                                <td class="grande">@itemuser.acto_rest</td>
+                                                <td class="grande">@itemuser.obs</td>
                                             </tr>
                                         }
                                     }
