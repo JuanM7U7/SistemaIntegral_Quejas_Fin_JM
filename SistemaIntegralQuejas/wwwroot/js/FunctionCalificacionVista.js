@@ -19,7 +19,7 @@ var statusTurnoAbogado = '';
 var arregloAbogados = [];
 
 let medcaute = "";
-var AutoridadesSe1 = [], AutoridadesSe2 = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [], temaSe = [], programSe = [], viainter = [], ExpeS_C = [],ExpeConc;
+var AutoridadesSe1 = [], AutoridadesSe2 = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [], temaSe = [], programSe = [], viainter = [], ExpeS_C = [], PetMoral = [],ExpeConc;
 $(document).ready(function () {
     SelectAutoridad(1);
     SelectAutoridad(2);
@@ -31,6 +31,7 @@ $(document).ready(function () {
     fetchGet("Expediente/SelectPrograma", "json", (data) => { programSe = data.sprogramas; })
     fetchGet("Expediente/SelectViaInter", "json", (data) => { viainter = data.listviai; })
     fetchGet("Expediente/CausaConclu", "json", (data) => { ExpeConc = data.listacausa; })
+    fetchGet("Expediente/SelectPetMoral", "json", (data) => { PetMoral = data.petimoral; })
 
     $("#vistavis").html($("#usuarioL").html());
     $(".alert-danger").remove();
@@ -783,8 +784,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                     var coincidencias = iddatospeti.filter(p => p.id_peticionario === response.informarcionC.informacioncomplementariapeticionario[i].id_registro);
                     var validpet = 'False';
                     if (coincidencias.length !== 0) { validpet = coincidencias[0].datospet; }
-                    $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenioss(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, validpet, idqueja, response.informarcionC.informacioncomplementariapeticionario[i].conreg));
-
+                    $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenioss(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g,''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, validpet, idqueja, response.informarcionC.informacioncomplementariapeticionario[i].conreg));
                 }
                 switch (tipo) {
                     case 'V':
@@ -1018,7 +1018,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
                 var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
                 for (var i = 0; i < contadorpeticionarios; i++) {
                     console.log(contadorpeticionarios);
-                    $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, idqueja));
+                    $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, idqueja));
                 }
             }
 
@@ -1191,31 +1191,145 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
 }
 
 function AddFormatDatosPersonales(idExpediente) {
-    let formPetitn = formPeticionario(1)
-    $('.frmEditDatosPersonales').append(formPetitn);
-    $('button[id^=validapeticionario]').hide();
-    chkNoproporcinado();
-    seltxt();
-    keypresscp();
-    buscapeticionariocurpnom();
-    fetchGet("Expediente/SelectPaises", "json", (data) => {
-        let Paises = data.relacionpaises;
-        //console.log(Paises)
-        AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
-        AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
-    })
+    var ajaxDQOT = $.ajax({
+        type: "POST",
+        url: "ObtenerVia",
+        data: { idqueja: idExpediente },
+        dataType: "JSON"
+    });
 
-    let idform = 1;
-    let curpd = '';
-    let nombrep = '';
-    let apellidope = '';
-    let apellidome = '';
-    let violenciamujer = '';
+    ajaxDQOT.done(function (response) {
+        if (response.mensaje !== 'error') {
+            if (parseInt(response.mensaje) === 6 || parseInt(response.mensaje) === 7) {
+                ventana_eligepeticionario('Selecciona tipo de peticionario(a)', idExpediente, [
+                    { peticionario: 'Fisica', value: '1' },
+                    { peticionario: 'Moral', value: '2' }
+                ]);
+            } else {
+                let formPetitn = formPeticionario(1);
+                $('.frmEditDatosPersonales').append(formPetitn);
+                $('button[id^=validapeticionario]').hide();
+                chkNoproporcinado();
+                seltxt();
+                keypresscp();
+                buscapeticionariocurpnom();
+                fetchGet("Expediente/SelectPaises", "json", (data) => {
+                    let Paises = data.relacionpaises;
+                    AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
+                    AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
+                })
 
-    $('#idquejagenerado').val(idExpediente);
-    $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value = 'Agraviado']").prop("disabled", true);
-    $("#modalFormPeticionario").modal("show");
-    updateDatosPeticionarios();
+                let idform = 1;
+                let curpd = '';
+                let nombrep = '';
+                let apellidope = '';
+                let apellidome = '';
+                let violenciamujer = '';
+
+                $('#idquejagenerado').val(idExpediente);
+                //$("input[name=qatu_petit-frmDatosPersonales" + idform + "][value = 'Agraviado']").prop("disabled", true);
+                $("#modalFormPeticionario").modal("show");
+                updateDatosPeticionarios();
+            }
+        }
+    });
+}
+
+function ventana_eligepeticionario(mensaje, idexpediente, peticionarios) {
+    let options = {};
+    $.map(peticionarios, function (o) {
+        options[o.value] = o.peticionario;
+    });
+
+    Swal.fire({
+        title: mensaje,
+        input: 'select',
+        inputOptions: options,
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        inputValidator: function (value) {
+            return new Promise(function (resolve, reject) {
+                if (value !== '') {
+                    resolve();
+                } else {
+                    resolve('Debes seleccionar un elemento');
+                }
+            });
+        }
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            let formPetitn = '';
+            if (result.value == 2) {
+                formPetitn = formPeticionario(1);
+                $('.frmEditDatosPersonales').append(formPetitn);
+                var $input = $('#nombre_petit-frmDatosPersonales1');
+                var $select = $('<select></select>').addClass('form-control eliminaformaes ob max-20 eliminaformaes').attr({'data-idfrmit': '','name': $input.attr('name'),'id': $input.attr('id'),'required': true});
+                $select.append($('<option></option>').val('').text('Selecciona una opción'));
+                $.each(PetMoral, function (index, item) {
+                    $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+                });
+                $input.replaceWith($select);
+                chkNoproporcinado();
+                seltxt();
+                //$('#nombre_petit-frmDatosPersonales1').select2();
+                $('button[id^=validapeticionario]').hide();
+                $('.noproporcionado').prop('checked', true).trigger('change');
+                $("#frmDatosPersonales1 input[type='checkbox'].noproporcionado").prop("disabled", true);
+                $("#frmDatosPersonales1 input[type='text']").prop("disabled", true);
+                $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
+                $("#frmDatosPersonales1 input[type='date']").prop("disabled", true);
+                $("#frmDatosPersonales1 select").prop("disabled", true);
+                $("#colonia_petit-frmDatosPersonales1").val('No proporcionado');
+                $("#ciudad_petit-frmDatosPersonales1").val('No proporcionado');
+                $("#genero_petit-frmDatosPersonales1").val('No proporcionado');
+                $("#escosel_petit-frmDatosPersonales1").val(14);
+                $("#econyugal_petit-frmDatosPersonales1").val(8);
+                $("#ocupacion_petit-frmDatosPersonales1").val(9);
+                $("#discapacidad_petit-frmDatosPersonales1").val(7);
+                $("#gsoci_petit-frmDatosPersonales1").val(9);
+                $("#leindi_petit-frmDatosPersonales1").val('No');
+                $("#idQuejoso").prop("checked", true);
+                $("#idNosexo").prop("checked", true);
+                $("#idNoGenero").prop("checked", true);
+                $("#idNopSabeLeer").prop("checked", true);
+                $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+                $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
+                $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
+                $('#idquejagenerado').val(idexpediente);
+                $("#modalFormPeticionario").modal("show");
+                updateDatosPeticionarios();
+            } else {
+                formPetitn = formPeticionario(1);
+                $('.frmEditDatosPersonales').append(formPetitn);
+                $('button[id^=validapeticionario]').hide();
+                chkNoproporcinado();
+                seltxt();
+                keypresscp();
+                buscapeticionariocurpnom();
+                fetchGet("Expediente/SelectPaises", "json", (data) => {
+                    let Paises = data.relacionpaises;
+                    AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
+                    AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
+                })
+
+                let idform = 1;
+                let curpd = '';
+                let nombrep = '';
+                let apellidope = '';
+                let apellidome = '';
+                let violenciamujer = '';
+
+                $('#idquejagenerado').val(idexpediente);
+                //$("input[name=qatu_petit-frmDatosPersonales" + idform + "][value = 'Agraviado']").prop("disabled", true);
+                $("#modalFormPeticionario").modal("show");
+                updateDatosPeticionarios();
+            }
+        } else {
+            $("#modalFormPeticionario").modal("hide");
+        }
+    });
 }
 
 function buscapeticionariocurpnom() {
@@ -1786,7 +1900,6 @@ function chkNoproporcinado() {
             $(infrm).prop('readonly', false);
         }
     })
-
     $(".radiosnvm").change(function () {
         let idfrm = this.dataset.idfrmit;
         console.log(this.value)
@@ -1928,7 +2041,7 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
                 $("input[name=chksleer_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].sabeLeer + "']").prop("checked", true);
 
 
-                if (response.data[0].codigoPostal != "") {
+                if (response.data[0].codigoPostal != "" && response.data[0].codigoPostal != 'No proporcionado') {
                     $("#cp_petit-frmDatosPersonales" + idform).val(response.data[0].codigoPostal)
 
                     let estado = '';
@@ -2042,71 +2155,91 @@ function updateDatosPeticionarios() {
 
     $('.formularioPeticionario').submit(function (e) {
         e.preventDefault();
+
+        // Validaciones
         if (validaTxt() || validaNumero()) {
             return;
         }
 
         let numFrm = 1;
         let idForm = '#frmDatosPersonales' + numFrm;
-        var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
-        var Titulo_Modal = $('#Titulo_Modal').html();
+        let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
+        $('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+        $('#idquejagenerado').prop('disabled', false);
+        // Primer AJAX para verificar peticionarios
         $.ajax({
             type: "post",
-            url: 'GuardarDataComplPeticionario',
+            url: 'VerificarPeticionarios',
             content: "application/json; charset=utf-8",
-            data: $(idForm).serialize(),
+            data: $(idForm).serialize() + '&nombreS=' + nombre,
             dataType: "json",
             success: function (data) {
-                //console.log(data)
-
-                if (data.idpeticionario > 0 && data.idcomplemento > 0) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Información del peticionario Actualizada de manera Correcta',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(function () {
-                        console.log("Despues de dar click en el boton, aqui llamarias al submit");
-                        $('#confi_peticionaE').prop('checked', false).trigger('change');
-                        $('#confi_peticionaE').removeClass('pulsacionrellow');
-                        $('#confi_peticionaE').prop('disabled', true);
-                        confirmdatos($('#idquejaE').val(), '', '', '3');
-                        $('#contenedor_AutoridadesE').html('');
-                        $('#contenedor_UsuariosE').html('');
-                        $('#modalFormPeticionario').modal('hide');
-                        var expedi = 'PENDIENTE';
-                        if (!Titulo_Modal.includes('Calificación')) {
-                            expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
-                            $("#defaultOpenCa").html('');
-                            $("#defaultOpenCa").html('Modificación');
-                        }
-                        else {
-                            $("#defaultOpenCa").html('');
-                            $("#defaultOpenCa").html('Calificación');
-                        }
-
-                        obtenerDQOTModifica($('#idquejaE').val(), Fecha_TurnoVGE, 'E', expedi);
-                        //location.reload();
-                    });
-                } else {
+                // Si se detecta un error, mostrar alerta y retornar
+                if (data.mensaje !== 'error') {
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Error al actualizar los datos, informe al área de sistemas',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                        title: 'Peticionario registrado con el mismo tipo de usuario',
+                        text: 'Favor de seleccionar otro tipo de usuario.',
+                        showConfirmButton: true
+                    });
+                    return; // Detiene la ejecución si hay un error
                 }
+                $('#CURP_petit-frmDatosPersonales1, #apellidop_petit-frmDatosPersonales1, #apellidom_petit-frmDatosPersonales1, #cp_petit-frmDatosPersonales1, #estado_petit-frmDatosPersonales1, #colonia_petit-frmDatosPersonales1, #municipio_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #calle_petit-frmDatosPersonales1, #nexterior_petit-frmDatosPersonales1, #ninterior_petit-frmDatosPersonales1, #fenac_petit-frmDatosPersonales1, #edad_petit-frmDatosPersonales1, #telefono_petit-frmDatosPersonales1, #email_petit-frmDatosPersonales1, #qatu_petit-frmDatosPersonales1, #radsexo_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #chknacionalidad_petit-frmDatosPersonales1, #chksleer_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
+                //$('#colonia_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
+                $('#numFrm,#idcomplementopet1,#idpeticionarioi1,#idquejagenerado,#versioncomplementopeticionario').prop('disabled', false);
+                
+                $('input[type=radio][name="radsexo_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+                $('input[type=radio][name="chknacionalidad_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+                $('input[type=radio][name="chksleer_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+                $('input[type=radio][name="radsinoviomu_petit-frmDatosCalificacion1"]:disabled').prop('disabled', false);
+                // Si no hay error, procede a ejecutar el segundo AJAX
+                var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
+                var Titulo_Modal = $('#Titulo_Modal').html();
+                $.ajax({
+                    type: "post",
+                    url: 'GuardarDataComplPeticionario',
+                    content: "application/json; charset=utf-8",
+                    data: $(idForm).serialize() + '&nombreS=' + nombre,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.idpeticionario > 0 && data.idcomplemento > 0) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Información del peticionario Actualizada de manera Correcta',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function () {
+                                // Realizar las acciones después de actualizar
+                                $('#confi_peticionaE').prop('checked', false).trigger('change');
+                                $('#confi_peticionaE').removeClass('pulsacionrellow');
+                                $('#confi_peticionaE').prop('disabled', true);
+                                confirmdatos($('#idquejaE').val(), '', '', '3');
+                                $('#contenedor_AutoridadesE').html('');
+                                $('#contenedor_UsuariosE').html('');
+                                $('#modalFormPeticionario').modal('hide');
+
+                                var expedi = 'PENDIENTE';
+                                if (!Titulo_Modal.includes('Calificación')) {
+                                    expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
+                                }
+                                obtenerDQOTModifica($('#idquejaE').val(), Fecha_TurnoVGE, 'E', expedi);
+                            });
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error al actualizar los datos, informe al área de sistemas',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
             }
         });
-        
-     
-
     });
-
- 
-   
 }
 function formPeticionario(idformulario) {
 
@@ -2123,6 +2256,11 @@ function formPeticionario(idformulario) {
         {
             formulario:
                 [
+                    {
+                        valhidden: "",
+                        name: "viaqueja",
+                        type: "hidden"
+                    },
                     {
                         valhidden: idformulario,
                         name: "numFrm",
@@ -2350,7 +2488,7 @@ function formPeticionario(idformulario) {
                             1: 'idAgraviado'
                         },
                         values: {
-                            0: 'Quejoso',
+                            0: 'Peticionario',
                             1: 'Agraviado'
                         },
                         class: "col-md-2 positionLeft",
@@ -2426,7 +2564,7 @@ function formPeticionario(idformulario) {
                         ids: {
                             0: 'idMexicano',
                             1: 'idExtranjero',
-                            1: 'idNoGenero'
+                            2: 'idNoGenero'
                         },
                         values: {
                             0: 'Mexicano',
@@ -4467,6 +4605,7 @@ function Concluirexpediente(fechaturno,fechacalif) {
     /*Obtener   Causas de Cncllusión*/
     var Causasc = [];
     var idquejaE = $('#idquejaE').val();
+    var viainterposE = $('#viainterposE').val();
     //DATOS SELECT
     var formQueja = $(this).serializeArray();
     //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
@@ -4483,23 +4622,11 @@ function Concluirexpediente(fechaturno,fechacalif) {
 
 
 
-            //obs.trim() != '')
-            if (fechac.trim() !== '' && causac.trim() !== '99') {
+        //obs.trim() != '')
+        if (fechac.trim() !== '' && causac.trim() !== '99') {
 
-                if (causac.trim() == '6.2' || causac.trim() == '8_' || causac.trim() == '6.1') {
-                    if (actorest.trim() != '') {
-                        Causasc.push({
-                            fechacon: fechac,
-                            causacon: causac,
-                            idquejaE: idquejaE,
-                            actorestitu: actorest,
-                            observa: obs
-                        });
-                    }
-                    else {
-                        status = true;
-                    }
-                } else {
+            if (causac.trim() == '6.2' || causac.trim() == '8_' || causac.trim() == '6.1') {
+                if (actorest.trim() != '') {
                     Causasc.push({
                         fechacon: fechac,
                         causacon: causac,
@@ -4508,11 +4635,23 @@ function Concluirexpediente(fechaturno,fechacalif) {
                         observa: obs
                     });
                 }
+                else {
+                    status = true;
+                }
             } else {
-                status = true;
+                Causasc.push({
+                    fechacon: fechac,
+                    causacon: causac,
+                    idquejaE: idquejaE,
+                    actorestitu: actorest,
+                    observa: obs
+                });
             }
+        } else {
+            status = true;
+        }
 
-        });
+    });
 
 
     formDQOT = {
@@ -4522,68 +4661,125 @@ function Concluirexpediente(fechaturno,fechacalif) {
 
     };
 
+    if (viainterposE == 7 || viainterposE == 6) {
+        $.ajax({
+            type: "post",
+            url: 'VerificarPeticionariosAgrav',
+            content: "application/json; charset=utf-8",
+            data: { idqueja: idquejaE },
+            dataType: "json",
+            success: function (data) {
+                if (data.mensaje === 'error') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Sin peticionario de tipo agraviado',
+                        text: 'Favor de agregar peticionario de tipo agraviado.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
 
-    if (status)
-    {
-        Swal.fire({
-            position: 'center',
-            icon: 'error',
-            title: 'Tienes que completar todos los campos requeridos para poder concluir el expediente',
-            timer: 2000
+                if (status) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Tienes que completar todos los campos requeridos para poder concluir el expediente',
+                        timer: 2000
+                    });
+                } else {
+                    var fechac1 = $("#tablaconcluE").find("input[id^='fechaCausaE_']").val();
+                    var fechacalifi = fechacalif.split('/');
+                    var fechacalifi2 = fechacalifi[2] + '-' + fechacalifi[1] + '-' + fechacalifi[0];
+                    var fechacalifi3 = new Date(fechacalifi2);
+                    var fecha_Conclu = new Date(fechac1);
+                    console.log("Fecha califi:" + fechacalifi3 + "Fecha conclu:" + fecha_Conclu);
+
+                    if (fecha_Conclu.getTime() < fechacalifi3.getTime()) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'La fecha de conclusión no puede ser menor a la fecha de calificación, por favor verifica tu información antes de continuar',
+                            timer: 5000
+                        });
+                    } else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "ConcluirExpediente",
+                            data: formDQOT,
+                            dataType: "JSON",
+                            success: function (response) {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Expediente Concluido',
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+
+                                console.log("Concluido");
+                            }
+                        })
+                    }
+                }
+            }
         });
     } else {
-        var fechac1 = $("#tablaconcluE").find("input[id^='fechaCausaE_']").val();
-        var fechacalifi = fechacalif.split('/');
-        var fechacalifi2 = fechacalifi[2] + '-' + fechacalifi[1] + '-' + fechacalifi[0];
-        var fechacalifi3 = new Date(fechacalifi2);
-        var fecha_Conclu = new Date(fechac1);
-        console.log("Fecha califi:" + fechacalifi3 + "Fecha conclu:" + fecha_Conclu);
 
-        if (fecha_Conclu.getTime() < fechacalifi3.getTime()) {
+        if (status) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'La fecha de conclusión no puede ser menor a la fecha de calificación, por favor verifica tu información antes de continuar',
-                timer: 5000
+                title: 'Tienes que completar todos los campos requeridos para poder concluir el expediente',
+                timer: 2000
             });
         } else {
+            var fechac1 = $("#tablaconcluE").find("input[id^='fechaCausaE_']").val();
+            var fechacalifi = fechacalif.split('/');
+            var fechacalifi2 = fechacalifi[2] + '-' + fechacalifi[1] + '-' + fechacalifi[0];
+            var fechacalifi3 = new Date(fechacalifi2);
+            var fecha_Conclu = new Date(fechac1);
+            console.log("Fecha califi:" + fechacalifi3 + "Fecha conclu:" + fecha_Conclu);
 
-            $.ajax({
-                type: "POST",
-                url: "ConcluirExpediente",
-                data: formDQOT,
-                dataType: "JSON",
-                success: function (response) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Expediente Concluido',
-                        showConfirmButton: true,
-                    }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    });
+            if (fecha_Conclu.getTime() < fechacalifi3.getTime()) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'La fecha de conclusión no puede ser menor a la fecha de calificación, por favor verifica tu información antes de continuar',
+                    timer: 5000
+                });
+            } else {
 
-                    console.log("Concluido");
-                }
-            })
+                $.ajax({
+                    type: "POST",
+                    url: "ConcluirExpediente",
+                    data: formDQOT,
+                    dataType: "JSON",
+                    success: function (response) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Expediente Concluido',
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+
+                        console.log("Concluido");
+                    }
+                })
+            }
         }
     }
-   }
-
-//function RecuperaDaAutHec(id, callback) {
-//    $.ajax({
-//        type: "POST",
-//        url: "SelectAutorHech",
-//        data: { idqueja: id },
-//        dataType: "JSON",
-//        success: function (response) {
-//            callback(response.autoridhecho);
-//        }
-//    });
-//}
+}
 
 function RecuperaDaAutHec(id, version, callback) {
     $.ajax({
@@ -5336,8 +5532,6 @@ function CreafrmDetaDiligen(tip, numF, tiD, FechEm, idqueja, tipo) {
             + CreaInputs_Con_Label('Fecha_Recib', 'Fecha_Recib', '', 'date', 'Fecha de Recibido de la Autoridad: ', 'textfield', '')
             + CreaBR()
             + CreaSelectLabeldisabled('atentido', '', arregloBlanco, '', 'Atendido: ', '');
-
-
     } 
     var cuerpo = '<div class="row col-12"><div class="col-6"><h6>Datos de Solicitud</h6>'
         + cuerpo1

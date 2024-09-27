@@ -133,11 +133,13 @@ namespace SistemaIntegralQuejas.Controllers
 
             foreach (DataRow row in data1.Rows)
             {
-
-                CancelacionExpedientesActaC escritoitem = new CancelacionExpedientesActaC();
-                escritoitem.IDexp = Convert.ToInt32(row["FK_EXPEDIENTE"].ToString());
-                escritoitem.IDActaC = Convert.ToInt32(row["FK_ACTAC"].ToString());
-                listformatos1.Add(escritoitem);
+                if (row["FK_ACTAC"].ToString()!=null&& row["FK_ACTAC"].ToString()!="")
+                {
+                    CancelacionExpedientesActaC escritoitem = new CancelacionExpedientesActaC();
+                    escritoitem.IDexp = Convert.ToInt32(row["FK_EXPEDIENTE"].ToString());
+                    escritoitem.IDActaC = Convert.ToInt32(row["FK_ACTAC"].ToString());
+                    listformatos1.Add(escritoitem);
+                }
             }
 
             foreach (DataRow row in data2.Rows)
@@ -2089,7 +2091,6 @@ namespace SistemaIntegralQuejas.Controllers
                 //itemformatos.IdUnionFormatosQueja = Convert.ToInt32(row["ID_UNION_FORMATOS_QUEJA"]);
                 itemformatos.FkExpediente = Convert.ToInt32(row["ID_EXPEDIENTE"]);
                 itemformatos.Nombre_agraviado = (row["NOMBRE_COMPLETO"]).ToString();
-
                 //OBTENER DATOS COMPLEMENTARIOS
                 query = "exec Sp_carga_informacion_Complementaria '" + Convert.ToInt32(row["ID_EXPEDIENTE"]) + "'";
                 string query1 = "exec Sp_carga_informacion_Complementaria_peticionario '" + Convert.ToInt32(row["ID_EXPEDIENTE"]) + "'";
@@ -2642,7 +2643,6 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 nombre = nombreS;
             }
-
             string calle = form["calle_petit-frmDatosPersonales" + numFrm].ToString();
             string nexterior = form["nexterior_petit-frmDatosPersonales" + numFrm].ToString();
             string ninterior = form["ninterior_petit-frmDatosPersonales" + numFrm].ToString();
@@ -2733,7 +2733,7 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 queryPeticionario = "EXEC Sp_GetPeticionarioxid " + "'" + idreg_recepcion + "'";
             }
-            else if (curp != "" && curp.ToUpper() != "NO PROPORCIONADO")
+            else if (curp != "" && curp != "No proporcionado" && curp != "NO PROPORCIONADO")
             {
                 queryPeticionario = "EXEC Sp_GetPeticionarioc " + "'" + curp + "'";
             }
@@ -3189,6 +3189,26 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
         // Fin Tema
+
+        // Lista Peticionario Moral
+        public ActionResult SelectPetMoral()
+        {
+            List<GeneralModel.Selectmaster> PMoral = new List<GeneralModel.Selectmaster>();
+            String query = "exec Sp_Select_Morales";
+            string mensaje = "";
+            PMoral = conexionsql.selectMaestro(query, ref mensaje);
+            //PMoral = PMoral.OrderBy(x => x.Descripcion).ToList();
+
+            if (PMoral.Count > 0)
+            {
+                return Json(new { petimoral = PMoral });
+            }
+            else
+            {
+                return Json(new { mensaje = "error" });
+            }
+        }
+        // Fin Peticionario Moral
 
         // Lista Programa
         public ActionResult SelectPrograma()
@@ -4862,6 +4882,89 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
+        public ActionResult VerificarPeticionarios(IFormCollection form, string nombreS)
+        {
+            string numFrm = form["numFrm"].ToString();
+            string id_queja = form["idquejagenerado"].ToString();
+            string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
+            string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
+            string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            string email = form["email_petit-frmDatosPersonales" + numFrm].ToString();
+            string tipouser = form["qatu_petit-frmDatosPersonales" + numFrm].ToString();
+            string mensaje = "";
+            String query = "";
+            if (tipouser == "")
+            {
+                tipouser = "Peticionario";
+            }
+            if (curp==""&& nombre ==""&& apellidop == ""&& apellidom == "")
+            {
+                nombre = nombreS;
+            }
+
+            query = "EXEC Sp_VerificarPeticionariosQueja '" + id_queja + "', '" + curp + "', '" + nombre + "', '" + apellidop + "', '" + apellidom + "', '" + email + "', '" + tipouser + "';";
+
+            var data_abog_dqot = GetDatosGeneral(query);
+            if (data_abog_dqot.Rows.Count>0)
+            {
+                foreach (DataRow row in data_abog_dqot.Rows)
+                {
+                    mensaje = row["id"].ToString();
+                }
+            }
+            else
+            {
+                mensaje = "error";
+            }
+            return Json(new { mensaje = mensaje });
+        }
+
+
+        public ActionResult ObtenerVia(string idqueja)
+        {
+            string mensaje = "";
+            String query = "";
+
+            query = "EXEC Sp_TipoInterpos_Queja '" + idqueja + "';";
+
+            var data_abog_dqot = GetDatosGeneral(query);
+            if (data_abog_dqot.Rows.Count > 0)
+            {
+                foreach (DataRow row in data_abog_dqot.Rows)
+                {
+                    mensaje = row["id_via_interposicion"].ToString();
+                }
+            }
+            else
+            {
+                mensaje = "error";
+            }
+            return Json(new { mensaje = mensaje });
+        }
+        
+        public ActionResult VerificarPeticionariosAgrav(string idqueja)
+        {
+            string mensaje = "";
+            String query = "";
+
+            query = "EXEC Sp_obtener_peticionarios_agraviados '" + idqueja + "';";
+
+            var data_abog_dqot = GetDatosGeneral(query);
+            if (data_abog_dqot.Rows.Count > 0)
+            {
+                foreach (DataRow row in data_abog_dqot.Rows)
+                {
+                    mensaje = row["TIPO_USUARIO"].ToString();
+                }
+            }
+            else
+            {
+                mensaje = "error";
+            }
+            return Json(new { mensaje = mensaje });
+        }
         // Fin obtener datos de tabla Diligencias
     }
 }

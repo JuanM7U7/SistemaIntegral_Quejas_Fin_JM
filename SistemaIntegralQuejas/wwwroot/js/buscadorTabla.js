@@ -1355,8 +1355,8 @@ function EstatusFormatos(full) {
                         && full.agravQuej[i].lPeticionario[e].apellidoPat != '' && full.agravQuej[i].lPeticionario[e].codigoPostal != '' && full.agravQuej[i].lPeticionario[e].estado != '' && full.agravQuej[i].lPeticionario[e].colonia != ''
                         && full.agravQuej[i].lPeticionario[e].municipio != '' && full.agravQuej[i].lPeticionario[e].ciudad != '' && full.agravQuej[i].lPeticionario[e].calle != '' && full.agravQuej[i].lPeticionario[e].numExterior != ''
                         && full.agravQuej[i].lPeticionario[e].numInterior != '' && full.agravQuej[i].lPeticionario[e].fechaNacimiento != '' && full.agravQuej[i].lPeticionario[e].edad != '' && full.agravQuej[i].lPeticionario[e].telefono != ''
-                        && full.agravQuej[i].lPeticionario[e].email != '' && full.agravQuej[i].lPeticionario[e].tipoUsuario != '' && full.agravQuej[i].lPeticionario[e].fkSexo != 3 && full.agravQuej[i].lPeticionario[e].genero != ''
-                        && full.agravQuej[i].lPeticionario[e].nacionalidad != '' && full.agravQuej[i].lPeticionario[e].sabeLeer != '' && full.agravQuej[i].lPeticionario[e].fkEscolaridad != '' && full.agravQuej[i].lPeticionario[e].fkEstadoConyugal != ''
+                        && full.agravQuej[i].lPeticionario[e].email != '' && full.agravQuej[i].lPeticionario[e].tipoUsuario != '' && full.agravQuej[i].lPeticionario[e].fkSexo != 0 && full.agravQuej[i].lPeticionario[e].genero != ''
+                        /*&& full.agravQuej[i].lPeticionario[e].nacionalidad != ''*/ && full.agravQuej[i].lPeticionario[e].sabeLeer != '' && full.agravQuej[i].lPeticionario[e].fkEscolaridad != '' && full.agravQuej[i].lPeticionario[e].fkEstadoConyugal != ''
                         && full.agravQuej[i].lPeticionario[e].fkOcupacion != '' && full.agravQuej[i].lPeticionario[e].fkDiscapacidad != '' && full.agravQuej[i].lPeticionario[e].fkGrupoSocial != '' && full.agravQuej[i].lPeticionario[e].hablaLenguai != '') {
                         if (full.agravQuej[i].lPeticionario[e].violenciaVm == 1 && full.agravQuej[i].lPeticionario[e].canalizacionVm != '' && full.agravQuej[i].lPeticionario[e].embarazadaVm != '' && full.agravQuej[i].lPeticionario[e].ingresosMensuales != ''
                             && full.agravQuej[i].lPeticionario[e].fkHijosVivos != '' && full.agravQuej[i].lPeticionario[e].fkModalidadViolencia != 6 && full.agravQuej[i].lPeticionario[e].fkTipoViolencia != 5 && full.agravQuej[i].lPeticionario[e].fkRelacionAgresor != 8) {
@@ -2817,7 +2817,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                 $("input[name=chksleer_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].sabeLeer + "']").prop("checked", true);
 
 
-                if (response.data[0].codigoPostal != "") {
+                if (response.data[0].codigoPostal != "" && response.data[0].codigoPostal != 'No proporcionado') {
                     $("#cp_petit-frmDatosPersonales" + idform).val(response.data[0].codigoPostal)
 
                     let estado = '';
@@ -2853,7 +2853,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                     $("#modalFormPeticionario").modal("show");
 
                 }
-                updateDatosPeticionarios();
+                //updateDatosPeticionarios();
                 if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || validafechamodificacion === true) {
                     $('.frmEditDatosPersonales button[type="submit"]').hide();
                 }
