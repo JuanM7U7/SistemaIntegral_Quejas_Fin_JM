@@ -207,7 +207,7 @@ $(document).ready(function () {
         fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
             let autoridad = data.lista2;
 
-            CargaDatosSelectOtro("#Input_autoridades" + contadorSelect + "", autoridad);
+            CargaDatosSelecAutori("#Input_autoridades" + contadorSelect + "", autoridad);
             contadorSelect++;
         })
         //Carga_Informacion_selec_quejas();
@@ -243,7 +243,7 @@ $(document).ready(function () {
         fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
             let autoridad = data.lista2;
 
-            CargaDatosSelectOtro("#Input_autoridades" + contadorSelect + "", autoridad);
+            CargaDatosSelecAutori("#Input_autoridades" + contadorSelect + "", autoridad);
             contadorSelect++;
         })
         //Carga_Informacion_selec_quejas();
@@ -3774,10 +3774,10 @@ function CargaDatosSelecAutori(select, arreglo) {
     htmld += '';
     for (let v = 0; v < arreglo.length; v++) {
         htmld += `
-                <option value="${arreglo[v].Clave}">${arreglo[v].descripcion}</option>
+                <option value="${arreglo[v].clave}">${arreglo[v].descripcion}</option>
             `;
     }
-    htmld += "</select>";
+    //htmld += "</select>";
 
     $(select).append(htmld)
     //$(select).select2();
@@ -4021,7 +4021,7 @@ function Agrega_PersonaAutoridad(contador, persona, cargo, autoridadSe) {
 
     fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
         let autoridad = data.lista2;
-        CargaDatosSelectOtro("#Input_autoridades" + contador, autoridad);
+        CargaDatosSelecAutori("#Input_autoridades" + contador, autoridad);
     });
     return cuerpo;
 
@@ -4193,6 +4193,8 @@ function cargaInformacionSelectsEscritoInicial(contador, idLugar, ID_Autoridades
         CargaDatosSelectOtro("#Input_LugarHechos", estado);
         $("#Input_LugarHechos > option[value='" + idLugar + "']").attr("selected", true);
         $('#Input_LugarHechos').val(idLugar).trigger('change.select2');
+        $('#Input_autoridades').empty();
+        //CargaDatosSelecAutori("#Input_autoridades", autoridad);
         $("#Input_autoridades" + contador + " > option[value='" + ID_Autoridades + "']").attr("selected", true);
         $('#Input_autoridades' + contador).val(ID_Autoridades).trigger('change.select2');
         RecorreInput('.formularioEscritoInicial');
