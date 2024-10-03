@@ -2641,7 +2641,7 @@ namespace SistemaIntegralQuejas.Controllers
             string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado")
+            if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado"&& nombreS!= null)
             {
                 nombre = nombreS;
             }
@@ -2817,7 +2817,7 @@ namespace SistemaIntegralQuejas.Controllers
                     "'" + IngresosMensuales + "'," +
                     "" + idPetit + "," +
                     "'" + genero + "'," +
-                    "'" + otroGenero + "',"+
+                    "'" + otroGenero + "'," +
                     "'" + VersionComplemento + "'";
 
                 }
@@ -2934,7 +2934,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             if (idcomp != "")
             {
-                query = "exec Sp_GetDataPeticionarioxIdComp " + "'" + idcomp + "'";
+                query = "exec Sp_GetDataPeticionarioxIdComp1 " + "'" + idcomp + "'";
 
             }
             else if (curp != "" && curp != "No proporcionado")
@@ -2978,7 +2978,10 @@ namespace SistemaIntegralQuejas.Controllers
                 peticionario.ApellidoPat = (row["APELLIDO_PAT"]).ToString();
                 peticionario.ApellidoMat = (row["APELLIDO_MAT"]).ToString();
                 peticionario.DocIdentificatorio = (row["DOC_IDENTIFICATORIO"]).ToString();
-
+                if (data.Columns.Contains("idSelect") && !(row["idSelect"] is DBNull))
+                {
+                    peticionario.tipopet = (row["idSelect"]).ToString();
+                }
                 if (!(row["ID_COMPLEMENTO_PETICIONARIO"] is DBNull))
                 {
                     peticionario.IdComplementoPeticionario = Convert.ToInt32(row["ID_COMPLEMENTO_PETICIONARIO"]);
@@ -3021,6 +3024,7 @@ namespace SistemaIntegralQuejas.Controllers
                     peticionario.Genero = (row["GENERO"]).ToString();
                     peticionario.OtroGenero = (row["OTRO_GENERO"]).ToString();
                 }
+                
 
                 lPeticionario.Add(peticionario);
 
@@ -4906,7 +4910,7 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 curp = ""; apellidop = ""; apellidom = "";
             }
-            else if ((curp == "" || curp.ToUpper() == "NO PROPORCIONADO") && (nombre == "" || nombre.ToUpper() == "NO PROPORCIONADO") && (apellidop == "" || apellidop.ToUpper() == "NO PROPORCIONADO") && (apellidom == "" || apellidom.ToUpper() == "NO PROPORCIONADO"))
+            if (nombre == "" || nombre.ToUpper() == "NO PROPORCIONADO")
             {
                 curp = ""; apellidop = ""; apellidom = ""; nombre = nombreS;
             }

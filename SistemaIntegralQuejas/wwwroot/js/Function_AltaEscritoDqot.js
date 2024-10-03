@@ -122,6 +122,7 @@ let Morales = "";
 
             if (visibilidadPestañaAI) {
                 let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
+                //$('#Input_autoridades1').select2();
                 $("#tab2").css('display', 'block');
                 console.log($('#divformularioEscritoInicial'));
             } else {
@@ -1104,6 +1105,7 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
 
             $('#ref-frm-frmDatosPersonales1').append(formPetit);
             $('#divformularioEscritoInicial').append(formEscritoInicial2('#', 'frmFromatoQueja'));
+            //$('#Input_autoridades1').select2();
             $('#divformularioActaCircunstanciada').append(formActacircunstanciada2c(1));
             CargaDatosSelecAutori("#catAutoridad1", SelAutoridad);
             $(`#anio${1}`).val(2024);

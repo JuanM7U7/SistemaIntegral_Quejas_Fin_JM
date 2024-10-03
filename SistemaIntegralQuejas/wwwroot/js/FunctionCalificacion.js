@@ -523,7 +523,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
                 var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
                 for (var i = 0; i < contadorpeticionarios; i++) {
                     console.log(contadorpeticionarios);
-                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
+                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
                 }
             }
 
@@ -1284,7 +1284,7 @@ function formPeticionario(idformulario) {
                             1: 'idAgraviado'
                         },
                         values: {
-                            0: 'Quejoso',
+                            0: 'Peticionario',
                             1: 'Agraviado'
                         },
                         class: "col-md-2 positionLeft",

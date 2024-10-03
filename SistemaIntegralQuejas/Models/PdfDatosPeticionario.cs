@@ -12,6 +12,7 @@
         public string DocIdentificatorio { get; set; }
         public string nombreEscolaridad { get; set; }
         public string nombreOcupacion { get; set; }
+        public string tipopet { get; set; }
 
     }
 }
