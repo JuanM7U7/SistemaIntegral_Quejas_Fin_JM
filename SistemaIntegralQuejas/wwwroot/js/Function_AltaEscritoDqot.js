@@ -122,6 +122,7 @@ let Morales = "";
 
             if (visibilidadPestañaAI) {
                 let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
+                //$('#Input_autoridades1').select2();
                 $("#tab2").css('display', 'block');
                 console.log($('#divformularioEscritoInicial'));
             } else {
@@ -283,7 +284,10 @@ let Morales = "";
                                     timer: 2500
                                 });
                                 frmcompleto("#tab2");
+                                $("#save").attr("disabled",true);
                             }
+
+
 
                         });
                         
@@ -409,15 +413,16 @@ let Morales = "";
     $(document).ready(function () {
 
 
-        $("body").on("click", ".nav-link", function (event) {
+        $("body").on("click", ".nav-item", function (event) {
 
-            var target = $(this).attr("href");
+            var target = $(this).find('a').attr("href");
             console.log("Tab mostrado: " + target);
             // Aquí puedes ejecutar las acciones que necesites
+
             if (target == "#alta_escrito") {
                 validaVacios("#frmFromatoQueja", "input", "", target);
-                //validaVacios("#frmFromatoQueja", "select", "", target);
-                //validaVacios("#frmFromatoQueja", "textarea", "", target);
+                validaVacios("#frmFromatoQueja", "select", "", target);
+                validaVacios("#frmFromatoQueja", "textarea", "", target);
             } else {
 
                 validaVacios(".form_acta", "input", "", target);
@@ -461,28 +466,28 @@ function ejecutatab3() {
 function validaVacios( formpapa,tipoelemento ,elementoavalidar,elementoclick)
 {
 
-    $(formpapa).find('span').remove();
-    //contador = 0;
-    var inputs = document.querySelectorAll(formpapa + ' > ' + tipoelemento);
-    //console.log(inputs);
-    var alerta = false;
+    //$(formpapa).find('span').remove();
+    ////contador = 0;
+    //var inputs = document.querySelectorAll(formpapa + ' > ' + tipoelemento);
+    ////console.log(inputs);
+    //var alerta = false;
 
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].value.trim() === elementoavalidar) {
+    //for (var i = 0; i < inputs.length; i++) {
+    //    if (inputs[i].value.trim() === elementoavalidar) {
 
-            if (inputs[i].offsetParent !== null) {
+    //        if (inputs[i].offsetParent !== null) {
 
-                $('#miDiv').find('span').remove();
-                inputs[i].style.cssText = "border:1px solid #f09e94; color: black;";// Colocar el foco en el input vacío
-                const nuevoParrafo = document.createElement("span");
-                nuevoParrafo.textContent = "*"; nuevoParrafo.style.color = "red";
-                inputs[i].parentNode.insertBefore(nuevoParrafo, inputs[i]);
-            } else {
-                console.log("hidden");
-            }
-        }
-    }
-    //contador++
+    //            $('#miDiv').find('span').remove();
+    //            inputs[i].style.cssText = "border:1px solid #f09e94; color: black;";// Colocar el foco en el input vacío
+    //            const nuevoParrafo = document.createElement("span");
+    //            nuevoParrafo.textContent = "*"; nuevoParrafo.style.color = "red";
+    //            inputs[i].parentNode.insertBefore(nuevoParrafo, inputs[i]);
+    //        } else {
+    //            console.log("hidden");
+    //        }
+    //    }
+    //}
+    ////contador++
 }
 function funcionesActac(nfrm) {
     console.log('hola funcionesActac')
@@ -804,7 +809,7 @@ function CreaSelectLabelSelect2(id, tiposelect, arreglo, nombreDiv, textoLabel, 
     htmld += "</select>";
 
     return htmld;
-    // $("#" + id).select2();
+     $("#" + id).select2();
 }
 function changeselects() {
     $('#select_viainterposicionc').on('change', function () {
@@ -822,7 +827,12 @@ function changeselects() {
                 $("#tab2").show();
                 $("#tab3").show();
                 $("#tab4").show();
+                //alert("Pilin");
+                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
 
+                validaVacios("#frmFromatoQueja", "input", "", "");
+                validaVacios("#frmFromatoQueja", "select", "", "");
+                validaVacios("#frmFromatoQueja", "textarea", "", "");
                 break;
             case "2":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 3, 4]);
@@ -831,6 +841,7 @@ function changeselects() {
                 $("#tab2").show();
                 $("#tab3").show();
                 $("#tab4").show();
+                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
                 break;
             case "3":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 3, 4]);
@@ -839,6 +850,7 @@ function changeselects() {
                 $("#tab2").show();
                 $("#tab3").show();
                 $("#tab4").show();
+                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
                 break;
             case "4":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 3, 4]);
@@ -846,6 +858,7 @@ function changeselects() {
                 $("#tab1").show();
                 $("#tab2").show();
                 $("#tab4").show();
+                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
                 break;
             case "5":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
@@ -853,9 +866,11 @@ function changeselects() {
                 $("#tab1").show();
                 $("#tab2").show();
                 $("#tab4").show();
+                $("#selectTipoQueja").val([1, 2, 4]).trigger('change.select2');
                 break;
             case "6":
                 CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
+                $("#selectTipoQueja").val([1, 2, 4]).trigger('change.select2');
                 crearformularios = 1;
                 Swal.fire({
                     title: 'Tipo de Peticionario(a)',
@@ -1104,6 +1119,7 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
 
             $('#ref-frm-frmDatosPersonales1').append(formPetit);
             $('#divformularioEscritoInicial').append(formEscritoInicial2('#', 'frmFromatoQueja'));
+            //$('#Input_autoridades1').select2();
             $('#divformularioActaCircunstanciada').append(formActacircunstanciada2c(1));
             CargaDatosSelecAutori("#catAutoridad1", SelAutoridad);
             $(`#anio${1}`).val(2024);
@@ -1168,8 +1184,8 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
 
     }
 
-    //$('#Input_autoridades').select2();
-    //$('#Input_autoridades1').select2();
+    $('#Input_autoridades').select2();
+    $('#Input_autoridades1').select2();
     $(".origenPetExt").css("display", "none");
     $(".origenPetExtedo").css("display", "none");
 
@@ -2900,16 +2916,16 @@ function formEscritoInicial2(action, id) {
         + '<div class="text-justify">'
         + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en los artículos 2, 4, 5, 13 fracciones I, II, III, IV y V, 25, 28 y demás relativos y aplicables de la Ley de la Comisión de Derechos Humanos del Estado, ante personal de este organismo y por mi propio derecho, acudo a denunciar actos u omisiones que a mi juicio constituyen violación a mis derechos humanos, en los términos que a continuación se expresan:', 'style ="text-align: left"')
         + '</div>'
-        + CreaInputs_Con_Label('Input_FechaHechos', 'Input_FechaHechos', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA EN QUE OCURRIERON LOS HECHOS:&nbsp;', 'textfield', 'placeholder="fecha hechos" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"')
+        + CreaInputs_Con_Label('Input_FechaHechos', 'Input_FechaHechos', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA EN QUE OCURRIERON LOS HECHOS:&nbsp;', 'textfield', 'placeholder="fecha hechos" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
         + CreaInputs_Con_Label('Input_HoraHechos', 'Input_HoraHechos', '', 'time', '', 'textfield', 'placeholder="hora hechos" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
         + CreaBR()
         + CreaBR()
         //+ CreaInputs_Con_Label('Input_LugarHechos', 'Input_LugarHechos', '', 'text', 'Lugar en donde Ocurrieron los Hechos: ', 'Input_LugarHechos', 'placeholder="Lugar de los Hechos" style ="float:left;"', ' style ="float:left;"')
-        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR EN QUE SE SUSCITARON LOS HECHOS:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"')
-        + CreaInputs_Con_Label('CheckDcompleta', 'CheckDcompleta', '', 'checkbox', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¿SABE LA DIRECCIÓN COMPLETA?&nbsp;&nbsp;', 'CheckDcompleta', '', '')
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR EN QUE SE SUSCITARON LOS HECHOS:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + CreaInputs_Con_Label('CheckDcompleta', 'CheckDcompleta', '', 'checkbox', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¿SABE LA DIRECCIÓN COMPLETA?&nbsp;&nbsp;', 'CheckDcompleta', '', '') 
         + '<div id="Contenedor_Datos_LE"></div>'
         + CreaBR()
-        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:&nbsp;')
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:&nbsp;') + Requeridos()
         + CreaTextArea('CircunstanciasHechos', 'col-md-12 parrafo')
         + CreaInput()
         + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'AUTORIDAD(ES) INVOLUCRADA(S):&nbsp;&nbsp;&nbsp;')
@@ -2975,21 +2991,21 @@ function formActacircunstanciada2c(idfrm) {
 
     var formInnicial = `<h1>FE DE HECHOS</h1><form class="text-justify form_acta" data-nformac=${numfrm} id="formActa${numfrm}" name="formActa${numfrm}" method="post" style="width:90%; margin-left:5%" >`;
     var cuerpo =
-        CreaSelectLabel('lugar' + numfrm, '', arregloBlanco, '', 'En', '', 'lugar', idfrm)
-        + CreaInputs_Con_Label('diaFecha' + numfrm, 'diaFecha' + numfrm, 'inputac', 'number', ', a los', 'textfield', '', idfrm)
-        + CreaSelectLabel('mes' + numfrm, '', arregloMeses(), '', 'días del mes de', 'textfield4', 'mes', idfrm)
+        CreaSelectLabel('lugar' + numfrm, '', arregloBlanco, '', 'En', '', 'lugar', idfrm) + Requeridos()
+        + CreaInputs_Con_Label('diaFecha' + numfrm, 'diaFecha' + numfrm, 'inputac', 'number', ', a los', 'textfield', '', idfrm) + Requeridos()
+        + CreaSelectLabel('mes' + numfrm, '', arregloMeses(), '', 'días del mes de', 'textfield4', 'mes', idfrm) + Requeridos()
         + CreaSelectLabeldisabled('anio' + numfrm, '', arregloAnio(), '', 'de', '', 'anio', idfrm)
         + CreaSelectLabel('nomAbogado' + numfrm, '', arregloBlanco, '', ', el suscrito, licenciado', '', 'nomAbogado', idfrm)
         + CreaInputs_Con_Label('puestoAbogado' + numfrm, 'puestoAbogado' + numfrm, 'inputac', 'text', ', en mi carácter de', 'textfield6', 'placeholder="cargo de abogado" value="' + Cargo + '" disabled', idfrm)
         + CreaInputs_Con_Label('areaAbogado' + numfrm, 'areaAbogado' + numfrm, 'inputac', 'text', ', de la', 'textfield7', 'placeholder="área de abogado" value="' + Area + '" disabled', idfrm)
         + Crea_Label('textfield8', 'textfield8', '', 'de la Comisión de Derechos Humanos del Estado de Puebla, con la fe pública que me confiere el artículo 21 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, así como 30, 37, y 39 de su Reglamento Interno, publicados en el Periódico Oficial del Estado, respectivamente')
         + Crea_LabelCentro('textfield8', 'textfield8', '', '<b>CERTIFICO:</b>')
-        + CreaInputs_Con_Label('horaInicio' + numfrm, 'horaInicio' + numfrm, 'inputac', 'time', 'Que siendo las', 'textfield9', '', idfrm)
-        + CreaInputs_Con_Label('ubicacion' + numfrm, 'ubicacion' + numfrm, 'inputac', 'text', 'horas del día en que se actúa, me constituí en', 'textfield10', 'placeholder="lugar de entrevista"', idfrm)
-        + Crea_Label('textfield8', 'textfield8', '', ', donde atendí a quien dijo llamarse ')
+        + CreaInputs_Con_Label('horaInicio' + numfrm, 'horaInicio' + numfrm, 'inputac', 'time', 'Que siendo las', 'textfield9', '', idfrm) + Requeridos()
+        + CreaInputs_Con_Label('ubicacion' + numfrm, 'ubicacion' + numfrm, 'inputac', 'text', 'horas del día en que se actúa, me constituí en', 'textfield10', 'placeholder="lugar de entrevista"', idfrm) + Requeridos()
+        + Crea_Label('textfield8', 'textfield8', '', ', donde atendí a quien dijo llamarse ') + Requeridos()
         + '<div style="margin-top: -28px; display: flex; justify-content: flex-end;" data--idfrmac="' + numfrm + '" class="listapetactac listapetactacc' + numfrm + ' d-flex"></div>'
-        + CreaSelectLabel('consentimiento' + numfrm, '', SeleccionMultiple(), '', 'ante quien una vez que me identifiqué plenamente como servidor público adscrito a este Organismo Autónomo, con la respectiva identificación que esta Comisión de Derechos Humanos del Estado de Puebla me expidió, se le hizo de su conocimiento el motivo de la diligencia, se le solicitó su autorización para ser entrevistado, expresando que', '', 'consentimiento', idfrm)
-        + CreaSelectLabel('origenPet' + numfrm, '', arregloBlanco, '', 'otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <strong>MANIFESTÓ: </strong>Llamarse como ha quedado escrito, ser originario de', '', 'origenPet', idfrm)
+        + CreaSelectLabel('consentimiento' + numfrm, '', SeleccionMultiple(), '', 'ante quien una vez que me identifiqué plenamente como servidor público adscrito a este Organismo Autónomo, con la respectiva identificación que esta Comisión de Derechos Humanos del Estado de Puebla me expidió, se le hizo de su conocimiento el motivo de la diligencia, se le solicitó su autorización para ser entrevistado, expresando que', '', 'consentimiento', idfrm) + Requeridos()
+        + CreaSelectLabel('origenPet' + numfrm, '', arregloBlanco, '', 'otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <strong>MANIFESTÓ: </strong>Llamarse como ha quedado escrito, ser originario de', '', 'origenPet', idfrm) + Requeridos()
         + CreaSelectLabel('origenPetExt' + numfrm, '', arregloBlanco, '', '', '', 'origenPetExt', idfrm)
         + CreaInputs_Con_Label('origenPetExtedo' + numfrm, 'origenPetExtedo' + numfrm, 'inputac', 'text', '', 'textfield', '', idfrm)
         + CreaInputs_Con_Label('edadPet' + numfrm, 'edadPet' + numfrm, 'datapet inputac', 'number', 'de', 'textfield10', 'placeholder="edad de peticionario"', idfrm)
@@ -3005,16 +3021,16 @@ function formActacircunstanciada2c(idfrm) {
         + CreaInputs_Con_Label('ocupacionPet' + numfrm, 'ocupacionPet' + numfrm, 'datapet inputac', 'text', 'de ocupación', 'textfield10', 'placeholder="ocupación de peticionario"', idfrm)
         + CreaInputs_Con_Label('telPet' + numfrm, 'telPet' + numfrm, 'datapet inputac', 'text', 'con número de teléfono', 'textfield10', 'placeholder="telefono de peticionario"', idfrm)
         + CreaInputs_Con_Label('correoPet' + numfrm, 'correoPet' + numfrm, 'datapet inputac', 'text', ', correo electrónico,', 'textfield10', 'placeholder="correo de peticionario"', idfrm)
-        + CreaSelectLabel('identificacionPet' + numfrm, '', arregloIdentificación(), '', 'identificándose ante el suscrito con', '', 'identificacionPet', idfrm)
+        + CreaSelectLabel('identificacionPet' + numfrm, '', arregloIdentificación(), '', 'identificándose ante el suscrito con', '', 'identificacionPet', idfrm) + Requeridos()
         + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>DECLARO:</strong><br>')
-        + CreaInputs_Con_Label('fechaHechos' + numfrm, 'fechaHechos' + numfrm, 'inputac', 'date', 'Que el día', 'textfield10', '', idfrm)
-        + CreaInputs_Con_Label('horaHechos' + numfrm, 'horaHechos' + numfrm, 'inputac', 'time', 'a las', 'textfield10', '', idfrm)
-        + CreaInputs_Con_Label('ubiHechos' + numfrm, 'ubiHechos' + numfrm, 'inputac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"', idfrm)
-        + CreaSelectLabel('catMunicipio_hechos' + numfrm, '', {}, '', 'ubicado en el municipio de', '', 'catMunicipio_hechos', idfrm)
-        + CreaSelectLabel('catEstado_hechos' + numfrm, '', arreglo_Estados(), '', 'del estado de ', '', 'catEstado_hechos', idfrm)
-        + CreaSelectLabel('catAutoridad' + numfrm, '', [], '', ', la(s) autoridad(es)', '', 'catAutoridad', idfrm)
-        + CreaTextArea('hechos' + numfrm, '', 'style="width:100%"', idfrm)
-        + CreaInputs_Con_Label('horaTermino' + numfrm, 'horaTermino' + numfrm, 'inputac', 'time', ', dando por terminada la presente actuación a  las', 'textfield10', '', idfrm)
+        + CreaInputs_Con_Label('fechaHechos' + numfrm, 'fechaHechos' + numfrm, 'inputac', 'date', 'Que el día', 'textfield10', '', idfrm) + Requeridos()
+        + CreaInputs_Con_Label('horaHechos' + numfrm, 'horaHechos' + numfrm, 'inputac', 'time', 'a las', 'textfield10', '', idfrm) + Requeridos() 
+        + CreaInputs_Con_Label('ubiHechos' + numfrm, 'ubiHechos' + numfrm, 'inputac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"', idfrm) + Requeridos()
+        + CreaSelectLabel('catMunicipio_hechos' + numfrm, '', {}, '', 'ubicado en el municipio de', '', 'catMunicipio_hechos', idfrm) + Requeridos()
+        + CreaSelectLabel('catEstado_hechos' + numfrm, '', arreglo_Estados(), '', 'del estado de ', '', 'catEstado_hechos', idfrm) + Requeridos()
+        + CreaSelectLabel('catAutoridad' + numfrm, '', [], '', ', la(s) autoridad(es)', '', 'catAutoridad', idfrm) + Requeridos()
+        + CreaTextArea('hechos' + numfrm, '', 'style="width:100%"', idfrm) + Requeridos()
+        + CreaInputs_Con_Label('horaTermino' + numfrm, 'horaTermino' + numfrm, 'inputac', 'time', ', dando por terminada la presente actuación a  las', 'textfield10', '', idfrm) + Requeridos()
         + CreaInputs_Con_Label('', '', 'inputac', 'text', 'horas.', 'textfield10', 'hidden', idfrm)
         + Crea_LabelCentro('textfield12', 'textfield12', '', 'Hago constar lo anterior de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla para los efectos correspondientes----------------------------------<b>DOY FE.</b> ')
         + crea_Boton('button', 'Previsualizar PDF', 'generaPDFActaC', 'btn btn-pinterest nfrm generaPDFActaC', idfrm)
@@ -3568,7 +3584,7 @@ function CargaDatosSelectOtro(select, arreglo) {
     htmld += "</select>";
 
     $(select).append(htmld)
-    //$(select).select2();
+    $(select).select2();
 }
 function CargaDatosSelectOtroPaises(select, arreglo) {
     var htmld = select;
@@ -4053,4 +4069,8 @@ function frmincompleto(nombre) {
 function frmcompleto(nombre) {
     //$(nombre).css('border-color', 'green');
     $(nombre).css('background', 'linear-gradient(white, #78f381)');
+}
+
+function Requeridos() {
+    return '<span style="color: red;">*</span>';
 }

@@ -669,8 +669,8 @@ namespace SistemaIntegralQuejas.Controllers
             bool direccionCompleta = bool.Parse(form["CheckDcompleta"].ToString());
             string calleLH = "";
             string coloniaLH = "";
-            int numextLH = 0;
-            int numintLH = 0;
+            string numextLH = "";
+            string numintLH = "";
             string cpLH = "";
             string CircunstanciasHechos = form["CircunstanciasHechos"].ToString() != "" ? form["CircunstanciasHechos"].ToString() : "";
             string tipofrm = form["tipoform"].ToString();
@@ -688,8 +688,8 @@ namespace SistemaIntegralQuejas.Controllers
                 if (direccionCompleta)
                 {
                     calleLH = form["calleLH"].ToString();
-                    numextLH = int.Parse(form["numextLH"].ToString());
-                    if (form["numintLH"].ToString() != "") numintLH = int.Parse(form["numintLH"].ToString());
+                    numextLH = form["numextLH"].ToString();
+                    if (form["numintLH"].ToString() != "") numintLH = form["numintLH"].ToString();
                     cpLH = form["cpLH"].ToString();
                     coloniaLH = form["coloniaLH"].ToString();
                 }
@@ -1586,13 +1586,7 @@ namespace SistemaIntegralQuejas.Controllers
             foreach (DataRow row in data.Rows)
             {
 
-                SelectCausaC itemPdfei = new SelectCausaC();
-
-                itemPdfei.fechac = row["fechaa"].ToString();
-                itemPdfei.causac= row["causaa"].ToString();
-                itemPdfei.causacdesc = row["conclusion"].ToString();
-                itemPdfei.acto_rest = row["actorest"].ToString();
-                itemPdfei.obs = row["observar"].ToString();
+                SelectCausaC itemPdfei = new SelectCausaC(0, row["fechaa"].ToString(), row["causaa"].ToString(), row["conclusion"].ToString(), row["actorest"].ToString(), row["observar"].ToString());
 
 
                 pdfescritoconclu.Add(itemPdfei);
@@ -2641,7 +2635,7 @@ namespace SistemaIntegralQuejas.Controllers
             string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
             string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado")
+            if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado"&& nombreS!= null)
             {
                 nombre = nombreS;
             }
@@ -2817,7 +2811,7 @@ namespace SistemaIntegralQuejas.Controllers
                     "'" + IngresosMensuales + "'," +
                     "" + idPetit + "," +
                     "'" + genero + "'," +
-                    "'" + otroGenero + "',"+
+                    "'" + otroGenero + "'," +
                     "'" + VersionComplemento + "'";
 
                 }
@@ -2934,7 +2928,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             if (idcomp != "")
             {
-                query = "exec Sp_GetDataPeticionarioxIdComp " + "'" + idcomp + "'";
+                query = "exec Sp_GetDataPeticionarioxIdComp1 " + "'" + idcomp + "'";
 
             }
             else if (curp != "" && curp != "No proporcionado")
@@ -2978,7 +2972,10 @@ namespace SistemaIntegralQuejas.Controllers
                 peticionario.ApellidoPat = (row["APELLIDO_PAT"]).ToString();
                 peticionario.ApellidoMat = (row["APELLIDO_MAT"]).ToString();
                 peticionario.DocIdentificatorio = (row["DOC_IDENTIFICATORIO"]).ToString();
-
+                if (data.Columns.Contains("idSelect") && !(row["idSelect"] is DBNull))
+                {
+                    peticionario.tipopet = (row["idSelect"]).ToString();
+                }
                 if (!(row["ID_COMPLEMENTO_PETICIONARIO"] is DBNull))
                 {
                     peticionario.IdComplementoPeticionario = Convert.ToInt32(row["ID_COMPLEMENTO_PETICIONARIO"]);
@@ -3021,6 +3018,7 @@ namespace SistemaIntegralQuejas.Controllers
                     peticionario.Genero = (row["GENERO"]).ToString();
                     peticionario.OtroGenero = (row["OTRO_GENERO"]).ToString();
                 }
+                
 
                 lPeticionario.Add(peticionario);
 
@@ -4620,7 +4618,7 @@ namespace SistemaIntegralQuejas.Controllers
             public SelectCausaC(int i, string fe,string cau,string caudes,string actor,string ob) 
             {
                 this.idqueja = i;
-                this.fechac = fe;
+                this.fechac = fe.Substring(0,10);
                 this.causac = cau;
                 this.causacdesc = caudes;
                 this.acto_rest = actor;
@@ -4906,7 +4904,7 @@ namespace SistemaIntegralQuejas.Controllers
             {
                 curp = ""; apellidop = ""; apellidom = "";
             }
-            else if ((curp == "" || curp.ToUpper() == "NO PROPORCIONADO") && (nombre == "" || nombre.ToUpper() == "NO PROPORCIONADO") && (apellidop == "" || apellidop.ToUpper() == "NO PROPORCIONADO") && (apellidom == "" || apellidom.ToUpper() == "NO PROPORCIONADO"))
+            if (nombre == "" || nombre.ToUpper() == "NO PROPORCIONADO")
             {
                 curp = ""; apellidop = ""; apellidom = ""; nombre = nombreS;
             }

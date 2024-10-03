@@ -266,6 +266,12 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacal
         }
     }
     else {
+        Swal.fire({
+            text: 'Cargando Información de la queja',
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
         $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
         document.getElementById("defaultOpenCa").click();
         Crear_Formulario_QuejaEdit(id, "E");
@@ -709,6 +715,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
         });
 
         ajaxDQOT.done(function (response) {
+
             fetchGet("Expediente/SelectEscolaridad", "json", (data) => {
                 Escolaridad = data.escolaridad;
                 escolaridadInicio = Escolaridad.slice(0, 9);
@@ -722,7 +729,11 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
             fetchGet("Expediente/SelectModalidadViolencia", "json", (data) => { ModalidadViolencia = data.modalidadviolencia; })
             fetchGet("Expediente/SelectTipoViolencia", "json", (data) => { TipoViolencia = data.tipoviolencia; })
             fetchGet("Expediente/SelectRelacionAgresor", "json", (data) => { RelacionAgresor = data.relacionagresor; })
-            fetchGet("Expediente/SelectVisitadurias", "json", (data) => { visitadurias = data.visitadurias; })
+            fetchGet("Expediente/SelectVisitadurias", "json", (data) => {
+                visitadurias = data.visitadurias; Swal.fire({
+                    showConfirmButton: false,
+                    timer: 1
+                }); })
             console.log(response);
             CargaDatosSelectOtro_(`#Abogadoqueja${tipo}`, response.lista_abogado, response.informarcionC.id_abogado_recibe);
             CargaDatosSelectOtro_(`#municipioqueja${tipo}`, response.lista_municipio, response.informarcionC.id_lugar_hechos);
@@ -747,6 +758,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 $(`#confi_lughec${tipo}`).prop('disabled', true);
                 $(`#icomuni${tipo}`).prop('hidden', true);
                 $(`#confi_peticiona${tipo}`).prop('disabled', true);
+                $(`#confi_peticiona${tipo}`).removeClass('pulsacionrellow');
                 $(`#btnaddpers${tipo}`).prop('hidden', true);
                 $(`#icobserv${tipo}`).prop('hidden', true);
             }
@@ -968,6 +980,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
             }
         });
     }
+
 }
 
 function RecorreInput(form) {
@@ -1139,6 +1152,9 @@ function DivPequenioss(nombrepeticionario, curp, idpeticionario, tipopeticionari
                                     </span>
                                     <button id="myBtn" type='button' onclick='editFormatDatosPersonalesCalificacion(${idpeticionario}, ${idtip_compet}, "Concluido", "False")' class='btn btn-link margin-iconbf'>
                                         <span class="fa fa-search color-muted fa-1x"></span>
+                                    </button>
+                                    <button id="myBtn" type='button' onclick='eliminaFormatoDatosPeronsales(${idtip_compet}, this)' class='btn btn-link margin-iconbf'>
+                                        <span class="fa fa-trash color-muted fa-1x"></span>
                                     </button>
                                 </p>
                             </div>
@@ -1989,24 +2005,66 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
             console.log(response)
              
             if (response.data.length > 0) {
+                if (response.data[0].tipopet !== null) {
+                    var $input = $('#nombre_petit-frmDatosPersonales1');
+                    var $select = $('<select></select>').addClass('form-control eliminaformaes ob max-20 eliminaformaes').attr({ 'data-idfrmit': '', 'name': $input.attr('name'), 'id': $input.attr('id'), 'required': true });
+                    $select.append($('<option></option>').val('').text('Selecciona una opción'));
+                    $.each(PetMoral, function (index, item) {
+                        $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+                    });
+                    $input.replaceWith($select);
+                    $('.noproporcionado').prop('checked', true).trigger('change');
+                    $("#frmDatosPersonales1 input[type='checkbox'].noproporcionado").prop("disabled", true);
+                    $("#frmDatosPersonales1 input[type='text']").prop("disabled", true);
+                    $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
+                    $("#frmDatosPersonales1 input[type='date']").prop("disabled", true);
+                    $("#frmDatosPersonales1 select").prop("disabled", true);
+                    $("#colonia_petit-frmDatosPersonales1").val('No proporcionado');
+                    $("#ciudad_petit-frmDatosPersonales1").val('No proporcionado');
+                    $("#genero_petit-frmDatosPersonales1").val('No proporcionado');
+                    $("#escosel_petit-frmDatosPersonales1").val(14);
+                    $("#econyugal_petit-frmDatosPersonales1").val(8);
+                    $("#ocupacion_petit-frmDatosPersonales1").val(9);
+                    $("#discapacidad_petit-frmDatosPersonales1").val(7);
+                    $("#gsoci_petit-frmDatosPersonales1").val(9);
+                    $("#leindi_petit-frmDatosPersonales1").val('No');
+                    $("#idQuejoso").prop("checked", true);
+                    $("#idNosexo").prop("checked", true);
+                    $("#idNoGenero").prop("checked", true);
+                    $("#idNopSabeLeer").prop("checked", true);
+                    $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+                    $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
+                    $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
+                    $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].tipopet).trigger('change');
+                } else {
+                    $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].nombre)
+                }
                 $("#versioncomplementopeticionario").val("versioncalificacion");
                 $("#idcomplementopet1").val(idcomplemento);
                 $('#idpeticionarioi1').val(idregistro);
                 $("#CURP_petit-frmDatosPersonales" + idform).val(response.data[0].docIdentificatorio)
-                $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].nombre)
+                if (response.data[0].docIdentificatorio.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='CURP_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change');} 
                 $("#apellidop_petit-frmDatosPersonales" + idform).val(response.data[0].apellidoPat)
+                if (response.data[0].apellidoPat.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='apellidop_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); } 
                 $("#apellidom_petit-frmDatosPersonales" + idform).val(response.data[0].apellidoMat)
+                if (response.data[0].apellidoMat.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='apellidom_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); } 
                 $("#calle_petit-frmDatosPersonales" + idform).val(response.data[0].calle)
+                if (response.data[0].calle.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='calle_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); } 
                 $("#nexterior_petit-frmDatosPersonales" + idform).val(response.data[0].numExterior)
+                if (response.data[0].numExterior.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='nexterior_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
                 $("#ninterior_petit-frmDatosPersonales" + idform).val(response.data[0].numInterior)
+                if (response.data[0].numInterior.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='ninterior_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
                 $("#edad_petit-frmDatosPersonales" + idform).val(response.data[0].edad)
+                if (response.data[0].edad.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='edad_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
                 $("#telefono_petit-frmDatosPersonales" + idform).val(response.data[0].telefono)
+                if (response.data[0].telefono.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='telefono_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
                 $("#email_petit-frmDatosPersonales" + idform).val(response.data[0].email)
-                $("#vmcanadep_petit-frmDatosPersonales" + idform).val(response.data[0].canalizacionVm)
-                $("#vmingrmen_petit-frmDatosPersonales" + idform).val(response.data[0].ingresosMensuales)
-
-                let fecha_nac = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('YYYY-MM-DD');
-                $("#fenac_petit-frmDatosPersonales" + idform).val(fecha_nac)
+                if (response.data[0].email.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='email_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
+                
+                if (!response.data[0].fechaNacimiento.includes('1900-01-01')) {
+                    let fecha_nac = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('YYYY-MM-DD');
+                    $("#fenac_petit-frmDatosPersonales" + idform).val(fecha_nac)
+                } else { $("input[name='fenac_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
 
                 $("#genero_petit-frmDatosPersonales" + idform).val(response.data[0].genero)
                 if (response.data[0].otroGenero != '') {
@@ -2037,7 +2095,10 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
                 }
                 if (response.data[0].violenciaVm == 1) {
                     violenciamujer = 'Si';
-
+                    $("#vmcanadep_petit-frmDatosPersonales" + idform).val(response.data[0].canalizacionVm)
+                    if (response.data[0].canalizacionVm.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='vmcanadep_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
+                    $("#vmingrmen_petit-frmDatosPersonales" + idform).val(response.data[0].ingresosMensuales)
+                    if (response.data[0].ingresosMensuales.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='vmingrmen_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
                     $("input[name=radsinoviomu_petit-frmDatosPersonalesE" + idform + "][value='" + violenciamujer + "']").prop("checked", true);
                     $("#vmembara_petit-frmDatosPersonales" + idform).val(response.data[0].embarazadaVm)
                     $("#vmhijos_petit-frmDatosPersonales" + idform).val(response.data[0].fkHijosVivos)
@@ -2051,21 +2112,16 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
                     $("input[name=radsinoviomu_petit-frmDatosPersonalesE" + idform + "][value='" + violenciamujer + "']").prop("checked", true);
                     document.querySelectorAll('.frmviolenciam' + idform).forEach(p => p.classList.add("dis-none"));
                 }
-
-
                 $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].tipoUsuario + "']").prop("checked", true);
                 $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value != '" + response.data[0].tipoUsuario + "']").prop("disabled", false);
                 $("input[name=radsexo_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].fkSexo + "']").prop("checked", true);
                 $("input[name=chknacionalidad_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].nacionalidad + "']").prop("checked", true);
                 $("input[name=chksleer_petit-frmDatosPersonales" + idform + "][value='" + response.data[0].sabeLeer + "']").prop("checked", true);
 
-
                 if (response.data[0].codigoPostal != "" && response.data[0].codigoPostal != 'No proporcionado') {
                     $("#cp_petit-frmDatosPersonales" + idform).val(response.data[0].codigoPostal)
-
                     let estado = '';
                     let municipio = '';
-
                     $.getJSON("https://api.copomex.com/query/info_cp/" + response.data[0].codigoPostal + "?type=simplified&token=pruebas", function (copomex) {
                         estado = copomex.response.estado;
                         municipio = copomex.response.municipio;
@@ -2087,14 +2143,18 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
                             $("#colonia_petit-frmDatosPersonales" + idform).selectpicker('refresh');
                             $("#ciudad_petit-frmDatosPersonales" + idform).selectpicker('refresh');
                             $("#modalFormPeticionario").modal("show");
-
                         }).fail(function () { console.log('Ha ocurrido un error en obtener las localidades') });
 
                     }).fail(function () { console.log('Ha ocurrido un error al obtener datos de un cp') });
-
                 } else {
+                    if (response.data[0].codigoPostal.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='cp_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
+                    $("#estado_petit-frmDatosPersonales" + idform).val(response.data[0].estado)
+                    if (response.data[0].estado.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='estado_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
+                    $("#municipio_petit-frmDatosPersonales" + idform).val(response.data[0].municipio)
+                    if (response.data[0].municipio.toUpperCase() === 'NO PROPORCIONADO') { $("input[name='municipio_petitno-frmDatosPersonales1']").prop('checked', true).trigger('change'); }
+                    $("#colonia_petit-frmDatosPersonales" + idform).val(response.data[0].colonia)
+                    $("#ciudad_petit-frmDatosPersonales" + idform).val(response.data[0].ciudad)
                     $("#modalFormPeticionario").modal("show");
-
                 }
                 updateDatosPeticionarios();
                 if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || estatus == 'Concluido') {
@@ -2108,12 +2168,10 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
                     showConfirmButton: false,
                     timer: 1500
                 });
-
                 return;
             }
         }
     });
-
     if (esta === 'False') {
         //var formulario = $('form[id^="frmDatosPersonales1"]');
         //$('form[id^="frmDatosPersonales1"] :input').prop('disabled', true);
@@ -3484,19 +3542,33 @@ function btnGenerapdfp(element) {
                     }
                 });
                 html.txtNombre.textContent = response.data[0].nombre;
+                if (response.data[0].nombre.toUpperCase() === 'NO PROPORCIONADO') { html.txtNombre.style.fontStyle = 'italic'; }
                 html.txtApaterno.textContent = response.data[0].apellidoPat;
+                if (response.data[0].apellidoPat.toUpperCase() === 'NO PROPORCIONADO') { html.txtApaterno.style.fontStyle = 'italic'; }
                 html.txtAmaterno.textContent = response.data[0].apellidoMat;
+                if (response.data[0].apellidoMat.toUpperCase() === 'NO PROPORCIONADO') { html.txtAmaterno.style.fontStyle = 'italic'; }
                 html.txtCalle.textContent = response.data[0].calle;
+                if (response.data[0].calle.toUpperCase() === 'NO PROPORCIONADO') { html.txtCalle.style.fontStyle = 'italic'; }
                 html.numExt.textContent = response.data[0].numExterior;
+                if (response.data[0].numExterior.toUpperCase() === 'NO PROPORCIONADO') { html.numExt.style.fontStyle = 'italic'; }
                 html.numInt.textContent = response.data[0].numInterior;
+                if (response.data[0].numInterior.toUpperCase() === 'NO PROPORCIONADO') { html.numInt.style.fontStyle = 'italic'; }
                 html.txtColonia.textContent = response.data[0].colonia;
+                if (response.data[0].colonia.toUpperCase() === 'NO PROPORCIONADO') { html.txtColonia.style.fontStyle = 'italic'; }
                 html.txtCiudadloc.textContent = response.data[0].ciudad;
+                if (response.data[0].ciudad.toUpperCase() === 'NO PROPORCIONADO') { html.txtCiudadloc.style.fontStyle = 'italic'; }
                 html.txtMunicipio.textContent = response.data[0].municipio;
+                if (response.data[0].municipio.toUpperCase() === 'NO PROPORCIONADO') { html.txtMunicipio.style.fontStyle = 'italic'; }
                 html.txtEstado.textContent = response.data[0].estado;
+                if (response.data[0].estado.toUpperCase() === 'NO PROPORCIONADO') { html.txtEstado.style.fontStyle = 'italic'; }
                 html.txtCp.textContent = response.data[0].codigoPostal;
+                if (response.data[0].codigoPostal.toUpperCase() === 'NO PROPORCIONADO') { html.txtCp.style.fontStyle = 'italic'; }
                 html.txtTelefono.textContent = response.data[0].telefono;
+                if (response.data[0].telefono.toUpperCase() === 'NO PROPORCIONADO') { html.txtTelefono.style.fontStyle = 'italic'; }
                 html.txtEdad.textContent = response.data[0].edad;
+                if (response.data[0].edad.toUpperCase() === 'NO PROPORCIONADO') { html.txtEdad.style.fontStyle = 'italic'; }
                 html.txtEmail.textContent = response.data[0].email;
+                if (response.data[0].email.toUpperCase() === 'NO PROPORCIONADO') { html.txtEmail.style.fontStyle = 'italic'; }
                 (Array.from(html.chkTipoaq)).forEach(function (input, index) {
                     if (input.value != response.data[0].tipoUsuario) {
                         input.checked = false
@@ -3578,7 +3650,12 @@ function btnGenerapdfp(element) {
                     }
                 });
                 html.txtOtraLengiai.textContent = response.data[0].lenguaIndigena;
-                html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+                if (response.data[0].fechaNacimiento.includes('1900-01-01')) {
+                    html.txtFechaNaci.textContent = 'No proporcionado';
+                    html.txtFechaNaci.style.fontStyle = 'italic';
+                } else {
+                    html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+                }
 
                 html.txtOrigenmig.textContent = response.data[0].origenMigrante.length > 0 ? response.data[0].origenMigrante : "";
                 html.txtDestinomig.textContent = response.data[0].destinoMigrante;

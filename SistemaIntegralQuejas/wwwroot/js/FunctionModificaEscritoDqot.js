@@ -1408,7 +1408,7 @@ function formPeticionario(idformulario) {
                             1: 'idAgraviado'
                         },
                         values: {
-                            0: 'Quejoso',
+                            0: 'Peticionario',
                             1: 'Agraviado'
                         },
                         class: "col-md-2 positionLeft",

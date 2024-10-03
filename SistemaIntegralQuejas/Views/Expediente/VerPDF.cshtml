@@ -1,4 +1,14 @@
-﻿@model List<SistemaIntegralQuejas.Models.PDF_Escrito_Inical>
+﻿<style>
+
+    body
+    {
+        font-size:15px;
+    }
+</style>
+
+
+
+@model List<SistemaIntegralQuejas.Models.PDF_Escrito_Inical>
 
 @{
 
@@ -121,49 +131,79 @@
             <p align="justify">
                 <b>FECHA EN QUE OCURRIERON LOS HECHOS: </b> @item.FechaHechos<br>
                 <b><br>LUGAR EN QUE SE SUSCITARON LOS HECHOS: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-
+            </p>
                 @if (@item.lugar_hechos.Count > 0)
 
                 {
 
                     @foreach (var item_lh in item.lugar_hechos)
-
                     {
-                    <p> Municipio: <em>@(item_lh.municipio != "" ? item_lh.municipio : "No proporcionado"),</em> Estado: <em>@(item_lh.estado != "" ? item_lh.estado : "No proporcionado"),</em> calle <em>@(item_lh.calle != "" ? item_lh.calle : "no proporcionado")</em> colonia <em>@(item_lh.colonia != "" ? item_lh.colonia : "no proporcionado"),</em> num.ext: <em>@(item_lh.num_ext != "" ? item_lh.num_ext : "No proporcionado")</em> num.int <em>@(item_lh.num_int != "" ? item_lh.num_int : "No proporcionado")</em> cp <em>@(item_lh.cp != 0 ? item_lh.cp : "no proporcionado") </em></p>
+                        <p>
+                            Municipio: @if (@item_lh.municipio != ""){ @item_lh.municipio}else{<em>"No proporcionado"</em>},
+                            Estado: @if (item_lh.estado != "") { @item_lh.estado} else{<em>"No proporcionado"</em>},
+                            calle: @if (item_lh.calle != "") { @item_lh.calle} else{<em>"No proporcionado"</em>},
+                            colonia: @if (item_lh.colonia != "") { @item_lh.colonia} else{<em>"No proporcionado"</em>},
+                            num.ext: @if (item_lh.num_ext != "") { @item_lh.num_ext} else{<em>"No proporcionado"</em>},
+                            num.int: @if (item_lh.num_int != "") { @item_lh.num_int} else{<em>"No proporcionado"</em>},
+                            cp: @if (item_lh.cp != 0) { @item_lh.cp} else{<em>"No proporcionado"</em>}
+
+@*
+                        Estado: <em>@(item_lh.estado != "" ? item_lh.estado : "No proporcionado"),</em> 
+                        calle <em>@(item_lh.calle != "" ? item_lh.calle : "No proporcionado")</em> 
+                        colonia <em>@(item_lh.colonia != "" ? item_lh.colonia : "No proporcionado"),</em> 
+                        num.ext: <em>@(item_lh.num_ext != "" ? item_lh.num_ext : "No proporcionado")</em> 
+                        num.int <em>@(item_lh.num_int != "" ? item_lh.num_int : "No proporcionado")</em> 
+                        cp <em>@(item_lh.cp != 0 ? item_lh.cp : "No proporcionado") </em>*@
+                        </p>
 
                     }
 
                 }
-            <b><br>CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS: <br></b> "@item.CircuntanciasHechos"
-            </p>
-            <p>
 
+            <b>CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:</b><br>
+            <p>"@item.CircuntanciasHechos"</p>
                 @if (item.uploadsei.Count > 0)
-
                 {
-
                     @foreach (var item_up in item.uploadsei)
-
                     {
                     <p> Nombre archivo adjunto: @item_up.RutaArchivo </p>
 
                     }
 
                 }
-            </p>
         </div>
 
         <div class="row">
             <p>
                 <b><br>AUTORIDAD(ES) INVOLUCRADA(S): <br><br> </b>
 
-                @foreach (var item_au in item.enlace_ea)
-
+                @foreach(var item_au in item.enlace_ea)
                 {
-                    <b> Nombre autoridad: </b> <em>@(item_au.nombre_persona != "" ? item_au.nombre_persona : "No proporcionado")</em> <b>Cargo Autoridad: </b> <em>@(item_au.cargo_persona != "" ? item_au.cargo_persona : "No proporcionado")</em> <b> Autoridad: </b> <em>@(item_au.autoridad != "" ? item_au.autoridad : "No proporcionado") </em>
 
+                    <b>Nombre autoridad:</b> 
+                    @if(@item_au.nombre_persona != ""&& @item_au.cargo_persona!="No proporcionado")
+                    {@item_au.nombre_persona}
+                    else
+                    { <em>"No proporcionado"</em> }
+                    <b>Cargo Autoridad:</b> @if (@item_au.cargo_persona != "" && @item_au.cargo_persona!="No proporcionado")
+                    {
+                        @item_au.cargo_persona
+                    }
+                    else
+                    {
+                        <em>"No proporcionado"</em>
+                    }
+                    <b>Autoridad:</b> @if (@item_au.autoridad != "" && @item_au.cargo_persona != "No proporcionado")
+                    {
+                        @item_au.autoridad
+                    }
+                    else
+                    {
+                        <em>"No proporcionado"</em>
+                    }
+@*                    <b>Cargo Autoridad: </b> <em>@(item_au.cargo_persona != "" ? item_au.cargo_persona : "No proporcionado")</em> 
+                    <b>Autoridad: </b> <em>@(item_au.autoridad != "" ? item_au.autoridad : "No proporcionado") </em>*@
                     <br>
-
                 }
             </p>
         </div>

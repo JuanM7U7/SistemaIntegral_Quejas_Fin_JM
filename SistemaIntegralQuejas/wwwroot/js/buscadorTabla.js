@@ -1119,7 +1119,16 @@ function mostrarResTblFormatos(response) {
                         status = 'Incompleto';
                     }
 
-                    if (validafecha_modificaciondqot === false) {
+                    if (full.status_Expediente == 'Eliminado' || full.status_Expediente == 'Pendiente de turnar'
+                        || full.status_Expediente == 'Turnado parcial a VG'
+                        || full.status_Expediente == 'Turnado a VG'
+                        || full.status_Expediente == 'Pendiente de Returno'
+                        || full.status_Expediente == 'Returnado a VG'
+                        || full.status_Expediente == 'Returnado parcial'
+                        || full.status_Expediente == 'Turnado a VA') {
+                        iconaddActac = '';
+                    } else
+                    {
                         iconaddActac = `<button type='button' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
                                                <img src="../icons/personalizados/add-file.png" height="40"/>
                                         </button > <br>`;

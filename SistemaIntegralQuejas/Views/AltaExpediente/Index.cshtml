@@ -34,146 +34,166 @@
         border-radius: 7px;
     }
 
+   /**/
+
+
+    #contenedor_UsuariosE {
+        width: 100%;
+        border: solid .5px lightgray;
+        height: auto;
+        min-height: 20%;
+        background: white;
+        border-radius: 7px;
+    }
+
     #Divpequenios {
-        float:left;
+        float: left;
         width: 95%;
         border: solid .5px lightgray;
         min-height: 10%;
         background: white;
         border-radius: 7px;
-        margin-bottom:2px;
+        margin-bottom: 2px;
+        position: relative;
     }
+
     .tooltipbloated {
-	display: inline;
-	position: relative;
-	z-index: 999;
-}
+        display: inline;
+        position: relative;
+        z-index: 999;
+    }
 
-.tooltipbloated-content {
-	position: absolute;
-	background: url('https://iborra.es/web/wp-content/themes/dfd-ronneby_child/img/tooltipbloated.png') no-repeat center bottom;
-	background-size: 100% 100%;
-	z-index: 9999;
-	width: 140px;
-	bottom: 100%;
-	left: 50%;
-	margin-left: -100px;
-	padding: 50px 30px;
-	text-align: center;
-	color: #fff;
-	opacity: 0;
-	cursor: default;
-	font-size: 0.75em;
-	line-height: 1.4;
-	pointer-events: none;
-	font-family: 'Kalam', cursive;
-	-webkit-transform: scale3d(0.1,0.2,1);
-	transform: scale3d(0.1,0.2,1);
-	-webkit-transform-origin: 50% 120%;
-	transform-origin: 50% 120%;
-	-webkit-transition: opacity 0.4s, -webkit-transform 0.4s;
-	transition: opacity 0.4s, transform 0.4s;
-	-webkit-transition-timing-function: ease, cubic-bezier(0.6,0,0.4,1);
-	transition-timing-function: ease, cubic-bezier(0.6,0,0.4,1);
-}
+    .tooltipbloated-content {
+        position: absolute;
+        /*background: linear-gradient(135deg, #5bd1d7, #74b9ff );*/
+        background-color: rgba(200, 200, 200, 0.8);
+        background-size: 100% 100%;
+        border-radius: 15px;
+        z-index: 9999;
+        width: 140px;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -100px;
+        padding: 50px 30px;
+        text-align: center;
+        color: #000000;
+        font-weight: bold;
+        opacity: 0;
+        cursor: default;
+        font-size: 0.75em;
+        line-height: 1.4;
+        pointer-events: none;
+        font-family: sans-serif;
+        -webkit-transform: scale3d(0.1,0.2,1);
+        transform: scale3d(0.1,0.2,1);
+        -webkit-transform-origin: 50% 120%;
+        transform-origin: 50% 120%;
+        -webkit-transition: opacity 0.4s, -webkit-transform 0.4s;
+        transition: opacity 0.4s, transform 0.4s;
+        -webkit-transition-timing-function: ease, cubic-bezier(0.6,0,0.4,1);
+        transition-timing-function: ease, cubic-bezier(0.6,0,0.4,1);
+    }
 
-.tooltipbloated:hover .tooltipbloated-content {
-	opacity: 1;
-	pointer-events: auto;
-	-webkit-transform: scale3d(1,1,1);
-	transform: scale3d(1,1,1);
-}
- /***  TOOLTIP BOX  ***/
-.tooltipbox {
-	display: inline;
-	position: relative;
-	z-index: 999;
-}
+    .tooltipbloated:hover .tooltipbloated-content {
+        opacity: 1;
+        pointer-events: auto;
+        -webkit-transform: scale3d(1,1,1);
+        transform: scale3d(1,1,1);
+    }
+    /***  TOOLTIP BOX  ***/
+    .tooltipbox {
+        display: inline;
+        position: relative;
+        z-index: 999;
+    }
 
-/* Trigger text */
+    /* Trigger text */
 
-.tooltipbox-item {
-	color: #c39f76;
-	cursor: pointer;
-	z-index: 100;
-	position: relative;
-	display: inline-block;
-	font-weight: 700;
-	-webkit-transition: background-color 0.3s, color 0.3s, -webkit-transform 0.3s;
-	transition: background-color 0.3s, color 0.3s, transform 0.3s;
-}
+    .tooltipbox-item {
+        color: black;
+        cursor: pointer;
+        z-index: 100;
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+        -webkit-transition: background-color 0.3s, color 0.3s, -webkit-transform 0.3s;
+        transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    }
 
-.tooltipbox:hover .tooltipbox-item {
-	color: #fff;
-	-webkit-transform: translate3d(0,-0.5em,0);
-	transform: translate3d(0,-0.5em,0);
-}
+    .tooltipbox:hover .tooltipbox-item {
+        color: black;
+    @*-webkit-transform: translateX(20%); transform: translateX(20%);*@ overflow-wrap: break-word;
+        text-align: center;
+    }
 
-/* Tooltip */
 
-.tooltipbox-content {
-	position: absolute;
-	z-index: 99;
-	width: 230%;
-	left: 50%;
-	margin-left: -180px;
-	bottom: -5px;
-	text-align: left;
-	background: #282828;
-	opacity: 0;
-	font-size: 0.75em;
-	text-align: center;
-	line-height: 1.5;
-	padding: 1.5em;
-	color: #fff;
-	border-bottom: 50px solid #c39f76;
-	cursor: default;
-	pointer-events: none;
-	border-radius: 5px;
-	font-family: 'Kalam', cursive;
-	-webkit-transform: translate3d(0,-0.5em,0);
-	transform: translate3d(0,-0.5em,0);
-	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
-	transition: opacity 0.3s, transform 0.3s;
-}
+    /* Tooltip */
 
-.tooltipbox-content a {
-	color: #c39f76;
-}
-.tooltipbox-content a:hover {
-	color: #9f8465;
-}
+    .tooltipbox-content {
+        position: absolute;
+        z-index: 99;
+        width: 230%;
+        left: 45%;
+        margin-left: -55%;
+        bottom: -5px;
+        text-align: left;
+        background: #17a2b8;
+        opacity: 0;
+        font-size: 0.75em;
+        text-align: center;
+        line-height: 1.5;
+        padding: 1.5em;
+        color: black;
+        border-bottom: 50px solid lightgray;
+        cursor: default;
+        pointer-events: none;
+        border-radius: 5px;
+        font-family: sans-serif;
+        -webkit-transform: translate3d(0,-0.5em,0);
+        transform: translate3d(0,-0.5em,0);
+        -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+        transition: opacity 0.3s, transform 0.3s;
+    }
 
-.tooltipbox-text {
-	opacity: 0;
-	-webkit-transform: translate3d(0,1.5em,0);
-	transform: translate3d(0,1.5em,0);
-	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
-	transition: opacity 0.3s, transform 0.3s;
-}
+        .tooltipbox-content a {
+            color: lightgray;
+        }
 
-.tooltipbox:hover .tooltipbox-content,
-.tooltipbox:hover .tooltipbox-text {
-	pointer-events: auto;
-	opacity: 1;
-	-webkit-transform: translate3d(0,0,0);
-	transform: translate3d(0,0,0);
-}
+            .tooltipbox-content a:hover {
+                color: lightgray;
+            }
 
-.dummy-text {
-    max-width: 1000px;
-    font-size: 17px !Important;
-}
+    .tooltipbox-text {
+        opacity: 0;
+        -webkit-transform: translate3d(0,1.5em,0);
+        transform: translate3d(0,1.5em,0);
+        -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+        transition: opacity 0.3s, transform 0.3s;
+    }
 
-.dummy {
-    font-weight: 300;
-}
+    .tooltipbox:hover .tooltipbox-content,
+    .tooltipbox:hover .tooltipbox-text {
+        pointer-events: auto;
+        opacity: 1;
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+    }
 
-.dummy-text p {
-    margin-top: 0;
-    text-align: center !Important;
-	margin-bottom:0 !important;
-}
+    .dummy-text {
+        max-width: 1000px;
+        font-size: 17px !Important;
+    }
+
+    .dummy {
+        font-weight: 300;
+    }
+
+    .dummy-text p {
+        margin-top: 0;
+        text-align: center !Important;
+        margin-bottom: 0 !important;
+    }
+  /**/
 
 
 </style>
