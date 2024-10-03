@@ -42,6 +42,7 @@ public partial class Actac
     public int? OrigenPetExt { get; set; }
 
     public string OrigenPetExtComp { get; set; }
+    public string OrigenPeticionarioExterno { get; set; }
 
     public int FkStatus { get; set; }
 

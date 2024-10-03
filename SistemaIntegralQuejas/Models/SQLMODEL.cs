@@ -672,14 +672,15 @@ namespace SistemaIntegralQuejas.Models
                         string Hechos = lector[24].ToString();
                         TimeOnly HoraTermino = new TimeOnly(int.Parse(arregloHoraT[0]), int.Parse(arregloHoraT[1]));
                         /*Datos Faltantes*/
-                        string sabeLeer = "";
-                        string escolaridadPet = "";
+                        string sabeLeer = lector[29].ToString(); ;
+                        string escolaridadPet = lector[30].ToString();
                         string EstadoPet = "";
                         string IdenttificacionPet = "";
                         string OrigenPetExt = lector[27].ToString() + '-' + lector[28].ToString();
                         string ComplementoPetExt = lector[28].ToString();
                         int id_pet = int.Parse(lector[31].ToString());
                         int id_complementopet = int.Parse(lector[32].ToString());
+                        ;
                         DateTime fechaActual = DateTime.Now;
                         /*Datos Faltantes*/
 

@@ -247,6 +247,8 @@ namespace SistemaIntegralQuejas.Controllers
                 cmd.Parameters.Add("@origenPetExt", System.Data.SqlDbType.Int).Value = origenPetExt;
                 cmd.Parameters.Add("@OrigenPetExtComp", System.Data.SqlDbType.VarChar).Value = ComplementoPetExt;
                 cmd.Parameters.Add("@ultimo_id_insertado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                //AGREGADO ABBY 01/10/2024
+                //-----------------------------------------------------------------
                 cmd.ExecuteNonQuery();
 
                 UltimoID_Recuperado = Convert.ToInt32(cmd.Parameters["@ultimo_id_insertado"].Value);

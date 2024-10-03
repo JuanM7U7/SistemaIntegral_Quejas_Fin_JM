@@ -60,7 +60,9 @@ $(document).ready(function () {
         
     });
 
-    $("#saveActaC").click(function (e) {
+    $("#save
+    
+    C").click(function (e) {
 
     });
     $("#generaPDFActaC").click(function (e) {
