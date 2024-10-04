@@ -812,7 +812,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 }
                 for (var i = 0; i < contadorpeticionarios; i++) {
                     console.log(contadorpeticionarios);
-                    var coincidencias = iddatospeti.filter(p => p.id_peticionario === response.informarcionC.informacioncomplementariapeticionario[i].id_registro);
+                    var coincidencias = iddatospeti.filter(p => p.id_peticionario === response.informarcionC.informacioncomplementariapeticionario[i].id_registro && p.tipoPet == response.informarcionC.informacioncomplementariapeticionario[i].tipo);
                     var validpet = 'False';
                     if (coincidencias.length !== 0) { validpet = coincidencias[0].datospet; }
                     $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenioss(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g,''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, validpet, idqueja, response.informarcionC.informacioncomplementariapeticionario[i].conreg));
@@ -2192,10 +2192,11 @@ function updateDatosPeticionarios() {
         var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
         var idpeticionarioi = $('#idpeticionarioi1').val();
         var Titulo_Modal = $('#Titulo_Modal').html();
+        var TipoPet = $('input[name=qatu_petit-frmDatosPersonales1]:checked').val();
         $.ajax({
             type: "POST",
             url: "ActualizaDatoscompementariosPetVAV",
-            data: { idqueja: idquejaE, status: 1, peticionario:idpeticionarioi },
+            data: { idqueja: idquejaE, status: 1, peticionario: idpeticionarioi, tipope: TipoPet },
             dataType: "JSON",
             success: function (response) {
 

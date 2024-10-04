@@ -327,8 +327,8 @@ namespace SistemaIntegralQuejas.Controllers
             #region cambiosVersion
             switch (version)
             {
-                case "DQOT":
-                    break;
+                //case "DQOT":
+                //    break;
                 case "CALIFICACION":
                     query = "exec Sp_carga_info_Comp_Calif_version'" + identificadorQueja + "','" + version + "'," + candado;//candado 1
                     query1 = "exec Sp_carga_informacion_Complementaria_peticionario_Calif_version '" + identificadorQueja + "','" + version + "'";//version DQOT
@@ -579,15 +579,17 @@ namespace SistemaIntegralQuejas.Controllers
         public string datospet { get; set; }
         public int version { get; set; }
         public int id_peticionario { get; set; }
+        public string tipoPet { get; set; }
 
         public validaIinfoDQOTpet() { }
 
-        public validaIinfoDQOTpet(int id_queja, string datospet, int version, int id_peticionario)
+        public validaIinfoDQOTpet(int id_queja, string datospet, int version, int id_peticionario, string tipoPet)
         {
             this.id_queja = id_queja;
             this.datospet = datospet;
             this.version = version;
             this.id_peticionario = id_peticionario;
+            this.tipoPet = tipoPet;
         }
     }
 

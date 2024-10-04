@@ -916,7 +916,7 @@ namespace SistemaIntegralQuejas.Models
                     validaIinfoDQOTpet modelo;
                     while (lector.Read())
                     {
-                        lista.Add(new validaIinfoDQOTpet(int.Parse(lector[0].ToString()), lector[1].ToString(), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString())));
+                        lista.Add(new validaIinfoDQOTpet(int.Parse(lector[0].ToString()), lector[1].ToString(), int.Parse(lector[2].ToString()), int.Parse(lector[3].ToString()), lector[4].ToString()));
 
                     }
                 }
