@@ -88,6 +88,7 @@ $(document).ready(function () {
     fetchGet("Expediente/SelectTipoViolencia", "json", (data) => { TipoViolencia = data.tipoviolencia; })
     fetchGet("Expediente/SelectRelacionAgresor", "json", (data) => { RelacionAgresor = data.relacionagresor; })
     fetchGet("Expediente/SelectVisitadurias", "json", (data) => { visitadurias = data.visitadurias; })
+    fetchGet("Expediente/SelectMorales", "json", (data) => { Morales = data.tipomorales; })
 
 
     $(document).on('change', '#nomAbogado', function (event) {
@@ -2859,6 +2860,79 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                     }).fail(function () { console.log('Ha ocurrido un error al obtener datos de un cp') });
 
                 } else {
+
+                    if (response.data[0].codigoPostal == 'No proporcionado') { $("#cp_petit-frmDatosPersonales" + idform).val('No proporcionado'); }
+                    if (response.data[0].estado == 'No proporcionado') { $("#estado_petit-frmDatosPersonales" + idform).val('No proporcionado'); }
+                    if (response.data[0].municipio == 'No proporcionado') { $("#municipio_petit-frmDatosPersonales" + idform).val('No proporcionado'); }
+                    if (response.data[0].colonia == 'No proporcionado') { $("#colonia_petit-frmDatosPersonales" + idform).val('No proporcionado'); }
+                    if (response.data[0].ciudad == 'No proporcionado') { $("#ciudad_petit-frmDatosPersonales" + idform).val('No proporcionado'); }
+                    if (fecha_nac == '1900-01-01') { $("#fenac_petit-frmDatosPersonales" + idform).val(''); }
+
+                    if ((response.data[0].docIdentificatorio.toUpperCase() == 'NO PROPORCIONADO') || (response.data[0].apellidoPat == 'No proporcionado') || (response.data[0].apellidoMat == 'No proporcionado')) {
+                        var $input = $("#nombre_petit-frmDatosPersonales" + idform);
+
+                        // Creamos el nuevo select con las mismas clases y atributos que el input
+                        var $select = $('<select></select>')
+                            .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
+                            .attr({
+                                'data-idfrmit': '',
+                                'name': $input.attr('name'),
+                                'id': $input.attr('id'),
+                                'required': true
+                            });
+
+                        // Llenamos el select con las opciones del arreglo
+                        $.each(Morales, function (index, item) {
+                         
+                            if (response.data[0].nombre == item.descripcion) {
+                                alert('Entro al if');
+                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion).attr('selected', 'true').trigger('change'));
+                               
+                            }
+                            else {
+                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+                            }
+                        });
+                        $select.select2({
+                            dropdownParent: $('.modal-body')
+                        });
+
+
+                        // Reemplazamos el input con el select
+                        $input.replaceWith($select);
+                        //$("#nombre_petit-frmDatosPersonales" + idform).value(response.data[0].nombre)
+                        console.log($select);
+
+                        $(`#nombre_petit-frmDatosPersonales${idform} option[text='${response.data[0].nombre}']`).prop('selected', true);
+                        //console.log(response.data[0].nombre);
+
+
+                        $('.noproporcionado').prop('checked', true).trigger('change');
+                        $("#frmDatosPersonales1 input[type='checkbox'].noproporcionado").prop("disabled", true);
+                        $("#frmDatosPersonales1 input[type='text']").prop("disabled", true);
+                        $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
+                        $("#frmDatosPersonales1 input[type='date']").prop("disabled", true);
+                        $("#frmDatosPersonales1 select").prop("disabled", true);
+                        $("#colonia_petit-frmDatosPersonales1").val('No proporcionado');
+                        $("#ciudad_petit-frmDatosPersonales1").val('No proporcionado');
+                        $("#genero_petit-frmDatosPersonales1").val('No proporcionado');
+                        $("#escosel_petit-frmDatosPersonales1").val(14);
+                        $("#econyugal_petit-frmDatosPersonales1").val(8);
+                        $("#ocupacion_petit-frmDatosPersonales1").val(9);
+                        $("#discapacidad_petit-frmDatosPersonales1").val(7);
+                        $("#gsoci_petit-frmDatosPersonales1").val(9);
+                        $("#leindi_petit-frmDatosPersonales1").val('No');
+                        $("#idQuejoso").prop("checked", true);
+                        $("#idNosexo").prop("checked", true);
+                        $("#idNoGenero").prop("checked", true);
+                        $("#idNopSabeLeer").prop("checked", true);
+                        $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+                        $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
+                        $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
+
+                    }
+                   
+                 
                     $("#modalFormPeticionario").modal("show");
 
                 }
@@ -3238,7 +3312,7 @@ function formPeticionario(idformulario) {
                         ids: {
                             0: 'idMexicano',
                             1: 'idExtranjero',
-                            1: 'idNoGenero'
+                            2: 'idNoGenero'
                         },
                         values: {
                             0: 'Mexicano',
@@ -4481,6 +4555,21 @@ function btnGenerapdfp(element) {
                 html.txtTelefono.textContent = response.data[0].telefono;
                 html.txtEdad.textContent = response.data[0].edad;
                 html.txtEmail.textContent = response.data[0].email;
+
+                if (response.data[0].nombre.toUpperCase() === 'NO PROPORCIONADO') { html.txtNombre.style.fontStyle = 'italic'; }
+                if (response.data[0].apellidoPat.toUpperCase() === 'NO PROPORCIONADO') { html.txtApaterno.style.fontStyle = 'italic'; }
+                if (response.data[0].apellidoMat.toUpperCase() === 'NO PROPORCIONADO') { html.txtAmaterno.style.fontStyle = 'italic'; }
+                if (response.data[0].calle.toUpperCase() === 'NO PROPORCIONADO') { html.txtCalle.style.fontStyle = 'italic'; }
+                if (response.data[0].numExterior.toUpperCase() === 'NO PROPORCIONADO') { html.numExt.style.fontStyle = 'italic'; }
+                if (response.data[0].numInterior.toUpperCase() === 'NO PROPORCIONADO') { html.numInt.style.fontStyle = 'italic'; }
+                if (response.data[0].colonia.toUpperCase() === 'NO PROPORCIONADO') { html.txtColonia.style.fontStyle = 'italic'; }
+                if (response.data[0].ciudad.toUpperCase() === 'NO PROPORCIONADO') { html.txtCiudadloc.style.fontStyle = 'italic'; }
+                if (response.data[0].municipio.toUpperCase() === 'NO PROPORCIONADO') { html.txtMunicipio.style.fontStyle = 'italic'; }
+                if (response.data[0].estado.toUpperCase() === 'NO PROPORCIONADO') { html.txtEstado.style.fontStyle = 'italic'; }
+                if (response.data[0].codigoPostal.toUpperCase() === 'NO PROPORCIONADO') { html.txtCp.style.fontStyle = 'italic'; }
+                if (response.data[0].telefono.toUpperCase() === 'NO PROPORCIONADO') { html.txtTelefono.style.fontStyle = 'italic'; }
+                if (response.data[0].edad.toUpperCase() === 'NO PROPORCIONADO') { html.txtEdad.style.fontStyle = 'italic'; }
+                if (response.data[0].email.toUpperCase() === 'NO PROPORCIONADO') { html.txtEmail.style.fontStyle = 'italic'; }
                 (Array.from(html.chkTipoaq)).forEach(function (input, index) {
                     if (input.value != response.data[0].tipoUsuario) {
                         input.checked = false
@@ -4562,7 +4651,13 @@ function btnGenerapdfp(element) {
                     }
                 });
                 html.txtOtraLengiai.textContent = response.data[0].lenguaIndigena;
-                html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+                if (response.data[0].fechaNacimiento.includes('1900-01-01')) {
+                    html.txtFechaNaci.textContent = 'No proporcionado';
+                    html.txtFechaNaci.style.fontStyle = 'italic';
+                }
+                else {
+                    html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+                }
 
                 html.txtOrigenmig.textContent = response.data[0].origenMigrante.length > 0 ? response.data[0].origenMigrante : "";
                 html.txtDestinomig.textContent = response.data[0].destinoMigrante;

@@ -1479,6 +1479,7 @@ function btnGenerapdfp(element) {
                         input.checked = true;
                     }
                 });
+               
                 html.txtNombre.textContent = response.data[0].nombre;
                 html.txtApaterno.textContent = response.data[0].apellidoPat;
                 html.txtAmaterno.textContent = response.data[0].apellidoMat;
@@ -1493,6 +1494,23 @@ function btnGenerapdfp(element) {
                 html.txtTelefono.textContent = response.data[0].telefono;
                 html.txtEdad.textContent = response.data[0].edad;
                 html.txtEmail.textContent = response.data[0].email;
+
+                if (response.data[0].nombre.toUpperCase() === 'NO PROPORCIONADO') { html.txtNombre.style.fontStyle = 'italic'; } 
+                if (response.data[0].apellidoPat.toUpperCase() === 'NO PROPORCIONADO') { html.txtApaterno.style.fontStyle = 'italic'; }
+                if (response.data[0].apellidoMat.toUpperCase() === 'NO PROPORCIONADO') { html.txtAmaterno.style.fontStyle = 'italic';}
+                if (response.data[0].calle.toUpperCase() === 'NO PROPORCIONADO') { html.txtCalle.style.fontStyle = 'italic'; }
+                if (response.data[0].numExterior.toUpperCase() === 'NO PROPORCIONADO') { html.numExt.style.fontStyle = 'italic'; }
+                if (response.data[0].numInterior.toUpperCase() === 'NO PROPORCIONADO') { html.numInt.style.fontStyle = 'italic';}
+                if (response.data[0].colonia.toUpperCase() === 'NO PROPORCIONADO') { html.txtColonia.style.fontStyle = 'italic'; }
+                if (response.data[0].ciudad.toUpperCase() === 'NO PROPORCIONADO') { html.txtCiudadloc.style.fontStyle = 'italic'; }
+                if (response.data[0].municipio.toUpperCase() === 'NO PROPORCIONADO') { html.txtMunicipio.style.fontStyle = 'italic'; }
+                if (response.data[0].estado.toUpperCase() === 'NO PROPORCIONADO') { html.txtEstado.style.fontStyle = 'italic'; }
+                if (response.data[0].codigoPostal.toUpperCase() === 'NO PROPORCIONADO') { html.txtCp.style.fontStyle = 'italic';}
+                if (response.data[0].telefono.toUpperCase() === 'NO PROPORCIONADO') { html.txtTelefono.style.fontStyle = 'italic'; }
+                if (response.data[0].edad.toUpperCase() === 'NO PROPORCIONADO') { html.txtEdad.style.fontStyle = 'italic'; }
+                if (response.data[0].email.toUpperCase() === 'NO PROPORCIONADO') { html.txtEmail.style.fontStyle = 'italic'; }
+
+
                 (Array.from(html.chkTipoaq)).forEach(function (input, index) {
                     if (input.value != response.data[0].tipoUsuario) {
                         input.checked = false
@@ -1574,7 +1592,13 @@ function btnGenerapdfp(element) {
                     }
                 });
                 html.txtOtraLengiai.textContent = response.data[0].lenguaIndigena;
-                html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+                if(response.data[0].fechaNacimiento.includes('1900-01-01')) {
+                    html.txtFechaNaci.textContent = 'No proporcionado';
+                    html.txtFechaNaci.style.fontStyle = 'italic';
+                }
+                else {
+                    html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+                }
 
                 html.txtOrigenmig.textContent = response.data[0].origenMigrante.length > 0 ? response.data[0].origenMigrante : "";
                 html.txtDestinomig.textContent = response.data[0].destinoMigrante;
@@ -2538,6 +2562,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                 $('#idcomplementopet' + numFrm).val(data.idcomplemento);
                 $('#idpeticionarioi' + numFrm).val(data.idpeticionario);
 
+                console.log('Input_Peticionario');
 
                 let arrids_competicionarios = [];
                 // Se crea arreglo de peticinarios registrados para un select, ya que se usara uno para los siguientes formatos
@@ -3730,7 +3755,7 @@ function Crear_Formulario_Queja() {
         + "<div id='contenedor_Autoridades'>" /*+ DivPequeniosautoridad('Honorable Congreso del Estado', 'Estatal', '1245')*/ + "</div>";
     var cuerpoDerecha = Crea_Label('textfield8', 'textfield8', '', 'Lugar de los hechos: ')
         + CreaBR() + CreaSelectLabel('municipioqueja', '', arregloBlanco, '', 'Municipio y estado: ', '')
-        + Crea_Label('textfield8', 'textfield8', '', 'Peticionario(s): ')
+        + CreaBR() + Crea_Label('textfield8', 'textfield8', '', 'Peticionario(s): ')
         + CreaBR()
         //+ CreaInputs_Con_Label('nombrequejoso', 'nombrequejoso', '', 'text', 'Nombre(s):', 'textfield', 'Nombre')
         //+ CreaBR()
@@ -3738,7 +3763,7 @@ function Crear_Formulario_Queja() {
         //+ CreaBR()
         //+ CreaInputs_Con_Label('curp', 'curp', '', 'text', 'CURP: ', 'textfield', 'CURP')
         + "<div id='contenedor_Usuarios'>" /*+ DivPequenios('Christopher marquez', 'MALC961120HNERPH05', '1')*/ + "</div>"
-        + CreaBR()
+        //+ CreaBR()
         + CreaSelectLabeldisabled('visitaduriaqueja', '', arregloBlanco, '', 'Visitaduria: ', '')
         + CreaBR()
         + CreaInputs_Con_Label('Fecha_Registro', 'Fecha_Registro', '', 'date', 'Fecha de Registro: ', 'textfield', '')
@@ -3747,7 +3772,7 @@ function Crear_Formulario_Queja() {
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Observaciones: ')
         + CreaBR()
-        + CreaTextArea('observaciones', '', 'style="width:100% "')
+        + CreaTextArea('observaciones', '', 'style="width:100%; height=180px"')
         + CreaBR()
         + CreaBR()
         + crea_Boton('button', 'Guardar', 'saveQueja', 'btn btn-success', 'guardarQueja()')
