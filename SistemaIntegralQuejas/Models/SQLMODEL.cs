@@ -642,8 +642,6 @@ namespace SistemaIntegralQuejas.Models
                         string[] arregloHoraH = arreglofechaH[1].ToString().Split(':');
                         string[] arreglofechaT = lector[25].ToString().Split(' ');
                         string[] arregloHoraT = arreglofechaT[1].Split(':');
-
-
                         int Id = int.Parse(lector[0].ToString());
                         string Lugar = lector[1].ToString();
                         int DiaFecha = int.Parse(lector[2].ToString());
@@ -672,7 +670,7 @@ namespace SistemaIntegralQuejas.Models
                         string Hechos = lector[24].ToString();
                         TimeOnly HoraTermino = new TimeOnly(int.Parse(arregloHoraT[0]), int.Parse(arregloHoraT[1]));
                         /*Datos Faltantes*/
-                        string sabeLeer = lector[29].ToString(); ;
+                        string sabeLeer = lector[29].ToString();
                         string escolaridadPet = lector[30].ToString();
                         string EstadoPet = "";
                         string IdenttificacionPet = "";
@@ -680,7 +678,6 @@ namespace SistemaIntegralQuejas.Models
                         string ComplementoPetExt = lector[28].ToString();
                         int id_pet = int.Parse(lector[31].ToString());
                         int id_complementopet = int.Parse(lector[32].ToString());
-                        ;
                         DateTime fechaActual = DateTime.Now;
                         /*Datos Faltantes*/
 
@@ -695,10 +692,10 @@ namespace SistemaIntegralQuejas.Models
 
 
             }
-
             return modelo;
         }
 
+           
         public string ObtenerReader(string query)
         {
             string mensaje = "";
