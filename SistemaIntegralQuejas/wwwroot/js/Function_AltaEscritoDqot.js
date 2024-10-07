@@ -2569,7 +2569,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                 peticionariosGuardados.push({
                     idpeticionario: data.idpeticionario,
                     idcomplementopet: data.idcomplemento,
-                    nombrepeti: data.nombrepet
+                    nombrepeti: data.nombrepet.replace(/No Proporcionado/g, '') //Se quita de lista las palabras 'No Proporcionado'
                 });
 
                 // Se valida que el arreglo de peticionarios para los select no se repitan usuarios 
