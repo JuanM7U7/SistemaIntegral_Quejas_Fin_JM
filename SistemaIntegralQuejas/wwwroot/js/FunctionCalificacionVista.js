@@ -640,11 +640,18 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
 
         var date = new Date();
         if (response.informarcionC.fecha_registro != null) {
-            date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(response.informarcionC.fecha_registro));
+
+            console.log(response.informarcionC.fecha_registro);
+            //var fechatemporal = response.informarcionC.fecha_registro.split(' ');
+            //var fechasintime = fechatemporal[0].toString();
+            //console.log('Fecha sin dateime:'+fechasintime);
+            //date = new Date(isDate(response.informarcionC.fecha_registro));
+            date = new Date(response.informarcionC.fecha_registro);// Cambio fecha registro
         }
         chargeDateInputDate(document.getElementById(`Fecha_Registro${tipo}`), date);
         if (fecRecep != null) {
-            date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(fecRecep));
+            console.log(fecRecep);
+            date = new Date(fecRecep);
         }
         chargeDateInputDate(document.getElementById(`Fecha_TurnoVG${tipo}`), date);
         $(`#idqueja${tipo}`).val(response.informarcionC.id_expediente);
@@ -679,6 +686,11 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
         $(`#ListAport${tipo}`).empty();
         $(`#tipQueja${tipo}`).empty();
     });
+}
+
+
+function isDate(string) {
+    return moment(string).format(["DD/MM/YYYY", "YYYY-MM-DD"]);
 }
 
 function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
@@ -784,11 +796,13 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
 
             var date = new Date();
             if (response.informarcionC.fecha_registro != null) {
-                date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(response.informarcionC.fecha_registro));
+                //isDate()
+               // date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(response.informarcionC.fecha_registro));
+                date = new Date(response.informarcionC.fecha_registro);
             }
-            chargeDateInputDate(document.getElementById(`Fecha_Registro${tipo}`), date);
+            chargeDateInputDate(document.getElementById(`Fecha_Registro${tipo}`), response.informarcionC.date);
             if (fecRecep != null && !fecRecep.includes('-')) {
-                date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(fecRecep));
+                date = new Date(fecRecep);
                 chargeDateInputDate(document.getElementById(`Fecha_TurnoVG${tipo}`), date);
             } else if (fecRecep != null && fecRecep.includes('-')) {
                 $(`#Fecha_TurnoVG${tipo}`).val(fecRecep);
@@ -5131,7 +5145,7 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
                     console.log('ObsConclu: ' + data.obs);
                     var inputDate = document.getElementById(`fechaCausa${tipo}_${rowIdx}`);
 
-                    var date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(data.fechac));
+                    var date = new Date(data.fechac);
                 
                      //date = new Date();
                     console.log("Fecha Conclu:"+date);
