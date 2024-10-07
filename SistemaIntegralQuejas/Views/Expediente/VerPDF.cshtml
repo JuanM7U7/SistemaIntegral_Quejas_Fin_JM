@@ -159,19 +159,22 @@
                     }
 
                 }
-
-            <b>CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:</b><br>
-            <p>"@item.CircuntanciasHechos"</p>
-                @if (item.uploadsei.Count > 0)
-                {
-                    @foreach (var item_up in item.uploadsei)
-                    {
-                    <p> Nombre archivo adjunto: @item_up.RutaArchivo </p>
-
-                    }
-
-                }
         </div>
+         <div class="row">
+            <p>
+                    <b>CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:</b><br>
+                    "@item.CircuntanciasHechos"
+                </p>
+                        @if (item.uploadsei.Count > 0)
+                        {
+                            @foreach (var item_up in item.uploadsei)
+                            {
+                            <p> Nombre archivo adjunto: @item_up.RutaArchivo </p>
+
+                            }
+
+                        }
+                </div>
 
         <div class="row">
             <p>

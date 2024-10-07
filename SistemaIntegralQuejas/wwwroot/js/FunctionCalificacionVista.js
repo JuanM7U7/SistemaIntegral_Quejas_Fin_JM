@@ -239,9 +239,19 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 }
 
-function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacalif) {
+function modalShow(id, fecRecep, Tmodal, tip, expedienten, fechaturnoabo, fechacalif) {
+
     console.log("Expediente al crear el formulario de calificación: " + expedienten);
     document.getElementById(Tmodal).style.display = "block";
+
+    Swal.fire({
+        text: 'Cargando Información de la queja',
+        didOpen: () => {
+            Swal.showLoading();
+        },
+        timer: 4000,
+        timerProgressBar: true,
+    });
     if (tip === 1) {
         closeModal("modaltabCalif");
     }
@@ -264,14 +274,9 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacal
             $("#Det_Modificacion").css("display", "none");
             $("#Det_Calificacion").css("display", "none");
         }
+
     }
     else {
-        Swal.fire({
-            text: 'Cargando Información de la queja',
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
         $("#Conclu").css("display", "none");//esconder o mostrar la tab de conclusión
         document.getElementById("defaultOpenCa").click();
         Crear_Formulario_QuejaEdit(id, "E");
@@ -281,6 +286,9 @@ function modalShow(id, fecRecep, Tmodal, tip, expedienten,fechaturnoabo,fechacal
         console.log("Ingresando a la subida de archivos en edición");
 
     }
+
+
+
 }
 function confirmdatos(idquej, hech, lug, pet) {
     $.ajax({
@@ -694,6 +702,8 @@ function isDate(string) {
 }
 
 function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
+
+
     var candado = "", version = '';
     switch (tipo) {
         case 'E':
@@ -742,10 +752,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
             fetchGet("Expediente/SelectTipoViolencia", "json", (data) => { TipoViolencia = data.tipoviolencia; })
             fetchGet("Expediente/SelectRelacionAgresor", "json", (data) => { RelacionAgresor = data.relacionagresor; })
             fetchGet("Expediente/SelectVisitadurias", "json", (data) => {
-                visitadurias = data.visitadurias; Swal.fire({
-                    showConfirmButton: false,
-                    timer: 1
-                }); })
+                visitadurias = data.visitadurias;  })
             console.log(response);
             CargaDatosSelectOtro_(`#Abogadoqueja${tipo}`, response.lista_abogado, response.informarcionC.id_abogado_recibe);
             CargaDatosSelectOtro_(`#municipioqueja${tipo}`, response.lista_municipio, response.informarcionC.id_lugar_hechos);
@@ -908,6 +915,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
         });
 
         $.when(ajaxDQOT).done(function (response) {
+
             if (tipo === '') {
                 CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, response.informarcionC.estatus_Expediente, expedienten, version);
                 $(`#submitForm${tipo}-${idqueja}`).hide();
@@ -920,7 +928,9 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 if (response.informarcionC.tipo_expediente === 1) {
                     console.log(expedienten);
                     CrearFormuCalificacion(idqueja, tipo, response.informarcionC.fecha_mod, response.informarcionC.estatus_Expediente, expedienten, version);
+
                 } else {
+
                     var ajaxSelectExpeSC = $.ajax({
                         type: "POST",
                         url: "SelectExpeSC",
@@ -928,6 +938,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                         dataType: "JSON"
                     });
                     $.when(ajaxSelectExpeSC).done(function (data) {
+
                         ExpeS_C = data.lisexsiconc;
                         CrearFormuCalificacionApo(tipo, response.informarcionC.fecha_mod);
                         if (response.infoaportaciones.length == 1) {
@@ -4052,7 +4063,7 @@ function CrearFormuCalificacionApo(tipo, fechamod) {
         };
 
         var formattedDate = new Intl.DateTimeFormat('es-ES', opciones).format(fechaObj);
-        $("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + " hrs.");
+        $("#fecha-hrs-Mod").text("Ultima Modificación: " + fechamod + " hrs.");
     }
 }
 function CrearFormuCalificacion(idform, tipo, fechamod, paso,expedienten, version) {
@@ -4131,7 +4142,7 @@ function CrearFormuCalificacion(idform, tipo, fechamod, paso,expedienten, versio
             };
 
             var formattedDate = new Intl.DateTimeFormat('es-ES', opciones).format(fechaObj);
-            $("#fecha-hrs-Mod").text("Ultima Modificación: " + formattedDate + " hrs.");
+            $("#fecha-hrs-Mod").text("Ultima Modificación: " + fechamod + " hrs.");
         }
 
         //$("#defaultOpenCa").html('Modificación');
@@ -4499,6 +4510,9 @@ function CrearFormuCalificacion(idform, tipo, fechamod, paso,expedienten, versio
 
     $(`#tema-frmDatosCalificacion${tipo}`).select2();
     $(`#programa-frmDatosCalificacion${tipo}`).select2();
+
+
+
 }
 
 function crearTabla(nomTabla, nomTab, arreglo, id, tipo) {
@@ -5336,11 +5350,11 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id, version) {
                         var buscaarch = '';
                         if (tipo === 'E') {
                             buscaarch = `<input type="file" name="archivoAtencion" multiple id="archivoAtencion_${meta.row}" class="input-file" accept=".pdf">
-                <div class="input-group col-xs-12">
-                <input id="archivoAtencionRuta_${meta.row}" type="text" class="form-control" disabled placeholder="Cargar archivos">
-                <span class="input-group-btn">
-                    <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
-                </span>`;
+                                        <div class="input-group col-xs-12">
+                                        <input id="archivoAtencionRuta_${meta.row}" type="text" class="form-control" disabled placeholder="Cargar archivos">
+                                        <span class="input-group-btn">
+                                            <button class="upload-field btn btn-info" type="button"><i class="fa fa-search"></i> Buscar</button>
+                                        </span>`;
                         }
                         return `<div id="muestra${tipo}_${meta.row}" style= "display:none">` + Requeridos() + CreaInputs_Con_Label(`fechaAtencion${tipo}_${meta.row}`, 'fechaAtencion', 'validatimeac', 'date', '', 'textfield9', '') + buscaarch + visorDocumentos + `</div>` + Requeridos() + `<textarea id="obsAtencion${tipo}_${meta.row}" class="swal2-input" placeholder="Describe la evidencia de atención"></textarea></div>`
                     }
@@ -5379,7 +5393,7 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id, version) {
                     var fecha = data.fecha_emision.split(' ')[0];
                     var fechaspl = fecha.split('/');
                     var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
-                    var date = new Date(fechaemi);
+                    var date = new Date(fecha);
                     /*Fecha emision*/
                     chargeDateInputDate(document.getElementById(`fechaEmision${tipo}_${rowIdx}`), date);
                     $(`#archivoEmisionruta_${rowIdx}`).val(dat.aemi);
@@ -5394,7 +5408,7 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id, version) {
                         var fecha = data.fecha_atencion.split(' ')[0];
                         var fechaspl = fecha.split('/');
                         var fechaemi = fechaspl[1] + '/' + fechaspl[0] + '/' + fechaspl[2];
-                        var date = new Date(fechaemi);
+                        var date = new Date(fecha);
                         /*Fecha emision*/
                         chargeDateInputDate(document.getElementById(`fechaAtencion${tipo}_${rowIdx}`), date);
                         $(`#archivoAtencionRuta_${rowIdx}`).val(dat.aate);

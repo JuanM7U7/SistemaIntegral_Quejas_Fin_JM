@@ -284,7 +284,7 @@ let Morales = "";
                                     timer: 2500
                                 });
                                 frmcompleto("#tab2");
-                                $("#save").attr("disabled",true);
+                                //$("#save").attr("disabled",true);
                             }
 
 
@@ -2569,7 +2569,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                 peticionariosGuardados.push({
                     idpeticionario: data.idpeticionario,
                     idcomplementopet: data.idcomplemento,
-                    nombrepeti: data.nombrepet
+                    nombrepeti: data.nombrepet.replace(/No Proporcionado/g, '') //Se quita de lista las palabras 'No Proporcionado'
                 });
 
                 // Se valida que el arreglo de peticionarios para los select no se repitan usuarios 
@@ -3920,7 +3920,7 @@ function CargaDatosSelecAutori(select, arreglo) {
     htmld += "</select>";
 
     $(select).append(htmld)
-    //$(select).select2();
+    $(select).select2();
 }
 function Seleccionar_ValorSelect(nombreSelect, valorPorDefecto) {
     $(nombreSelect + " > option[value='" + valorPorDefecto + "']").attr("selected", true);

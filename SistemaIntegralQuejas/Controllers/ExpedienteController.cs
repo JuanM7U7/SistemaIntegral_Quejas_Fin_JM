@@ -4813,9 +4813,9 @@ namespace SistemaIntegralQuejas.Controllers
             }
             else
             {
-                query = "exec Sp_obtener_diligen_version " + idqueja+",'"+ version + "'";
+                query = "exec Sp_obtener_diligen_version " + idqueja + ",'" + version + "'";
             }
-             
+
             string mensaje = "";
             diligen = conexionsql.SelectDilig(query, ref mensaje);
 
@@ -4830,19 +4830,40 @@ namespace SistemaIntegralQuejas.Controllers
                 if (dil.Tipo_diligencia != 3)
                 {
                     DateTime fechaUno = Convert.ToDateTime(dil.fecha_soli);
-                    DateTime fechaDos = string.IsNullOrEmpty(dil.fecharecibo) ? DateTime.Now : Convert.ToDateTime(dil.fecharecibo);
+                    DateTime fechaDos = string.IsNullOrEmpty(dil.plaz_aten) ? DateTime.Now : Convert.ToDateTime(dil.fecha_soli).AddDays(int.Parse(dil.plaz_aten));
+                    DateTime fechahoy = DateTime.Today;
                     dil.semaforo = "<div class=\"badge status-badge badge-success\">SI</div>";
                     int diasTrans = (fechaDos - fechaUno).Days;
+                    int diastranshoy = (fechahoy - fechaUno).Days;
                     int plazAten = Convert.ToInt16(dil.plaz_aten);
+
+
+
                     //Verificar el archivo de evidencia
-                    if (!string.IsNullOrEmpty(dil.fecharecibo)) 
+                    if (!string.IsNullOrEmpty(dil.fecharecibo))
                     {
                         dil.semaforo = "<div class=\"badge status-badge badge-success\">SI</div>";
                     }
                     else if (diasTrans != plazAten || (diasTrans == plazAten && string.IsNullOrEmpty(dil.fecharecibo)))
                     {
-                        query = $"exec semaforo {diasTrans}, {plazAten - 1}, {plazAten}, 1";
-                        dil.semaforo = conexionsql.ObtenerReader(query) + "<small><strong> sin atender</strong></small>";
+                        if (diastranshoy > diasTrans)
+                        {
+                            query = $"exec semaforo {diasTrans}, {plazAten - 1}, {plazAten}, 1";
+                            dil.semaforo = "<small><strong>Se venció tu plazo de atención de: </strong></small>" + conexionsql.ObtenerReader(query);
+                        }
+                        else
+                        {
+                            if (diastranshoy < 0)
+                            {
+                                query = $"exec semaforo {diastranshoy}, {plazAten - 1}, {plazAten}, 1";
+                                dil.semaforo = conexionsql.ObtenerReader(query) + "<small><strong>Días sin atender</strong></small>";
+                            }
+                            else
+                            {
+                                query = $"exec semaforo {diastranshoy}, {plazAten - 1}, {plazAten}, 1";
+                                dil.semaforo = conexionsql.ObtenerReader(query) + "<small><strong> sin atender</strong></small>";
+                            }
+                        }
                     }
                 }
             }
