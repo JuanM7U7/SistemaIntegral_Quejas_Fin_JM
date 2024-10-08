@@ -673,7 +673,7 @@ namespace SistemaIntegralQuejas.Models
                         string sabeLeer = lector[29].ToString();
                         string escolaridadPet = lector[30].ToString();
                         string EstadoPet = "";
-                        string IdenttificacionPet = "";
+                        string IdenttificacionPet = lector[26].ToString();
                         string OrigenPetExt = lector[27].ToString() + '-' + lector[28].ToString();
                         string ComplementoPetExt = lector[28].ToString();
                         int id_pet = int.Parse(lector[31].ToString());
