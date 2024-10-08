@@ -3859,11 +3859,11 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario) {
         +
         `
 			<div class="dummy dummy-text">
-			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
+			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '') }</span><span class="tooltipbox-content clearfix">
             <span class="tooltipbox-text"><span style="color:#c39f76">Infromación del Peticionario</span><br>
              ID DEL PETIC.: ${idpeticionario}<br>
              CURP:${curp}<br>
-             NOMBRE:${nombrepeticionario}<br>
+             NOMBRE:${nombrepeticionario.replace(/No Proporcionado/g, '')}<br>
             </span></span></span></p>
 			</div>
         `+ "</div>";

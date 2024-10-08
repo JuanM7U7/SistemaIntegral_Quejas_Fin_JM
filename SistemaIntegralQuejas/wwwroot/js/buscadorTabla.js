@@ -709,7 +709,7 @@ function traeInformacionEscritoi(idqueja, estatus, idcomplemento, idexpediente, 
                 $("input[name='id_escritoigenerado']").val(idqueja);
                 $("input[name='Input_ID']").val(idexpediente);
                 $("input[name='ID_CompPeticionario']").val(idcomplemento);
-                $("input[name='Input_Peticionario2']").val(response.data[0].peticionarios);
+                $("input[name='Input_Peticionario2']").val(response.data[0].peticionarios.replace(/No Proporcionado/g, ''));
                 $("input[name='Input_Peticionario']").val(response.data[0].idpersona + '/' + response.data[0].idcomlpe_persona);
                 $("input[name='ID_Peticionario']").val(response.idPeticionario);
                 $("input[name='Input_FechaHechos']").val(fecha_hechos);
@@ -1703,7 +1703,7 @@ function ventana_acpeta_visitaduria(mensaje, idexpediente, peticionarios) {
     options = [];
     $.map(peticionarios,
         function (o) {
-            options[idexpediente + "/" + o.fkRegRecepcion + "/" + o.idComplementoPeticionario + "/" + o.nombre + ' ' + o.apellidoPat + ' ' + o.apellidoMat] = o.nombre + ' ' + o.apellidoPat + ' ' + o.apellidoMat;
+            options[idexpediente + "/" + o.fkRegRecepcion + "/" + o.idComplementoPeticionario + "/" + o.nombre + ' ' + o.apellidoPat.replace("No Proporcionado", '') + ' ' + o.apellidoMat.replace("No Proporcionado", '')] = o.nombre + ' ' + o.apellidoPat.replace("No Proporcionado", '') + ' ' + o.apellidoMat.replace("No Proporcionado", '');
         });
 
     Swal.fire({
@@ -2868,43 +2868,17 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                     if (response.data[0].ciudad == 'No proporcionado') { $("#ciudad_petit-frmDatosPersonales" + idform).val('No proporcionado'); }
                     if (fecha_nac == '1900-01-01') { $("#fenac_petit-frmDatosPersonales" + idform).val(''); }
 
-                    if ((response.data[0].docIdentificatorio.toUpperCase() == 'NO PROPORCIONADO') || (response.data[0].apellidoPat == 'No proporcionado') || (response.data[0].apellidoMat == 'No proporcionado')) {
-                        var $input = $("#nombre_petit-frmDatosPersonales" + idform);
+                    if ((response.data[0].docIdentificatorio.toUpperCase() == 'NO PROPORCIONADO') || (response.data[0].apellidoPat == 'No proporcionado') || (response.data[0].apellidoMat == 'No proporcionado'))
+                    {
 
-                        // Creamos el nuevo select con las mismas clases y atributos que el input
-                        var $select = $('<select></select>')
-                            .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
-                            .attr({
-                                'data-idfrmit': '',
-                                'name': $input.attr('name'),
-                                'id': $input.attr('id'),
-                                'required': true
-                            });
 
-                        // Llenamos el select con las opciones del arreglo
+                        var $input = $('#nombre_petit-frmDatosPersonales1');
+                        var $select = $('<select></select>').addClass('form-control eliminaformaes ob max-20 eliminaformaes').attr({ 'data-idfrmit': '', 'name': $input.attr('name'), 'id': $input.attr('id'), 'required': true });
+                        $select.append($('<option></option>').val('').text('Selecciona una opción'));
                         $.each(Morales, function (index, item) {
-                         
-                            if (response.data[0].nombre == item.descripcion) {
-                                alert('Entro al if');
-                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion).attr('selected', 'true').trigger('change'));
-                               
-                            }
-                            else {
-                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
-                            }
+                            $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
                         });
-                        $select.select2({
-                            dropdownParent: $('.modal-body')
-                        });
-
-
-                        // Reemplazamos el input con el select
                         $input.replaceWith($select);
-                        //$("#nombre_petit-frmDatosPersonales" + idform).value(response.data[0].nombre)
-                        console.log($select);
-
-                        $(`#nombre_petit-frmDatosPersonales${idform} option[text='${response.data[0].nombre}']`).prop('selected', true);
-                        //console.log(response.data[0].nombre);
 
 
                         $('.noproporcionado').prop('checked', true).trigger('change');
@@ -2929,7 +2903,10 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                         $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
                         $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
                         $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
-
+                        $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].tipopet).trigger('change');
+                    }
+                    else {
+                        $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].nombre)
                     }
                    
                  
@@ -2938,10 +2915,12 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                 }
                 //updateDatosPeticionarios();
                 if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || validafechamodificacion === true) {
-                    $('.frmEditDatosPersonales button[type="submit"]').hide();
+                        $('.frmEditDatosPersonales button[type="submit"]').hide();
                 }
 
-            } else {
+            }
+            else
+            {
                 Swal.fire({
                     position: 'center',
                     icon: 'warning',
@@ -5054,11 +5033,11 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario) {
         +
         `
 			<div class="dummy dummy-text">
-			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
+			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '')}</span><span class="tooltipbox-content clearfix">
             <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación del Peticionario</span><br>
              ID DEL PETIC.: ${idpeticionario}<br>
              CURP:${curp}<br>
-             NOMBRE:${nombrepeticionario}<br>
+             NOMBRE:${nombrepeticionario.replace(/No Proporcionado/g, '')}<br>
             </span></span></span></p>
 			</div>
         `+ "</div>";

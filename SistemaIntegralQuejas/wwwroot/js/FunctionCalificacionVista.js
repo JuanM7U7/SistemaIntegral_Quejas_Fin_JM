@@ -1106,13 +1106,13 @@ function DivPequenioss(nombrepeticionario, curp, idpeticionario, tipopeticionari
                             <div class="dummy dummy-text">
                                 <p>
                                     <span class="tooltipbox tooltipbox-effect-1">
-                                        <span class="tooltipbox-item">${nombrepeticionario}</span>
+                                        <span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '') }</span>
                                         <span class="tooltipbox-content clearfix">
                                             <span class="tooltipbox-text">
                                                 <span style="color:black;font-weight: bold;">Información del Peticionario</span><br>
                                                 ID DEL PETIC.: ${idpeticionario}<br>
                                                 CURP: ${curp}<br>
-                                                NOMBRE: ${nombrepeticionario}<br>
+                                                NOMBRE: ${nombrepeticionario.replace(/No Proporcionado/g, '') }<br>
                                                 TIPO: ${tipopeticionario}<br>
                                                 <input type="text" id="idtip_compet" value="${idpeticionario}-${idtip_compet}" hidden>
                                             </span>
@@ -1133,13 +1133,13 @@ function DivPequenioss(nombrepeticionario, curp, idpeticionario, tipopeticionari
                             <div class="dummy dummy-text">
                                 <p>
                                     <span class="tooltipbox tooltipbox-effect-1">
-                                        <span class="tooltipbox-item">${nombrepeticionario}</span>
+                                        <span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '') }</span>
                                         <span class="tooltipbox-content clearfix">
                                             <span class="tooltipbox-text">
                                                 <span style="color:black;font-weight: bold;">Información del Peticionario</span><br>
                                                 ID DEL PETIC.: ${idpeticionario}<br>
                                                 CURP: ${curp}<br>
-                                                NOMBRE: ${nombrepeticionario}<br>
+                                                NOMBRE: ${nombrepeticionario.replace(/No Proporcionado/g, '') }<br>
                                                 TIPO: ${tipopeticionario}<br>
                                                 <input type="text" id="idtip_compet" value="${idpeticionario}-${idtip_compet}" hidden>
                                             </span>
@@ -1206,11 +1206,11 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
             +
             `
 			<div class="dummy dummy-text">
-			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
+			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '') }</span><span class="tooltipbox-content clearfix">
             <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación del Peticionario</span><br>
              ID DEL PETIC.: ${idpeticionario}<br>
              CURP:${curp}<br>
-             NOMBRE:${nombrepeticionario}<br>
+             NOMBRE:${nombrepeticionario.replace(/No Proporcionado/g, '') }<br>
              TIPO:${tipopeticionario}<br>
              <input type="text" id="idtip_compet" value="${idpeticionario}-${idtip_compet}" hidden>
             </span></span></span>
@@ -1225,11 +1225,11 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario, tipopeticionario
             +
             `
 			<div class="dummy dummy-text">
-			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
+			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '') }</span><span class="tooltipbox-content clearfix">
             <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación del Peticionario</span><br>
              ID DEL PETIC.: ${idpeticionario}<br>
              CURP:${curp}<br>
-             NOMBRE:${nombrepeticionario}<br>
+             NOMBRE:${nombrepeticionario.replace(/No Proporcionado/g, '') }<br>
              TIPO:${tipopeticionario}<br>
              <input type="text" id="idtip_compet" value="${idpeticionario}-${idtip_compet}" hidden>
             </span></span></span>
