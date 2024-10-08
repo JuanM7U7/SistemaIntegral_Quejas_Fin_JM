@@ -1192,7 +1192,8 @@ function warnningpet() {
     Swal.fire({
         position: 'center',
         icon: 'warning',
-        title: 'El ID_CURP tiene más de una queja ligada, no se puede editar los datos. Se debe eliminar el peticionario y agregar otro.'
+        title: 'El peticionario tiene más de una queja ligada, no se puede editar los datos.',
+        text: 'Se debe eliminar el peticionario y agregar otro.'
     });
 }
 
@@ -2279,11 +2280,21 @@ function updateDatosPeticionarios() {
             success: function (data) {
                 // Si se detecta un error, mostrar alerta y retornar
                 if (data.mensaje !== 'error') {
+                    var titulo = '', texto = '';
+                    if (nombre !== '') {
+                        titulo = 'El peticionario "' + nombre + '" ya se encuentra registrado como quejoso.'
+                    } else {
+                        titulo = 'El peticionario ya se encuentra registrado como '
+                        if ($('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:checked').val() === 'Peticionario') {
+                            titulo += 'quejoso.'
+                        } else { titulo += 'agraviado.' }
+                        texto = 'Favor de seleccionar otro tipo de usuario.'
+                    }
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Peticionario registrado con el mismo tipo de usuario',
-                        text: 'Favor de seleccionar otro tipo de usuario.',
+                        title: titulo,
+                        text: texto,
                         showConfirmButton: true
                     });
                     return; // Detiene la ejecución si hay un error

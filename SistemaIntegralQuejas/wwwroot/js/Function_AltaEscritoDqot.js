@@ -3836,7 +3836,7 @@ function traeInformacionDatosComplementarios(idqueja) {
                 var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
                 for (var i = 0; i < contadorpeticionarios; i++) {
                     console.log(contadorpeticionarios);
-                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario, response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
+                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
                 }
             }
 
