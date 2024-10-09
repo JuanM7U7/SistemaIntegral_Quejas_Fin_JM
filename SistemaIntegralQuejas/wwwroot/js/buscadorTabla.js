@@ -994,7 +994,7 @@ function mostrarResTblFormatos(response) {
                                     || full.status_Expediente == 'Turnado a VA'
                                     || validafecha_modificaciondqot === true) {
                                     peticionarioslist += `
-                                                <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat} ${full.agravQuej[i].apellidoMat} (${full.agravQuej[i].tipoUsuario})</label> <br/> 
+                                                <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${full.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${full.agravQuej[i].tipoUsuario})</label> <br/> 
                                                 <button type='button' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
                                                     <span class='fa fa-search color-muted fa-2x delbtnfdp${full.fkExpediente}'></span>
                                                 </button>`;
@@ -1006,7 +1006,7 @@ function mostrarResTblFormatos(response) {
                                     }
                                 } else {
                                     peticionarioslist += `
-                                        <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat} ${full.agravQuej[i].apellidoMat} (${full.agravQuej[i].tipoUsuario})</label> <br/> 
+                                        <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${full.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${full.agravQuej[i].tipoUsuario})</label> <br/> 
                                         <button type='button' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
                                             <span class='fa fa-pencil color-muted fa-2x delbtnfdp${full.fkExpediente}'></span>
                                         </button>
@@ -1888,13 +1888,13 @@ function format(data) {
         for (var i = 0; i < data.agravQuej.length; i++) {
             if ((data.status_Expediente == 'Eliminado')) {
                 peticionarioslist += `
-                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat} ${data.agravQuej[i].apellidoMat} (${data.agravQuej[i].tipoUsuario})</label> <br/> 
+                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${data.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${data.agravQuej[i].tipoUsuario})</label> <br/> 
                               <button type='button' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-search color-muted fa-2x'></span>
                                </button>`;
             } else {
                 peticionarioslist += `
-                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat} ${data.agravQuej[i].apellidoMat} (${data.agravQuej[i].tipoUsuario})</label> <br/>
+                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${data.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${data.agravQuej[i].tipoUsuario})</label> <br/>
                               <button type='button' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-pencil color-muted fa-2x'></span>
                                </button>
