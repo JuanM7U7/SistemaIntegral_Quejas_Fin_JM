@@ -1742,7 +1742,7 @@ function ventana_eligepeticionario_ei(mensaje, idexpediente, peticionarios) {
     options = [];
     $.map(peticionarios,
         function (o) {
-            options[idexpediente + "/" + o.fkRegRecepcion + "/" + o.idComplementoPeticionario + "/" + o.nombre + ' ' + o.apellidoPat + ' ' + o.apellidoMat] = o.nombre + ' ' + o.apellidoPat + ' ' + o.apellidoMat;
+            options[idexpediente + "/" + o.fkRegRecepcion + "/" + o.idComplementoPeticionario + "/" + o.nombre + ' ' + o.apellidoPat.replace("No Proporcionado", '') + ' ' + o.apellidoMat.replace("No Proporcionado", '')] = o.nombre + ' ' + o.apellidoPat.replace("No Proporcionado", '') + ' ' + o.apellidoMat.replace("No Proporcionado", '');
         });
 
     Swal.fire({
