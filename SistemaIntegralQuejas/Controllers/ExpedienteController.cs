@@ -2304,16 +2304,25 @@ namespace SistemaIntegralQuejas.Controllers
                 itemformatos.Id = Convert.ToInt32(row["id_expediente"]);
                 itemformatos.Expediente = row["expediente"].ToString();
                 itemformatos.FechaTurno = (row["fechaturnovisitaduria"]).ToString();
+                itemformatos.FechaRecep= (row["fecharecepfis"]).ToString(); 
                 itemformatos.Status = (row["status"]).ToString();
                 itemformatos.otro = (row["abogadot"]).ToString();
                 #region FechaRecep
+                if ((row["fecharecepfis"]).ToString() != "")
+                {
+                    itemformatos.FechaRecep = (row["fecharecepfis"]).ToString();
+                }
+                else 
+                {
+                    itemformatos.FechaRecep = "<div class=\"badge status-badge\" style=\"background-color:#c06500;color:white;\">Sin Fecha de Recepción</div >";
+                }
                 if ((row["fechaturnovisitaduriaelectronico"]).ToString() != "")
                 {
-                    itemformatos.FechaRecep = (row["fechaturnovisitaduriaelectronico"]).ToString();
+                   //itemformatos.FechaRecep = (row["fechaturnovisitaduriaelectronico"]).ToString();
                 }
                 else
                 {
-                    itemformatos.FechaRecep = "<div class=\"badge status-badge\" style=\"background-color:#c06500;color:white;\">Sin Fecha de Recepción</div >";
+                    //itemformatos.FechaRecep = "<div class=\"badge status-badge\" style=\"background-color:#c06500;color:white;\">Sin Fecha de Recepción</div >";
                 }
                 #endregion
                 #region FechaCalific
@@ -4848,8 +4857,8 @@ namespace SistemaIntegralQuejas.Controllers
                     {
                         if (diastranshoy > diasTrans)
                         {
-                            query = $"exec semaforo {diasTrans}, {plazAten - 1}, {plazAten}, 1";
-                            dil.semaforo = "<small><strong>Se venció tu plazo de atención de: </strong></small>" + conexionsql.ObtenerReader(query);
+                            query = $"exec semaforo {diastranshoy}, {plazAten - 1}, {plazAten}, 1";
+                            dil.semaforo = "<small><strong>Se venció su plazo de atención hace: </strong></small>" + conexionsql.ObtenerReader(query);
                         }
                         else
                         {

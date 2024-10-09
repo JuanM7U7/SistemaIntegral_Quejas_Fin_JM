@@ -18,7 +18,7 @@ $(document).ready(function () {
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Usuario o Contraseña Iconrrecta',
+                        title: 'Usuario o Contraseña Incorrecta, verifica tus datos',
                         showConfirmButton: false,
                         timer: 1500
                     });

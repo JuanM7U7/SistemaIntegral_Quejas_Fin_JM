@@ -339,7 +339,7 @@ function mostrarResTblFormatos(response, response1) {
             {
                 'mRender': function (data, type, full) {
                     if (full.fechaCalific && full.fechaCalific.includes('Sin Fecha de Calificación')) { full.fechaCalific = ''; }
-                    btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabDetalle","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-link margin-iconbf' title='Consultar informacion de ID'>
+                    btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, '${full.fechaRecep}', "modaltabDetalle","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-link margin-iconbf' title='Consultar informacion de ID'>
                                                 ${full.id}
                                            </button>`;
                     return btnEscritook
@@ -357,14 +357,14 @@ function mostrarResTblFormatos(response, response1) {
                     if (full.fechaCalific && full.fechaCalific.includes('Sin Fecha de Calificación')) { full.fechaCalific = ''; }
                     if (full.expediente !== 'PENDIENTE' && full.status == 'Calificado') {
                         //full.expediente
-                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, '${full.fechaRecep}', "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Modificar</button>`;
                     } else if (full.expediente !== 'PENDIENTE' && full.status == 'Concluido')
                     {
                         btnEscritook = '';
                         //btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}", "${full.fechaTunAbo}", "${full.fechaCalific}")' class='btn btn-info status-badge rounded'>Consultar</button>`;
 
                     }else {
-                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, "${full.fechaRecep}", "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Calificar</button>`;
+                        btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id}, '${full.fechaRecep}', "modaltabCalif","","${full.expediente}")' class='btn btn-info status-badge rounded'>Calificar</button>`;
                     }
                     return btnEscritook
                 }
@@ -866,7 +866,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 $(`#ListAport${tipo}`).append(Crea_Label('textfield8', 'textfield8', '', 'ID´s aportados: '));
                 const listaAport = response.infoaportaciones;
                 listaAport.forEach(item => {
-                    $(`#ListAport${tipo}`).append(`<button id="myBtn${item.id_expediente}" type="button" onclick='modalShow(${item.id_expediente}, "${fecRecep}", "modaltabDetalle", 1)' class="btn btn-link margin-iconbf">
+                    $(`#ListAport${tipo}`).append(`<button id="myBtn${item.id_expediente}" type="button" onclick='modalShow(${item.id_expediente}, '${fecRecep}', "modaltabDetalle", 1)' class="btn btn-link margin-iconbf">
                                             ${item.id_expediente}
                                           </button>`);
                 });

@@ -529,6 +529,8 @@ function funcionesActac(nfrm) {
         var vari26 = $("#horaTermino" + nfrm).val()
         $('#id_anio' + nfrm).val($("#anio" + nfrm + " option:selected").val());
 
+
+
         if ($("#id_lugar" + nfrm).val() == '' || $("#diaFecha" + nfrm).val() == '' || $("#id_mes" + nfrm).val() == '' || $("#id_anio" + nfrm).val() == '' || $("#horaInicio" + nfrm).val() == ''
             || $("#ubicacion" + nfrm).val() == '' || $("#idpeticionarioelegido" + nfrm).val() == '' || $("#idconsentimiento" + nfrm).val() == ''
             /*|| $("#origenPetval" + nfrm).val() == ''*/ || $("#edadPet" + nfrm).val() == '' || $("#sabeleerPet" + nfrm).val() == '' /*|| $("#escolaridad" + nfrm).val() == '' */|| $("#callePet" + nfrm).val() == ''
@@ -546,7 +548,7 @@ function funcionesActac(nfrm) {
             frmincompleto("#tab3");
 
         } else {
-
+            $("#CircunstanciasHechos").val(vari25);
 
             $.ajax({
                 type: "post",
@@ -577,6 +579,8 @@ function funcionesActac(nfrm) {
                             fetchPost("Expediente/InsertEnlaceFormatoQueja", "json", FrmEnFormatQueja, (resp) => {
                                 if (resp.status) {
                                     $('#idenlaceformatquejac' + nfrm).val(resp.idinsertado);
+                                    
+
                                     Swal.fire({
                                         position: 'center',
                                         icon: 'success',
@@ -3982,6 +3986,9 @@ function guardarQueja() {
             frmincompleto("#tab4");
         }
         else {
+            $("#CircunstanciasHechos").val($("#hechos").val());
+            $("#hechos1").val($("#hechos").val());
+            
             $.ajax({
                 type: "POST",
                 url: "https://localhost:7126/AltaExpediente/GuardarQueja",

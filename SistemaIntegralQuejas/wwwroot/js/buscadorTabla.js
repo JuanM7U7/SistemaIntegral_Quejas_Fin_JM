@@ -31,6 +31,8 @@ $(document).ready(function () {
             didOpen: () => {
                 Swal.showLoading();
             },
+            timer: 15000,
+            timerProgressBar: true,
         });
         $.ajax({
             type: "POST",
@@ -994,7 +996,7 @@ function mostrarResTblFormatos(response) {
                                     || full.status_Expediente == 'Turnado a VA'
                                     || validafecha_modificaciondqot === true) {
                                     peticionarioslist += `
-                                                <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat} ${full.agravQuej[i].apellidoMat} (${full.agravQuej[i].tipoUsuario})</label> <br/> 
+                                                <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${full.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${full.agravQuej[i].tipoUsuario})</label> <br/> 
                                                 <button type='button' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
                                                     <span class='fa fa-search color-muted fa-2x delbtnfdp${full.fkExpediente}'></span>
                                                 </button>`;
@@ -1006,7 +1008,7 @@ function mostrarResTblFormatos(response) {
                                     }
                                 } else {
                                     peticionarioslist += `
-                                        <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat} ${full.agravQuej[i].apellidoMat} (${full.agravQuej[i].tipoUsuario})</label> <br/> 
+                                        <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${full.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${full.agravQuej[i].tipoUsuario})</label> <br/> 
                                         <button type='button' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
                                             <span class='fa fa-pencil color-muted fa-2x delbtnfdp${full.fkExpediente}'></span>
                                         </button>
@@ -1888,13 +1890,13 @@ function format(data) {
         for (var i = 0; i < data.agravQuej.length; i++) {
             if ((data.status_Expediente == 'Eliminado')) {
                 peticionarioslist += `
-                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat} ${data.agravQuej[i].apellidoMat} (${data.agravQuej[i].tipoUsuario})</label> <br/> 
+                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${data.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${data.agravQuej[i].tipoUsuario})</label> <br/> 
                               <button type='button' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-search color-muted fa-2x'></span>
                                </button>`;
             } else {
                 peticionarioslist += `
-                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat} ${data.agravQuej[i].apellidoMat} (${data.agravQuej[i].tipoUsuario})</label> <br/>
+                              <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${data.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${data.agravQuej[i].tipoUsuario})</label> <br/>
                               <button type='button' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-pencil color-muted fa-2x'></span>
                                </button>
@@ -2908,8 +2910,8 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                     else {
                         $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].nombre)
                     }
-                   
-                 
+
+
                     $("#modalFormPeticionario").modal("show");
 
                 }
@@ -4993,7 +4995,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus, fechavalidmodidqo
             //Convertir Fecha 13-05-2024 GIPC
             var date = new Date();
             if (response.informarcionC.fecha_registro != null) {
-                date = new Date(DDMMYYYY_HHMMtoYYYYMMDD_HHMM(response.informarcionC.fecha_registro));
+                date = new Date(response.informarcionC.fecha_registro);
             }
             //var date = new Date(response.informarcionC.fecha_registro);
             chargeDateInputDate(inputDate, date);
@@ -5116,7 +5118,7 @@ function EnviarQueja() {
                                 Swal.showLoading();
                             },
                             allowOutsideClick: false,
-                            allowEscapeKey: false
+                            allowEscapeKey: false,
                         });
                         $.ajax({
                             type: "POST",

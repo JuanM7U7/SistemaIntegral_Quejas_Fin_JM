@@ -262,7 +262,7 @@ function mostrarResTblFormatos(response,response1) {
 
             },
                         {
-                data: 'fechaTurno'
+                data: 'fechaRecep'
 
             }
             ,
