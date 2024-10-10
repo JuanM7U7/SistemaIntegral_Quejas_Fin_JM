@@ -490,9 +490,8 @@ function validaVacios( formpapa,tipoelemento ,elementoavalidar,elementoclick)
     ////contador++
 }
 function funcionesActac(nfrm) {
-    console.log('hola funcionesActac')
-
-    $(document).on('click', ".saveActaC", function (e) { //esta función se ejecutará en todos los casos
+    $(document).on('click', "#saveActaC", function (e) { //esta función se ejecutará en todos los casos
+        console.log('hola funcionesActac')
         e.preventDefault();
         e.stopImmediatePropagation();
 
