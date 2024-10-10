@@ -31,7 +31,7 @@ $(document).ready(function () {
             didOpen: () => {
                 Swal.showLoading();
             },
-            timer: 15000,
+            timer: 17000,
             timerProgressBar: true,
         });
         $.ajax({
