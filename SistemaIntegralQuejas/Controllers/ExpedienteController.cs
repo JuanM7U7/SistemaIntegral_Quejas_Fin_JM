@@ -34,6 +34,7 @@ using System.Runtime.Serialization;
 using static SistemaIntegralQuejas.Controllers.ExpedienteController;
 using System.Numerics;
 using System.Security.Policy;
+using Microsoft.Extensions.Primitives;
 
 namespace SistemaIntegralQuejas.Controllers
 {
@@ -2620,22 +2621,15 @@ namespace SistemaIntegralQuejas.Controllers
         }
         public ActionResult GuardarDataComplPeticionario(IFormCollection form, string nombreS)
         {
-            var usuario = _httpContextAccessor.HttpContext.User;
-            var UsuLog = usuario.Identity.Name;
-            var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
-            if (string.IsNullOrEmpty(ip))
-            {
-                ip = HttpContext.Connection.RemoteIpAddress?.ToString();
-            }
+            StringBuilder txtcontBuilder = new StringBuilder();
             string nombre = "Itzel", apellidop = "Prado", apellidom = "Cuautle", curp = "PACG991214MPLRTD04";
             string txtcont = "", apartado = @"%Apartado:Datos Personales\Tipo:Alta\";
-            DateTime FechaHora = DateTime.Now;
-            txtcont += apartado + @"Campo:Nombre\Antes:-\Despues:" + nombre + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
-            txtcont += apartado + @"Campo:Apellido Paterno\Antes:-\Despues:" + apellidop + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
-            txtcont += apartado + @"Campo:Apellido Materno\Antes:-\Despues:" + apellidom + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
-            txtcont += apartado + @"Campo:CURP\Antes:-\Despues:" + curp + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
-            CrearBitacoraTXT(824, txtcont);
+            ContBitacora(txtcontBuilder, "Datos Personales", "ALTA", "Nombre", "-", nombre);
+            txtcont=txtcontBuilder.ToString();
+            CrearBitacoraTXT(825, txtcont);
             return Json(new { idcomplemento = "", idpeticionario = "", idqueja = 1, tipousuario = "", nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
+
+
             //string numFrm = form["numFrm"].ToString();
             //string idcomplementopet = form["idcomplementopet" + numFrm].ToString();
             //string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
@@ -2768,22 +2762,23 @@ namespace SistemaIntegralQuejas.Controllers
             //{
             //    RegRecepcion userItem = new RegRecepcion();
             //    userItem.IdRegistro = Convert.ToInt32(row["ID_REGISTRO"]);
+            //    userItem.Nombre = (row["NOMBRE"].ToString());
+            //    userItem.ApellidoPat = (row["APELLIDO_PAT"].ToString());
+            //    userItem.ApellidoMat = (row["APELLIDO_MAT"].ToString());
+            //    userItem.DocIdentificatorio = (row["DOC_IDENTIFICATORIO"].ToString());
             //    peticionariolist.Add(userItem);
             //}
-            //string txtcont = "", apartado = @"%Apartado:Datos Personales\Tipo:Alta\";
             //// Si el peticionario ya esta registrado se actualizan sus datos en caso de que hayan cambiado
             //if (peticionariolist.Count > 0)
             //{
             //    idPetit = Convert.ToInt32(peticionariolist[0].IdRegistro);
-
             //    // Se actualiza datos del peticionario que ingreso en la entrada si es necesario
             //    String queryPet = "exec Sp_Update_Peticionario " + idPetit + ",'" + nombre + "','" + apellidop + "','" + apellidom + "', '" + curp + "' ";
             //    conexionsql.InsertUpdateDelete(queryPet);
-            //    DateTime FechaHora = DateTime.Now;
-            //    txtcont += apartado + @"Campo:Nombre\Antes:-\Despues:" + nombre + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:" + HttpContext.Connection.RemoteIpAddress;
-            //    txtcont += apartado + @"Campo:Apellido Paterno\Antes:-\Despues:" + apellidop + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:" + HttpContext.Connection.RemoteIpAddress;
-            //    txtcont += apartado + @"Campo:Apellido Materno\Antes:-\Despues:" + apellidom + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:" + HttpContext.Connection.RemoteIpAddress;
-            //    txtcont += apartado + @"Campo:CURP\Antes:-\Despues:" + curp + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:";
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "Nombre", peticionariolist[0].Nombre, nombre);
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "Apellido Paterno", peticionariolist[0].ApellidoPat, apellidop);
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "Apellido Materno", peticionariolist[0].ApellidoMat, apellidom);
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "CURP", peticionariolist[0].DocIdentificatorio, curp);
             //}
             //// si no esta registrado se inserta el registro
             //else
@@ -2795,7 +2790,10 @@ namespace SistemaIntegralQuejas.Controllers
             //                             "'" + curp + "', ''";
 
             //    idPetit = conexionsql.InsertUpdateDeleteRegresaid(queryip);
-
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "Nombre", "-", nombre);
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "Apellido Paterno", "-", apellidop);
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "Apellido Materno", "-", apellidom);
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", "-", curp);
             //}
 
             //// Se valida si quiere editar el complemento actual de peticionario o si es uno nuevo
@@ -2845,7 +2843,7 @@ namespace SistemaIntegralQuejas.Controllers
             //        "'" + genero + "'," +
             //        "'" + otroGenero + "'," +
             //        "'" + VersionComplemento + "'";
-
+            //        ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", peticionariolist[0].DocIdentificatorio, curp);
             //    }
             //    // Si el id de queja ya existe entonces se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
             //    else
@@ -2891,6 +2889,7 @@ namespace SistemaIntegralQuejas.Controllers
             //       "'" + genero + "'," +
             //       "'" + otroGenero + "'," +
             //       "'" + id_queja + "'";
+            //        ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", peticionariolist[0].DocIdentificatorio, curp);
             //    }
 
             //}
@@ -2937,11 +2936,12 @@ namespace SistemaIntegralQuejas.Controllers
             //      "" + idcomplementopet + "," +
             //      "'" + genero + "'," +
             //      "'" + otroGenero + "'";
-
+            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", peticionariolist[0].DocIdentificatorio, curp);
             //    //idcompet = conexionsql.InsertUpdateDeleteRegresaid(query);
 
             //}
 
+            //string txtcont = txtcontBuilder.ToString();
             //return Json(new { idcomplemento = conexionsql.InsertUpdateDeleteRegresaid(query), idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
 
         }
@@ -5040,6 +5040,26 @@ namespace SistemaIntegralQuejas.Controllers
             catch (Exception ex)
             {
             }
+        }
+
+        public void ContBitacora(StringBuilder txtcontBuilder, string apartado, string tipo, string campo, string antes, string despues)
+        {
+            var usuario = _httpContextAccessor.HttpContext.User;
+            var UsuLog = usuario.Identity.Name;
+            var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+            }
+            DateTime FechaHora = DateTime.Now;
+            txtcontBuilder.Append(@"%Apartado:").Append(apartado)
+                .Append(@"\Tipo:").Append(tipo)
+                .Append(@"\Campo:").Append(campo)
+                .Append(@"\Antes:").Append(antes)
+                .Append(@"\Despues:").Append(despues)
+                .Append(@"\FechaHora:").Append(FechaHora.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Append(@"\Usuario:").Append(UsuLog)
+                .Append(@"\IP:").Append(ip);
         }
     }
 }
