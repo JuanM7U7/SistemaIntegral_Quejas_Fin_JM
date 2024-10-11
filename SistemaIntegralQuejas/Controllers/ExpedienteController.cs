@@ -46,12 +46,13 @@ namespace SistemaIntegralQuejas.Controllers
         static int id_queja = 0;
         static int UltimoID_Recuperado = 0;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ExpedienteController(IWebHostEnvironment hostingEnvironment)
+        public ExpedienteController(IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
         {
 
             _hostingEnvironment = hostingEnvironment;
-
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public ActionResult Index()
@@ -2619,307 +2620,329 @@ namespace SistemaIntegralQuejas.Controllers
         }
         public ActionResult GuardarDataComplPeticionario(IFormCollection form, string nombreS)
         {
-            string numFrm = form["numFrm"].ToString();
-            string idcomplementopet = form["idcomplementopet" + numFrm].ToString();
-            string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
-            string id_queja = form["idquejagenerado"].ToString();
-            string VersionComplemento = "";
-            if (form["versioncomplementopeticionario"].Count>0) { VersionComplemento = form["versioncomplementopeticionario"].ToString(); }
-             
-            int violenciamujer = 0;
-            string Canalizaciondepen = "";
-            string idEmbarazada = "";
-            int idHijosvivos = 7;
-            int idModalidadvio = 6;
-            int idRelacionagresor = 8;
-            string IngresosMensuales = "";
-            int idTipoviole = 5;
-
-            string migOrigen = "";
-            string migDestino = "";
-            string migidPrimeramex = "";
-
-            string tipouser = form["qatu_petit-frmDatosPersonales" + numFrm].ToString();
-            string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
-            string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado"&& nombreS!= null)
+            var usuario = _httpContextAccessor.HttpContext.User;
+            var UsuLog = usuario.Identity.Name;
+            var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
             {
-                nombre = nombreS;
+                ip = HttpContext.Connection.RemoteIpAddress?.ToString();
             }
-            string calle = form["calle_petit-frmDatosPersonales" + numFrm].ToString();
-            string nexterior = form["nexterior_petit-frmDatosPersonales" + numFrm].ToString();
-            string ninterior = form["ninterior_petit-frmDatosPersonales" + numFrm].ToString();
-            string colonia = form["colonia_petit-frmDatosPersonales" + numFrm].ToString();
-            string ciudad = form["ciudad_petit-frmDatosPersonales" + numFrm].ToString();
-            string municipio = form["municipio_petit-frmDatosPersonales" + numFrm].ToString();
-            string estado = form["estado_petit-frmDatosPersonales" + numFrm].ToString();
-            string cp = form["cp_petit-frmDatosPersonales" + numFrm].ToString();
-            string telefono = form["telefono_petit-frmDatosPersonales" + numFrm].ToString();
-            string edad = form["edad_petit-frmDatosPersonales" + numFrm].ToString();
-            string email = form["email_petit-frmDatosPersonales" + numFrm].ToString();
-            int idSexo = 3;
-            if (form["radsexo_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            else
-            {
-                idSexo = int.Parse(form["radsexo_petit-frmDatosPersonales" + numFrm].ToString());
-            }
-            string genero = form["genero_petit-frmDatosPersonales" + numFrm].ToString();
-            string otroGenero = form["ogenero_petit-frmDatosPersonales" + numFrm].ToString();
-            int idEscolaridad = 14;
-            if (form["escosel_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            else
-            {
-                idEscolaridad = int.Parse(form["escosel_petit-frmDatosPersonales" + numFrm].ToString());
-            }
-            int idEstadoconyugal = 8;
-            if (form["econyugal_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            else
-            {
-                idEstadoconyugal = int.Parse(form["econyugal_petit-frmDatosPersonales" + numFrm].ToString());
-            }
-            int idOcupacion = 9;
-            if (form["ocupacion_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            else
-            {
-                idOcupacion = int.Parse(form["ocupacion_petit-frmDatosPersonales" + numFrm].ToString());
-            }
-            string Otraocupacion = form["ocupacioninpt_petit-frmDatosPersonales" + numFrm].ToString();
-            string nacionalidad = form["chknacionalidad_petit-frmDatosPersonales" + numFrm].ToString();
-            string sabeleer = form["chksleer_petit-frmDatosPersonales" + numFrm].ToString();
-            int idDiscapacidad = 7;
-            if (form["discapacidad_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            else
-            {
-                idDiscapacidad = int.Parse(form["discapacidad_petit-frmDatosPersonales" + numFrm].ToString());
-            }
-            int idGruposocial = 9;
-            if (form["gsoci_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            else
-            {
-                idGruposocial = int.Parse(form["gsoci_petit-frmDatosPersonales" + numFrm].ToString());
-            }
-            string otroGruposocial = form["gsociinpt_petit-frmDatosPersonales" + numFrm].ToString();
-            string idLenguaindigena = form["leindi_petit-frmDatosPersonales" + numFrm].ToString();
-            string otraLenguaindigena = form["oleindi_petit-frmDatosPersonales" + numFrm].ToString();
-            string fechanac = form["fenac_petit-frmDatosPersonales" + numFrm].ToString();
-            //DateTime fechafin = DateTime.ParseExact(fechanac, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            string nombre = "Itzel", apellidop = "Prado", apellidom = "Cuautle", curp = "PACG991214MPLRTD04";
+            string txtcont = "", apartado = @"%Apartado:Datos Personales\Tipo:Alta\";
+            DateTime FechaHora = DateTime.Now;
+            txtcont += apartado + @"Campo:Nombre\Antes:-\Despues:" + nombre + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
+            txtcont += apartado + @"Campo:Apellido Paterno\Antes:-\Despues:" + apellidop + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
+            txtcont += apartado + @"Campo:Apellido Materno\Antes:-\Despues:" + apellidom + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
+            txtcont += apartado + @"Campo:CURP\Antes:-\Despues:" + curp + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + UsuLog + @"\IP:" + ip;
+            CrearBitacoraTXT(824, txtcont);
+            return Json(new { idcomplemento = "", idpeticionario = "", idqueja = 1, tipousuario = "", nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
+            //string numFrm = form["numFrm"].ToString();
+            //string idcomplementopet = form["idcomplementopet" + numFrm].ToString();
+            //string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
+            //string id_queja = form["idquejagenerado"].ToString();
+            //string VersionComplemento = "";
+            //if (form["versioncomplementopeticionario"].Count > 0) { VersionComplemento = form["versioncomplementopeticionario"].ToString(); }
 
-            if (nacionalidad == "Extranjero")
-            {
-                migOrigen = form["migorig_petit-frmDatosPersonales" + numFrm].ToString();
-                migDestino = form["migdesti_petit-frmDatosPersonales" + numFrm].ToString();
-                migidPrimeramex = form["migprmex_petit-frmDatosPersonales" + numFrm].ToString();
-            }
+            //int violenciamujer = 0;
+            //string Canalizaciondepen = "";
+            //string idEmbarazada = "";
+            //int idHijosvivos = 7;
+            //int idModalidadvio = 6;
+            //int idRelacionagresor = 8;
+            //string IngresosMensuales = "";
+            //int idTipoviole = 5;
 
-            if (form["radsinoviomu_petit-frmDatosPersonales" + numFrm].ToString() == "Si")
-            {
-                violenciamujer = 1;
+            //string migOrigen = "";
+            //string migDestino = "";
+            //string migidPrimeramex = "";
 
-                Canalizaciondepen = form["vmcanadep_petit-frmDatosPersonales" + numFrm].ToString();
-                idEmbarazada = form["vmembara_petit-frmDatosPersonales" + numFrm].ToString();
-                idHijosvivos = int.Parse(form["vmhijos_petit-frmDatosPersonales" + numFrm].ToString());
-                idModalidadvio = int.Parse(form["vmmodvio_petit-frmDatosPersonales" + numFrm].ToString());
-                idRelacionagresor = int.Parse(form["vmreviagr_petit-frmDatosPersonales" + numFrm].ToString());
-                IngresosMensuales = form["vmingrmen_petit-frmDatosPersonales" + numFrm].ToString();
-                idTipoviole = int.Parse(form["vmtvio_petit-frmDatosPersonales" + numFrm].ToString());
-            }
+            //string tipouser = form["qatu_petit-frmDatosPersonales" + numFrm].ToString();
+            //string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
+            //string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            //string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            //string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            //if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado" && nombreS != null)
+            //{
+            //    nombre = nombreS;
+            //}
+            //string calle = form["calle_petit-frmDatosPersonales" + numFrm].ToString();
+            //string nexterior = form["nexterior_petit-frmDatosPersonales" + numFrm].ToString();
+            //string ninterior = form["ninterior_petit-frmDatosPersonales" + numFrm].ToString();
+            //string colonia = form["colonia_petit-frmDatosPersonales" + numFrm].ToString();
+            //string ciudad = form["ciudad_petit-frmDatosPersonales" + numFrm].ToString();
+            //string municipio = form["municipio_petit-frmDatosPersonales" + numFrm].ToString();
+            //string estado = form["estado_petit-frmDatosPersonales" + numFrm].ToString();
+            //string cp = form["cp_petit-frmDatosPersonales" + numFrm].ToString();
+            //string telefono = form["telefono_petit-frmDatosPersonales" + numFrm].ToString();
+            //string edad = form["edad_petit-frmDatosPersonales" + numFrm].ToString();
+            //string email = form["email_petit-frmDatosPersonales" + numFrm].ToString();
+            //int idSexo = 3;
+            //if (form["radsexo_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            //else
+            //{
+            //    idSexo = int.Parse(form["radsexo_petit-frmDatosPersonales" + numFrm].ToString());
+            //}
+            //string genero = form["genero_petit-frmDatosPersonales" + numFrm].ToString();
+            //string otroGenero = form["ogenero_petit-frmDatosPersonales" + numFrm].ToString();
+            //int idEscolaridad = 14;
+            //if (form["escosel_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            //else
+            //{
+            //    idEscolaridad = int.Parse(form["escosel_petit-frmDatosPersonales" + numFrm].ToString());
+            //}
+            //int idEstadoconyugal = 8;
+            //if (form["econyugal_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            //else
+            //{
+            //    idEstadoconyugal = int.Parse(form["econyugal_petit-frmDatosPersonales" + numFrm].ToString());
+            //}
+            //int idOcupacion = 9;
+            //if (form["ocupacion_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            //else
+            //{
+            //    idOcupacion = int.Parse(form["ocupacion_petit-frmDatosPersonales" + numFrm].ToString());
+            //}
+            //string Otraocupacion = form["ocupacioninpt_petit-frmDatosPersonales" + numFrm].ToString();
+            //string nacionalidad = form["chknacionalidad_petit-frmDatosPersonales" + numFrm].ToString();
+            //string sabeleer = form["chksleer_petit-frmDatosPersonales" + numFrm].ToString();
+            //int idDiscapacidad = 7;
+            //if (form["discapacidad_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            //else
+            //{
+            //    idDiscapacidad = int.Parse(form["discapacidad_petit-frmDatosPersonales" + numFrm].ToString());
+            //}
+            //int idGruposocial = 9;
+            //if (form["gsoci_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            //else
+            //{
+            //    idGruposocial = int.Parse(form["gsoci_petit-frmDatosPersonales" + numFrm].ToString());
+            //}
+            //string otroGruposocial = form["gsociinpt_petit-frmDatosPersonales" + numFrm].ToString();
+            //string idLenguaindigena = form["leindi_petit-frmDatosPersonales" + numFrm].ToString();
+            //string otraLenguaindigena = form["oleindi_petit-frmDatosPersonales" + numFrm].ToString();
+            //string fechanac = form["fenac_petit-frmDatosPersonales" + numFrm].ToString();
+            ////DateTime fechafin = DateTime.ParseExact(fechanac, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            var queryPeticionario = "";
-            String query = "";
-            int idPetit = 0;
+            //if (nacionalidad == "Extranjero")
+            //{
+            //    migOrigen = form["migorig_petit-frmDatosPersonales" + numFrm].ToString();
+            //    migDestino = form["migdesti_petit-frmDatosPersonales" + numFrm].ToString();
+            //    migidPrimeramex = form["migprmex_petit-frmDatosPersonales" + numFrm].ToString();
+            //}
 
-            List<RegRecepcion> peticionariolist = new List<RegRecepcion>();
-            List<ComplementoPeticionario> complPeticionariolist = new List<ComplementoPeticionario>();
+            //if (form["radsinoviomu_petit-frmDatosPersonales" + numFrm].ToString() == "Si")
+            //{
+            //    violenciamujer = 1;
 
-            // Se obtiene el id del peticionario registrado en la entrada a travez de la CURP o Nombre o id_reg_recepcion(este se cancelo pero funciona)
-            if (idreg_recepcion != "")
-            {
-                queryPeticionario = "EXEC Sp_GetPeticionarioxid " + "'" + idreg_recepcion + "'";
-            }
-            else if (curp != "" && curp != "No proporcionado" && curp != "NO PROPORCIONADO")
-            {
-                queryPeticionario = "EXEC Sp_GetPeticionarioc " + "'" + curp + "'";
-            }
-            else
-            {
-                queryPeticionario = "EXEC Sp_GetPeticionariocXNombre " + "'" + nombre + "'," + "'" + apellidop + "'," + "'" + apellidom + "'";
-            }
-            var data_abog_dqot = GetDatosGeneral(queryPeticionario);
-            foreach (DataRow row in data_abog_dqot.Rows)
-            {
-                RegRecepcion userItem = new RegRecepcion();
-                userItem.IdRegistro = Convert.ToInt32(row["ID_REGISTRO"]);
-                peticionariolist.Add(userItem);
-            }
-            // Si el peticionario ya esta registrado se actualizan sus datos en caso de que hayan cambiado
-            if (peticionariolist.Count > 0)
-            {
-                idPetit = Convert.ToInt32(peticionariolist[0].IdRegistro);
+            //    Canalizaciondepen = form["vmcanadep_petit-frmDatosPersonales" + numFrm].ToString();
+            //    idEmbarazada = form["vmembara_petit-frmDatosPersonales" + numFrm].ToString();
+            //    idHijosvivos = int.Parse(form["vmhijos_petit-frmDatosPersonales" + numFrm].ToString());
+            //    idModalidadvio = int.Parse(form["vmmodvio_petit-frmDatosPersonales" + numFrm].ToString());
+            //    idRelacionagresor = int.Parse(form["vmreviagr_petit-frmDatosPersonales" + numFrm].ToString());
+            //    IngresosMensuales = form["vmingrmen_petit-frmDatosPersonales" + numFrm].ToString();
+            //    idTipoviole = int.Parse(form["vmtvio_petit-frmDatosPersonales" + numFrm].ToString());
+            //}
 
-                // Se actualiza datos del peticionario que ingreso en la entrada si es necesario
-                String queryPet = "exec Sp_Update_Peticionario " + idPetit + ",'" + nombre + "','" + apellidop + "','" + apellidom + "', '" + curp + "' ";
-                conexionsql.InsertUpdateDelete(queryPet);
-            }
-            // si no esta registrado se inserta el registro
-            else
-            {
-                string queryip = "EXEC insertRegistro " +
-                                         "'" + nombre + "'," +
-                                         "'" + apellidop + "'," +
-                                         "'" + apellidom + "'," +
-                                         "'" + curp + "', ''";
+            //var queryPeticionario = "";
+            //String query = "";
+            //int idPetit = 0;
 
-                idPetit = conexionsql.InsertUpdateDeleteRegresaid(queryip);
+            //List<RegRecepcion> peticionariolist = new List<RegRecepcion>();
+            //List<ComplementoPeticionario> complPeticionariolist = new List<ComplementoPeticionario>();
 
-            }
+            //// Se obtiene el id del peticionario registrado en la entrada a travez de la CURP o Nombre o id_reg_recepcion(este se cancelo pero funciona)
+            //if (idreg_recepcion != "")
+            //{
+            //    queryPeticionario = "EXEC Sp_GetPeticionarioxid " + "'" + idreg_recepcion + "'";
+            //}
+            //else if (curp != "" && curp != "No proporcionado" && curp != "NO PROPORCIONADO")
+            //{
+            //    queryPeticionario = "EXEC Sp_GetPeticionarioc " + "'" + curp + "'";
+            //}
+            //else
+            //{
+            //    queryPeticionario = "EXEC Sp_GetPeticionariocXNombre " + "'" + nombre + "'," + "'" + apellidop + "'," + "'" + apellidom + "'";
+            //}
+            //var data_abog_dqot = GetDatosGeneral(queryPeticionario);
+            //foreach (DataRow row in data_abog_dqot.Rows)
+            //{
+            //    RegRecepcion userItem = new RegRecepcion();
+            //    userItem.IdRegistro = Convert.ToInt32(row["ID_REGISTRO"]);
+            //    peticionariolist.Add(userItem);
+            //}
+            //string txtcont = "", apartado = @"%Apartado:Datos Personales\Tipo:Alta\";
+            //// Si el peticionario ya esta registrado se actualizan sus datos en caso de que hayan cambiado
+            //if (peticionariolist.Count > 0)
+            //{
+            //    idPetit = Convert.ToInt32(peticionariolist[0].IdRegistro);
 
-            // Se valida si quiere editar el complemento actual de peticionario o si es uno nuevo
-            if (idcomplementopet == "")
-            {
-                // Al insertar si no existe id de queja no se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
-                if (id_queja == "")
-                {
-                    query = "exec Sp_InsertComplementoPeticionario " +
-                    "'" + tipouser + "'," +
-                    "'" + calle + "'," +
-                    "'" + nexterior + "'," +
-                    "'" + ninterior + "'," +
-                    "'" + colonia + "'," +
-                    "'" + ciudad + "'," +
-                    "'" + municipio + "'," +
-                    "'" + estado + "'," +
-                    "'" + cp + "'," +
-                    "'" + telefono + "'," +
-                    "'" + edad + "'," +
-                    "'" + email + "'," +
-                    "'" + idSexo + "'," +
-                    "" + idEscolaridad + "," +
-                    "" + idEstadoconyugal + "," +
-                    "" + idOcupacion + "," +
-                    "'" + Otraocupacion + "'," +
-                    "'" + nacionalidad + "'," +
-                    "'" + sabeleer + "'," +
-                    "" + idDiscapacidad + "," +
-                    "" + idGruposocial + "," +
-                    "'" + otroGruposocial + "'," +
-                    "'" + idLenguaindigena + "'," +
-                    "'" + otraLenguaindigena + "'," +
-                    "'" + fechanac + "'," +
-                    "'" + migOrigen + "'," +
-                    "'" + migDestino + "'," +
-                    "'" + migidPrimeramex + "'," +
-                    "" + violenciamujer + "," +
-                    "'" + Canalizaciondepen + "'," +
-                    "'" + idEmbarazada + "'," +
-                    "" + idHijosvivos + "," +
-                    "" + idModalidadvio + "," +
-                    "" + idTipoviole + "," +
-                    "" + idRelacionagresor + "," +
-                    "'" + IngresosMensuales + "'," +
-                    "" + idPetit + "," +
-                    "'" + genero + "'," +
-                    "'" + otroGenero + "'," +
-                    "'" + VersionComplemento + "'";
+            //    // Se actualiza datos del peticionario que ingreso en la entrada si es necesario
+            //    String queryPet = "exec Sp_Update_Peticionario " + idPetit + ",'" + nombre + "','" + apellidop + "','" + apellidom + "', '" + curp + "' ";
+            //    conexionsql.InsertUpdateDelete(queryPet);
+            //    DateTime FechaHora = DateTime.Now;
+            //    txtcont += apartado + @"Campo:Nombre\Antes:-\Despues:" + nombre + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:" + HttpContext.Connection.RemoteIpAddress;
+            //    txtcont += apartado + @"Campo:Apellido Paterno\Antes:-\Despues:" + apellidop + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:" + HttpContext.Connection.RemoteIpAddress;
+            //    txtcont += apartado + @"Campo:Apellido Materno\Antes:-\Despues:" + apellidom + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:" + HttpContext.Connection.RemoteIpAddress;
+            //    txtcont += apartado + @"Campo:CURP\Antes:-\Despues:" + curp + @"\FechaHora:" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + @"\Usuario:" + @"\IP:";
+            //}
+            //// si no esta registrado se inserta el registro
+            //else
+            //{
+            //    string queryip = "EXEC insertRegistro " +
+            //                             "'" + nombre + "'," +
+            //                             "'" + apellidop + "'," +
+            //                             "'" + apellidom + "'," +
+            //                             "'" + curp + "', ''";
 
-                }
-                // Si el id de queja ya existe entonces se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
-                else
-                {
-                    query = "exec Sp_InsertComplementoPeticionarioQueja " +
-                   "'" + tipouser + "'," +
-                   "'" + calle + "'," +
-                   "'" + nexterior + "'," +
-                   "'" + ninterior + "'," +
-                   "'" + colonia + "'," +
-                   "'" + ciudad + "'," +
-                   "'" + municipio + "'," +
-                   "'" + estado + "'," +
-                   "'" + cp + "'," +
-                   "'" + telefono + "'," +
-                   "'" + edad + "'," +
-                   "'" + email + "'," +
-                   "'" + idSexo + "'," +
-                   "" + idEscolaridad + "," +
-                   "" + idEstadoconyugal + "," +
-                   "" + idOcupacion + "," +
-                   "'" + Otraocupacion + "'," +
-                   "'" + nacionalidad + "'," +
-                   "'" + sabeleer + "'," +
-                   "" + idDiscapacidad + "," +
-                   "" + idGruposocial + "," +
-                   "'" + otroGruposocial + "'," +
-                   "'" + idLenguaindigena + "'," +
-                   "'" + otraLenguaindigena + "'," +
-                   "'" + fechanac + "'," +
-                   "'" + migOrigen + "'," +
-                   "'" + migDestino + "'," +
-                   "'" + migidPrimeramex + "'," +
-                   "" + violenciamujer + "," +
-                   "'" + Canalizaciondepen + "'," +
-                   "'" + idEmbarazada + "'," +
-                   "" + idHijosvivos + "," +
-                   "" + idModalidadvio + "," +
-                   "" + idTipoviole + "," +
-                   "" + idRelacionagresor + "," +
-                   "'" + IngresosMensuales + "'," +
-                   "" + idPetit + "," +
-                   "'" + genero + "'," +
-                   "'" + otroGenero + "'," +
-                   "'" + id_queja + "'";
-                }
+            //    idPetit = conexionsql.InsertUpdateDeleteRegresaid(queryip);
 
-            }
-            // Si el complemento peticionario ya existe entonces se actualiza
-            else
-            {
-                query = "exec Sp_UpdateComplementoPeticionario " +
-                  "'" + tipouser + "'," +
-                  "'" + calle + "'," +
-                  "'" + nexterior + "'," +
-                  "'" + ninterior + "'," +
-                  "'" + colonia + "'," +
-                  "'" + ciudad + "'," +
-                  "'" + municipio + "'," +
-                  "'" + estado + "'," +
-                  "'" + cp + "'," +
-                  "'" + telefono + "'," +
-                  "'" + edad + "'," +
-                  "'" + email + "'," +
-                  "'" + idSexo + "'," +
-                  "" + idEscolaridad + "," +
-                  "" + idEstadoconyugal + "," +
-                  "" + idOcupacion + "," +
-                  "'" + Otraocupacion + "'," +
-                  "'" + nacionalidad + "'," +
-                  "'" + sabeleer + "'," +
-                  "" + idDiscapacidad + "," +
-                  "" + idGruposocial + "," +
-                  "'" + otroGruposocial + "'," +
-                  "'" + idLenguaindigena + "'," +
-                  "'" + otraLenguaindigena + "'," +
-                  "'" + fechanac + "'," +
-                  "'" + migOrigen + "'," +
-                  "'" + migDestino + "'," +
-                  "'" + migidPrimeramex + "'," +
-                  "" + violenciamujer + "," +
-                  "'" + Canalizaciondepen + "'," +
-                  "'" + idEmbarazada + "'," +
-                  "" + idHijosvivos + "," +
-                  "" + idModalidadvio + "," +
-                  "" + idTipoviole + "," +
-                  "" + idRelacionagresor + "," +
-                  "'" + IngresosMensuales + "'," +
-                  "" + idcomplementopet + "," +
-                  "'" + genero + "'," +
-                  "'" + otroGenero + "'";
+            //}
 
-                //idcompet = conexionsql.InsertUpdateDeleteRegresaid(query);
+            //// Se valida si quiere editar el complemento actual de peticionario o si es uno nuevo
+            //if (idcomplementopet == "")
+            //{
+            //    // Al insertar si no existe id de queja no se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
+            //    if (id_queja == "")
+            //    {
+            //        query = "exec Sp_InsertComplementoPeticionario " +
+            //        "'" + tipouser + "'," +
+            //        "'" + calle + "'," +
+            //        "'" + nexterior + "'," +
+            //        "'" + ninterior + "'," +
+            //        "'" + colonia + "'," +
+            //        "'" + ciudad + "'," +
+            //        "'" + municipio + "'," +
+            //        "'" + estado + "'," +
+            //        "'" + cp + "'," +
+            //        "'" + telefono + "'," +
+            //        "'" + edad + "'," +
+            //        "'" + email + "'," +
+            //        "'" + idSexo + "'," +
+            //        "" + idEscolaridad + "," +
+            //        "" + idEstadoconyugal + "," +
+            //        "" + idOcupacion + "," +
+            //        "'" + Otraocupacion + "'," +
+            //        "'" + nacionalidad + "'," +
+            //        "'" + sabeleer + "'," +
+            //        "" + idDiscapacidad + "," +
+            //        "" + idGruposocial + "," +
+            //        "'" + otroGruposocial + "'," +
+            //        "'" + idLenguaindigena + "'," +
+            //        "'" + otraLenguaindigena + "'," +
+            //        "'" + fechanac + "'," +
+            //        "'" + migOrigen + "'," +
+            //        "'" + migDestino + "'," +
+            //        "'" + migidPrimeramex + "'," +
+            //        "" + violenciamujer + "," +
+            //        "'" + Canalizaciondepen + "'," +
+            //        "'" + idEmbarazada + "'," +
+            //        "" + idHijosvivos + "," +
+            //        "" + idModalidadvio + "," +
+            //        "" + idTipoviole + "," +
+            //        "" + idRelacionagresor + "," +
+            //        "'" + IngresosMensuales + "'," +
+            //        "" + idPetit + "," +
+            //        "'" + genero + "'," +
+            //        "'" + otroGenero + "'," +
+            //        "'" + VersionComplemento + "'";
 
-            }
+            //    }
+            //    // Si el id de queja ya existe entonces se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
+            //    else
+            //    {
+            //        query = "exec Sp_InsertComplementoPeticionarioQueja " +
+            //       "'" + tipouser + "'," +
+            //       "'" + calle + "'," +
+            //       "'" + nexterior + "'," +
+            //       "'" + ninterior + "'," +
+            //       "'" + colonia + "'," +
+            //       "'" + ciudad + "'," +
+            //       "'" + municipio + "'," +
+            //       "'" + estado + "'," +
+            //       "'" + cp + "'," +
+            //       "'" + telefono + "'," +
+            //       "'" + edad + "'," +
+            //       "'" + email + "'," +
+            //       "'" + idSexo + "'," +
+            //       "" + idEscolaridad + "," +
+            //       "" + idEstadoconyugal + "," +
+            //       "" + idOcupacion + "," +
+            //       "'" + Otraocupacion + "'," +
+            //       "'" + nacionalidad + "'," +
+            //       "'" + sabeleer + "'," +
+            //       "" + idDiscapacidad + "," +
+            //       "" + idGruposocial + "," +
+            //       "'" + otroGruposocial + "'," +
+            //       "'" + idLenguaindigena + "'," +
+            //       "'" + otraLenguaindigena + "'," +
+            //       "'" + fechanac + "'," +
+            //       "'" + migOrigen + "'," +
+            //       "'" + migDestino + "'," +
+            //       "'" + migidPrimeramex + "'," +
+            //       "" + violenciamujer + "," +
+            //       "'" + Canalizaciondepen + "'," +
+            //       "'" + idEmbarazada + "'," +
+            //       "" + idHijosvivos + "," +
+            //       "" + idModalidadvio + "," +
+            //       "" + idTipoviole + "," +
+            //       "" + idRelacionagresor + "," +
+            //       "'" + IngresosMensuales + "'," +
+            //       "" + idPetit + "," +
+            //       "'" + genero + "'," +
+            //       "'" + otroGenero + "'," +
+            //       "'" + id_queja + "'";
+            //    }
 
-            return Json(new { idcomplemento = conexionsql.InsertUpdateDeleteRegresaid(query), idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
+            //}
+            //// Si el complemento peticionario ya existe entonces se actualiza
+            //else
+            //{
+            //    query = "exec Sp_UpdateComplementoPeticionario " +
+            //      "'" + tipouser + "'," +
+            //      "'" + calle + "'," +
+            //      "'" + nexterior + "'," +
+            //      "'" + ninterior + "'," +
+            //      "'" + colonia + "'," +
+            //      "'" + ciudad + "'," +
+            //      "'" + municipio + "'," +
+            //      "'" + estado + "'," +
+            //      "'" + cp + "'," +
+            //      "'" + telefono + "'," +
+            //      "'" + edad + "'," +
+            //      "'" + email + "'," +
+            //      "'" + idSexo + "'," +
+            //      "" + idEscolaridad + "," +
+            //      "" + idEstadoconyugal + "," +
+            //      "" + idOcupacion + "," +
+            //      "'" + Otraocupacion + "'," +
+            //      "'" + nacionalidad + "'," +
+            //      "'" + sabeleer + "'," +
+            //      "" + idDiscapacidad + "," +
+            //      "" + idGruposocial + "," +
+            //      "'" + otroGruposocial + "'," +
+            //      "'" + idLenguaindigena + "'," +
+            //      "'" + otraLenguaindigena + "'," +
+            //      "'" + fechanac + "'," +
+            //      "'" + migOrigen + "'," +
+            //      "'" + migDestino + "'," +
+            //      "'" + migidPrimeramex + "'," +
+            //      "" + violenciamujer + "," +
+            //      "'" + Canalizaciondepen + "'," +
+            //      "'" + idEmbarazada + "'," +
+            //      "" + idHijosvivos + "," +
+            //      "" + idModalidadvio + "," +
+            //      "" + idTipoviole + "," +
+            //      "" + idRelacionagresor + "," +
+            //      "'" + IngresosMensuales + "'," +
+            //      "" + idcomplementopet + "," +
+            //      "'" + genero + "'," +
+            //      "'" + otroGenero + "'";
+
+            //    //idcompet = conexionsql.InsertUpdateDeleteRegresaid(query);
+
+            //}
+
+            //return Json(new { idcomplemento = conexionsql.InsertUpdateDeleteRegresaid(query), idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
 
         }
         public async Task<ActionResult> GetDataPeticionario(IFormCollection form)
@@ -5001,5 +5024,22 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { mensaje = mensaje });
         }
         // Fin obtener datos de tabla Diligencias
+
+        public void CrearBitacoraTXT(int idqueja, string contenido)
+        {
+            string rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/Bitacora", idqueja + ".txt");
+            try
+            {
+                string directorio = Path.GetDirectoryName(rutaArchivo);
+                if (!Directory.Exists(directorio))
+                {
+                    Directory.CreateDirectory(directorio);
+                }
+                System.IO.File.AppendAllText(rutaArchivo, contenido);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }

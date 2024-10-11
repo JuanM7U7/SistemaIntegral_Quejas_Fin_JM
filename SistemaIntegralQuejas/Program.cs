@@ -24,7 +24,8 @@ builder.Services.AddDbContext<DbSistemaIntegralQuejasContext>(options =>
 
 // NOTIFICACIONES
 //builder.Services.AddSingleton<UsuarioRepo>();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<LayoutHub>();
 builder.Services.AddSingleton<SucscribeNotificacionesTableDependency>();
 // TURNO

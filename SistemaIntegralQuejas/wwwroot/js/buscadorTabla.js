@@ -327,7 +327,7 @@ $(document).ready(function () {
                             case '3': visit = `T`; break;
                             case '4': visit = `C`; break;
                         }
-                        Swal.showValidationMessage(`Ingrese el número de memorandum para ${visit}VG`);
+                        Swal.showValidationMessage(`Ingrese el número de memorándum para ${visit}VG`);
                         return false;
                     }
                     inputs.push({ visitaduria: v.visit, num_memo: inputVal, destinatario: v.destina });
@@ -675,10 +675,10 @@ function GeneraActaCircunstanciada() {
 
     //console.log("Entro a la adición del contenedor de las actas");
     document.getElementById("Contenedor_Actas").innerHTML += `<p>Acta Circunstanciada ${NumeroActaC}</p>
-                            <button type='button' onclick='traeInformacionActaC()' class='btn btn-link margin-iconbf'>
+                            <button type='button' title='Editar Acta Circunstanciada' onclick='traeInformacionActaC()' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-pencil color-muted fa-2x'></span>
                             </button>
-                            <button type='button' onclick='eliminaActac(0)' class='btn btn-link margin-iconbf'>
+                            <button type='button' title='Eliminar Acta Circunstanciada' onclick='eliminaActac(0)' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-trash color-danger fa-2x'></span>
                             </button> <br/>`;
 }
@@ -951,7 +951,13 @@ function mostrarResTblFormatos(response) {
                 data: null,
                 orderable: false
             },
-            { data: 'fkExpediente' },
+            {
+                //data: 'fkExpediente'
+                'mRender': function (data, type, full) {
+                    return full.fkExpediente
+                        + `</br><button type='button' title='Bitácora de cambios' onclick='AddFormatDatosPersonales(${full.fkExpediente})' class='btn btn-link margin-iconbf'><img src="../icons/personalizados/detective.png" height="35"/></button>`
+                }
+            },
             {
                 'mRender': function (data, type, full) {
                     var contador = 0;
@@ -976,7 +982,7 @@ function mostrarResTblFormatos(response) {
                         || full.status_Expediente == 'Returnado parcial'
                         || full.status_Expediente == 'Turnado a VA'
                         || validafecha_modificaciondqot === true) { } else {
-                        iconadd = `<button type='button' onclick='AddFormatDatosPersonales(${full.fkExpediente})' class='btn btn - link margin - iconbf'>
+                        iconadd = `<button type='button' title='Agregar nuevo quejoso' onclick='AddFormatDatosPersonales(${full.fkExpediente})' class='btn btn - link margin - iconbf'>
                             <span class='fa fa-user-plus color-muted fa-2x'></span >
                             </button >`;
                     }
@@ -997,7 +1003,7 @@ function mostrarResTblFormatos(response) {
                                     || validafecha_modificaciondqot === true) {
                                     peticionarioslist += `
                                                 <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${full.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${full.agravQuej[i].tipoUsuario})</label> <br/> 
-                                                <button type='button' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
+                                                <button type='button' title='Ver quejoso' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
                                                     <span class='fa fa-search color-muted fa-2x delbtnfdp${full.fkExpediente}'></span>
                                                 </button>`;
                                     if (full.agravQuej[i].tipoUsuario == "Agraviado") {
@@ -1009,10 +1015,10 @@ function mostrarResTblFormatos(response) {
                                 } else {
                                     peticionarioslist += `
                                         <label class='delbtnfdp${full.fkExpediente}'>${full.agravQuej[i].nombre} ${full.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${full.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${full.agravQuej[i].tipoUsuario})</label> <br/> 
-                                        <button type='button' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
+                                        <button type='button' title='Editar quejoso' onclick='editFormatDatosPersonales(${full.agravQuej[i].fkRegRecepcion} , ${full.agravQuej[i].idComplementoPeticionario},"${full.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
                                             <span class='fa fa-pencil color-muted fa-2x delbtnfdp${full.fkExpediente}'></span>
                                         </button>
-                                        <button type='button' onclick='eliminaFormatoDatosPeronsales(${full.agravQuej[i].idComplementoPeticionario}, this)' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
+                                        <button type='button' title='Eliminar quejoso' onclick='eliminaFormatoDatosPeronsales(${full.agravQuej[i].idComplementoPeticionario}, this)' class='btn btn-link margin-iconbf delbtnfdp${full.fkExpediente}'>
                                             <span class='fa fa-trash color-danger fa-2x delbtnfdp${full.fkExpediente}'></span>
                                         </button>  <br/>`;
                                     if (full.agravQuej[i].tipoUsuario == "Agraviado") {
@@ -1068,14 +1074,14 @@ function mostrarResTblFormatos(response) {
                             || full.status_Expediente == 'Turnado a VA'
                             || validafecha_modificaciondqot === true) {
 
-                            btnEscritook = `<button type='button' onclick='traeInformacionEscritoi(${full.escritoia[0].idEscrito},"${full.status_Expediente}", ${full.escritoia[0].idcomplementopetei}, ${full.fkExpediente},${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                            btnEscritook = `<button type='button' title='Ver Escrito Inicial' onclick='traeInformacionEscritoi(${full.escritoia[0].idEscrito},"${full.status_Expediente}", ${full.escritoia[0].idcomplementopetei}, ${full.fkExpediente},${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-search color-muted fa-2x'></span>
                                             </button>`;
                         } else {
-                            btnEscritook = `<button type='button' onclick='traeInformacionEscritoi(${full.escritoia[0].idEscrito},"${full.status_Expediente}", ${full.escritoia[0].idcomplementopetei}, ${full.fkExpediente}, ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                            btnEscritook = `<button type='button' title='Editar Escrito Inicial' onclick='traeInformacionEscritoi(${full.escritoia[0].idEscrito},"${full.status_Expediente}", ${full.escritoia[0].idcomplementopetei}, ${full.fkExpediente}, ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-pencil color-muted fa-2x'></span>
                                             </button>
-                                            <button type='button' onclick='eliminarEscrito(${full.escritoia[0].idEscrito}, "${full.escritoia[0].nombre_petligadoei}", ${full.fkExpediente})' class='btn btn-link margin-iconbf'>
+                                            <button type='button' title='Eliminar Escrito Inicial' onclick='eliminarEscrito(${full.escritoia[0].idEscrito}, "${full.escritoia[0].nombre_petligadoei}", ${full.fkExpediente})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-trash color-danger fa-2x'></span>
                                             </button>`;
                         }
@@ -1088,14 +1094,14 @@ function mostrarResTblFormatos(response) {
                             || full.status_Expediente == 'Returnado parcial'
                             || full.status_Expediente == 'Turnado a VA'
                             || validafecha_modificaciondqot === true) {
-                            btnEscritook = `<button type='button' onclick='traeInformacionEscritoi(${full.escritoia[0].idEscrito},"${full.status_Expediente}", ${full.escritoia[0].idcomplementopetei}, ${full.fkExpediente}, ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                            btnEscritook = `<button type='button' title='Ver Escrito Inicial' onclick='traeInformacionEscritoi(${full.escritoia[0].idEscrito},"${full.status_Expediente}", ${full.escritoia[0].idcomplementopetei}, ${full.fkExpediente}, ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-search color-muted fa-2x'></span>
                                             </button> `
                         }
                     } else {
 
                         if (full.status_Expediente == 'Eliminado') { } else {
-                            iconaddEscrito = `<button type='button' onclick='AddEscritoInicial(${full.fkExpediente}, ${peticionarios})' class='btn btn - link margin - iconbf'>
+                            iconaddEscrito = `<button type='button' title='Agregar Escrito Inicial' onclick='AddEscritoInicial(${full.fkExpediente}, ${peticionarios})' class='btn btn - link margin - iconbf'>
                             <img src="../icons/personalizados/add-file.png" height="40"/>
                             </button > <br>`;
                         }
@@ -1132,7 +1138,7 @@ function mostrarResTblFormatos(response) {
                         iconaddActac = '';
                     } else
                     {
-                        iconaddActac = `<button type='button' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
+                        iconaddActac = `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
                                                <img src="../icons/personalizados/add-file.png" height="40"/>
                                         </button > <br>`;
                     }
@@ -1148,14 +1154,14 @@ function mostrarResTblFormatos(response) {
                                 || full.status_Expediente == 'Returnado parcial'
                                 || full.status_Expediente == 'Turnado a VA'
                                 || validafecha_modificaciondqot === true) {
-                                btnActacircu += `<button type='button' onclick='traeInformacionActaC(${full.actaCa[i].idActac},"${full.status_Expediente}", "${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}","${full.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                                btnActacircu += `<button type='button' title='Ver Acta Circunstanciada' onclick='traeInformacionActaC(${full.actaCa[i].idActac},"${full.status_Expediente}", "${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}","${full.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-search color-muted fa-2x'></span>
                                            </button>`
                             } else {
-                                btnActacircu += `<button type='button' onclick='traeInformacionActaC(${full.actaCa[i].idActac},"${full.status_Expediente}", "${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}","${full.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                                btnActacircu += `<button type='button' title='Editar Acta Circunstanciada' onclick='traeInformacionActaC(${full.actaCa[i].idActac},"${full.status_Expediente}", "${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}","${full.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-pencil color-muted fa-2x'></span>
                                            </button>
-                                            <button type='button' onclick='eliminarActac(${full.actaCa[i].idActac}, ${'"' + full.actaCa[i].nombre_petligado + '"'})' class='btn btn-link margin-iconbf'>
+                                            <button type='button' title='Eliminar Acta Circunstanciada' onclick='eliminarActac(${full.actaCa[i].idActac}, ${'"' + full.actaCa[i].nombre_petligado + '"'})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-trash color-danger fa-2x'></span>
                                             </button>`;
                             }
@@ -1249,11 +1255,11 @@ function mostrarResTblFormatos(response) {
                         let validafecha_modificaciondqot = validafechamodificacionDqot(full.expedienteTurno[0].fechaturnovisitaduria, full.expedienteTurno[0].fechaFinDqot);
 
                         if (full.status_Expediente == 'Eliminado' || full.status_Expediente == 'Pendiente de turnar' || validafecha_modificaciondqot === true) {
-                            iconaddEscrito = `<button type='button' onclick='traeInformacionDatosComplementarios(${full.fkExpediente},"${full.status_Expediente}", ${validafecha_modificaciondqot}, ${validafecha_modificaciondqot})' class='btn btn - link margin - iconbf'>
+                            iconaddEscrito = `<button type='button' title='Ver Datos Complementarios' onclick='traeInformacionDatosComplementarios(${full.fkExpediente},"${full.status_Expediente}", ${validafecha_modificaciondqot}, ${validafecha_modificaciondqot})' class='btn btn - link margin - iconbf'>
                             <span class='fa fa-search color-muted fa-2x'></span>
                             </button > <br>`;
                         } else {
-                            iconaddEscrito = `<button type='button' onclick='traeInformacionDatosComplementarios(${full.fkExpediente},"${full.status_Expediente}", ${validafecha_modificaciondqot}, ${validafecha_modificaciondqot})' class='btn btn - link margin - iconbf'>
+                            iconaddEscrito = `<button type='button' title='Editar Datos Complementarios' onclick='traeInformacionDatosComplementarios(${full.fkExpediente},"${full.status_Expediente}", ${validafecha_modificaciondqot}, ${validafecha_modificaciondqot})' class='btn btn - link margin - iconbf'>
                             <span class='fa fa-pencil color-muted fa-2x'></span>
                             </button > <br>`;
                         }
@@ -1301,7 +1307,7 @@ function mostrarResTblFormatos(response) {
 
                         if (full.status_Expediente == 'Turnado parcial a VG') {
                             //console.log(full)
-                            cadena += `<button type='button' onclick='verMemoturno(${full.fkExpediente},${full.expedienteTurno[0].fkMemorandum}, "${full.expedienteTurno[0].memorandum}")' class='btn btn - link margin - iconbf'>
+                            cadena += `<button type='button' title='Memorándum ${full.expedienteTurno[0].memorandum}' onclick='verMemoturno(${full.fkExpediente},${full.expedienteTurno[0].fkMemorandum}, "${full.expedienteTurno[0].memorandum}")' class='btn btn - link margin - iconbf'>
                             <span class='fa fa-file-text color-muted fa-2x'></span>
                         </button > <br>`;
                         }
@@ -1609,7 +1615,7 @@ function verMemoturno(idexpediente, idmemo, num_memo) {
             //console.log(response)
 
             mostrarResTblMemorandum(response.data[0].lstExpturnados, '' + response.data[0].fechaDeCreacion + '');
-            $('#titleModalmemo').text('Memorandum ' + num_memo);
+            $('#titleModalmemo').text('Memorándum ' + num_memo);
             $('#idMemoupdate').val(idmemo);
             $('#modalMemorandumdqotsendexp').modal('show');
         }
@@ -1873,10 +1879,10 @@ function format(data) {
     let iconaddActac = '';
 
     if (validafecha_modificaciondqot === false) {
-        iconadd += `<button type='button' onclick='AddFormatDatosPersonales(${data.fkExpediente},${peticionarios} )' class='btn btn - link margin - iconbf'>
+        iconadd += `<button type='button' title='Agregar nuevo quejoso' onclick='AddFormatDatosPersonales(${data.fkExpediente},${peticionarios} )' class='btn btn - link margin - iconbf'>
                                <span class='fa fa-user-plus color-muted fa-2x'></span >
                                 </button >`;
-        iconaddActac += `<button type='button' onclick='AddActac(${data.fkExpediente}, ${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
+        iconaddActac += `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${data.fkExpediente}, ${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
                                                <img src="../icons/personalizados/add-file.png" height="40"/>
                                 </button > <br>`;
     }
@@ -1891,16 +1897,16 @@ function format(data) {
             if ((data.status_Expediente == 'Eliminado')) {
                 peticionarioslist += `
                               <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${data.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${data.agravQuej[i].tipoUsuario})</label> <br/> 
-                              <button type='button' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                              <button type='button' title='Ver quejoso' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-search color-muted fa-2x'></span>
                                </button>`;
             } else {
                 peticionarioslist += `
                               <label>${data.agravQuej[i].nombre} ${data.agravQuej[i].apellidoPat.replace("No Proporcionado", '')} ${data.agravQuej[i].apellidoMat.replace("No Proporcionado", '') } (${data.agravQuej[i].tipoUsuario})</label> <br/>
-                              <button type='button' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                              <button type='button' title='Editar quejoso' onclick='editFormatDatosPersonales(${data.agravQuej[i].fkRegRecepcion} , ${data.agravQuej[i].idComplementoPeticionario},"${data.status_Expediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-pencil color-muted fa-2x'></span>
                                </button>
-                              <button type='button' onclick='eliminaFormatoDatosPeronsales(${data.agravQuej[i].idComplementoPeticionario}, this)' class='btn btn-link margin-iconbf'>
+                              <button type='button' title='Eliminar quejoso' onclick='eliminaFormatoDatosPeronsales(${data.agravQuej[i].idComplementoPeticionario}, this)' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-trash color-danger fa-2x'></span>
                               </button>  <br/> `;
             }
@@ -1912,15 +1918,15 @@ function format(data) {
 
             if ((data.status_Expediente == 'Eliminado')) {
                 acta += `<p>Acta Circunstanciada ${i + 1}</p>
-                            <button type='button' onclick='traeInformacionActaC(${data.actaCa[i].idActac},"${data.status_Expediente}", "${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}","${data.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                            <button type='button' title='Ver Acta Circunstanciada' onclick='traeInformacionActaC(${data.actaCa[i].idActac},"${data.status_Expediente}", "${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}","${data.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-search color-muted fa-2x'></span>
                             </button>`;
             } else {
                 acta += `<p>Acta Circunstanciada ${i + 1}</p>
-                            <button type='button' onclick='traeInformacionActaC(${data.actaCa[i].idActac},"${data.status_Expediente}", "${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}","${data.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
+                            <button type='button' title='Editar Acta Circunstanciada' onclick='traeInformacionActaC(${data.actaCa[i].idActac},"${data.status_Expediente}", "${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}","${data.fkExpediente}", ${validafecha_modificaciondqot})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-pencil color-muted fa-2x'></span>
                             </button>
-                            <button type='button' onclick='eliminarActac(${data.actaCa[i].idActac}, ${'"' + data.actaCa[i].nombre_petligado + '"'})' class='btn btn-link margin-iconbf'>
+                            <button type='button' title='Eliminar Acta Circunstanciada' onclick='eliminarActac(${data.actaCa[i].idActac}, ${'"' + data.actaCa[i].nombre_petligado + '"'})' class='btn btn-link margin-iconbf'>
                                    <span class='fa fa-trash color-danger fa-2x'></span>
                             </button> <br/>`;
             }
