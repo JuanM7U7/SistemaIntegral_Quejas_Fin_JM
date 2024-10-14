@@ -2619,7 +2619,7 @@ namespace SistemaIntegralQuejas.Controllers
                 return Json(new { tipomorales = "error" });
             }
         }
-        public ActionResult GuardarDataComplPeticionario(IFormCollection form, string nombreS)
+        public ActionResult GuardarDataComplPeticionario(IFormCollection form, string nombreS,string Ipaccesible)
         {
             StringBuilder txtcontBuilder = new StringBuilder();
             string numFrm = form["numFrm"].ToString();
@@ -2769,10 +2769,10 @@ namespace SistemaIntegralQuejas.Controllers
                 String queryPet = "exec Sp_Update_Peticionario " + idPetit + ",'" + nombre + "','" + apellidop + "','" + apellidom + "', '" + curp + "' ";
                 conexionsql.InsertUpdateDelete(queryPet);
                 tipoMod = "Modificación";
-                if (peticionariolist[0].Nombre!= nombre){ ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nombre", peticionariolist[0].Nombre, nombre); }
-                if (peticionariolist[0].ApellidoPat != apellidop) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Paterno", peticionariolist[0].ApellidoPat, apellidop); }
-                if (peticionariolist[0].ApellidoMat != apellidom) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Materno", peticionariolist[0].ApellidoMat, apellidom); }
-                if (peticionariolist[0].DocIdentificatorio != curp) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CURP", peticionariolist[0].DocIdentificatorio, curp); }
+                if (peticionariolist[0].Nombre!= nombre){ ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nombre", peticionariolist[0].Nombre, nombre, Ipaccesible); }
+                if (peticionariolist[0].ApellidoPat != apellidop) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Paterno", peticionariolist[0].ApellidoPat, apellidop, Ipaccesible); }
+                if (peticionariolist[0].ApellidoMat != apellidom) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Materno", peticionariolist[0].ApellidoMat, apellidom, Ipaccesible); }
+                if (peticionariolist[0].DocIdentificatorio != curp) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CURP", peticionariolist[0].DocIdentificatorio, curp, Ipaccesible); }
             }
             // si no esta registrado se inserta el registro
             else
@@ -2784,10 +2784,10 @@ namespace SistemaIntegralQuejas.Controllers
                                          "'" + curp + "', ''";
                 idPetit = conexionsql.InsertUpdateDeleteRegresaid(queryip);
                 tipoMod = "Alta";
-                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nombre", "-", nombre);
-                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Paterno", "-", apellidop);
-                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Materno", "-", apellidom);
-                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CURP", "-", curp);
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nombre", "-", nombre, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Paterno", "-", apellidop, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Materno", "-", apellidom, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CURP", "-", curp, Ipaccesible);
             }
             string sexo = idSexo == 1 ? "Masculino" : idSexo == 2 ? "Femenino" : idSexo == 3 ? "No proporcionado" : "";
             string Escolaridad = idEscolaridad == 1 ? "Sin escolaridad" : idEscolaridad == 2 ? "Preescolar" : idEscolaridad == 3 ? "Primaria": idEscolaridad == 4 ? "Secundaria" : idEscolaridad == 5 ? "Preparatoria o Bachillerato" : idEscolaridad == 6 ? "Normal Básica" : idEscolaridad == 7 ? "Profesional" : idEscolaridad == 8 ? "Maestría" : idEscolaridad == 9 ? "Doctorado" : idEscolaridad == 10 ? "No especificado" : idEscolaridad == 11 ? "Primaria terminada" : idEscolaridad == 12 ? "Secundaria terminada" : idEscolaridad == 13 ? "Preparatoria terminada" : idEscolaridad == 14 ? "No especificado" : "";
@@ -2848,48 +2848,48 @@ namespace SistemaIntegralQuejas.Controllers
                     "'" + otroGenero + "'," +
                     "'" + VersionComplemento + "'";
                     tipoMod = "Alta";
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero);
-                    if (genero == "Otro"){ ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero); }
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion);
-                    if (Ocupacion=="Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion); }
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero, Ipaccesible);
+                    if (genero == "Otro"){ ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero, Ipaccesible); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion, Ipaccesible);
+                    if (Ocupacion=="Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion, Ipaccesible); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad, Ipaccesible);
                     if (nacionalidad=="Extranjero")
                     {
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex, Ipaccesible);
                     }
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer, Ipaccesible);
                     if (VioMujer=="Si")
                     {
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor, Ipaccesible);
                     }
                 }
                 // Si el id de queja ya existe entonces se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
@@ -2937,48 +2937,48 @@ namespace SistemaIntegralQuejas.Controllers
                    "'" + otroGenero + "'," +
                    "'" + id_queja + "'";
                     tipoMod = "Alta";
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero);
-                    if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero); }
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion);
-                    if (Ocupacion == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion); }
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero, Ipaccesible);
+                    if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero, Ipaccesible); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion, Ipaccesible);
+                    if (Ocupacion == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion, Ipaccesible); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad, Ipaccesible);
                     if (nacionalidad == "Extranjero")
                     {
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex, Ipaccesible);
                     }
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer, Ipaccesible);
                     if (VioMujer == "Si")
                     {
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole);
-                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole, Ipaccesible);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor, Ipaccesible);
                     }
                 }
             }
@@ -3082,55 +3082,61 @@ namespace SistemaIntegralQuejas.Controllers
                 string TipovioleFK = compet.FkTipoViolencia == 1 ? "Hijo(a)" : compet.FkTipoViolencia == 2 ? "Esposo(a) o Compañero(a)" : compet.FkTipoViolencia == 3 ? "Trabajador(a)" : compet.FkTipoViolencia == 4 ? "Sin parentesco" : compet.FkTipoViolencia == 5 ? "No especifica" : "";
                 string RelacionagresorFK = compet.FkRelacionAgresor == 1 ? "Hijo(a)" : compet.FkRelacionAgresor == 2 ? "Esposo(a) o Compañero(a)" : compet.FkRelacionAgresor == 3 ? "Trabajador(a) Doméstico(a)" : compet.FkRelacionAgresor == 4 ? "Sin parentesco" : compet.FkRelacionAgresor == 5 ? "Huésped" : compet.FkRelacionAgresor == 6 ? "Otra relación" : compet.FkRelacionAgresor == 7 ? "Otro Parentesco" : compet.FkRelacionAgresor == 8 ? "No especificado" : "";
 
-                if (compet.TipoUsuario != tipouser) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser); }
+                if (compet.TipoUsuario != tipouser) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser, Ipaccesible); }
                 DateTime fechaNacConver = DateTime.Parse(fechanac);
-                if (compet.FechaNacimiento != fechaNacConver) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac); }
-                if (compet.Edad != edad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad); }
-                if (sexoFK != sexo) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo); }
-                if (compet.Genero != genero) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero); }
-                if (compet.OtroGenero != otroGenero) { if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero); } }
-                if (compet.Calle != calle) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle); }
-                if (compet.NumExterior != nexterior) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior); }
-                if (compet.NumInterior != ninterior) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior); }
-                if (compet.Colonia != colonia) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia); }
-                if (compet.Ciudad != ciudad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad); }
-                if (compet.Municipio != municipio) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio); }
-                if (compet.CodigoPostal != cp) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp); }
-                if (compet.Telefono != telefono) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono); }
-                if (compet.Email != email) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email); }
-                if (EscolaridadFK != Escolaridad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad); }
-                if (EstadoconyugalFK != Estadoconyugal) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal); }
-                if (OcupacionFK != Ocupacion) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion); }
-                if (compet.OtraOcupacion != Otraocupacion) { if (Ocupacion == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion); } }
-                if (compet.Nacionalidad != nacionalidad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad); }
+                if (compet.FechaNacimiento != fechaNacConver) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac, Ipaccesible); }
+                if (compet.Edad != edad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad, Ipaccesible); }
+                if (sexoFK != sexo) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo, Ipaccesible); }
+                if (compet.Genero != genero) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero, Ipaccesible); }
+                if (compet.OtroGenero != otroGenero) { if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero, Ipaccesible); } }
+                if (compet.Calle != calle) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle, Ipaccesible); }
+                if (compet.NumExterior != nexterior) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior, Ipaccesible); }
+                if (compet.NumInterior != ninterior) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior, Ipaccesible); }
+                if (compet.Colonia != colonia) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia, Ipaccesible); }
+                if (compet.Ciudad != ciudad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad, Ipaccesible); }
+                if (compet.Municipio != municipio) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio, Ipaccesible); }
+                if (compet.CodigoPostal != cp) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp, Ipaccesible); }
+                if (compet.Telefono != telefono) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono, Ipaccesible); }
+                if (compet.Email != email) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email, Ipaccesible); }
+                if (EscolaridadFK != Escolaridad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad, Ipaccesible); }
+                if (EstadoconyugalFK != Estadoconyugal) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal, Ipaccesible); }
+                if (OcupacionFK != Ocupacion) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion, Ipaccesible); }
+                if (compet.OtraOcupacion != Otraocupacion) { if (Ocupacion == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion, Ipaccesible); } }
+                if (compet.Nacionalidad != nacionalidad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad, Ipaccesible); }
                 if (nacionalidad == "Extranjero")
                 {
-                    if (compet.OrigenMigrante != migOrigen) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen); }
-                    if (compet.DestinoMigrante != migDestino) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino);}
-                    if (compet.PrimeravmexMigrante != migidPrimeramex) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex); }
+                    if (compet.OrigenMigrante != migOrigen) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen, Ipaccesible); }
+                    if (compet.DestinoMigrante != migDestino) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino, Ipaccesible);}
+                    if (compet.PrimeravmexMigrante != migidPrimeramex) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex, Ipaccesible); }
                 }
-                if (compet.SabeLeer != sabeleer) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer); }
-                if (DiscapacidadFK != Discapacidad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad); }
-                if (GruposocialFK != Gruposocial) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial); }
-                if (compet.OtraOcupacion != otroGruposocial) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial); }
-                if (compet.HablaLenguai != idLenguaindigena) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena); }
-                if (compet.LenguaIndigena != otraLenguaindigena) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena); }
-                if (VioMujerFK != VioMujer) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer); }
+                if (compet.SabeLeer != sabeleer) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer, Ipaccesible); }
+                if (DiscapacidadFK != Discapacidad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad, Ipaccesible); }
+                if (GruposocialFK != Gruposocial) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial, Ipaccesible); }
+                if (compet.OtraOcupacion != otroGruposocial) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible); }
+                if (compet.HablaLenguai != idLenguaindigena) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena, Ipaccesible); }
+                if (compet.LenguaIndigena != otraLenguaindigena) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible); }
+                if (VioMujerFK != VioMujer) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer, Ipaccesible); }
                 if (VioMujer == "Si")
                 {
-                    if (compet.IngresosMensuales != IngresosMensuales) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales); }
-                    if (compet.CanalizacionVm != Canalizaciondepen) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen); }
-                    if (compet.EmbarazadaVm != idEmbarazada) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada); }
-                    if (HijosvivosFK != Hijosvivos) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos); }
-                    if (ModalidadvioFK != Modalidadvio) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio); }
-                    if (TipovioleFK != Tipoviole) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole); }
-                    if (RelacionagresorFK != Relacionagresor) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor); }
+                    if (compet.IngresosMensuales != IngresosMensuales) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales, Ipaccesible); }
+                    if (compet.CanalizacionVm != Canalizaciondepen) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen, Ipaccesible); }
+                    if (compet.EmbarazadaVm != idEmbarazada) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada, Ipaccesible); }
+                    if (HijosvivosFK != Hijosvivos) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos, Ipaccesible); }
+                    if (ModalidadvioFK != Modalidadvio) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio, Ipaccesible); }
+                    if (TipovioleFK != Tipoviole) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole, Ipaccesible); }
+                    if (RelacionagresorFK != Relacionagresor) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor, Ipaccesible); }
                 }
                 //idcompet = conexionsql.InsertUpdateDeleteRegresaid(query);
             }
-            string txtcont = txtcontBuilder.ToString();
-            CrearBitacoraTXT(824, txtcontBuilder.ToString());
-            return Json(new { idcomplemento = conexionsql.InsertUpdateDeleteRegresaid(query), idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
+
+
+            int idcomp = conexionsql.InsertUpdateDeleteRegresaid(query);
+            int id_quejaR =int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE"));
+
+     
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString());
+
+            return Json(new { idcomplemento = idcomp, idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
 
         }
         public async Task<ActionResult> GetDataPeticionario(IFormCollection form)
@@ -5231,14 +5237,10 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
-        public void ContBitacora(StringBuilder txtcontBuilder, string apartado, string tipo, string campo, string antes, string despues)
+        public void ContBitacora(StringBuilder txtcontBuilder, string apartado, string tipo, string campo, string antes, string despues,string ip)
         {
             var usuario = _httpContextAccessor.HttpContext.User;
-            var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
-            if (string.IsNullOrEmpty(ip))
-            {
-                ip = HttpContext.Connection.RemoteIpAddress?.ToString();
-            }
+
             DateTime FechaHora = DateTime.Now;
             txtcontBuilder.Append(@"%Apartado:").Append(apartado)
                 .Append(@"\Tipo:").Append(tipo)

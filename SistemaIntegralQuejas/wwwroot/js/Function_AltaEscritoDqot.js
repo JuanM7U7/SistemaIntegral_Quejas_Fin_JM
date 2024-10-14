@@ -21,6 +21,7 @@ let filtradoadd = [];
 let idqueja = "";
 let crearformularios = 0;
 let Morales = "";
+var ipAcceso = '';
 
 (function ($) {
     "use strict"
@@ -84,6 +85,9 @@ let Morales = "";
     fetchGet("Expediente/SelectRelacionAgresor", "json", (data) => { RelacionAgresor = data.relacionagresor; })
 
     fetchGet("Expediente/SelectMorales", "json", (data) => { Morales = data.tipomorales; })
+
+
+
 
     $(document).on('change', '#selectTipoQueja', function (event) {
 
@@ -447,6 +451,11 @@ let Morales = "";
 
 
 })(jQuery);
+
+function getIP(json) {
+    document.write("Tu ip es: ", json.ip);
+}
+
 function ejecutatab2() {
 
     //$("#tab2").click();
@@ -2543,15 +2552,18 @@ function guardaDataComplPeticionario(idForm, numFrm) {
     $("#frmDatosPersonales1 select").prop('disabled', false);
 
     let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
+    //FrmEnlacefq.append('ip_acceso', ipAcceso);
 
+    var ip = $("#ipAccesible").html();
+    console.log("Esta es la ip que se va a pasar:" + ip);
     $.ajax({
         type: "post",
         url: 'GuardarDataComplPeticionario',
         content: "application/json; charset=utf-8",
-        data: $(idForm).serialize() + '&nombreS=' + nombre,
+        data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip ,
         dataType: "json",
         success: function (data) {
-
+           
             console.log(data)
             let selectsPet = document.querySelectorAll('.selectpetactac').length;
             $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
@@ -2605,6 +2617,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                         FrmEnlacefq.append('id_peticionario', $('#idpeticionarioi' + numFrm).val());
                         FrmEnlacefq.append('id_via_interposicion', $('#select_viainterposicionc').val());
                         FrmEnlacefq.append('id_Abogado_Queja', $('#idusuario').val());
+
                         // Se genera id de queja
                         fetchPost("Expediente/GeneraIdQueja", "json", FrmEnlacefq, (resp) => {
                             idqueja = resp.idqueja;

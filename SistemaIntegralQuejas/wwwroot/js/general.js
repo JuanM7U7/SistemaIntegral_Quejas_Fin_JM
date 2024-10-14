@@ -4,6 +4,14 @@ let festivos = [ // Agregamos los festivos (dia, mes)
     [25, 12],
     [1, 1]
 ];
+
+
+$(document).ready(function () {
+    $.get("https://api.ipify.org?callback=getIP", "json", (data) => { console.log("Tu ip es: " + data); $("#ipAccesible").html(data); })
+});
+
+
+
 // Fin Variables que se tienen que cambiar cada año
 
 let rolUser = document.getElementById('rolUser').value;
@@ -62,6 +70,9 @@ async function fetchGet(url, tiporespuesta, callback, retorno = false) {
     }
 }
 
+function getIP(json) {
+    document.write("Tu ip es: ", json.ip);
+}
 
 function get(idcontrol) {
     return document.getElementById(idcontrol).value;
