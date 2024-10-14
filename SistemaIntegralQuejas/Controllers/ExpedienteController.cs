@@ -2622,327 +2622,515 @@ namespace SistemaIntegralQuejas.Controllers
         public ActionResult GuardarDataComplPeticionario(IFormCollection form, string nombreS)
         {
             StringBuilder txtcontBuilder = new StringBuilder();
-            string nombre = "Itzel", apellidop = "Prado", apellidom = "Cuautle", curp = "PACG991214MPLRTD04";
-            string txtcont = "", apartado = @"%Apartado:Datos Personales\Tipo:Alta\";
-            ContBitacora(txtcontBuilder, "Datos Personales", "ALTA", "Nombre", "-", nombre);
-            txtcont=txtcontBuilder.ToString();
-            CrearBitacoraTXT(825, txtcont);
-            return Json(new { idcomplemento = "", idpeticionario = "", idqueja = 1, tipousuario = "", nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
+            string numFrm = form["numFrm"].ToString();
+            string idcomplementopet = form["idcomplementopet" + numFrm].ToString();
+            string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
+            string id_queja = form["idquejagenerado"].ToString();
+            string VersionComplemento = "";
+            if (form["versioncomplementopeticionario"].Count > 0) { VersionComplemento = form["versioncomplementopeticionario"].ToString(); }
 
+            string tipoMod = "";
+            int violenciamujer = 0;
+            string Canalizaciondepen = "";
+            string idEmbarazada = "";
+            int idHijosvivos = 7;
+            int idModalidadvio = 6;
+            int idRelacionagresor = 8;
+            string IngresosMensuales = "";
+            int idTipoviole = 5;
 
-            //string numFrm = form["numFrm"].ToString();
-            //string idcomplementopet = form["idcomplementopet" + numFrm].ToString();
-            //string idreg_recepcion = form["idpeticionarioi" + numFrm].ToString();
-            //string id_queja = form["idquejagenerado"].ToString();
-            //string VersionComplemento = "";
-            //if (form["versioncomplementopeticionario"].Count > 0) { VersionComplemento = form["versioncomplementopeticionario"].ToString(); }
+            string migOrigen = "";
+            string migDestino = "";
+            string migidPrimeramex = "";
 
-            //int violenciamujer = 0;
-            //string Canalizaciondepen = "";
-            //string idEmbarazada = "";
-            //int idHijosvivos = 7;
-            //int idModalidadvio = 6;
-            //int idRelacionagresor = 8;
-            //string IngresosMensuales = "";
-            //int idTipoviole = 5;
+            string tipouser = form["qatu_petit-frmDatosPersonales" + numFrm].ToString();
+            string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
+            string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
+            if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado" && nombreS != null)
+            {
+                nombre = nombreS;
+            }
+            string calle = form["calle_petit-frmDatosPersonales" + numFrm].ToString();
+            string nexterior = form["nexterior_petit-frmDatosPersonales" + numFrm].ToString();
+            string ninterior = form["ninterior_petit-frmDatosPersonales" + numFrm].ToString();
+            string colonia = form["colonia_petit-frmDatosPersonales" + numFrm].ToString();
+            string ciudad = form["ciudad_petit-frmDatosPersonales" + numFrm].ToString();
+            string municipio = form["municipio_petit-frmDatosPersonales" + numFrm].ToString();
+            string estado = form["estado_petit-frmDatosPersonales" + numFrm].ToString();
+            string cp = form["cp_petit-frmDatosPersonales" + numFrm].ToString();
+            string telefono = form["telefono_petit-frmDatosPersonales" + numFrm].ToString();
+            string edad = form["edad_petit-frmDatosPersonales" + numFrm].ToString();
+            string email = form["email_petit-frmDatosPersonales" + numFrm].ToString();
+            int idSexo = 3;
+            if (form["radsexo_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idSexo = int.Parse(form["radsexo_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            string genero = form["genero_petit-frmDatosPersonales" + numFrm].ToString();
+            string otroGenero = form["ogenero_petit-frmDatosPersonales" + numFrm].ToString();
+            int idEscolaridad = 14;
+            if (form["escosel_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idEscolaridad = int.Parse(form["escosel_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            int idEstadoconyugal = 8;
+            if (form["econyugal_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idEstadoconyugal = int.Parse(form["econyugal_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            int idOcupacion = 9;
+            if (form["ocupacion_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idOcupacion = int.Parse(form["ocupacion_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            string Otraocupacion = form["ocupacioninpt_petit-frmDatosPersonales" + numFrm].ToString();
+            string nacionalidad = form["chknacionalidad_petit-frmDatosPersonales" + numFrm].ToString();
+            string sabeleer = form["chksleer_petit-frmDatosPersonales" + numFrm].ToString();
+            int idDiscapacidad = 7;
+            if (form["discapacidad_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idDiscapacidad = int.Parse(form["discapacidad_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            int idGruposocial = 9;
+            if (form["gsoci_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
+            else
+            {
+                idGruposocial = int.Parse(form["gsoci_petit-frmDatosPersonales" + numFrm].ToString());
+            }
+            string otroGruposocial = form["gsociinpt_petit-frmDatosPersonales" + numFrm].ToString();
+            string idLenguaindigena = form["leindi_petit-frmDatosPersonales" + numFrm].ToString();
+            string otraLenguaindigena = form["oleindi_petit-frmDatosPersonales" + numFrm].ToString();
+            string fechanac = form["fenac_petit-frmDatosPersonales" + numFrm].ToString();
+            //DateTime fechafin = DateTime.ParseExact(fechanac, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            //string migOrigen = "";
-            //string migDestino = "";
-            //string migidPrimeramex = "";
+            if (nacionalidad == "Extranjero")
+            {
+                migOrigen = form["migorig_petit-frmDatosPersonales" + numFrm].ToString();
+                migDestino = form["migdesti_petit-frmDatosPersonales" + numFrm].ToString();
+                migidPrimeramex = form["migprmex_petit-frmDatosPersonales" + numFrm].ToString();
+            }
 
-            //string tipouser = form["qatu_petit-frmDatosPersonales" + numFrm].ToString();
-            //string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
-            //string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            //string apellidop = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidop_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            //string apellidom = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["apellidom_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
-            //if (curp == "NO PROPORCIONADO" && apellidop == "No Proporcionado" && apellidom == "No Proporcionado" && nombreS != null)
-            //{
-            //    nombre = nombreS;
-            //}
-            //string calle = form["calle_petit-frmDatosPersonales" + numFrm].ToString();
-            //string nexterior = form["nexterior_petit-frmDatosPersonales" + numFrm].ToString();
-            //string ninterior = form["ninterior_petit-frmDatosPersonales" + numFrm].ToString();
-            //string colonia = form["colonia_petit-frmDatosPersonales" + numFrm].ToString();
-            //string ciudad = form["ciudad_petit-frmDatosPersonales" + numFrm].ToString();
-            //string municipio = form["municipio_petit-frmDatosPersonales" + numFrm].ToString();
-            //string estado = form["estado_petit-frmDatosPersonales" + numFrm].ToString();
-            //string cp = form["cp_petit-frmDatosPersonales" + numFrm].ToString();
-            //string telefono = form["telefono_petit-frmDatosPersonales" + numFrm].ToString();
-            //string edad = form["edad_petit-frmDatosPersonales" + numFrm].ToString();
-            //string email = form["email_petit-frmDatosPersonales" + numFrm].ToString();
-            //int idSexo = 3;
-            //if (form["radsexo_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            //else
-            //{
-            //    idSexo = int.Parse(form["radsexo_petit-frmDatosPersonales" + numFrm].ToString());
-            //}
-            //string genero = form["genero_petit-frmDatosPersonales" + numFrm].ToString();
-            //string otroGenero = form["ogenero_petit-frmDatosPersonales" + numFrm].ToString();
-            //int idEscolaridad = 14;
-            //if (form["escosel_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            //else
-            //{
-            //    idEscolaridad = int.Parse(form["escosel_petit-frmDatosPersonales" + numFrm].ToString());
-            //}
-            //int idEstadoconyugal = 8;
-            //if (form["econyugal_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            //else
-            //{
-            //    idEstadoconyugal = int.Parse(form["econyugal_petit-frmDatosPersonales" + numFrm].ToString());
-            //}
-            //int idOcupacion = 9;
-            //if (form["ocupacion_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            //else
-            //{
-            //    idOcupacion = int.Parse(form["ocupacion_petit-frmDatosPersonales" + numFrm].ToString());
-            //}
-            //string Otraocupacion = form["ocupacioninpt_petit-frmDatosPersonales" + numFrm].ToString();
-            //string nacionalidad = form["chknacionalidad_petit-frmDatosPersonales" + numFrm].ToString();
-            //string sabeleer = form["chksleer_petit-frmDatosPersonales" + numFrm].ToString();
-            //int idDiscapacidad = 7;
-            //if (form["discapacidad_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            //else
-            //{
-            //    idDiscapacidad = int.Parse(form["discapacidad_petit-frmDatosPersonales" + numFrm].ToString());
-            //}
-            //int idGruposocial = 9;
-            //if (form["gsoci_petit-frmDatosPersonales" + numFrm].Count <= 0) { }
-            //else
-            //{
-            //    idGruposocial = int.Parse(form["gsoci_petit-frmDatosPersonales" + numFrm].ToString());
-            //}
-            //string otroGruposocial = form["gsociinpt_petit-frmDatosPersonales" + numFrm].ToString();
-            //string idLenguaindigena = form["leindi_petit-frmDatosPersonales" + numFrm].ToString();
-            //string otraLenguaindigena = form["oleindi_petit-frmDatosPersonales" + numFrm].ToString();
-            //string fechanac = form["fenac_petit-frmDatosPersonales" + numFrm].ToString();
-            ////DateTime fechafin = DateTime.ParseExact(fechanac, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            if (form["radsinoviomu_petit-frmDatosPersonales" + numFrm].ToString() == "Si")
+            {
+                violenciamujer = 1;
 
-            //if (nacionalidad == "Extranjero")
-            //{
-            //    migOrigen = form["migorig_petit-frmDatosPersonales" + numFrm].ToString();
-            //    migDestino = form["migdesti_petit-frmDatosPersonales" + numFrm].ToString();
-            //    migidPrimeramex = form["migprmex_petit-frmDatosPersonales" + numFrm].ToString();
-            //}
+                Canalizaciondepen = form["vmcanadep_petit-frmDatosPersonales" + numFrm].ToString();
+                idEmbarazada = form["vmembara_petit-frmDatosPersonales" + numFrm].ToString();
+                idHijosvivos = int.Parse(form["vmhijos_petit-frmDatosPersonales" + numFrm].ToString());
+                idModalidadvio = int.Parse(form["vmmodvio_petit-frmDatosPersonales" + numFrm].ToString());
+                idRelacionagresor = int.Parse(form["vmreviagr_petit-frmDatosPersonales" + numFrm].ToString());
+                IngresosMensuales = form["vmingrmen_petit-frmDatosPersonales" + numFrm].ToString();
+                idTipoviole = int.Parse(form["vmtvio_petit-frmDatosPersonales" + numFrm].ToString());
+            }
 
-            //if (form["radsinoviomu_petit-frmDatosPersonales" + numFrm].ToString() == "Si")
-            //{
-            //    violenciamujer = 1;
+            var queryPeticionario = "";
+            String query = "";
+            int idPetit = 0;
 
-            //    Canalizaciondepen = form["vmcanadep_petit-frmDatosPersonales" + numFrm].ToString();
-            //    idEmbarazada = form["vmembara_petit-frmDatosPersonales" + numFrm].ToString();
-            //    idHijosvivos = int.Parse(form["vmhijos_petit-frmDatosPersonales" + numFrm].ToString());
-            //    idModalidadvio = int.Parse(form["vmmodvio_petit-frmDatosPersonales" + numFrm].ToString());
-            //    idRelacionagresor = int.Parse(form["vmreviagr_petit-frmDatosPersonales" + numFrm].ToString());
-            //    IngresosMensuales = form["vmingrmen_petit-frmDatosPersonales" + numFrm].ToString();
-            //    idTipoviole = int.Parse(form["vmtvio_petit-frmDatosPersonales" + numFrm].ToString());
-            //}
+            List<RegRecepcion> peticionariolist = new List<RegRecepcion>();
+            List<ComplementoPeticionario> complPeticionariolist = new List<ComplementoPeticionario>();
 
-            //var queryPeticionario = "";
-            //String query = "";
-            //int idPetit = 0;
+            // Se obtiene el id del peticionario registrado en la entrada a travez de la CURP o Nombre o id_reg_recepcion(este se cancelo pero funciona)
+            if (idreg_recepcion != "")
+            {
+                queryPeticionario = "EXEC Sp_GetPeticionarioxid " + "'" + idreg_recepcion + "'";
+            }
+            else if (curp != "" && curp != "No proporcionado" && curp != "NO PROPORCIONADO")
+            {
+                queryPeticionario = "EXEC Sp_GetPeticionarioc " + "'" + curp + "'";
+            }
+            else
+            {
+                queryPeticionario = "EXEC Sp_GetPeticionariocXNombre " + "'" + nombre + "'," + "'" + apellidop + "'," + "'" + apellidom + "'";
+            }
+            var data_abog_dqot = GetDatosGeneral(queryPeticionario);
+            foreach (DataRow row in data_abog_dqot.Rows)
+            {
+                RegRecepcion userItem = new RegRecepcion();
+                userItem.IdRegistro = Convert.ToInt32(row["ID_REGISTRO"]);
+                userItem.Nombre = (row["NOMBRE"].ToString());
+                userItem.ApellidoPat = (row["APELLIDO_PAT"].ToString());
+                userItem.ApellidoMat = (row["APELLIDO_MAT"].ToString());
+                userItem.DocIdentificatorio = (row["DOC_IDENTIFICATORIO"].ToString());
+                peticionariolist.Add(userItem);
+            }
+            // Si el peticionario ya esta registrado se actualizan sus datos en caso de que hayan cambiado
+            if (peticionariolist.Count > 0)
+            {
+                idPetit = Convert.ToInt32(peticionariolist[0].IdRegistro);
+                // Se actualiza datos del peticionario que ingreso en la entrada si es necesario
+                String queryPet = "exec Sp_Update_Peticionario " + idPetit + ",'" + nombre + "','" + apellidop + "','" + apellidom + "', '" + curp + "' ";
+                conexionsql.InsertUpdateDelete(queryPet);
+                tipoMod = "Modificación";
+                if (peticionariolist[0].Nombre!= nombre){ ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nombre", peticionariolist[0].Nombre, nombre); }
+                if (peticionariolist[0].ApellidoPat != apellidop) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Paterno", peticionariolist[0].ApellidoPat, apellidop); }
+                if (peticionariolist[0].ApellidoMat != apellidom) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Materno", peticionariolist[0].ApellidoMat, apellidom); }
+                if (peticionariolist[0].DocIdentificatorio != curp) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CURP", peticionariolist[0].DocIdentificatorio, curp); }
+            }
+            // si no esta registrado se inserta el registro
+            else
+            {
+                string queryip = "EXEC insertRegistro " +
+                                         "'" + nombre + "'," +
+                                         "'" + apellidop + "'," +
+                                         "'" + apellidom + "'," +
+                                         "'" + curp + "', ''";
+                idPetit = conexionsql.InsertUpdateDeleteRegresaid(queryip);
+                tipoMod = "Alta";
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nombre", "-", nombre);
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Paterno", "-", apellidop);
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Apellido Materno", "-", apellidom);
+                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CURP", "-", curp);
+            }
+            string sexo = idSexo == 1 ? "Masculino" : idSexo == 2 ? "Femenino" : idSexo == 3 ? "No proporcionado" : "";
+            string Escolaridad = idEscolaridad == 1 ? "Sin escolaridad" : idEscolaridad == 2 ? "Preescolar" : idEscolaridad == 3 ? "Primaria": idEscolaridad == 4 ? "Secundaria" : idEscolaridad == 5 ? "Preparatoria o Bachillerato" : idEscolaridad == 6 ? "Normal Básica" : idEscolaridad == 7 ? "Profesional" : idEscolaridad == 8 ? "Maestría" : idEscolaridad == 9 ? "Doctorado" : idEscolaridad == 10 ? "No especificado" : idEscolaridad == 11 ? "Primaria terminada" : idEscolaridad == 12 ? "Secundaria terminada" : idEscolaridad == 13 ? "Preparatoria terminada" : idEscolaridad == 14 ? "No especificado" : "";
+            string Estadoconyugal = idEstadoconyugal == 1 ? "Casado(a)" : idEstadoconyugal == 2 ? "Soltero(a)" : idEstadoconyugal == 3 ? "Viudo(a)" : idEstadoconyugal == 4 ? "Divorciado(a)" : idEstadoconyugal == 5 ? "Unión libre" : idEstadoconyugal == 6 ? "Sociedad en convivencia" : idEstadoconyugal == 7 ? "Separado(a)" : idEstadoconyugal == 8 ? "No especificado" : idEstadoconyugal == 9 ? "Se desconoce" : "";
+            string Ocupacion = idOcupacion == 1 ? "Trabajador(a) doméstico" : idOcupacion == 2 ? "Comerciante" : idOcupacion == 3 ? "Desempleado(a)" : idOcupacion == 4 ? "Empleado(a) de comercio" : idOcupacion == 5 ? "Estudiante" : idOcupacion == 6 ? "Funcionario(a) del sector público" : idOcupacion == 7 ? "Periodista" : idOcupacion == 8 ? "Otro" : idOcupacion == 9 ? "No especificado" : "";
+            string Discapacidad = idDiscapacidad == 1 ? "Visual" : idDiscapacidad == 2 ? "Auditiva" : idDiscapacidad == 3 ? "Para hablar" : idDiscapacidad == 4 ? "Mental" : idDiscapacidad == 5 ? "Motriz" : idDiscapacidad == 6 ? "Ninguna" : idDiscapacidad == 7 ? "No especificado" : "";
+            string Gruposocial = idGruposocial == 1 ? "Indígena" : idGruposocial == 2 ? "VIH/Sida" : idGruposocial == 3 ? "Internos en reclusorios" : idGruposocial == 4 ? "Migrante" : idGruposocial == 5 ? "No Heterosexual" : idGruposocial == 6 ? "Personas con discapacidad" : idGruposocial == 7 ? "No pertenece" : idGruposocial == 8 ? "Otro" : idGruposocial == 9 ? "No especificado" : "";
+            string VioMujer = violenciamujer == 1 ? "Si" : violenciamujer == 0 ? "No" : "";
+            string Hijosvivos = idHijosvivos == 1 ? "Sin hijos/as" : idHijosvivos == 2 ? "1 hijo/a" : idHijosvivos == 3 ? "2 hijos/as" : idHijosvivos == 4 ? "3 hijos/as" : idHijosvivos == 5 ? "4 hijos/as" : idHijosvivos == 6 ? "5 hijos/as" : idHijosvivos == 7 ? "No especifica" : "";
+            string Modalidadvio = idModalidadvio == 1 ? "Familiar" : idModalidadvio == 2 ? "Laboral" : idModalidadvio == 3 ? "Docente (Escolar)" : idModalidadvio == 4 ? "Istitucional" : idModalidadvio == 5 ? "Feminicidio" : idModalidadvio == 6 ? "No especifica" : "";
+            string Tipoviole = idTipoviole == 1 ? "Hijo(a)" : idTipoviole == 2 ? "Esposo(a) o Compañero(a)" : idTipoviole == 3 ? "Trabajador(a)" : idTipoviole == 4 ? "Sin parentesco" : idTipoviole == 5 ? "No especifica" : "";
+            string Relacionagresor = idRelacionagresor == 1 ? "Hijo(a)" : idRelacionagresor == 2 ? "Esposo(a) o Compañero(a)" : idRelacionagresor == 3 ? "Trabajador(a) Doméstico(a)" : idRelacionagresor == 4 ? "Sin parentesco" : idRelacionagresor == 5 ? "Huésped" : idRelacionagresor == 6 ? "Otra relación" : idRelacionagresor == 7 ? "Otro Parentesco" : idRelacionagresor == 8 ? "No especificado" : "";
+            // Se valida si quiere editar el complemento actual de peticionario o si es uno nuevo
+            if (idcomplementopet == "")
+            {
+                // Al insertar si no existe id de queja no se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
+                if (id_queja == "")
+                {
+                    query = "exec Sp_InsertComplementoPeticionario " +
+                    "'" + tipouser + "'," +
+                    "'" + calle + "'," +
+                    "'" + nexterior + "'," +
+                    "'" + ninterior + "'," +
+                    "'" + colonia + "'," +
+                    "'" + ciudad + "'," +
+                    "'" + municipio + "'," +
+                    "'" + estado + "'," +
+                    "'" + cp + "'," +
+                    "'" + telefono + "'," +
+                    "'" + edad + "'," +
+                    "'" + email + "'," +
+                    "'" + idSexo + "'," +
+                    "" + idEscolaridad + "," +
+                    "" + idEstadoconyugal + "," +
+                    "" + idOcupacion + "," +
+                    "'" + Otraocupacion + "'," +
+                    "'" + nacionalidad + "'," +
+                    "'" + sabeleer + "'," +
+                    "" + idDiscapacidad + "," +
+                    "" + idGruposocial + "," +
+                    "'" + otroGruposocial + "'," +
+                    "'" + idLenguaindigena + "'," +
+                    "'" + otraLenguaindigena + "'," +
+                    "'" + fechanac + "'," +
+                    "'" + migOrigen + "'," +
+                    "'" + migDestino + "'," +
+                    "'" + migidPrimeramex + "'," +
+                    "" + violenciamujer + "," +
+                    "'" + Canalizaciondepen + "'," +
+                    "'" + idEmbarazada + "'," +
+                    "" + idHijosvivos + "," +
+                    "" + idModalidadvio + "," +
+                    "" + idTipoviole + "," +
+                    "" + idRelacionagresor + "," +
+                    "'" + IngresosMensuales + "'," +
+                    "" + idPetit + "," +
+                    "'" + genero + "'," +
+                    "'" + otroGenero + "'," +
+                    "'" + VersionComplemento + "'";
+                    tipoMod = "Alta";
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero);
+                    if (genero == "Otro"){ ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion);
+                    if (Ocupacion=="Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad);
+                    if (nacionalidad=="Extranjero")
+                    {
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex);
+                    }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer);
+                    if (VioMujer=="Si")
+                    {
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor);
+                    }
+                }
+                // Si el id de queja ya existe entonces se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
+                else
+                {
+                    query = "exec Sp_InsertComplementoPeticionarioQueja " +
+                   "'" + tipouser + "'," +
+                   "'" + calle + "'," +
+                   "'" + nexterior + "'," +
+                   "'" + ninterior + "'," +
+                   "'" + colonia + "'," +
+                   "'" + ciudad + "'," +
+                   "'" + municipio + "'," +
+                   "'" + estado + "'," +
+                   "'" + cp + "'," +
+                   "'" + telefono + "'," +
+                   "'" + edad + "'," +
+                   "'" + email + "'," +
+                   "'" + idSexo + "'," +
+                   "" + idEscolaridad + "," +
+                   "" + idEstadoconyugal + "," +
+                   "" + idOcupacion + "," +
+                   "'" + Otraocupacion + "'," +
+                   "'" + nacionalidad + "'," +
+                   "'" + sabeleer + "'," +
+                   "" + idDiscapacidad + "," +
+                   "" + idGruposocial + "," +
+                   "'" + otroGruposocial + "'," +
+                   "'" + idLenguaindigena + "'," +
+                   "'" + otraLenguaindigena + "'," +
+                   "'" + fechanac + "'," +
+                   "'" + migOrigen + "'," +
+                   "'" + migDestino + "'," +
+                   "'" + migidPrimeramex + "'," +
+                   "" + violenciamujer + "," +
+                   "'" + Canalizaciondepen + "'," +
+                   "'" + idEmbarazada + "'," +
+                   "" + idHijosvivos + "," +
+                   "" + idModalidadvio + "," +
+                   "" + idTipoviole + "," +
+                   "" + idRelacionagresor + "," +
+                   "'" + IngresosMensuales + "'," +
+                   "" + idPetit + "," +
+                   "'" + genero + "'," +
+                   "'" + otroGenero + "'," +
+                   "'" + id_queja + "'";
+                    tipoMod = "Alta";
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero);
+                    if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion);
+                    if (Ocupacion == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion); }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad);
+                    if (nacionalidad == "Extranjero")
+                    {
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex);
+                    }
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer);
+                    if (VioMujer == "Si")
+                    {
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole);
+                        ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor);
+                    }
+                }
+            }
+            // Si el complemento peticionario ya existe entonces se actualiza
+            else
+            {
+                ComplementoPeticionario compet = new ComplementoPeticionario();
+                queryPeticionario = "Sp_GetDataPeticionarioxIdComp1 " + idcomplementopet;
+                var data_comp_pet = GetDatosGeneral(queryPeticionario);
+                foreach (DataRow row in data_comp_pet.Rows)
+                {
+                    compet.TipoUsuario = row["TIPO_USUARIO"].ToString();
+                    compet.Calle = (row["CALLE"].ToString());
+                    compet.NumExterior = (row["NUM_EXTERIOR"].ToString());
+                    compet.NumInterior = (row["NUM_INTERIOR"].ToString());
+                    compet.Colonia = (row["COLONIA"].ToString());
+                    compet.Ciudad = (row["CIUDAD"].ToString());
+                    compet.Municipio = (row["MUNICIPIO"].ToString());
+                    compet.Estado = (row["ESTADO"].ToString());
+                    compet.CodigoPostal = (row["CODIGO_POSTAL"].ToString());
+                    compet.Telefono = (row["TELEFONO"].ToString());
+                    compet.Edad = (row["EDAD"].ToString());
+                    compet.Email = (row["EMAIL"].ToString());
+                    compet.FkSexo = Convert.ToInt32(row["FK_SEXO"].ToString());
+                    compet.FkEscolaridad = Convert.ToInt32(row["FK_ESCOLARIDAD"].ToString());
+                    compet.FkEstadoConyugal = Convert.ToInt32(row["FK_ESTADO_CONYUGAL"].ToString());
+                    compet.FkOcupacion = Convert.ToInt32(row["FK_OCUPACION"].ToString());
+                    compet.OtraOcupacion = (row["OTRA_OCUPACION"].ToString());
+                    compet.Nacionalidad = (row["NACIONALIDAD"].ToString());
+                    compet.SabeLeer = (row["SABE_LEER"].ToString());
+                    compet.FkDiscapacidad = Convert.ToInt32(row["FK_DISCAPACIDAD"].ToString());
+                    compet.FkGrupoSocial = Convert.ToInt32(row["FK_GRUPO_SOCIAL"].ToString());
+                    compet.OtroGsocial = (row["OTRO_GSOCIAL"].ToString());
+                    compet.HablaLenguai = (row["HABLA_LENGUAI"].ToString());
+                    compet.LenguaIndigena = (row["LENGUA_INDIGENA"].ToString());
+                    compet.FechaNacimiento = Convert.ToDateTime(row["FECHA_NACIMIENTO"].ToString());
+                    compet.OrigenMigrante = (row["ORIGEN_MIGRANTE"].ToString());
+                    compet.DestinoMigrante = (row["DESTINO_MIGRANTE"].ToString());
+                    compet.PrimeravmexMigrante = (row["PRIMERAVMEX_MIGRANTE"].ToString());
+                    compet.ViolenciaVm = Convert.ToInt32(row["VIOLENCIA_VM"].ToString());
+                    compet.CanalizacionVm = (row["CANALIZACION_VM"].ToString());
+                    compet.EmbarazadaVm = (row["EMBARAZADA_VM"].ToString());
+                    compet.FkHijosVivos = Convert.ToInt32(row["FK_HIJOS_VIVOS"].ToString());
+                    compet.FkModalidadViolencia = Convert.ToInt32(row["FK_MODALIDAD_VIOLENCIA"].ToString());
+                    compet.FkTipoViolencia = Convert.ToInt32(row["FK_TIPO_VIOLENCIA"].ToString());
+                    compet.FkRelacionAgresor = Convert.ToInt32(row["FK_RELACION_AGRESOR"].ToString());
+                    compet.IngresosMensuales = (row["INGRESOS_MENSUALES"].ToString());
+                    compet.Genero = (row["GENERO"].ToString());
+                    compet.OtroGenero = (row["OTRO_GENERO"].ToString());
+                }
+                query = "exec Sp_UpdateComplementoPeticionario " +
+                  "'" + tipouser + "'," +
+                  "'" + calle + "'," +
+                  "'" + nexterior + "'," +
+                  "'" + ninterior + "'," +
+                  "'" + colonia + "'," +
+                  "'" + ciudad + "'," +
+                  "'" + municipio + "'," +
+                  "'" + estado + "'," +
+                  "'" + cp + "'," +
+                  "'" + telefono + "'," +
+                  "'" + edad + "'," +
+                  "'" + email + "'," +
+                  "'" + idSexo + "'," +
+                  "" + idEscolaridad + "," +
+                  "" + idEstadoconyugal + "," +
+                  "" + idOcupacion + "," +
+                  "'" + Otraocupacion + "'," +
+                  "'" + nacionalidad + "'," +
+                  "'" + sabeleer + "'," +
+                  "" + idDiscapacidad + "," +
+                  "" + idGruposocial + "," +
+                  "'" + otroGruposocial + "'," +
+                  "'" + idLenguaindigena + "'," +
+                  "'" + otraLenguaindigena + "'," +
+                  "'" + fechanac + "'," +
+                  "'" + migOrigen + "'," +
+                  "'" + migDestino + "'," +
+                  "'" + migidPrimeramex + "'," +
+                  "" + violenciamujer + "," +
+                  "'" + Canalizaciondepen + "'," +
+                  "'" + idEmbarazada + "'," +
+                  "" + idHijosvivos + "," +
+                  "" + idModalidadvio + "," +
+                  "" + idTipoviole + "," +
+                  "" + idRelacionagresor + "," +
+                  "'" + IngresosMensuales + "'," +
+                  "" + idcomplementopet + "," +
+                  "'" + genero + "'," +
+                  "'" + otroGenero + "'";
+                tipoMod = "Modificación";
+                string sexoFK = compet.FkSexo == 1 ? "Masculino" : compet.FkSexo == 2 ? "Femenino" : compet.FkSexo == 3 ? "No proporcionado" : "";
+                string EscolaridadFK = compet.FkEscolaridad == 1 ? "Sin escolaridad" : compet.FkEscolaridad == 2 ? "Preescolar" : compet.FkEscolaridad == 3 ? "Primaria" : compet.FkEscolaridad == 4 ? "Secundaria" : compet.FkEscolaridad == 5 ? "Preparatoria o Bachillerato" : compet.FkEscolaridad == 6 ? "Normal Básica" : compet.FkEscolaridad == 7 ? "Profesional" : compet.FkEscolaridad == 8 ? "Maestría" : compet.FkEscolaridad == 9 ? "Doctorado" : compet.FkEscolaridad == 10 ? "No especificado" : compet.FkEscolaridad == 11 ? "Primaria terminada" : compet.FkEscolaridad == 12 ? "Secundaria terminada" : compet.FkEscolaridad == 13 ? "Preparatoria terminada" : compet.FkEscolaridad == 14 ? "No especificado" : "";
+                string EstadoconyugalFK = compet.FkEstadoConyugal == 1 ? "Casado(a)" : compet.FkEstadoConyugal == 2 ? "Soltero(a)" : compet.FkEstadoConyugal == 3 ? "Viudo(a)" : compet.FkEstadoConyugal == 4 ? "Divorciado(a)" : compet.FkEstadoConyugal == 5 ? "Unión libre" : compet.FkEstadoConyugal == 6 ? "Sociedad en convivencia" : compet.FkEstadoConyugal == 7 ? "Separado(a)" : compet.FkEstadoConyugal == 8 ? "No especificado" : compet.FkEstadoConyugal == 9 ? "Se desconoce" : "";
+                string OcupacionFK = compet.FkOcupacion == 1 ? "Trabajador(a) doméstico" : compet.FkOcupacion == 2 ? "Comerciante" : compet.FkOcupacion == 3 ? "Desempleado(a)" : compet.FkOcupacion == 4 ? "Empleado(a) de comercio" : compet.FkOcupacion == 5 ? "Estudiante" : compet.FkOcupacion == 6 ? "Funcionario(a) del sector público" : compet.FkOcupacion == 7 ? "Periodista" : compet.FkOcupacion == 8 ? "Otro" : compet.FkOcupacion == 9 ? "No especificado" : "";
+                string DiscapacidadFK = compet.FkDiscapacidad == 1 ? "Visual" : compet.FkDiscapacidad == 2 ? "Auditiva" : compet.FkDiscapacidad == 3 ? "Para hablar" : compet.FkDiscapacidad == 4 ? "Mental" : compet.FkDiscapacidad == 5 ? "Motriz" : compet.FkDiscapacidad == 6 ? "Ninguna" : compet.FkDiscapacidad == 7 ? "No especificado" : "";
+                string GruposocialFK = compet.FkGrupoSocial == 1 ? "Indígena" : compet.FkGrupoSocial == 2 ? "VIH/Sida" : compet.FkGrupoSocial == 3 ? "Internos en reclusorios" : compet.FkGrupoSocial == 4 ? "Migrante" : compet.FkGrupoSocial == 5 ? "No Heterosexual" : compet.FkGrupoSocial == 6 ? "Personas con discapacidad" : compet.FkGrupoSocial == 7 ? "No pertenece" : compet.FkGrupoSocial == 8 ? "Otro" : compet.FkGrupoSocial == 9 ? "No especificado" : "";
+                string VioMujerFK = compet.ViolenciaVm == 1 ? "Si" : compet.ViolenciaVm == 0 ? "No" : "";
+                string HijosvivosFK = compet.FkHijosVivos == 1 ? "Sin hijos/as" : compet.FkHijosVivos == 2 ? "1 hijo/a" : compet.FkHijosVivos == 3 ? "2 hijos/as" : compet.FkHijosVivos == 4 ? "3 hijos/as" : compet.FkHijosVivos == 5 ? "4 hijos/as" : compet.FkHijosVivos == 6 ? "5 hijos/as" : compet.FkHijosVivos == 7 ? "No especifica" : "";
+                string ModalidadvioFK = compet.FkModalidadViolencia == 1 ? "Familiar" : compet.FkModalidadViolencia == 2 ? "Laboral" : compet.FkModalidadViolencia == 3 ? "Docente (Escolar)" : compet.FkModalidadViolencia == 4 ? "Istitucional" : compet.FkModalidadViolencia == 5 ? "Feminicidio" : compet.FkModalidadViolencia == 6 ? "No especifica" : "";
+                string TipovioleFK = compet.FkTipoViolencia == 1 ? "Hijo(a)" : compet.FkTipoViolencia == 2 ? "Esposo(a) o Compañero(a)" : compet.FkTipoViolencia == 3 ? "Trabajador(a)" : compet.FkTipoViolencia == 4 ? "Sin parentesco" : compet.FkTipoViolencia == 5 ? "No especifica" : "";
+                string RelacionagresorFK = compet.FkRelacionAgresor == 1 ? "Hijo(a)" : compet.FkRelacionAgresor == 2 ? "Esposo(a) o Compañero(a)" : compet.FkRelacionAgresor == 3 ? "Trabajador(a) Doméstico(a)" : compet.FkRelacionAgresor == 4 ? "Sin parentesco" : compet.FkRelacionAgresor == 5 ? "Huésped" : compet.FkRelacionAgresor == 6 ? "Otra relación" : compet.FkRelacionAgresor == 7 ? "Otro Parentesco" : compet.FkRelacionAgresor == 8 ? "No especificado" : "";
 
-            //List<RegRecepcion> peticionariolist = new List<RegRecepcion>();
-            //List<ComplementoPeticionario> complPeticionariolist = new List<ComplementoPeticionario>();
-
-            //// Se obtiene el id del peticionario registrado en la entrada a travez de la CURP o Nombre o id_reg_recepcion(este se cancelo pero funciona)
-            //if (idreg_recepcion != "")
-            //{
-            //    queryPeticionario = "EXEC Sp_GetPeticionarioxid " + "'" + idreg_recepcion + "'";
-            //}
-            //else if (curp != "" && curp != "No proporcionado" && curp != "NO PROPORCIONADO")
-            //{
-            //    queryPeticionario = "EXEC Sp_GetPeticionarioc " + "'" + curp + "'";
-            //}
-            //else
-            //{
-            //    queryPeticionario = "EXEC Sp_GetPeticionariocXNombre " + "'" + nombre + "'," + "'" + apellidop + "'," + "'" + apellidom + "'";
-            //}
-            //var data_abog_dqot = GetDatosGeneral(queryPeticionario);
-            //foreach (DataRow row in data_abog_dqot.Rows)
-            //{
-            //    RegRecepcion userItem = new RegRecepcion();
-            //    userItem.IdRegistro = Convert.ToInt32(row["ID_REGISTRO"]);
-            //    userItem.Nombre = (row["NOMBRE"].ToString());
-            //    userItem.ApellidoPat = (row["APELLIDO_PAT"].ToString());
-            //    userItem.ApellidoMat = (row["APELLIDO_MAT"].ToString());
-            //    userItem.DocIdentificatorio = (row["DOC_IDENTIFICATORIO"].ToString());
-            //    peticionariolist.Add(userItem);
-            //}
-            //// Si el peticionario ya esta registrado se actualizan sus datos en caso de que hayan cambiado
-            //if (peticionariolist.Count > 0)
-            //{
-            //    idPetit = Convert.ToInt32(peticionariolist[0].IdRegistro);
-            //    // Se actualiza datos del peticionario que ingreso en la entrada si es necesario
-            //    String queryPet = "exec Sp_Update_Peticionario " + idPetit + ",'" + nombre + "','" + apellidop + "','" + apellidom + "', '" + curp + "' ";
-            //    conexionsql.InsertUpdateDelete(queryPet);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "Nombre", peticionariolist[0].Nombre, nombre);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "Apellido Paterno", peticionariolist[0].ApellidoPat, apellidop);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "Apellido Materno", peticionariolist[0].ApellidoMat, apellidom);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Modificación", "CURP", peticionariolist[0].DocIdentificatorio, curp);
-            //}
-            //// si no esta registrado se inserta el registro
-            //else
-            //{
-            //    string queryip = "EXEC insertRegistro " +
-            //                             "'" + nombre + "'," +
-            //                             "'" + apellidop + "'," +
-            //                             "'" + apellidom + "'," +
-            //                             "'" + curp + "', ''";
-
-            //    idPetit = conexionsql.InsertUpdateDeleteRegresaid(queryip);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "Nombre", "-", nombre);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "Apellido Paterno", "-", apellidop);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "Apellido Materno", "-", apellidom);
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", "-", curp);
-            //}
-
-            //// Se valida si quiere editar el complemento actual de peticionario o si es uno nuevo
-            //if (idcomplementopet == "")
-            //{
-            //    // Al insertar si no existe id de queja no se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
-            //    if (id_queja == "")
-            //    {
-            //        query = "exec Sp_InsertComplementoPeticionario " +
-            //        "'" + tipouser + "'," +
-            //        "'" + calle + "'," +
-            //        "'" + nexterior + "'," +
-            //        "'" + ninterior + "'," +
-            //        "'" + colonia + "'," +
-            //        "'" + ciudad + "'," +
-            //        "'" + municipio + "'," +
-            //        "'" + estado + "'," +
-            //        "'" + cp + "'," +
-            //        "'" + telefono + "'," +
-            //        "'" + edad + "'," +
-            //        "'" + email + "'," +
-            //        "'" + idSexo + "'," +
-            //        "" + idEscolaridad + "," +
-            //        "" + idEstadoconyugal + "," +
-            //        "" + idOcupacion + "," +
-            //        "'" + Otraocupacion + "'," +
-            //        "'" + nacionalidad + "'," +
-            //        "'" + sabeleer + "'," +
-            //        "" + idDiscapacidad + "," +
-            //        "" + idGruposocial + "," +
-            //        "'" + otroGruposocial + "'," +
-            //        "'" + idLenguaindigena + "'," +
-            //        "'" + otraLenguaindigena + "'," +
-            //        "'" + fechanac + "'," +
-            //        "'" + migOrigen + "'," +
-            //        "'" + migDestino + "'," +
-            //        "'" + migidPrimeramex + "'," +
-            //        "" + violenciamujer + "," +
-            //        "'" + Canalizaciondepen + "'," +
-            //        "'" + idEmbarazada + "'," +
-            //        "" + idHijosvivos + "," +
-            //        "" + idModalidadvio + "," +
-            //        "" + idTipoviole + "," +
-            //        "" + idRelacionagresor + "," +
-            //        "'" + IngresosMensuales + "'," +
-            //        "" + idPetit + "," +
-            //        "'" + genero + "'," +
-            //        "'" + otroGenero + "'," +
-            //        "'" + VersionComplemento + "'";
-            //        ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", peticionariolist[0].DocIdentificatorio, curp);
-            //    }
-            //    // Si el id de queja ya existe entonces se registra en el campo ID_EXPEDIENTE de la tabla complemento_peticionario
-            //    else
-            //    {
-            //        query = "exec Sp_InsertComplementoPeticionarioQueja " +
-            //       "'" + tipouser + "'," +
-            //       "'" + calle + "'," +
-            //       "'" + nexterior + "'," +
-            //       "'" + ninterior + "'," +
-            //       "'" + colonia + "'," +
-            //       "'" + ciudad + "'," +
-            //       "'" + municipio + "'," +
-            //       "'" + estado + "'," +
-            //       "'" + cp + "'," +
-            //       "'" + telefono + "'," +
-            //       "'" + edad + "'," +
-            //       "'" + email + "'," +
-            //       "'" + idSexo + "'," +
-            //       "" + idEscolaridad + "," +
-            //       "" + idEstadoconyugal + "," +
-            //       "" + idOcupacion + "," +
-            //       "'" + Otraocupacion + "'," +
-            //       "'" + nacionalidad + "'," +
-            //       "'" + sabeleer + "'," +
-            //       "" + idDiscapacidad + "," +
-            //       "" + idGruposocial + "," +
-            //       "'" + otroGruposocial + "'," +
-            //       "'" + idLenguaindigena + "'," +
-            //       "'" + otraLenguaindigena + "'," +
-            //       "'" + fechanac + "'," +
-            //       "'" + migOrigen + "'," +
-            //       "'" + migDestino + "'," +
-            //       "'" + migidPrimeramex + "'," +
-            //       "" + violenciamujer + "," +
-            //       "'" + Canalizaciondepen + "'," +
-            //       "'" + idEmbarazada + "'," +
-            //       "" + idHijosvivos + "," +
-            //       "" + idModalidadvio + "," +
-            //       "" + idTipoviole + "," +
-            //       "" + idRelacionagresor + "," +
-            //       "'" + IngresosMensuales + "'," +
-            //       "" + idPetit + "," +
-            //       "'" + genero + "'," +
-            //       "'" + otroGenero + "'," +
-            //       "'" + id_queja + "'";
-            //        ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", peticionariolist[0].DocIdentificatorio, curp);
-            //    }
-
-            //}
-            //// Si el complemento peticionario ya existe entonces se actualiza
-            //else
-            //{
-            //    query = "exec Sp_UpdateComplementoPeticionario " +
-            //      "'" + tipouser + "'," +
-            //      "'" + calle + "'," +
-            //      "'" + nexterior + "'," +
-            //      "'" + ninterior + "'," +
-            //      "'" + colonia + "'," +
-            //      "'" + ciudad + "'," +
-            //      "'" + municipio + "'," +
-            //      "'" + estado + "'," +
-            //      "'" + cp + "'," +
-            //      "'" + telefono + "'," +
-            //      "'" + edad + "'," +
-            //      "'" + email + "'," +
-            //      "'" + idSexo + "'," +
-            //      "" + idEscolaridad + "," +
-            //      "" + idEstadoconyugal + "," +
-            //      "" + idOcupacion + "," +
-            //      "'" + Otraocupacion + "'," +
-            //      "'" + nacionalidad + "'," +
-            //      "'" + sabeleer + "'," +
-            //      "" + idDiscapacidad + "," +
-            //      "" + idGruposocial + "," +
-            //      "'" + otroGruposocial + "'," +
-            //      "'" + idLenguaindigena + "'," +
-            //      "'" + otraLenguaindigena + "'," +
-            //      "'" + fechanac + "'," +
-            //      "'" + migOrigen + "'," +
-            //      "'" + migDestino + "'," +
-            //      "'" + migidPrimeramex + "'," +
-            //      "" + violenciamujer + "," +
-            //      "'" + Canalizaciondepen + "'," +
-            //      "'" + idEmbarazada + "'," +
-            //      "" + idHijosvivos + "," +
-            //      "" + idModalidadvio + "," +
-            //      "" + idTipoviole + "," +
-            //      "" + idRelacionagresor + "," +
-            //      "'" + IngresosMensuales + "'," +
-            //      "" + idcomplementopet + "," +
-            //      "'" + genero + "'," +
-            //      "'" + otroGenero + "'";
-            //    ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "CURP", peticionariolist[0].DocIdentificatorio, curp);
-            //    //idcompet = conexionsql.InsertUpdateDeleteRegresaid(query);
-
-            //}
-
-            //string txtcont = txtcontBuilder.ToString();
-            //return Json(new { idcomplemento = conexionsql.InsertUpdateDeleteRegresaid(query), idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
+                if (compet.TipoUsuario != tipouser) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser); }
+                DateTime fechaNacConver = DateTime.Parse(fechanac);
+                if (compet.FechaNacimiento != fechaNacConver) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Fecha Nacimiento", "-", fechanac); }
+                if (compet.Edad != edad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad); }
+                if (sexoFK != sexo) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo); }
+                if (compet.Genero != genero) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Genero", "-", genero); }
+                if (compet.OtroGenero != otroGenero) { if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro genero", "-", otroGenero); } }
+                if (compet.Calle != calle) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Calle", "-", calle); }
+                if (compet.NumExterior != nexterior) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Exterior", "-", nexterior); }
+                if (compet.NumInterior != ninterior) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "No. Interior", "-", ninterior); }
+                if (compet.Colonia != colonia) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia); }
+                if (compet.Ciudad != ciudad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad", "-", ciudad); }
+                if (compet.Municipio != municipio) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio); }
+                if (compet.CodigoPostal != cp) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp); }
+                if (compet.Telefono != telefono) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono); }
+                if (compet.Email != email) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email); }
+                if (EscolaridadFK != Escolaridad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Escolaridad", "-", Escolaridad); }
+                if (EstadoconyugalFK != Estadoconyugal) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado Conyugal", "-", Estadoconyugal); }
+                if (OcupacionFK != Ocupacion) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ocupación", "-", Ocupacion); }
+                if (compet.OtraOcupacion != Otraocupacion) { if (Ocupacion == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion); } }
+                if (compet.Nacionalidad != nacionalidad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Nacionalidad", "-", nacionalidad); }
+                if (nacionalidad == "Extranjero")
+                {
+                    if (compet.OrigenMigrante != migOrigen) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Origen (Migrante)", "-", migOrigen); }
+                    if (compet.DestinoMigrante != migDestino) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Destino (Migrante)", "-", migDestino);}
+                    if (compet.PrimeravmexMigrante != migidPrimeramex) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Primera vez en Mex. (Migrante)", "-", migidPrimeramex); }
+                }
+                if (compet.SabeLeer != sabeleer) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Leer y Escribir", "-", sabeleer); }
+                if (DiscapacidadFK != Discapacidad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad); }
+                if (GruposocialFK != Gruposocial) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial); }
+                if (compet.OtraOcupacion != otroGruposocial) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial); }
+                if (compet.HablaLenguai != idLenguaindigena) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena); }
+                if (compet.LenguaIndigena != otraLenguaindigena) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena); }
+                if (VioMujerFK != VioMujer) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer); }
+                if (VioMujer == "Si")
+                {
+                    if (compet.IngresosMensuales != IngresosMensuales) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ingreso Mensual", "-", IngresosMensuales); }
+                    if (compet.CanalizacionVm != Canalizaciondepen) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Canalizacion", "-", Canalizaciondepen); }
+                    if (compet.EmbarazadaVm != idEmbarazada) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Embarazada", "-", idEmbarazada); }
+                    if (HijosvivosFK != Hijosvivos) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Hijos vivos", "-", Hijosvivos); }
+                    if (ModalidadvioFK != Modalidadvio) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Modalidad violencia", "-", Modalidadvio); }
+                    if (TipovioleFK != Tipoviole) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de violencia", "-", Tipoviole); }
+                    if (RelacionagresorFK != Relacionagresor) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Relacion agresor", "-", Relacionagresor); }
+                }
+                //idcompet = conexionsql.InsertUpdateDeleteRegresaid(query);
+            }
+            string txtcont = txtcontBuilder.ToString();
+            CrearBitacoraTXT(824, txtcontBuilder.ToString());
+            return Json(new { idcomplemento = conexionsql.InsertUpdateDeleteRegresaid(query), idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
 
         }
         public async Task<ActionResult> GetDataPeticionario(IFormCollection form)
@@ -4415,7 +4603,8 @@ namespace SistemaIntegralQuejas.Controllers
             int statust = 0;
             int nomedidadC = 0;
 			/*Sección de la actualización de la tabla de una queja*/
-			idqueja = int.Parse(form["idqueja"].ToString());
+
+            idqueja = int.Parse(form["idqueja"].ToString());
             hechos = form["hechos"].ToString();
             municipoqueja = form["municipioqueja"].ToString();
             observaciones = form["observaciones"].ToString();
@@ -5045,7 +5234,6 @@ namespace SistemaIntegralQuejas.Controllers
         public void ContBitacora(StringBuilder txtcontBuilder, string apartado, string tipo, string campo, string antes, string despues)
         {
             var usuario = _httpContextAccessor.HttpContext.User;
-            var UsuLog = usuario.Identity.Name;
             var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
             if (string.IsNullOrEmpty(ip))
             {
@@ -5058,7 +5246,7 @@ namespace SistemaIntegralQuejas.Controllers
                 .Append(@"\Antes:").Append(antes)
                 .Append(@"\Despues:").Append(despues)
                 .Append(@"\FechaHora:").Append(FechaHora.ToString("yyyy-MM-dd HH:mm:ss"))
-                .Append(@"\Usuario:").Append(UsuLog)
+                .Append(@"\Usuario:").Append(usuario.Identity.Name)
                 .Append(@"\IP:").Append(ip);
         }
     }
