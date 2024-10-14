@@ -17,6 +17,7 @@ var aceptados = [];
 var codigoArea = '';
 var statusTurnoAbogado = '';
 var arregloAbogados = [];
+var ipAcceso = '';
 
 let medcaute = "";
 var AutoridadesSe1 = [], AutoridadesSe2 = [], MateriaSe = [], TipExpeSe = [], hechvioSe = [], diligenSe = [], temaSe = [], programSe = [], viainter = [], ExpeS_C = [], PetMoral = [],ExpeConc;
@@ -185,8 +186,14 @@ $(document).ready(function () {
         success: function (response) {
             console.log(response.data)
             mostrarResTblFormatos(response.data, response.data1);
+
+            $.get("https://api.ipify.org?callback=getIP", "json", (data) => { console.log("Tu ip es: " + data); ipAcceso = data; })//Metodo fusionado para obtener la IP de donde se esta realizando
+               
+           
         }
     });
+
+
     btn = document.getElementById("myBtn");
 
     // Get the button that opens the modal
@@ -222,7 +229,9 @@ $(document).ready(function () {
 
     funcionesEscritoi();
 });
-
+function getIP(json) {
+    document.write("Tu ip es: ", json.ip);
+}
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");

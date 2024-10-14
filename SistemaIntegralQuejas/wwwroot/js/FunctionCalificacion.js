@@ -329,6 +329,7 @@ function mostrarResTblFormatos(response,response1) {
                         });
 
                     } else {
+                        $("#EnvioID").removeAttr("Disabled");
                         for (var i = 0; i < response1.length; i++) {
                             sel += `
                                     <option value="${response1[i].s2}-${full.id}">${response1[i].s1}</option>
