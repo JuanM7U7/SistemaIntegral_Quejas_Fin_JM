@@ -4295,63 +4295,106 @@ function updateDatosPeticionarios() {
         let idForm = '#frmDatosPersonales' + numFrm;
         let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
         var ip = $("#ipAccesible").html();
+        
+        $('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+        $('#idquejagenerado, #versioncomplementopeticionario').prop('disabled', false);
+        // Primer AJAX para verificar peticionarios
         $.ajax({
             type: "post",
-            url: 'GuardarDataComplPeticionario',
+            url: 'VerificarPeticionarios',
             content: "application/json; charset=utf-8",
-            data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip,
+            data: $(idForm).serialize() + '&nombreS=' + nombre,
             dataType: "json",
             success: function (data) {
-                //console.log(data)
-
-                if (data.idpeticionario > 0 && data.idcomplemento > 0) {
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Información Actualizada Correctamente',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        Swal.fire({
-                            text: 'Cargando Quejas...',
-                            didOpen: () => {
-                                Swal.showLoading();
-                            },
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        });
-                        $.ajax({
-                            type: "POST",
-                            url: "BuscardorFormatos",
-                            data: $('#frm_busquedaFormatos').serialize(),
-                            dataType: "JSON",
-                            success: function (response) {
-                                mostrarResTblFormatos(response.data);
-                                $("#modalFormPeticionario").modal("hide");
-                                Swal.close();
-                            },
-                            error: function () {
-                                Swal.close();
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Error al actualizar los datos, informe al área de sistemas'
-                                });
-                            }
-                        });
-                    });
-                } else {
+                // Si se detecta un error, mostrar alerta y retornar
+                if (data.mensaje !== 'error') {
+                    var titulo = '', texto = '';
+                    if (nombre !== '') {
+                        titulo = 'El peticionario "' + nombre + '" ya se encuentra registrado como quejoso.'
+                    } else {
+                        titulo = 'El peticionario ya se encuentra registrado como '
+                        if ($('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:checked').val() === 'Peticionario') {
+                            titulo += 'quejoso.'
+                        } else { titulo += 'agraviado.' }
+                        texto = 'Favor de seleccionar otro tipo de usuario.'
+                    }
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Error al actualizar los datos, informe al área de sistemas',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                        title: titulo,
+                        text: texto,
+                        showConfirmButton: true
+                    });
+                    return; // Detiene la ejecución si hay un error
                 }
+                $('#CURP_petit-frmDatosPersonales1, #apellidop_petit-frmDatosPersonales1, #apellidom_petit-frmDatosPersonales1, #cp_petit-frmDatosPersonales1, #estado_petit-frmDatosPersonales1, #colonia_petit-frmDatosPersonales1, #municipio_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #calle_petit-frmDatosPersonales1, #nexterior_petit-frmDatosPersonales1, #ninterior_petit-frmDatosPersonales1, #fenac_petit-frmDatosPersonales1, #edad_petit-frmDatosPersonales1, #telefono_petit-frmDatosPersonales1, #email_petit-frmDatosPersonales1, #qatu_petit-frmDatosPersonales1, #radsexo_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #chknacionalidad_petit-frmDatosPersonales1, #chksleer_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
+                //$('#colonia_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
+                $('#numFrm,#idcomplementopet1,#idpeticionarioi1,#idquejagenerado').prop('disabled', false);
+
+                $('input[type=radio][name="radsexo_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+                $('input[type=radio][name="chknacionalidad_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+                $('input[type=radio][name="chksleer_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+                $('input[type=radio][name="radsinoviomu_petit-frmDatosCalificacion1"]:disabled').prop('disabled', false);
+                // Si no hay error, procede a ejecutar el segundo AJAX
+                $.ajax({
+                    type: "post",
+                    url: 'GuardarDataComplPeticionario',
+                    content: "application/json; charset=utf-8",
+                    data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip,
+                    dataType: "json",
+                    success: function (data) {
+                        //console.log(data)
+
+                        if (data.idpeticionario > 0 && data.idcomplemento > 0) {
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Información Actualizada Correctamente',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                Swal.fire({
+                                    text: 'Cargando Quejas...',
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    },
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    url: "BuscardorFormatos",
+                                    data: $('#frm_busquedaFormatos').serialize(),
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        mostrarResTblFormatos(response.data);
+                                        $("#modalFormPeticionario").modal("hide");
+                                        Swal.close();
+                                    },
+                                    error: function () {
+                                        Swal.close();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: 'Error al actualizar los datos, informe al área de sistemas'
+                                        });
+                                    }
+                                });
+                            });
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error al actualizar los datos, informe al área de sistemas',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                    }
+                });
             }
-        });
+     });
 
     });
 }
