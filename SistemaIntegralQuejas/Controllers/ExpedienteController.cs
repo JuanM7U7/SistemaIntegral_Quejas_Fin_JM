@@ -3105,7 +3105,8 @@ namespace SistemaIntegralQuejas.Controllers
                   "'" + IngresosMensuales + "'," +
                   "" + idcomplementopet + "," +
                   "'" + genero + "'," +
-                  "'" + otroGenero + "'";
+                  "'" + otroGenero + "'," +
+                  "'" + VersionComplemento + "'";
                 tipoMod = "Modificación";
                 string sexoFK = compet.FkSexo == 1 ? "Masculino" : compet.FkSexo == 2 ? "Femenino" : compet.FkSexo == 3 ? "No proporcionado" : "";
                 string EscolaridadFK = compet.FkEscolaridad == 1 ? "Sin escolaridad" : compet.FkEscolaridad == 2 ? "Preescolar" : compet.FkEscolaridad == 3 ? "Primaria" : compet.FkEscolaridad == 4 ? "Secundaria" : compet.FkEscolaridad == 5 ? "Preparatoria o Bachillerato" : compet.FkEscolaridad == 6 ? "Normal Básica" : compet.FkEscolaridad == 7 ? "Profesional" : compet.FkEscolaridad == 8 ? "Maestría" : compet.FkEscolaridad == 9 ? "Doctorado" : compet.FkEscolaridad == 10 ? "No especificado" : compet.FkEscolaridad == 11 ? "Primaria terminada" : compet.FkEscolaridad == 12 ? "Secundaria terminada" : compet.FkEscolaridad == 13 ? "Preparatoria terminada" : compet.FkEscolaridad == 14 ? "No especificado" : "";

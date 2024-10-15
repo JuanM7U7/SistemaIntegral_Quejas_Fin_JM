@@ -2771,6 +2771,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
 
                 $("#idcomplementopet1").val(idcomplemento)
                 $('#idpeticionarioi1').val(idregistro);
+                $('#versioncomplementopeticionario').val('D');
                 $("#CURP_petit-frmDatosPersonales" + idform).val(response.data[0].docIdentificatorio)
                 $("#nombre_petit-frmDatosPersonales" + idform).val(response.data[0].nombre)
                 $("#apellidop_petit-frmDatosPersonales" + idform).val(response.data[0].apellidoPat)
@@ -2925,7 +2926,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
                     $("#modalFormPeticionario").modal("show");
 
                 }
-                //updateDatosPeticionarios();
+                updateDatosPeticionarios();
                 if (estatus == 'Eliminado' || estatus == 'Pendiente de turnar' || validafechamodificacion === true) {
                         $('.frmEditDatosPersonales button[type="submit"]').hide();
                 }
@@ -3015,6 +3016,12 @@ function formPeticionario(idformulario) {
                         name: "idcomplementopet" + idformulario,
                         type: "hidden",
                         classControl: "idscomplepeticionarios"
+                    },
+                    {
+                        valhidden: "",
+                        name: "versioncomplementopeticionario",
+                        type: "hidden",
+                        classControl: "versioncomplementopeticionario"
                     },
                     {
                         valhidden: "",
@@ -4286,12 +4293,13 @@ function updateDatosPeticionarios() {
 
         let numFrm = 1;
         let idForm = '#frmDatosPersonales' + numFrm;
-
+        let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
+        var ip = $("#ipAccesible").html();
         $.ajax({
             type: "post",
             url: 'GuardarDataComplPeticionario',
             content: "application/json; charset=utf-8",
-            data: $(idForm).serialize(),
+            data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip,
             dataType: "json",
             success: function (data) {
                 //console.log(data)
