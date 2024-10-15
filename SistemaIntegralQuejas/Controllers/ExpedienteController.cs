@@ -2837,6 +2837,7 @@ namespace SistemaIntegralQuejas.Controllers
             string Modalidadvio = idModalidadvio == 1 ? "Familiar" : idModalidadvio == 2 ? "Laboral" : idModalidadvio == 3 ? "Docente (Escolar)" : idModalidadvio == 4 ? "Istitucional" : idModalidadvio == 5 ? "Feminicidio" : idModalidadvio == 6 ? "No especifica" : "";
             string Tipoviole = idTipoviole == 1 ? "Hijo(a)" : idTipoviole == 2 ? "Esposo(a) o Compañero(a)" : idTipoviole == 3 ? "Trabajador(a)" : idTipoviole == 4 ? "Sin parentesco" : idTipoviole == 5 ? "No especifica" : "";
             string Relacionagresor = idRelacionagresor == 1 ? "Hijo(a)" : idRelacionagresor == 2 ? "Esposo(a) o Compañero(a)" : idRelacionagresor == 3 ? "Trabajador(a) Doméstico(a)" : idRelacionagresor == 4 ? "Sin parentesco" : idRelacionagresor == 5 ? "Huésped" : idRelacionagresor == 6 ? "Otra relación" : idRelacionagresor == 7 ? "Otro Parentesco" : idRelacionagresor == 8 ? "No especificado" : "";
+            
             // Se valida si quiere editar el complemento actual de peticionario o si es uno nuevo
             if (idcomplementopet == "")
             {
@@ -3166,13 +3167,17 @@ namespace SistemaIntegralQuejas.Controllers
                 }
                 //idcompet = conexionsql.InsertUpdateDeleteRegresaid(query);
             }
-
-
             int idcomp = conexionsql.InsertUpdateDeleteRegresaid(query);
-            int id_quejaR =int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE"));
-
-     
-            CrearBitacoraTXT(id_quejaR, "["+txtcontBuilder.ToString()+"]");
+            int id_quejaR = 0;
+            if (id_queja=="")
+            {
+                id_quejaR = int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE"));
+            }
+            else
+            {
+                id_quejaR = Convert.ToInt32(id_queja);
+            }
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString());
 
             return Json(new { idcomplemento = idcomp, idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
 
@@ -5300,7 +5305,7 @@ namespace SistemaIntegralQuejas.Controllers
 
         public void CrearBitacoraTXT(int idqueja, string contenido)
         {
-            string rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/Bitacora", idqueja + ".txt");
+            string rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Archivos\Bitacora", idqueja + ".txt");
             try
             {
                 string directorio = Path.GetDirectoryName(rutaArchivo);
@@ -5308,7 +5313,25 @@ namespace SistemaIntegralQuejas.Controllers
                 {
                     Directory.CreateDirectory(directorio);
                 }
-                System.IO.File.AppendAllText(rutaArchivo, contenido);
+                List<BitacoraCambio> listaBit;
+
+                if (System.IO.File.Exists(rutaArchivo) && new FileInfo(rutaArchivo).Length > 0)
+                {
+                    string contExis = System.IO.File.ReadAllText(rutaArchivo);
+                    listaBit = JsonConvert.DeserializeObject<List<BitacoraCambio>>(contExis);
+                }
+                else
+                {
+                    listaBit = new List<BitacoraCambio>();
+                }
+                if (contenido!="")
+                {
+                    var newCont = JsonConvert.DeserializeObject<List<BitacoraCambio>>(contenido);
+                    listaBit.AddRange(newCont);
+                }                
+                string newContJSON = JsonConvert.SerializeObject(listaBit, Formatting.Indented);
+                System.IO.File.WriteAllText(rutaArchivo, newContJSON);
+                //System.IO.File.AppendAllText(rutaArchivo, contenido);
             }
             catch (Exception ex)
             {
