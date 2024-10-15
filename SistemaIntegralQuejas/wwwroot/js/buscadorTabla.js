@@ -955,7 +955,7 @@ function mostrarResTblFormatos(response) {
                 //data: 'fkExpediente'
                 'mRender': function (data, type, full) {
                     return full.fkExpediente
-                        + `</br><button type='button' title='Bitácora de cambios' onclick='AddFormatDatosPersonales(${full.fkExpediente})' class='btn btn-link margin-iconbf'><img src="../icons/personalizados/detective.png" height="35"/></button>`
+                        + `</br><button type='button' title='Bitácora de cambios' onclick='btnGenraBitacorCamb(${full.fkExpediente})' class='btn btn-link margin-iconbf'><img src="../icons/personalizados/detective.png" height="35"/></button>`
                 }
             },
             {
@@ -1628,6 +1628,10 @@ function btnGenerapdfmemo(element) {
     let idmemo = $('#idMemoupdate').val();
     window.open(Memorandumdqot + idmemo, '_blank');
 
+}
+
+function btnGenraBitacorCamb(exped) {
+    window.open(CedBitacoraCambioPDF + exped, '_blank');
 }
 
 function btnUpdatememo(element) {

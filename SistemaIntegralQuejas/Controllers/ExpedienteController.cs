@@ -1508,6 +1508,12 @@ namespace SistemaIntegralQuejas.Controllers
             return RedirectToAction("modificacion");
         }
 
+        public ActionResult BitacoraCambiosPDF(int idexped)
+        {
+            TempData["idexped"] = idexped;
+            return RedirectToAction("BitCambios");
+        }
+
         public ViewAsPdf modificacion()
         {
             var pdfescritoi = new List<cedulaCalificacion>();
@@ -1601,6 +1607,37 @@ namespace SistemaIntegralQuejas.Controllers
             pdfescritoi[0].listacasa = pdfescritoconclu;
 
             return new ViewAsPdf("Plantilla_Cedula_Modificacion", pdfescritoi)
+            {
+                PageSize = Rotativa.AspNetCore.Options.Size.Letter,
+                PageMargins = { Left = 5, Right = 5 },
+                // FileName=nombrePDF,
+                //SaveOnServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/EI", nombrePDF + ".pdf"),
+                //NOTA: Cambiar rutas de encabezado y pie de página ya que las rutras son de localhost
+                CustomSwitches = " --page-offset 0 --header-html https://localhost:7126/Encabezado/Index1 --header-spacing 15 --margin-bottom 3cm --footer-spacing 7 --footer-html https://localhost:7126/PieDePagina/Index1 --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+
+            };
+        }
+
+        public ViewAsPdf BitCambios()
+        {
+            var pdfcedula = new List<CedulaBitacoraCambios>();
+            CedulaBitacoraCambios pdfcbc = new CedulaBitacoraCambios();
+            List<BitacoraCambio> bitcam = null;
+
+            int? idex = (int?)TempData["idexped"];
+
+            string rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Archivos/Bitacora", idex + ".txt");
+            if (System.IO.File.Exists(rutaArchivo))
+            {
+                string contenido = System.IO.File.ReadAllText(rutaArchivo);
+                bitcam = JsonConvert.DeserializeObject<List<BitacoraCambio>>(contenido);
+            }
+            pdfcbc.id_queja= idex.ToString();
+            pdfcbc.FechaHoraImpr= DateTime.Now;
+            pdfcbc.biracambios = bitcam;
+            pdfcedula.Add(pdfcbc);
+
+            return new ViewAsPdf("Plantilla_Bitacora_de_Cambios", pdfcedula)
             {
                 PageSize = Rotativa.AspNetCore.Options.Size.Letter,
                 PageMargins = { Left = 5, Right = 5 },
@@ -3134,7 +3171,7 @@ namespace SistemaIntegralQuejas.Controllers
             int id_quejaR =int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE"));
 
      
-            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString());
+            CrearBitacoraTXT(id_quejaR, "["+txtcontBuilder.ToString()+"]");
 
             return Json(new { idcomplemento = idcomp, idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
 
@@ -4920,6 +4957,46 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
+        public class CedulaBitacoraCambios
+        {
+            public string id_queja { get; set; }
+            public DateTime? FechaHoraImpr { get; set; }
+            public List<BitacoraCambio> biracambios { get; set; }
+
+            public CedulaBitacoraCambios() { }
+            public CedulaBitacoraCambios(string idqueja, DateTime? fehorImp, List<BitacoraCambio> bitcam)
+            {
+                id_queja = idqueja;
+                FechaHoraImpr = fehorImp;
+                biracambios = bitcam;
+            }
+        }
+
+        public class BitacoraCambio
+        {
+            public string Apartado { get; set; }
+            public string Tipo { get; set; }
+            public string Campo { get; set; }
+            public string Antes { get; set; }
+            public string Despues { get; set; }
+            public string FechaHora { get; set; }
+            public string Usuario { get; set; }
+            public string IP { get; set; }
+
+            public BitacoraCambio() { }
+            public BitacoraCambio(string apart, string tip, string cam, string ant, string desp, string fehor, string usu, string ip)
+            {
+                Apartado = apart;
+                Tipo = tip;
+                Campo = cam;
+                Antes = ant;
+                Despues = desp;
+                FechaHora = fehor;
+                Usuario = usu;
+                IP = ip;
+            }
+        }
+
         public class peticionariocedula
         {
             public int id { get; set; }
@@ -5237,19 +5314,19 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
-        public void ContBitacora(StringBuilder txtcontBuilder, string apartado, string tipo, string campo, string antes, string despues,string ip)
+        public void ContBitacora(StringBuilder txtcontBuilder, string apartado, string tipo, string campo, string antes, string despues, string ip)
         {
             var usuario = _httpContextAccessor.HttpContext.User;
 
             DateTime FechaHora = DateTime.Now;
-            txtcontBuilder.Append(@"%Apartado:").Append(apartado)
-                .Append(@"\Tipo:").Append(tipo)
-                .Append(@"\Campo:").Append(campo)
-                .Append(@"\Antes:").Append(antes)
-                .Append(@"\Despues:").Append(despues)
-                .Append(@"\FechaHora:").Append(FechaHora.ToString("yyyy-MM-dd HH:mm:ss"))
-                .Append(@"\Usuario:").Append(usuario.Identity.Name)
-                .Append(@"\IP:").Append(ip);
+            txtcontBuilder.Append("{\"Apartado\":").Append("\"" + apartado + "\"")
+                .Append(",\"Tipo\":").Append("\"" + tipo + "\"")
+                .Append(",\"Campo\":").Append("\"" + campo + "\"")
+                .Append(",\"Antes\":").Append("\"" + antes + "\"")
+                .Append(",\"Despues\":").Append("\"" + despues + "\"")
+                .Append(",\"FechaHora\":").Append("\"" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + "\"")
+                .Append(",\"Usuario\":").Append("\"" + usuario.Identity.Name + "\"")
+                .Append(",\"IP\":").Append("\"" + ip + "\"").Append("},");
         }
     }
 }
