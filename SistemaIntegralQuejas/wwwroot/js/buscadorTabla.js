@@ -2766,9 +2766,13 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus, validafec
         data: { curp: curpd, nombre: nombrep, apellidop: apellidope, apellidom: apellidome, idcomp: idcomplemento },
         dataType: "JSON",
         success: function (response) {
-            //console.log(response)
+            console.log(response);
+            $("#idquejagenerado").removeAttr("hidden");
+            $("#idquejagenerado").attr('value', response.data[0].idExpediente);
+            $("#idquejagenerado").attr("hidden","hidden");
             if (response.data.length > 0) {
-
+               
+                console.log("Expediente:"+response.data[0].idExpediente);
                 $("#idcomplementopet1").val(idcomplemento)
                 $('#idpeticionarioi1').val(idregistro);
                 $('#versioncomplementopeticionario').val('D');
@@ -4307,7 +4311,7 @@ function updateDatosPeticionarios() {
             dataType: "json",
             success: function (data) {
                 // Si se detecta un error, mostrar alerta y retornar
-                if (data.mensaje !== 'error') {
+                if (data.mensaje !== 'errors') {
                     var titulo = '', texto = '';
                     if (nombre !== '') {
                         titulo = 'El peticionario "' + nombre + '" ya se encuentra registrado como quejoso.'
@@ -4325,7 +4329,7 @@ function updateDatosPeticionarios() {
                         text: texto,
                         showConfirmButton: true
                     });
-                    return; // Detiene la ejecución si hay un error
+                    //return; // Detiene la ejecución si hay un error
                 }
                 $('#CURP_petit-frmDatosPersonales1, #apellidop_petit-frmDatosPersonales1, #apellidom_petit-frmDatosPersonales1, #cp_petit-frmDatosPersonales1, #estado_petit-frmDatosPersonales1, #colonia_petit-frmDatosPersonales1, #municipio_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #calle_petit-frmDatosPersonales1, #nexterior_petit-frmDatosPersonales1, #ninterior_petit-frmDatosPersonales1, #fenac_petit-frmDatosPersonales1, #edad_petit-frmDatosPersonales1, #telefono_petit-frmDatosPersonales1, #email_petit-frmDatosPersonales1, #qatu_petit-frmDatosPersonales1, #radsexo_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #chknacionalidad_petit-frmDatosPersonales1, #chksleer_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);
                 //$('#colonia_petit-frmDatosPersonales1, #ciudad_petit-frmDatosPersonales1, #genero_petit-frmDatosPersonales1, #escosel_petit-frmDatosPersonales1, #econyugal_petit-frmDatosPersonales1, #ocupacion_petit-frmDatosPersonales1, #discapacidad_petit-frmDatosPersonales1, #gsoci_petit-frmDatosPersonales1, #leindi_petit-frmDatosPersonales1, #radsinoviomu_petit-frmDatosCalificacion1').prop('disabled', false);

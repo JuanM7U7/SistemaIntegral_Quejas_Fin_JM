@@ -3286,6 +3286,7 @@ namespace SistemaIntegralQuejas.Controllers
                     peticionario.FkRelacionAgresor = Convert.ToInt32(row["FK_RELACION_AGRESOR"]);
                     peticionario.Genero = (row["GENERO"]).ToString();
                     peticionario.OtroGenero = (row["OTRO_GENERO"]).ToString();
+                    peticionario.IdExpediente= Convert.ToInt32((row["ID_EXPEDIENTE"]).ToString());
                 }
                 
 
