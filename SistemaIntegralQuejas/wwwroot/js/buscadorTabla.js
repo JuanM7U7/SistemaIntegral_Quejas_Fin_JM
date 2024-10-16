@@ -2976,7 +2976,7 @@ function AddFormatDatosPersonales(idExpediente) {
     $('#idquejagenerado').val(idExpediente);
     //$("input[name=qatu_petit-frmDatosPersonales" + idform + "][value = 'Agraviado']").prop("disabled", true);
     $("#modalFormPeticionario").modal("show");
-    updateDatosPeticionarios();
+    updateDatosPeticionariosBusq();
 }
 function eliminaFormato(idformato) {
 
@@ -4285,8 +4285,7 @@ function cargaInformacionSelectsEscritoInicial(contador, idLugar, ID_Autoridades
         RecorreInput('.formularioEscritoInicial');
     })
 }
-
-function updateDatosPeticionarios() {
+function updateDatosPeticionariosBusq() {
     // Actualizar Peticionario
     $('.formularioPeticionario').submit(function (e) {
         e.preventDefault();
@@ -4299,7 +4298,7 @@ function updateDatosPeticionarios() {
         let idForm = '#frmDatosPersonales' + numFrm;
         let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
         var ip = $("#ipAccesible").html();
-        
+
         $('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
         $('#idquejagenerado, #versioncomplementopeticionario').prop('disabled', false);
         // Primer AJAX para verificar peticionarios
@@ -4398,7 +4397,82 @@ function updateDatosPeticionarios() {
                     }
                 });
             }
-     });
+        });
+
+    });
+}
+
+function updateDatosPeticionarios() {
+    // Actualizar Peticionario
+    $('.formularioPeticionario').submit(function (e) {
+        e.preventDefault();
+
+        if (validaTxt() || validaNumero()) {
+            return;
+        }
+
+        let numFrm = 1;
+        let idForm = '#frmDatosPersonales' + numFrm;
+        let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
+        var ip = $("#ipAccesible").html();
+
+                $.ajax({
+                    type: "post",
+                    url: 'GuardarDataComplPeticionario',
+                    content: "application/json; charset=utf-8",
+                    data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip,
+                    dataType: "json",
+                    success: function (data) {
+                        //console.log(data)
+
+                        if (data.idpeticionario > 0 && data.idcomplemento > 0) {
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Información Actualizada Correctamente',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                Swal.fire({
+                                    text: 'Cargando Quejas...',
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    },
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    url: "BuscardorFormatos",
+                                    data: $('#frm_busquedaFormatos').serialize(),
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        mostrarResTblFormatos(response.data);
+                                        $("#modalFormPeticionario").modal("hide");
+                                        Swal.close();
+                                    },
+                                    error: function () {
+                                        Swal.close();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: 'Error al actualizar los datos, informe al área de sistemas'
+                                        });
+                                    }
+                                });
+                            });
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error al actualizar los datos, informe al área de sistemas',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                    }
+                });
 
     });
 }

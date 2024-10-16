@@ -268,5 +268,575 @@
     "FechaHora": "2024-10-16 15:45:17",
     "Usuario": "MOML",
     "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Nombre",
+    "Antes": "Christopher Pilin Chris 3",
+    "Despues": "Christopher Pilin Chris 4",
+    "FechaHora": "2024-10-16 16:36:08",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Apellido Paterno",
+    "Antes": "Marquez",
+    "Despues": "Luna",
+    "FechaHora": "2024-10-16 16:36:08",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "27",
+    "FechaHora": "2024-10-16 16:36:08",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Peticionario",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2023-10-20",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "27",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Femenino",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Genero",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "5 norte y 5 surA",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "51",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "31",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "PUEBLA ",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2211942825",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "christopher201196@gmail.com",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "Profesional",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Divorciado(a)",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "Trabajador(a) doméstico",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Leer y Escribir",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "Auditiva",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "Indígena",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otro grupo social",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otra lengua indigena",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-16 16:45:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Nombre",
+    "Antes": "Christopher Pilin Chris 4",
+    "Despues": "Christopher Pilin Chris 5",
+    "FechaHora": "2024-10-16 16:48:36",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Apellido Paterno",
+    "Antes": "Luna",
+    "Despues": "Marquez",
+    "FechaHora": "2024-10-16 16:48:36",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "30",
+    "FechaHora": "2024-10-16 16:48:36",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "5 norte y 5 sur A",
+    "FechaHora": "2024-10-16 16:48:36",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Peticionario",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2023-10-20",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "27",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Femenino",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Genero",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "5 norte y 5 surA",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "51",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "31",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "PUEBLA ",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2211942825",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "christopher201196@gmail.com",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "Profesional",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Divorciado(a)",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "Trabajador(a) doméstico",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Leer y Escribir",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "Auditiva",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "Indígena",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otro grupo social",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otra lengua indigena",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-16 16:49:13",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
   }
 ]
