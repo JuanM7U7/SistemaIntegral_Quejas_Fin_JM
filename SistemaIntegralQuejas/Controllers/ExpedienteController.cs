@@ -5326,7 +5326,8 @@ namespace SistemaIntegralQuejas.Controllers
                 }
                 if (contenido!="")
                 {
-                    var newCont = JsonConvert.DeserializeObject<List<BitacoraCambio>>(contenido);
+                    var lista = "["+contenido+"]";
+                    var newCont = JsonConvert.DeserializeObject<List<BitacoraCambio>>(lista);
                     listaBit.AddRange(newCont);
                 }                
                 string newContJSON = JsonConvert.SerializeObject(listaBit, Formatting.Indented);
