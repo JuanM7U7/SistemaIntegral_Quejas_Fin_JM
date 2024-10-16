@@ -1893,7 +1893,7 @@ function format(data) {
 
     if (data.status_Expediente != 'Eliminado') {
         btnEliminar = `<button type="button" class="btn eliminaExpediente btn-rounded btn-danger" style="background-color: red !important;" value="${data.fkExpediente}"><span class="btn-icon-left text-danger"><i style="color: white;" class="fa fa-trash color-danger fa-2x"></i>
-                     </span> Eliminar Expediente</button>`;
+                     </span> Eliminar ID</button>`;
     }
 
     if (data.agravQuej.length > 0) {
@@ -2970,7 +2970,7 @@ function AddFormatDatosPersonales(idExpediente) {
     let violenciamujer = '';
 
     $('#idquejagenerado').val(idExpediente);
-    $("input[name=qatu_petit-frmDatosPersonales" + idform + "][value = 'Agraviado']").prop("disabled", true);
+    //$("input[name=qatu_petit-frmDatosPersonales" + idform + "][value = 'Agraviado']").prop("disabled", true);
     $("#modalFormPeticionario").modal("show");
     updateDatosPeticionarios();
 }

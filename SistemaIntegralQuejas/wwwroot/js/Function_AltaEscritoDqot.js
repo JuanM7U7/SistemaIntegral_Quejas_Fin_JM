@@ -2566,10 +2566,12 @@ function guardaDataComplPeticionario(idForm, numFrm) {
            
             console.log(data)
             let selectsPet = document.querySelectorAll('.selectpetactac').length;
-            $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
-            $("#frmDatosPersonales1 select").prop('disabled', true);
-            $("#frmDatosPersonales1 input[type='date']").prop('disabled', true);
-            $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+            if (nombre!="") {
+                $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
+                $("#frmDatosPersonales1 select").prop('disabled', true);
+                $("#frmDatosPersonales1 input[type='date']").prop('disabled', true);
+                $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+            }
             // Si se guardo de forma correcta te regresa el id de peticionario generado de la tabla Reg_recepcion
             // De igual forma te regresa el id de complemento generado
             if (data.idpeticionario > 0 && data.idcomplemento > 0) {
