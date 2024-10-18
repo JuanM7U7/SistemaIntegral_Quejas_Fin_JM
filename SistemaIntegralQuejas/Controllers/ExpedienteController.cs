@@ -35,6 +35,9 @@ using static SistemaIntegralQuejas.Controllers.ExpedienteController;
 using System.Numerics;
 using System.Security.Policy;
 using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Server.HttpSys;
+using System.Runtime.ConstrainedExecution;
+using System.Collections;
 
 namespace SistemaIntegralQuejas.Controllers
 {
@@ -650,8 +653,72 @@ namespace SistemaIntegralQuejas.Controllers
 
         }
 
+
+
+        public bool ArmaBitacoraModificaEscritoInicial(ArrayList arregloValoresActuales, ArrayList arregloValoresanteriores, string id_queja)
+        {
+            StringBuilder txtcontBuilder = new StringBuilder(); //Declaración del stringBuilder
+            string tipoMod = "Modificación";
+            string Ipaccesible = "LocalHost";
+            bool problemas = false;
+            string[] nombre_Campos = { "id del escritoinicial", "txtPeticionarios", "comp_peticionario", "fecha_hechos", "lugar_hechos_mun", "circunstancia_hechos", "ruta_documento", "calle", "Núm. Int", "Num. Ext", "CP", "Colonia" };
+            int id_quejaR = 0;
+
+            for (int i = 0; i < arregloValoresActuales.Count; i++)
+            {
+                ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, nombre_Campos[i], arregloValoresanteriores[i].ToString(), arregloValoresActuales[i].ToString(), Ipaccesible);
+            }
+
+            //Crear_Bitacora
+
+            if (id_queja == "")
+            {
+                id_quejaR = int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE")); //Obtener el Número de expediente
+            }
+            else
+            {
+                id_quejaR = Convert.ToInt32(id_queja);// Genera el que está
+            }
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString()); // Crea la Bitácora
+
+            return problemas;
+
+        }
+        public bool ArmaBitacoraAltaEscritoInicial(ArrayList arregloValores,string id_queja)
+        {
+            StringBuilder txtcontBuilder = new StringBuilder(); //Declaración del stringBuilder
+            string tipoMod = "Alta";
+            string Ipaccesible = "LocalHost";
+            bool problemas = false;
+            string[] nombre_Campos= { "id del escritoinicial", "txtPeticionarios", "comp_peticionario", "fecha_hechos", "lugar_hechos_mun", "circunstancia_hechos", "ruta_documento", "calle", "Núm. Int","Num. Ext","CP","Colonia" };
+            int id_quejaR = 0;
+
+            for (int i = 0; i < arregloValores.Count; i++)
+            {
+                ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, nombre_Campos[i], "-", arregloValores[i].ToString(), Ipaccesible);
+            }
+
+            //Crear_Bitacora
+
+            if (id_queja == "")
+            {
+                id_quejaR = int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE")); //Obtener el Número de expediente
+            }
+            else
+            {
+                id_quejaR = Convert.ToInt32(id_queja);// Genera el que está
+            }
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString()); // Crea la Bitácora
+
+            return problemas;
+
+        }
+
         public async Task<ActionResult> GeneraEscritoInicialnuevo(IFormCollection form)
         {
+
+
+            ArrayList arregloValores = new ArrayList();
             string mensajet = "";
             string mensaje = "";
             string query = "";
@@ -684,6 +751,13 @@ namespace SistemaIntegralQuejas.Controllers
             string sFiles_uploaded = "";
             List<string> list_Files = new List<string>();
 
+            arregloValores.Add(idescritoinicial);
+            arregloValores.Add(txtPeticionarios[0]);
+            arregloValores.Add(txtPeticionarios[1]);
+            arregloValores.Add(Fecha_hechos);
+            arregloValores.Add(lugarHechos);
+            arregloValores.Add(CircunstanciasHechos);
+
             // --------------------------------------------------- Registrar escrito inicial 
             try
             {
@@ -694,7 +768,18 @@ namespace SistemaIntegralQuejas.Controllers
                     if (form["numintLH"].ToString() != "") numintLH = form["numintLH"].ToString();
                     cpLH = form["cpLH"].ToString();
                     coloniaLH = form["coloniaLH"].ToString();
+
+                    //Adicion de elementos dentro del arreglo del escrito
+                    arregloValores.Add(calleLH);
+                    arregloValores.Add(numextLH);
+                    arregloValores.Add(numintLH);
+                    arregloValores.Add(cpLH);
+                    arregloValores.Add(coloniaLH);
                 }
+
+               
+
+               
 
                 query = "[dbo].[insertEscritoInicial_OK]";
                 string msg = "";
@@ -720,9 +805,12 @@ namespace SistemaIntegralQuejas.Controllers
                 cmd.ExecuteNonQuery();
                 idescritoinicial = Convert.ToInt32(cmd.Parameters["@id_escrito"].Value);
 
+
+
+
                 // --------------------------------------------------- Fin Registrar escrito inical
 
-
+                ArmaBitacoraAltaEscritoInicial(arregloValores, idQueja.ToString());
                 // --------------------------------------------------- Subir archivo adjunto escrito inicial
 
                 if (uploaded_files.Count > 0)
@@ -936,10 +1024,15 @@ namespace SistemaIntegralQuejas.Controllers
 
 
         }
-        public ActionResult GeneraActaCircunstanciadaNuevo(IFormCollection form)
+        public ActionResult GeneraActaCircunstanciadaNuevo(IFormCollection form, string Ipaccesible)
         {
             String query = "";
             string mensajet = "";
+
+            //variables para la creación de Bitacora
+            StringBuilder txtcontBuilder = new StringBuilder();
+            string tipoMod = "";
+
             // int UltimoID_Recuperado = 0;
             int nformulario = int.Parse(form["numeroformulario"].ToString());
 
@@ -1034,6 +1127,41 @@ namespace SistemaIntegralQuejas.Controllers
                 UltimoID_Recuperado = Convert.ToInt32(cmd.Parameters["@ultimo_id_insertado"].Value);
 
                 mensajet = "ok";
+                query = "exec Sp_GET_MES " + mes;
+                string mesdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_LUGAR " + lugar;
+                string lugardesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_NOMBABOGADO " + idAbogado;
+                string abogadodesc = conexionsql.ObtenerReader(query);
+                string consentimientodesc = consentimiento == 1 ? "SÍ" : consentimiento == 2 ? "NO" : "";
+                query = "Sp_GET_LUGAR " + origenPet;
+                string origenPetdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_NOMBPETICIONARIO " + idPet;
+                string idPetdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_IDENTI " + identificacionPet;
+                string identificacionPetdesc = conexionsql.ObtenerReader(query);
+                string origenPetExtdesc = origenPetExt == 0 ? "NO ES EXTRANGERO" : "";
+
+                tipoMod = "Alta";
+
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Lugar", "-", lugardesc, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Día", "-", diaFecha.ToString(), Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Mes", "-", mesdesc, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Año", "-", anio.ToString(), Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Abogado", "-", abogadodesc, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Inicio", "-", horaInicio.ToString(), Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", "-", ubicacion, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Peticionario", "-", idPetdesc, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Concentimiento", "-", consentimientodesc, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario", "-", origenPetdesc, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", "-", identificacionPetdesc, Ipaccesible);
+                //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Escrito", "-", idEscrito.ToString(), Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechos, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Termino", "-", fechaTerminoCompleta, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
+                //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
 
             }
             catch (Exception e)
@@ -1048,6 +1176,7 @@ namespace SistemaIntegralQuejas.Controllers
             mensajet = "ok";
 
 
+            CrearBitacoraTXT(idqueja, txtcontBuilder.ToString());
             return Json(new { mensaje = mensajet, listat = actaC });
 
 
