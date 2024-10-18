@@ -3000,6 +3000,7 @@ namespace SistemaIntegralQuejas.Controllers
                 userItem.DocIdentificatorio = (row["DOC_IDENTIFICATORIO"].ToString());
                 peticionariolist.Add(userItem);
             }
+            if (idcomplementopet == "") { ContBitacora(txtcontBuilder, "Datos Personales", "Alta", "Tipo de Persona", "-", tipo_persona, Ipaccesible); }
             // Si el peticionario ya esta registrado se actualizan sus datos en caso de que hayan cambiado
             if (peticionariolist.Count > 0)
             {
@@ -3007,7 +3008,7 @@ namespace SistemaIntegralQuejas.Controllers
                 // Se actualiza datos del peticionario que ingreso en la entrada si es necesario
                 String queryPet = "exec Sp_Update_Peticionario " + idPetit + ",'" + nombre + "','" + apellidop + "','" + apellidom + "', '" + curp + "' ";
                 conexionsql.InsertUpdateDelete(queryPet);
-                if (id_queja == "")
+                if (idcomplementopet == "")
                 {
                     tipoMod = "Alta";
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CURP", "-", curp, Ipaccesible);
@@ -3050,7 +3051,15 @@ namespace SistemaIntegralQuejas.Controllers
             string Modalidadvio = idModalidadvio == 1 ? "Familiar" : idModalidadvio == 2 ? "Laboral" : idModalidadvio == 3 ? "Docente (Escolar)" : idModalidadvio == 4 ? "Istitucional" : idModalidadvio == 5 ? "Feminicidio" : idModalidadvio == 6 ? "No especifica" : "";
             string Tipoviole = idTipoviole == 1 ? "Hijo(a)" : idTipoviole == 2 ? "Esposo(a) o Compañero(a)" : idTipoviole == 3 ? "Trabajador(a)" : idTipoviole == 4 ? "Sin parentesco" : idTipoviole == 5 ? "No especifica" : "";
             string Relacionagresor = idRelacionagresor == 1 ? "Hijo(a)" : idRelacionagresor == 2 ? "Esposo(a) o Compañero(a)" : idRelacionagresor == 3 ? "Trabajador(a) Doméstico(a)" : idRelacionagresor == 4 ? "Sin parentesco" : idRelacionagresor == 5 ? "Huésped" : idRelacionagresor == 6 ? "Otra relación" : idRelacionagresor == 7 ? "Otro Parentesco" : idRelacionagresor == 8 ? "No especificado" : "";
-            
+            string tipuser_bita = "";
+            if (tipouser== "Peticionario")
+            {
+                tipuser_bita = "Quejoso";
+            }
+            else
+            {
+                tipuser_bita = tipouser;
+            }
             // Se valida si quiere editar el complemento actual de peticionario o si es uno nuevo
             if (idcomplementopet == "")
             {
@@ -3099,7 +3108,6 @@ namespace SistemaIntegralQuejas.Controllers
                     "'" + otroGenero + "'," +
                     "'" + VersionComplemento + "'";
                     tipoMod = "Alta";
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de Persona", "-", tipo_persona, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado", "-", estado, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia, Ipaccesible);
@@ -3112,7 +3120,7 @@ namespace SistemaIntegralQuejas.Controllers
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipuser_bita, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Género", "-", genero, Ipaccesible);
                     if (genero == "Otro"){ ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro género", "-", otroGenero, Ipaccesible); }
@@ -3190,9 +3198,8 @@ namespace SistemaIntegralQuejas.Controllers
                    "'" + otroGenero + "'," +
                    "'" + id_queja + "'";
                     tipoMod = "Alta";
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo de Persona", "-", tipo_persona, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "CP", "-", cp, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado", "-", estado, Ipaccesible);////
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Estado", "-", estado, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Colonia", "-", colonia, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Municipio", "-", municipio, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Ciudad/Localidad", "-", ciudad, Ipaccesible);
@@ -3203,7 +3210,7 @@ namespace SistemaIntegralQuejas.Controllers
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", "-", edad, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", "-", telefono, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", "-", email, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipouser, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", "-", tipuser_bita, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", "-", sexo, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Género", "-", genero, Ipaccesible);
                     if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro género", "-", otroGenero, Ipaccesible); }
@@ -3354,7 +3361,7 @@ namespace SistemaIntegralQuejas.Controllers
                 if (compet.Edad != edad) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Edad", compet.Edad, edad, Ipaccesible); }
                 if (compet.Telefono != telefono) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Teléfono", compet.Telefono, telefono, Ipaccesible); }
                 if (compet.Email != email) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Correo Electrónico", compet.Email, email, Ipaccesible); }
-                if (compet.TipoUsuario != tipouser) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", compet.TipoUsuario, tipouser, Ipaccesible); }
+                if (compet.TipoUsuario != tipouser) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Tipo Usuario", compet.TipoUsuario, tipuser_bita, Ipaccesible); }
                 if (sexoFK != sexo) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Sexo", sexoFK, sexo, Ipaccesible); }
                 if (compet.Genero != genero) { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Género", compet.Genero, genero, Ipaccesible); }
                 if (compet.OtroGenero != otroGenero) { if (genero == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro género", compet.OtroGenero, otroGenero, Ipaccesible); } }
