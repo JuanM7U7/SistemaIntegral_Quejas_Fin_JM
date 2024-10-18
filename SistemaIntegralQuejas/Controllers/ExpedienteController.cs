@@ -1208,7 +1208,10 @@ namespace SistemaIntegralQuejas.Controllers
                 string idPetdesc = conexionsql.ObtenerReader(query);
                 query = "Sp_GET_IDENTI " + identificacionPet;
                 string identificacionPetdesc = conexionsql.ObtenerReader(query);
-                string origenPetExtdesc = origenPetExt == 0 ? "NO ES EXTRANGERO" : "";
+                string origenPetExtdesc = origenPetExt == 0 ? "No es extrajero" : "";
+                //query = "exec Sp_GET_HORAFINAL " + fechaTerminoCompleta;
+                //string horaTerminoe = conexionsql.ObtenerReader(query);
+
 
                 tipoMod = "Alta";
 
@@ -1222,13 +1225,13 @@ namespace SistemaIntegralQuejas.Controllers
                 ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Peticionario", "-", idPetdesc, Ipaccesible);
                 ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Concentimiento", "-", consentimientodesc, Ipaccesible);
                 ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario", "-", origenPetdesc, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
                 ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", "-", identificacionPetdesc, Ipaccesible);
                 //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Escrito", "-", idEscrito.ToString(), Ipaccesible);
                 ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechos, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
                 ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
                 ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Termino", "-", fechaTerminoCompleta, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
                 //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
 
             }
