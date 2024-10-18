@@ -684,18 +684,46 @@ namespace SistemaIntegralQuejas.Controllers
             return problemas;
 
         }
-        public bool ArmaBitacoraAltaEscritoInicial(ArrayList arregloValores,string id_queja)
+        public bool ArmaBitacoraAltaEscritoInicial(ArrayList arregloValores,string id_queja, bool entroDirecCompleta, bool tieneAarchivo, bool tieneautoridades)
         {
             StringBuilder txtcontBuilder = new StringBuilder(); //Declaración del stringBuilder
             string tipoMod = "Alta";
             string Ipaccesible = "LocalHost";
             bool problemas = false;
-            string[] nombre_Campos= { "id del escritoinicial", "txtPeticionarios", "comp_peticionario", "fecha_hechos", "lugar_hechos_mun", "circunstancia_hechos", "ruta_documento", "calle", "Núm. Int","Num. Ext","CP","Colonia" };
+
+            ArrayList nombre_Campos = new ArrayList();
+            // "id del escritoinicial", "fecha de Hechos", "lugar_hechos", "Calle", "Num. Ext", "Num. Int", "CP", "Colonia", "Circunstancias Hechos" };
+
+            nombre_Campos.Add("id del escritoinicial"); nombre_Campos.Add("fecha de Hechos"); nombre_Campos.Add("lugar_hechos");
+
+            if (entroDirecCompleta)
+            {
+                nombre_Campos.Add("Calle"); nombre_Campos.Add("Num. Ext");
+                nombre_Campos.Add("Num. Int"); nombre_Campos.Add("CP"); nombre_Campos.Add("Colonia");
+            }
+
+            nombre_Campos.Add("Circunstancias Hechos");
+
+            if (tieneAarchivo)
+            {
+                nombre_Campos.Add("Archivo Cargado");
+            }
+            if (tieneautoridades) 
+            {
+                nombre_Campos.Add("Nombre Autoridad");
+                nombre_Campos.Add("Cargo Autoridad");
+                nombre_Campos.Add("Id de autoridad");
+
+            }
+
+           
+
+
             int id_quejaR = 0;
 
             for (int i = 0; i < arregloValores.Count; i++)
             {
-                ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, nombre_Campos[i], "-", arregloValores[i].ToString(), Ipaccesible);
+                ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, nombre_Campos[i].ToString(), "-", arregloValores[i].ToString(), Ipaccesible);
             }
 
             //Crear_Bitacora
@@ -751,18 +779,19 @@ namespace SistemaIntegralQuejas.Controllers
             string sFiles_uploaded = "";
             List<string> list_Files = new List<string>();
 
+            bool direccionCompletac=false, hayarchivo=false, hayautoridades=false;
+
             arregloValores.Add(idescritoinicial);
-            arregloValores.Add(txtPeticionarios[0]);
-            arregloValores.Add(txtPeticionarios[1]);
+            //arregloValores.Add(txtPeticionarios[0]);
+            //arregloValores.Add(txtPeticionarios[1]);
             arregloValores.Add(Fecha_hechos);
             arregloValores.Add(lugarHechos);
-            arregloValores.Add(CircunstanciasHechos);
-
             // --------------------------------------------------- Registrar escrito inicial 
             try
             {
                 if (direccionCompleta)
                 {
+                    direccionCompletac = true;
                     calleLH = form["calleLH"].ToString();
                     numextLH = form["numextLH"].ToString();
                     if (form["numintLH"].ToString() != "") numintLH = form["numintLH"].ToString();
@@ -777,9 +806,7 @@ namespace SistemaIntegralQuejas.Controllers
                     arregloValores.Add(coloniaLH);
                 }
 
-               
-
-               
+                arregloValores.Add(CircunstanciasHechos);
 
                 query = "[dbo].[insertEscritoInicial_OK]";
                 string msg = "";
@@ -810,11 +837,12 @@ namespace SistemaIntegralQuejas.Controllers
 
                 // --------------------------------------------------- Fin Registrar escrito inical
 
-                ArmaBitacoraAltaEscritoInicial(arregloValores, idQueja.ToString());
+                //ArmaBitacoraAltaEscritoInicial(arregloValores, idQueja.ToString());
                 // --------------------------------------------------- Subir archivo adjunto escrito inicial
 
                 if (uploaded_files.Count > 0)
                 {
+                    hayarchivo = true;
                     string queryenlaceescritoiuploads = "";
 
                     if (tipofrm == "index")
@@ -867,7 +895,7 @@ namespace SistemaIntegralQuejas.Controllers
                         {
                             await uploaded_file.CopyToAsync(stream);
                         }
-
+                        arregloValores.Add(uploaded_Filename);
                         // Registrar ruta a la base de datos
                         queryenlaceescritoiuploads = "exec Sp_Insert_Enlace_Archivosaj_Escritoi " + idescritoinicial + " ,'" + uploaded_Filename + "' ,'" + type_archivo + "'";
                         bool sinoc = conexionsql.InsertUpdateDelete(queryenlaceescritoiuploads);
@@ -882,6 +910,7 @@ namespace SistemaIntegralQuejas.Controllers
                 string queryeliminaautoridad = "";
                 if (lstAutoridades.Count > 0)
                 {
+                    hayautoridades = true;
                     queryeliminaautoridad = "UPDATE ENLACE_ESCRITO_AUTORIDAD SET Fk_Status = 3 WHERE Id_queja = " + idQueja;
                     bool eliminado = conexionsql.InsertUpdateDelete(queryeliminaautoridad);
 
@@ -889,9 +918,17 @@ namespace SistemaIntegralQuejas.Controllers
                     {
                         queryenlaceautoridad = "exec SP_insertEnlaceAutoridadEscrito " + idescritoinicial + " ,'" + lstAutoridades[i].IdAutoridad + "' ,'" + lstAutoridades[i].NombrePersona + "' ,'" + lstAutoridades[i].CargoPersona + "', '" + idQueja + "'";
                         bool sino = conexionsql.InsertUpdateDelete(queryenlaceautoridad);
+
+                        arregloValores.Add(lstAutoridades[i].NombrePersona);
+                        arregloValores.Add(lstAutoridades[i].CargoPersona);
+                        arregloValores.Add(lstAutoridades[i].IdAutoridad);
+
+                       
                     }
 
                 }
+
+                ArmaBitacoraAltaEscritoInicial(arregloValores, idQueja.ToString(),direccionCompletac,hayarchivo,hayautoridades);
 
                 queryf = "exec Sp_Regresa_Escrito_Inicial_Queja " + idescritoinicial;
                 mensaje = "ok";
