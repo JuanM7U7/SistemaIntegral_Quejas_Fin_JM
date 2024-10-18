@@ -1,0 +1,542 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Fisica",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "HEMJ060604MDGRNDA5",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Judith Jimena ",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "Hernandez",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "Montoya",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72710",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "bmSgx",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "8dLbv",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "BMlOPzye",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "CBTgdWJ",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "Tehuantepec",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "18",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2006-06-04",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "18",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2212112153",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "jimena.hdz001@gmail.com",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Quejoso",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Femenino",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "Mujer",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "Preparatoria o Bachillerato",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Soltero(a)",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "Estudiante",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "Ninguna",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No pertenece",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otro grupo social",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otra lengua indigena",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-18 16:21:12",
+    "Usuario": "YYVR",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "id del escritoinicial",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2024-10-18 16:21:31",
+    "Usuario": "YYVR",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-18 16:21",
+    "FechaHora": "2024-10-18 16:21:31",
+    "Usuario": "YYVR",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "lugar_hechos",
+    "Antes": "-",
+    "Despues": "64",
+    "FechaHora": "2024-10-18 16:21:31",
+    "Usuario": "YYVR",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Circunstancias Hechos",
+    "Antes": "-",
+    "Despues": "cxvcvxcvvvcv",
+    "FechaHora": "2024-10-18 16:21:31",
+    "Usuario": "YYVR",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "vcxvv",
+    "FechaHora": "2024-10-18 16:21:31",
+    "Usuario": "YYVR",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "cxvxvv",
+    "FechaHora": "2024-10-18 16:21:31",
+    "Usuario": "YYVR",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E18.1",
+    "FechaHora": "2024-10-18 16:21:31",
+    "Usuario": "YYVR",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Lugar",
+    "Antes": "-",
+    "Despues": "Camocuautla",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Día",
+    "Antes": "-",
+    "Despues": "4",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Mes",
+    "Antes": "-",
+    "Despues": "octubre",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Año",
+    "Antes": "-",
+    "Despues": "2024",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Abogado",
+    "Antes": "-",
+    "Despues": "Yerendira Yadira",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Inicio",
+    "Antes": "-",
+    "Despues": "04:21 p. m.",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación",
+    "Antes": "-",
+    "Despues": "cvcxvvc",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Peticionario",
+    "Antes": "-",
+    "Despues": "Judith Jimena ",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Concentimiento",
+    "Antes": "-",
+    "Despues": "SÍ",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario",
+    "Antes": "-",
+    "Despues": "Cohuecan",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario Extranjero",
+    "Antes": "-",
+    "Despues": "No es extrajero",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Identificación",
+    "Antes": "-",
+    "Despues": "INE",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-18 04:21 p. m.",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación de Hechos",
+    "Antes": "-",
+    "Despues": "cvxvv",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hechos",
+    "Antes": "-",
+    "Despues": "cxvcvxcvvvcv",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Termino",
+    "Antes": "-",
+    "Despues": "2024-10-18 04:22 p. m.",
+    "FechaHora": "2024-10-18 16:24:03",
+    "Usuario": "YYVR",
+    "IP": ""
+  }
+]

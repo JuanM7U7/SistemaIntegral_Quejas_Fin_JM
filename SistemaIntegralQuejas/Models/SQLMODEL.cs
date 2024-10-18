@@ -687,7 +687,7 @@ namespace SistemaIntegralQuejas.Models
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
 

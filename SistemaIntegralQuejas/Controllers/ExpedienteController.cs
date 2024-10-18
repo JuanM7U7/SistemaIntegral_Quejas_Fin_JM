@@ -1092,10 +1092,13 @@ namespace SistemaIntegralQuejas.Controllers
 
 
         }
+
+        //ALTA ID ESCRITO
         public ActionResult GeneraActaCircunstanciadaNuevo(IFormCollection form, string Ipaccesible)
         {
             String query = "";
             string mensajet = "";
+            string mensaje = "";
 
             //variables para la creación de Bitacora
             StringBuilder txtcontBuilder = new StringBuilder();
@@ -1164,9 +1167,34 @@ namespace SistemaIntegralQuejas.Controllers
 
             try
             {
+                ActacModificado actaAlta = new ActacModificado();
+
+                query = "Get_ActacAlta " + idactac;
+                
+
+                actaAlta = conexionsql.regresaActaCircunstanciada(1, query, ref mensaje);
+                SqlCommand cmd = null;
+
+                query = "exec Sp_GET_MES " + mes;
+                string mesdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_LUGAR " + lugar;
+                string lugardesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_NOMBABOGADO " + idAbogado;
+                string abogadodesc = conexionsql.ObtenerReader(query);
+                string consentimientodesc = consentimiento == 1 ? "SÍ" : consentimiento == 2 ? "NO" : "";
+                query = "Sp_GET_LUGAR " + origenPet;
+                string origenPetdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_NOMBPETICIONARIO " + idPet;
+                string idPetdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_IDENTI " + identificacionPet;
+                string identificacionPetdesc = conexionsql.ObtenerReader(query);
+                string origenPetExtdesc = origenPetExt == 0 ? "No es extrajero" : "";
+                //query = "exec Sp_GET_HORAFINAL " + fechaTerminoCompleta;
+                //string horaTerminoe = conexionsql.ObtenerReader(query);
+
                 query = "[dbo].[InsertActacAlta]";
 
-                SqlCommand cmd = new SqlCommand(query, conexionsql.conexion(ref mensajet));
+                cmd = new SqlCommand(query, conexionsql.conexion(ref mensajet));
 
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@ids", System.Data.SqlDbType.Int).Value = idactac;
@@ -1195,45 +1223,57 @@ namespace SistemaIntegralQuejas.Controllers
                 UltimoID_Recuperado = Convert.ToInt32(cmd.Parameters["@ultimo_id_insertado"].Value);
 
                 mensajet = "ok";
-                query = "exec Sp_GET_MES " + mes;
-                string mesdesc = conexionsql.ObtenerReader(query);
-                query = "Sp_GET_LUGAR " + lugar;
-                string lugardesc = conexionsql.ObtenerReader(query);
-                query = "Sp_GET_NOMBABOGADO " + idAbogado;
-                string abogadodesc = conexionsql.ObtenerReader(query);
-                string consentimientodesc = consentimiento == 1 ? "SÍ" : consentimiento == 2 ? "NO" : "";
-                query = "Sp_GET_LUGAR " + origenPet;
-                string origenPetdesc = conexionsql.ObtenerReader(query);
-                query = "Sp_GET_NOMBPETICIONARIO " + idPet;
-                string idPetdesc = conexionsql.ObtenerReader(query);
-                query = "Sp_GET_IDENTI " + identificacionPet;
-                string identificacionPetdesc = conexionsql.ObtenerReader(query);
-                string origenPetExtdesc = origenPetExt == 0 ? "No es extrajero" : "";
-                //query = "exec Sp_GET_HORAFINAL " + fechaTerminoCompleta;
-                //string horaTerminoe = conexionsql.ObtenerReader(query);
 
 
-                tipoMod = "Alta";
+                if (actaAlta.Id == 0)
+                {
+                   
+                    tipoMod = "Alta";
 
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Lugar", "-", lugardesc, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Día", "-", diaFecha.ToString(), Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Mes", "-", mesdesc, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Año", "-", anio.ToString(), Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Abogado", "-", abogadodesc, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Inicio", "-", horaInicio.ToString(), Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", "-", ubicacion, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Peticionario", "-", idPetdesc, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Concentimiento", "-", consentimientodesc, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario", "-", origenPetdesc, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", "-", identificacionPetdesc, Ipaccesible);
-                //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Escrito", "-", idEscrito.ToString(), Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechos, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Termino", "-", fechaTerminoCompleta, Ipaccesible);
-                //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Lugar", "-", lugardesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Día", "-", diaFecha.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Mes", "-", mesdesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Año", "-", anio.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Abogado", "-", abogadodesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Inicio", "-", horaInicio.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", "-", ubicacion, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Peticionario", "-", idPetdesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Concentimiento", "-", consentimientodesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario", "-", origenPetdesc, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", "-", identificacionPetdesc, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Escrito", "-", idEscrito.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechos, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Termino", "-", fechaTerminoCompleta, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
+                }
 
+                else
+                {
+                    tipoMod = "Modificación";
+                    if (actaAlta.Lugar != lugardesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Lugar", actaAlta.Lugar, lugardesc, Ipaccesible); }
+                    if (actaAlta.DiaFecha != diaFecha) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Día", actaAlta.DiaFecha.ToString(), diaFecha.ToString(), Ipaccesible); }
+                    if (actaAlta.Mes != mesdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Mes", actaAlta.Mes, mesdesc, Ipaccesible); }
+                    if (actaAlta.Anio != anio.ToString()) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Año", actaAlta.Anio, anio.ToString(), Ipaccesible); }
+                    if (actaAlta.NomAbogado != abogadodesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Abogado", actaAlta.NomAbogado, abogadodesc, Ipaccesible); }
+                    if (actaAlta.HoraInicio != horaInicio) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Inicio", actaAlta.HoraInicio.ToString(), horaInicio.ToString(), Ipaccesible); }
+                    if (actaAlta.Ubicacion != ubicacion) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", actaAlta.Ubicacion, ubicacion, Ipaccesible); }
+                    if (actaAlta.idPet.ToString() != idPetdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Peticionario", actaAlta.idPet.ToString(), idPetdesc, Ipaccesible); }
+                    if (actaAlta.Consentimiento != consentimientodesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Concentimiento", actaAlta.Consentimiento, consentimientodesc, Ipaccesible); }
+                    if (actaAlta.OrigenPet != origenPetdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario", actaAlta.OrigenPet, origenPetdesc, Ipaccesible); }
+                    //if (actaAlta.OrigenPeticionarioExterno != origenPetExtdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Externo", actaAlta.OrigenPeticionarioExterno, origenPetExtdesc, Ipaccesible); }
+                    if (actaAlta.IdentificacionPet != identificacionPetdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", actaAlta.IdentificacionPet, identificacionPetdesc, Ipaccesible); }
+                    if (actaAlta.FechaHechos != fechaHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", actaAlta.FechaHechos, fechaHechos, Ipaccesible); }
+                    if (actaAlta.UbiHechos != ubiHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", actaAlta.UbiHechos, ubiHechos, Ipaccesible); }
+                   
+
+
+                }
+          
+
+               
             }
             catch (Exception e)
             {
@@ -1242,7 +1282,7 @@ namespace SistemaIntegralQuejas.Controllers
             actaC = new ActacModificado();
 
             query = "exec Sp_Regresa_Acta_CircunstanciadaNuevo " + UltimoID_Recuperado;
-            string mensaje = "";
+            
             actaC = conexionsql.regresaActaCircunstanciada(1, query, ref mensaje);
             mensajet = "ok";
 
@@ -1320,7 +1360,10 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { status = statusresp, idinsertado = idenlacequeja });
         }
 
-        public ActionResult GuardaActaC(IFormCollection form)
+
+
+        //EN BUSCA TABLA
+        public ActionResult GuardaActaC(IFormCollection form, string Ipaccesible)
         {
             String query = "";
             string mensajet = "";
@@ -1328,6 +1371,14 @@ namespace SistemaIntegralQuejas.Controllers
             string[] horaHechosC = form["horaHechos"].ToString().Split(":");
             string[] horaTerminoc = form["horaTermino"].ToString().Split(":");
             int idActaC = 0;
+
+
+            string mensaje = "";
+
+            StringBuilder txtcontBuilder = new StringBuilder();
+            string tipoMod = "";
+
+
             if (form["idactac"] != "")
             {
                 idActaC = int.Parse(form["idactac"].ToString());
@@ -1392,10 +1443,35 @@ namespace SistemaIntegralQuejas.Controllers
 
             try
             {
+                ActacModificado actaAlta = new ActacModificado();
+
+                query = "Get_ActacAlta " + idActaC;
+
+
+                actaAlta = conexionsql.regresaActaCircunstanciada(1, query, ref mensaje);
+                SqlCommand cmd = null;
+
+                query = "exec Sp_GET_MES " + mes;
+                string mesdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_LUGAR " + lugar;
+                string lugardesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_NOMBABOGADO " + idAbogado;
+                string abogadodesc = conexionsql.ObtenerReader(query);
+                string consentimientodesc = consentimiento == 1 ? "SÍ" : consentimiento == 2 ? "NO" : "";
+                query = "Sp_GET_LUGAR " + origenPet;
+                string origenPetdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_NOMBPETICIONARIO " + idPet;
+                string idPetdesc = conexionsql.ObtenerReader(query);
+                query = "Sp_GET_IDENTI " + identificacionPet;
+                string identificacionPetdesc = conexionsql.ObtenerReader(query);
+                string origenPetExtdesc = origenPetExt == 0 ? "No es extrajero" : "";
+                //query = "exec Sp_GET_HORAFINAL " + fechaTerminoCompleta;
+                //string horaTerminoe = conexionsql.ObtenerReader(query);
+
 
                 query = "[dbo].[InsertActac]";
                 SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng());
-                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd = new SqlCommand(query, connection);
                 //SqlCommand cmd = new SqlCommand(conexionsql.ConnectionStrng());
                 //cmd.CommandText = query;
 
@@ -1432,6 +1508,53 @@ namespace SistemaIntegralQuejas.Controllers
 
                 mensajet = "ok";
 
+                if (actaAlta.Id == 0)
+                {
+
+                    tipoMod = "Alta";
+
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Lugar", "-", lugardesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Día", "-", diaFecha.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Mes", "-", mesdesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Año", "-", anio.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Abogado", "-", abogadodesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Inicio", "-", horaInicio.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", "-", ubicacion, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Peticionario", "-", idPetdesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Concentimiento", "-", consentimientodesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario", "-", origenPetdesc, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", "-", identificacionPetdesc, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Escrito", "-", idEscrito.ToString(), Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechos, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Termino", "-", fechaTerminoCompleta, Ipaccesible);
+                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
+                }
+
+                else
+                {
+                    tipoMod = "Modificación";
+                    if (actaAlta.Lugar != lugardesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Lugar", actaAlta.Lugar, lugardesc, Ipaccesible); }
+                    if (actaAlta.DiaFecha != diaFecha) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Día", actaAlta.DiaFecha.ToString(), diaFecha.ToString(), Ipaccesible); }
+                    if (actaAlta.Mes != mesdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Mes", actaAlta.Mes, mesdesc, Ipaccesible); }
+                    if (actaAlta.Anio != anio.ToString()) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Año", actaAlta.Anio, anio.ToString(), Ipaccesible); }
+                    if (actaAlta.NomAbogado != abogadodesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Abogado", actaAlta.NomAbogado, abogadodesc, Ipaccesible); }
+                    if (actaAlta.HoraInicio != horaInicio) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora Inicio", actaAlta.HoraInicio.ToString(), horaInicio.ToString(), Ipaccesible); }
+                    if (actaAlta.Ubicacion != ubicacion) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", actaAlta.Ubicacion, ubicacion, Ipaccesible); }
+                    if (actaAlta.idPet.ToString() != idPetdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Peticionario", actaAlta.idPet.ToString(), idPetdesc, Ipaccesible); }
+                    if (actaAlta.Consentimiento != consentimientodesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Concentimiento", actaAlta.Consentimiento, consentimientodesc, Ipaccesible); }
+                    if (actaAlta.OrigenPet != origenPetdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario", actaAlta.OrigenPet, origenPetdesc, Ipaccesible); }
+                    //if (actaAlta.OrigenPeticionarioExterno != origenPetExtdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Externo", actaAlta.OrigenPeticionarioExterno, origenPetExtdesc, Ipaccesible); }
+                    if (actaAlta.IdentificacionPet != identificacionPetdesc) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", actaAlta.IdentificacionPet, identificacionPetdesc, Ipaccesible); }
+                    if (actaAlta.FechaHechos != fechaHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", actaAlta.FechaHechos, fechaHechos, Ipaccesible); }
+                    if (actaAlta.UbiHechos != ubiHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", actaAlta.UbiHechos, ubiHechos, Ipaccesible); }
+
+
+
+                }
+
             }
             catch (Exception e)
             {
@@ -1442,7 +1565,7 @@ namespace SistemaIntegralQuejas.Controllers
             {
 
             }
-
+            CrearBitacoraTXT(diqueja, txtcontBuilder.ToString());
             return Json(new { mensaje = mensajet, listat = actaC });
 
         }
