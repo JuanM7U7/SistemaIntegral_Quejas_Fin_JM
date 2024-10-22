@@ -3,6 +3,8 @@
 @{
     Layout = null;
 }
+
+
 <style>
     * {
         font-family: Arial;
@@ -165,8 +167,6 @@
 
     .pequenioh {
         width: 12.5%;
-        margin-bottom:25%;
-        height:40px;
         float:left!important;
     }
 
@@ -190,18 +190,19 @@
         height: auto;
         float: left;
         margin-bottom: 0px;
-       /*background-color:lightgray;*/
+        /* background-color:lightgray;*/
         page-break-after: always;
+        margin-bottom:inherit;
     }
     .hoja
     {
         margin-top:0px;
         width: 1250px;
-        height: 55%;
+        height:60%;
         float: left;
         /*background-color:lightyellow;*/
         display: block;
-        /*background-color:lightgoldenrodyellow*/
+        background-color:lightgoldenrodyellow
     }
 
     .hoja2 {
@@ -212,12 +213,15 @@
         float: left;
         /* background-color:lightblue;*/
         /* background-color: lightgray;*/
+        align-self:start;
     }
 
 
 </style>
 
-
+<script>
+    $(".hoja").css('height','20% !important')
+</script>
 <body>
     @foreach (var itemp in Model)
     {
@@ -270,7 +274,7 @@
                                                     <td class="pequenio">@itemuser.Apartado</td>
                                                     <td class="pequenio">@itemuser.Tipo</td>
                                                     <td class="pequenio">@itemuser.Campo</td>
-                                                    <td class="pequenio">@itemuser.Antes</td>
+                                                    <td class="pequenio">Consultar Anexo Hechos</td>
                                                     <td class="pequenio">Consultar Anexo Hechos</td>
                                                     <td class="grande">@itemuser.FechaHora</td>
                                                     <td class="pequenio">@itemuser.Usuario</td>
@@ -284,7 +288,7 @@
                                                     <td class="pequenio">@itemuser.Apartado</td>
                                                     <td class="pequenio">@itemuser.Tipo</td>
                                                     <td class="pequenio">@itemuser.Campo</td>
-                                                    <td class="pequenio">@itemuser.Antes</td>
+                                                    <td class="pequenio">Sin información Registrada</td>
                                                     <td class="pequenio">Sin información Registrada</td>
                                                     <td class="grande">@itemuser.FechaHora</td>
                                                     <td class="pequenio">@itemuser.Usuario</td>
@@ -340,13 +344,13 @@
                                             <td class="pequenio">@itemuser.Campo</td>
 
                                         </tr>
-                                        <tr><br /><br /></tr>
+                                        <tr></tr>
                                         <tr>
-                                            <td class="pequenioh" colspan="3" style="text-align:center; margin-bottom:80px;margin-left:100px"><bold>CAMBIO:</bold> @itemuser.Despues</td>
+                                            <td class="pequenioh" colspan="3" style=""><bold>CAMBIO:</bold> @itemuser.Despues</td>
 
 
                                         </tr>
-                                        <tr><br /><br /></tr>
+                                        <tr></tr>
                                     }
 
                                 }

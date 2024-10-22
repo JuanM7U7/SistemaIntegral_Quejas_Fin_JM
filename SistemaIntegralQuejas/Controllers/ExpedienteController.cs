@@ -679,25 +679,21 @@ namespace SistemaIntegralQuejas.Controllers
             else
             {
                 nombre_Campos.Add("Sabe dirección completa");
+                nombre_Campos.Add("Calle"); nombre_Campos.Add("Num. Ext");
+                nombre_Campos.Add("Num. Int"); nombre_Campos.Add("CP"); nombre_Campos.Add("Colonia");
             }
 
             nombre_Campos.Add("Circunstancias Hechos");
+            nombre_Campos.Add("Archivo Cargado");
+            nombre_Campos.Add("Nombre Autoridad");
+            nombre_Campos.Add("Cargo Autoridad");
+            nombre_Campos.Add("Id de autoridad");
 
-            if (tieneAarchivo)
-            {
-                nombre_Campos.Add("Archivo Cargado");
-            }
-            if (tieneautoridades)
-            {
-                nombre_Campos.Add("Nombre Autoridad");
-                nombre_Campos.Add("Cargo Autoridad");
-                nombre_Campos.Add("Id de autoridad");
 
-            }
 
             int id_quejaR = 0;
 
-            for (int i = 0; i < arregloValoresanteriores.Count; i++)
+            for (int i = 0; i < arregloValoresActuales.Count; i++)
             {
                 if (arregloValoresanteriores[i].ToString() != arregloValoresActuales[i].ToString())
                 {
@@ -744,30 +740,27 @@ namespace SistemaIntegralQuejas.Controllers
             else
             {
                 nombre_Campos.Add("Sabe dirección completa");
+                nombre_Campos.Add("Calle"); nombre_Campos.Add("Num. Ext");
+                nombre_Campos.Add("Num. Int"); nombre_Campos.Add("CP"); nombre_Campos.Add("Colonia");
             }
 
             nombre_Campos.Add("Circunstancias Hechos");
+            nombre_Campos.Add("Archivo Cargado");
+            nombre_Campos.Add("Nombre Autoridad");
+            nombre_Campos.Add("Cargo Autoridad");
+            nombre_Campos.Add("Id de autoridad");
 
-            if (tieneAarchivo)
-            {
-                nombre_Campos.Add("Archivo Cargado");
-            }
-            if (tieneautoridades) 
-            {
-                nombre_Campos.Add("Nombre Autoridad");
-                nombre_Campos.Add("Cargo Autoridad");
-                nombre_Campos.Add("Id de autoridad");
 
-            }
-
-           
 
 
             int id_quejaR = 0;
 
             for (int i = 0; i < arregloValores.Count; i++)
             {
-                ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, nombre_Campos[i].ToString(), "-", arregloValores[i].ToString(), Ipaccesible);
+                if (arregloValores[i].ToString() !="-")
+                {
+                    ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, nombre_Campos[i].ToString(), "-", arregloValores[i].ToString(), Ipaccesible);
+                }
             }
 
             //Crear_Bitacora
@@ -854,18 +847,26 @@ namespace SistemaIntegralQuejas.Controllers
                     arregloValores.Add(numintLH);
                     arregloValores.Add(cpLH);
                     arregloValores.Add(coloniaLH);
+
                 }
                 else
                 {
                     arregloValores.Add(sabeDireccionCompleta);
+                    arregloValores.Add("-");
+                    arregloValores.Add("-");
+                    arregloValores.Add("-");
+                    arregloValores.Add("-");
+                    arregloValores.Add("-");
                 }
 
                 arregloValores.Add(CircunstanciasHechos);
 
 
                  query = "Sp_Verificar_primeractaQueja "+ idQueja;
-
-               int couentaRegistros=int.Parse(conexionsql.ObtenerReader(query));
+                /*Recoge Información anterior*/
+                List<EscritoUpdate> lista_anterior = getEscritoBitacora(idescritoinicial);
+                /*Recoge Información anterior*/
+                int couentaRegistros =int.Parse(conexionsql.ObtenerReader(query));
 
                 query = "[dbo].[insertEscritoInicial_OK]";
                 string msg = "";
@@ -962,6 +963,10 @@ namespace SistemaIntegralQuejas.Controllers
                     }
 
                 }
+                else
+                {
+                    arregloValores.Add("-");
+                }
 
 
                 // --------------------------------------------------- Si hay autoridades se registran
@@ -978,27 +983,35 @@ namespace SistemaIntegralQuejas.Controllers
                         queryenlaceautoridad = "exec SP_insertEnlaceAutoridadEscrito " + idescritoinicial + " ,'" + lstAutoridades[i].IdAutoridad + "' ,'" + lstAutoridades[i].NombrePersona + "' ,'" + lstAutoridades[i].CargoPersona + "', '" + idQueja + "'";
                         bool sino = conexionsql.InsertUpdateDelete(queryenlaceautoridad);
 
-                        arregloValores.Add(lstAutoridades[i].NombrePersona);
-                        arregloValores.Add(lstAutoridades[i].CargoPersona);
-                        arregloValores.Add(lstAutoridades[i].IdAutoridad);
+                        arregloValores.Add(lstAutoridades[i].NombrePersona.ToString());
+                        arregloValores.Add(lstAutoridades[i].CargoPersona.ToString());
+                        arregloValores.Add(lstAutoridades[i].IdAutoridad.ToString());
 
 
                     }
 
                 }
+                else
+                {
+                    arregloValores.Add('-');
+                    arregloValores.Add('-');
+                    arregloValores.Add('-');
+                }
                 if (couentaRegistros != 0)
                 {
-                    List<EscritoUpdate> lista_anterior = getEscritoBitacora(idescritoinicial);
+                   
                     ArrayList arregloanterior = new ArrayList();
 
                     foreach (EscritoUpdate objeto in lista_anterior)
                     {
+                        string fecha = objeto.FechaHechos.Split(" ")[0].ToString();
+                        string hora= objeto.FechaHechos.Split(" ")[1].ToString();
                         arregloanterior.Add(idQueja.ToString());
-                        arregloanterior.Add(objeto.FechaHechos);
-                        arregloanterior.Add(objeto.Fechahd);
+                        arregloanterior.Add(fecha);
+                        arregloanterior.Add(hora);
                         arregloanterior.Add(objeto.cvemun);
 
-                        if (objeto.calle != "" || objeto.calle != null)
+                        if (objeto.calle != "")
                         {
 
                             arregloanterior.Add("SI");
@@ -1010,7 +1023,7 @@ namespace SistemaIntegralQuejas.Controllers
                         }
                         else
                         {
-                            arregloValores.Add("NO");
+                            arregloanterior.Add("NO");
                             arregloanterior.Add("-");
                             arregloanterior.Add("-");
                             arregloanterior.Add("-");
@@ -1018,8 +1031,8 @@ namespace SistemaIntegralQuejas.Controllers
                             arregloanterior.Add("-");
                         }
 
-                        arregloValores.Add(objeto.circuns_Hechos);
-                        arregloValores.Add(objeto.Rutaarchivo);
+                        arregloanterior.Add(objeto.circuns_Hechos);
+                        arregloanterior.Add(objeto.Rutaarchivo[0].RutaArchivo);
 
                         /*Apartado Autoridad*/
 
