@@ -181,6 +181,7 @@ var ipAcceso = '';
         dataEscritoi.append('Input_FechaHechos', $('#Input_FechaHechos').val());
         dataEscritoi.append('Input_HoraHechos', $('#Input_HoraHechos').val());
         dataEscritoi.append('Input_LugarHechos', $('#Input_LugarHechos').val());
+        dataEscritoi.append('Input_LugarHechosDescripcion', $('select[id="Input_LugarHechos"] option:selected').text());
         dataEscritoi.append('CheckDcompleta', $('#CheckDcompleta').is(':checked'));
         dataEscritoi.append('calleLH', $('#calleLH').val());
         dataEscritoi.append('numextLH', $('#numextLH').val());
