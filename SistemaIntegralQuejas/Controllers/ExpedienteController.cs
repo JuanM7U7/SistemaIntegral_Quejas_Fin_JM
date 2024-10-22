@@ -862,6 +862,11 @@ namespace SistemaIntegralQuejas.Controllers
 
                 arregloValores.Add(CircunstanciasHechos);
 
+
+                 query = "Sp_Verificar_primeractaQueja "+ idQueja;
+
+               int couentaRegistros=int.Parse(conexionsql.ObtenerReader(query));
+
                 query = "[dbo].[insertEscritoInicial_OK]";
                 string msg = "";
                 SqlCommand cmd = new SqlCommand(query, conexionsql.conexion(ref mensajet));
@@ -977,11 +982,11 @@ namespace SistemaIntegralQuejas.Controllers
                         arregloValores.Add(lstAutoridades[i].CargoPersona);
                         arregloValores.Add(lstAutoridades[i].IdAutoridad);
 
-                       
+
                     }
 
                 }
-                if (idescritoinicial != 0)
+                if (couentaRegistros != 0)
                 {
                     List<EscritoUpdate> lista_anterior = getEscritoBitacora(idescritoinicial);
                     ArrayList arregloanterior = new ArrayList();
@@ -1025,19 +1030,21 @@ namespace SistemaIntegralQuejas.Controllers
 
 
                         ArmaBitacoraModificaEscritoInicial(arregloValores, arregloanterior, idQueja.ToString(), direccionCompletac, hayarchivo, hayautoridades);
+                        mensaje = "ok";
                     }
                 }
                 else
                 {
 
-                ArmaBitacoraAltaEscritoInicial(arregloValores, idQueja.ToString(), direccionCompletac, hayarchivo, hayautoridades);
+                    ArmaBitacoraAltaEscritoInicial(arregloValores, idQueja.ToString(), direccionCompletac, hayarchivo, hayautoridades);
 
-                queryf = "exec Sp_Regresa_Escrito_Inicial_Queja " + idescritoinicial;
-                mensaje = "ok";
-                escrito = conexionsql.regresaEscritoInicial(1, queryf, ref mensaje);
-                mensaje = "ok";
+                    queryf = "exec Sp_Regresa_Escrito_Inicial_Queja " + idescritoinicial;
+                    mensaje = "ok";
+                    escrito = conexionsql.regresaEscritoInicial(1, queryf, ref mensaje);
+                    mensaje = "ok";
 
 
+                }
             }
             catch (Exception e)
             {
@@ -3082,7 +3089,7 @@ namespace SistemaIntegralQuejas.Controllers
             string migDestino = "";
             string migidPrimeramex = "";
 
-            string tipo_persona = "Fisica";
+            string tipo_persona = "Física";
             string tipouser = form["qatu_petit-frmDatosPersonales" + numFrm].ToString();
             string curp = form["CURP_petit-frmDatosPersonales" + numFrm].ToString().ToUpper();
             string nombre = (CultureInfo.InvariantCulture.TextInfo.ToTitleCase(form["nombre_petit-frmDatosPersonales" + numFrm].ToString().ToLower()));
