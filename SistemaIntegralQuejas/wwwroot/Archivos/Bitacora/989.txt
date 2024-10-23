@@ -1,0 +1,502 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "MALC961120HNERPH05",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Christopher Francisco Fernando",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "Marquez Completo C",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "Lopez Completo C",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "PUEBLA ",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "5 norte y 5 surA modificado 3",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "60",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2024-10-17",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "45",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2211942825",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "christopher201196@gmail.com",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Quejoso",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Femenino",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "Preescolar",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Unión libre",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "Periodista",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "Mental",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No Heterosexual",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otro grupo social",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otra lengua indigena",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-22 18:40:44",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "id del escritoinicial",
+    "Antes": "-",
+    "Despues": "989",
+    "FechaHora": "2024-10-22 18:41:05",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-22",
+    "FechaHora": "2024-10-22 18:41:05",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "18:40",
+    "FechaHora": "2024-10-22 18:41:05",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "lugar de los hechos",
+    "Antes": "-",
+    "Despues": "Acateno-Puebla",
+    "FechaHora": "2024-10-22 18:41:05",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Sabe dirección completa",
+    "Antes": "-",
+    "Despues": "NO",
+    "FechaHora": "2024-10-22 18:41:05",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Circunstancias Hechos",
+    "Antes": "-",
+    "Despues": "DPIT ULTIMA PRUEBA",
+    "FechaHora": "2024-10-22 18:41:05",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-23",
+    "Despues": "2024-10-24",
+    "FechaHora": "2024-10-22 18:42:27",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "11",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:42:27",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_989_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:42:27",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:42:27",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:42:27",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E17",
+    "FechaHora": "2024-10-22 18:42:27",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-24",
+    "Despues": "2024-10-25",
+    "FechaHora": "2024-10-22 18:43:12",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "11",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:43:12",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Circunstancias Hechos",
+    "Antes": "DPIT ULTIMA PRUEBA  DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA ",
+    "Despues": "DPIT ULTIMA PRUEBA  DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA DPIT ULTIMA PRUEBA D",
+    "FechaHora": "2024-10-22 18:43:12",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_989_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:43:12",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:43:12",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:43:12",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E17",
+    "FechaHora": "2024-10-22 18:43:12",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  }
+]

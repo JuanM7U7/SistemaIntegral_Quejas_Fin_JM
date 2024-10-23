@@ -1043,6 +1043,9 @@ namespace SistemaIntegralQuejas.Controllers
 
 
                         ArmaBitacoraModificaEscritoInicial(arregloValores, arregloanterior, idQueja.ToString(), direccionCompletac, hayarchivo, hayautoridades);
+                        queryf = "exec Sp_Regresa_Escrito_Inicial_Queja " + idescritoinicial;
+                        mensaje = "ok";
+                        escrito = conexionsql.regresaEscritoInicial(1, queryf, ref mensaje);
                         mensaje = "ok";
                     }
                 }

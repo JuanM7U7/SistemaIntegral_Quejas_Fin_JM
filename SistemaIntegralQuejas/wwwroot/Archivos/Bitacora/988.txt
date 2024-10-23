@@ -1008,5 +1008,525 @@
     "FechaHora": "2024-10-22 17:57:33",
     "Usuario": "MOML",
     "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-24",
+    "Despues": "2024-10-25",
+    "FechaHora": "2024-10-22 17:59:40",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 17:59:40",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 17:59:40",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 17:59:40",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 17:59:40",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 17:59:40",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 17:59:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 17:59:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 17:59:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 17:59:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 17:59:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:02:42",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:02:42",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:02:42",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:02:42",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 18:02:42",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-25",
+    "Despues": "2024-10-26",
+    "FechaHora": "2024-10-22 18:06:00",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:06:00",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:06:00",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:06:00",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:06:00",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 18:06:00",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-26",
+    "Despues": "2024-10-27",
+    "FechaHora": "2024-10-22 18:27:38",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:27:38",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:27:38",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:27:38",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:27:38",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 18:27:38",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-27",
+    "Despues": "2024-10-28",
+    "FechaHora": "2024-10-22 18:30:18",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:30:18",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:30:18",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:30:18",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:30:18",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 18:30:18",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-28",
+    "Despues": "2024-10-29",
+    "FechaHora": "2024-10-22 18:34:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:34:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:34:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:34:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:34:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 18:34:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-29",
+    "Despues": "2024-10-30",
+    "FechaHora": "2024-10-22 18:37:25",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:37:25",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:37:25",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:37:25",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:37:25",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 18:37:25",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "fecha de Hechos",
+    "Antes": "2024-10-30",
+    "Despues": "2024-10-31",
+    "FechaHora": "2024-10-22 18:38:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-22 18:38:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_988_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-22 18:38:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:38:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-22 18:38:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E14",
+    "FechaHora": "2024-10-22 18:38:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
   }
 ]
