@@ -5,7 +5,7 @@
     "Campo": "Tipo de Persona",
     "Antes": "-",
     "Despues": "Física",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -15,7 +15,7 @@
     "Campo": "CURP",
     "Antes": "-",
     "Despues": "HEMJ060604MDGRNDA5",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -25,7 +25,7 @@
     "Campo": "Nombre",
     "Antes": "-",
     "Despues": "Judith Jimena ",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -35,7 +35,7 @@
     "Campo": "Apellido Paterno",
     "Antes": "-",
     "Despues": "Hernandez",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -45,7 +45,7 @@
     "Campo": "Apellido Materno",
     "Antes": "-",
     "Despues": "Montoya",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -55,7 +55,7 @@
     "Campo": "CP",
     "Antes": "-",
     "Despues": "72710",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -65,7 +65,7 @@
     "Campo": "Estado",
     "Antes": "-",
     "Despues": "bmSgx",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -74,8 +74,8 @@
     "Tipo": "Alta",
     "Campo": "Colonia",
     "Antes": "-",
-    "Despues": "gXoY37smzy",
-    "FechaHora": "2024-10-23 13:58:19",
+    "Despues": "ADlGap2R0ktxLb",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -85,7 +85,7 @@
     "Campo": "Municipio",
     "Antes": "-",
     "Despues": "BMlOPzye",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -94,8 +94,8 @@
     "Tipo": "Alta",
     "Campo": "Ciudad/Localidad",
     "Antes": "-",
-    "Despues": "XFlsnMcys2cBL",
-    "FechaHora": "2024-10-23 13:58:19",
+    "Despues": "fk2SVLJ",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -105,7 +105,7 @@
     "Campo": "Calle",
     "Antes": "-",
     "Despues": "Tehuantepec",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -115,7 +115,7 @@
     "Campo": "No. Exterior",
     "Antes": "-",
     "Despues": "18",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -125,7 +125,7 @@
     "Campo": "No. Interior",
     "Antes": "-",
     "Despues": "No proporcionado",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -135,7 +135,7 @@
     "Campo": "Fecha Nacimiento",
     "Antes": "-",
     "Despues": "2006-06-04",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -145,7 +145,7 @@
     "Campo": "Edad",
     "Antes": "-",
     "Despues": "20",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -155,7 +155,7 @@
     "Campo": "Teléfono",
     "Antes": "-",
     "Despues": "2212112153",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -165,7 +165,7 @@
     "Campo": "Correo Electrónico",
     "Antes": "-",
     "Despues": "jimena.hdz001@gmail.com",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -175,7 +175,7 @@
     "Campo": "Tipo Usuario",
     "Antes": "-",
     "Despues": "Quejoso",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -185,7 +185,7 @@
     "Campo": "Sexo",
     "Antes": "-",
     "Despues": "Femenino",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -195,7 +195,7 @@
     "Campo": "Género",
     "Antes": "-",
     "Despues": "Mujer",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -205,7 +205,7 @@
     "Campo": "Nacionalidad",
     "Antes": "-",
     "Despues": "Mexicano",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -215,7 +215,7 @@
     "Campo": "¿Sabe leer y escribir?",
     "Antes": "-",
     "Despues": "Si",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -225,7 +225,7 @@
     "Campo": "Escolaridad",
     "Antes": "-",
     "Despues": "Preparatoria o Bachillerato",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -235,7 +235,7 @@
     "Campo": "Estado Conyugal",
     "Antes": "-",
     "Despues": "Soltero(a)",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -245,7 +245,7 @@
     "Campo": "Ocupación",
     "Antes": "-",
     "Despues": "Estudiante",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -255,7 +255,7 @@
     "Campo": "Discapacidad",
     "Antes": "-",
     "Despues": "Ninguna",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -265,7 +265,7 @@
     "Campo": "Grupo social",
     "Antes": "-",
     "Despues": "No pertenece",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -275,7 +275,7 @@
     "Campo": "Otro grupo social",
     "Antes": "-",
     "Despues": "",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -285,7 +285,7 @@
     "Campo": "Lengua indigena",
     "Antes": "-",
     "Despues": "No",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -295,7 +295,7 @@
     "Campo": "Otra lengua indigena",
     "Antes": "-",
     "Despues": "",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -305,7 +305,7 @@
     "Campo": "Violencia a la mujer",
     "Antes": "-",
     "Despues": "No",
-    "FechaHora": "2024-10-23 13:58:19",
+    "FechaHora": "2024-10-23 15:01:12",
     "Usuario": "YYVR",
     "IP": "201.139.97.36"
   },
@@ -314,8 +314,8 @@
     "Tipo": "Alta",
     "Campo": "id del escritoinicial",
     "Antes": "-",
-    "Despues": "997",
-    "FechaHora": "2024-10-23 13:58:42",
+    "Despues": "998",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -325,7 +325,7 @@
     "Campo": "fecha de Hechos",
     "Antes": "-",
     "Despues": "2024-10-23",
-    "FechaHora": "2024-10-23 13:58:42",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -334,8 +334,8 @@
     "Tipo": "Alta",
     "Campo": "Hora de Hechos",
     "Antes": "-",
-    "Despues": "13:58",
-    "FechaHora": "2024-10-23 13:58:42",
+    "Despues": "15:01",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -345,7 +345,7 @@
     "Campo": "lugar de los hechos",
     "Antes": "-",
     "Despues": "Acateno-Puebla",
-    "FechaHora": "2024-10-23 13:58:42",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -355,7 +355,7 @@
     "Campo": "Sabe dirección completa",
     "Antes": "-",
     "Despues": "NO",
-    "FechaHora": "2024-10-23 13:58:42",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -364,8 +364,8 @@
     "Tipo": "Alta",
     "Campo": "Circunstancias Hechos",
     "Antes": "-",
-    "Despues": "df d fg gf hfghfgh fh fg hfg hfg hgh gh gh gh ",
-    "FechaHora": "2024-10-23 13:58:42",
+    "Despues": "vghbn uhguih uijj bjkh jkhjh jkkhukh jk",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -375,7 +375,7 @@
     "Campo": "Nombre Autoridad",
     "Antes": "-",
     "Despues": "Martel Oscar Roman",
-    "FechaHora": "2024-10-23 13:58:42",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -385,7 +385,7 @@
     "Campo": "Cargo Autoridad",
     "Antes": "-",
     "Despues": "Titular",
-    "FechaHora": "2024-10-23 13:58:42",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -394,8 +394,8 @@
     "Tipo": "Alta",
     "Campo": "Id de autoridad",
     "Antes": "-",
-    "Despues": "E1",
-    "FechaHora": "2024-10-23 13:58:42",
+    "Despues": "E10",
+    "FechaHora": "2024-10-23 15:01:34",
     "Usuario": "YYVR",
     "IP": "LocalHost"
   },
@@ -404,8 +404,8 @@
     "Tipo": "Alta",
     "Campo": "Lugar",
     "Antes": "-",
-    "Despues": "Puebla Puebla",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "Acajete Puebla",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -414,8 +414,8 @@
     "Tipo": "Alta",
     "Campo": "Día",
     "Antes": "-",
-    "Despues": "3",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "2",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -424,8 +424,8 @@
     "Tipo": "Alta",
     "Campo": "Mes",
     "Antes": "-",
-    "Despues": "septiembre",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "enero",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -435,7 +435,7 @@
     "Campo": "Año",
     "Antes": "-",
     "Despues": "2024",
-    "FechaHora": "2024-10-23 14:00:25",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -445,7 +445,7 @@
     "Campo": "Abogado(a)",
     "Antes": "-",
     "Despues": "Yerendira Yadira Villalba Reséndiz",
-    "FechaHora": "2024-10-23 14:00:25",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -454,8 +454,8 @@
     "Tipo": "Alta",
     "Campo": "Hora de Inicio",
     "Antes": "-",
-    "Despues": "01:59 p. m.",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "03:01 p. m.",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -464,8 +464,8 @@
     "Tipo": "Alta",
     "Campo": "Ubicación",
     "Antes": "-",
-    "Despues": "IUYOUO",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "la comisión de derechos humanos",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -475,7 +475,7 @@
     "Campo": "Agraviado(a) / Quejoso(a)",
     "Antes": "-",
     "Despues": "Judith Jimena  Hernandez Montoya",
-    "FechaHora": "2024-10-23 14:00:25",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -485,7 +485,7 @@
     "Campo": "Consentimiento",
     "Antes": "-",
     "Despues": "SI",
-    "FechaHora": "2024-10-23 14:00:25",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -494,8 +494,8 @@
     "Tipo": "Alta",
     "Campo": "Origen de Peticionario(a)",
     "Antes": "-",
-    "Despues": "Cuautlancingo Puebla",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "Acajete Puebla",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -505,7 +505,7 @@
     "Campo": "Identificación",
     "Antes": "-",
     "Despues": "INE",
-    "FechaHora": "2024-10-23 14:00:25",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -514,8 +514,8 @@
     "Tipo": "Alta",
     "Campo": "Fecha de Hechos",
     "Antes": "-",
-    "Despues": "2024-10-23 01:58 p. m.",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "2024-10-23 03:01 p. m.",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -524,8 +524,8 @@
     "Tipo": "Alta",
     "Campo": "Hora de Hechos",
     "Antes": "-",
-    "Despues": "01:58 p. m.",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "03:01 p. m.",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -534,8 +534,8 @@
     "Tipo": "Alta",
     "Campo": "Ubicación de Hechos",
     "Antes": "-",
-    "Despues": "nbmnbmbnmn",
-    "FechaHora": "2024-10-23 14:00:25",
+    "Despues": "OUIOIO",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   },
@@ -544,38 +544,8 @@
     "Tipo": "Alta",
     "Campo": "Hora de Termino",
     "Antes": "-",
-    "Despues": "02:00 p. m.",
-    "FechaHora": "2024-10-23 14:00:25",
-    "Usuario": "YYVR",
-    "IP": ""
-  },
-  {
-    "Apartado": "Acta Circunstanciada",
-    "Tipo": "Modificación",
-    "Campo": "Lugar",
-    "Antes": "Puebla-Puebla",
-    "Despues": "Acateno Puebla",
-    "FechaHora": "2024-10-23 14:09:31",
-    "Usuario": "YYVR",
-    "IP": ""
-  },
-  {
-    "Apartado": "Acta Circunstanciada",
-    "Tipo": "Modificación",
-    "Campo": "Origen de Peticionario(a)",
-    "Antes": "Cuautlancingo-Puebla",
-    "Despues": "Acatzingo Puebla",
-    "FechaHora": "2024-10-23 14:09:31",
-    "Usuario": "YYVR",
-    "IP": ""
-  },
-  {
-    "Apartado": "Acta Circunstanciada",
-    "Tipo": "Modificación",
-    "Campo": "Hora de Hechos",
-    "Antes": "01:58 a. m.",
-    "Despues": "01:58 a. m.",
-    "FechaHora": "2024-10-23 14:09:31",
+    "Despues": "03:02 p. m.",
+    "FechaHora": "2024-10-23 15:02:07",
     "Usuario": "YYVR",
     "IP": ""
   }
