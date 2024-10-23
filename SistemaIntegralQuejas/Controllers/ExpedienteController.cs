@@ -3363,9 +3363,9 @@ namespace SistemaIntegralQuejas.Controllers
                     if (Ocupacion=="Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible);
+                    if (Gruposocial == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible);
+                    if (idLenguaindigena == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer, Ipaccesible);
                     if (VioMujer=="Si")
                     {
@@ -3455,9 +3455,9 @@ namespace SistemaIntegralQuejas.Controllers
 
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible);
+                    if (Gruposocial == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible);
+                    if (idLenguaindigena == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer, Ipaccesible);
                     if (VioMujer == "Si")
                     {
