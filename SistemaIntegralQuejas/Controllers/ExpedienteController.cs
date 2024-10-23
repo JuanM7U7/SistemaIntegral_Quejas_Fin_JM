@@ -1618,8 +1618,8 @@ namespace SistemaIntegralQuejas.Controllers
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Año", "-", anio.ToString(), Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Abogado(a)", "-", abogadodesc, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Inicio", "-", horaInicio.ToString(), Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", "-", ubicacion, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Agraviado(a) / Quejoso(a)", idPetdesc, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación", "-", ubicacion, Ipaccesible); ;
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Agraviado(a) / Quejoso(a)", "-", idPetdesc, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Consentimiento", "-", consentimientodesc, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario(a)", "-", origenPetdesc, Ipaccesible);
                     //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
