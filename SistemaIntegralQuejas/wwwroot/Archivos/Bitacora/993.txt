@@ -1,0 +1,1542 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "MALC961120HNERPH05",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Christopher Francisco Fernando",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "Marquez Completo C",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "Lopez Completo C",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "PUEBLA ",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "5 norte y 5 surA modificado 3",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "60",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2024-10-17",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "45",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2211942825",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "christopher201196@gmail.com",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Quejoso",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Femenino",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "Preescolar",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Unión libre",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "Periodista",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "Mental",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No Heterosexual",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otro grupo social",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otra lengua indigena",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-23 09:46:25",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "id del escritoinicial",
+    "Antes": "-",
+    "Despues": "993",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-23",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "09:46",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "lugar de los hechos",
+    "Antes": "-",
+    "Despues": "Acateno-Puebla",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Sabe dirección completa",
+    "Antes": "-",
+    "Despues": "SI",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "Jardin del Aangel",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Num. Ext",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Num. Int",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "Guadalupe",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Circunstancias Hechos",
+    "Antes": "-",
+    "Despues": "DPIT ALTA ESCRITO INICIAL ",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Archivo Cargado",
+    "Antes": "-",
+    "Despues": "escritoInicial_993_1.pdf",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "Christopher",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "Jefe Depertamento",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E17",
+    "FechaHora": "2024-10-23 09:46:53",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Lugar",
+    "Antes": "-",
+    "Despues": "Acateno Puebla",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Día",
+    "Antes": "-",
+    "Despues": "4",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Mes",
+    "Antes": "-",
+    "Despues": "junio",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Año",
+    "Antes": "-",
+    "Despues": "2024",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Abogado",
+    "Antes": "-",
+    "Despues": "Mario Octavio Meléndez López",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Inicio",
+    "Antes": "-",
+    "Despues": "09:47",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación",
+    "Antes": "-",
+    "Despues": "puerbla",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Peticionario",
+    "Antes": "-",
+    "Despues": "Christopher Francisco Fernando Marquez Completo C Lopez Completo C",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Concentimiento",
+    "Antes": "-",
+    "Despues": "SI",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario",
+    "Antes": "-",
+    "Despues": "Acajete Puebla",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Identificación",
+    "Antes": "-",
+    "Despues": "INE",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-23 09:46",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "09:46",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación de Hechos",
+    "Antes": "-",
+    "Despues": "dddddd",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Termino",
+    "Antes": "-",
+    "Despues": "09:52",
+    "FechaHora": "2024-10-23 09:47:51",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-23 09:51:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Circunstancias Hechos",
+    "Antes": "DPIT ALTA ESCRITO INICIAL ",
+    "Despues": "DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALDPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACIONDPIT ALTA ESCRITO INICIAL MODIFIFCACIONDPIT ALTA ESCRITO INICIAL MODIFIFCACIONDPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACIONDPIT ALTA ESCRITO INICIAL MODIFIFCACIONTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION DPIT ALTA ESCRITO INICIAL MODIFIFCACION",
+    "FechaHora": "2024-10-23 09:51:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_993_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-23 09:51:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "Christopher",
+    "FechaHora": "2024-10-23 09:51:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "Jefe Depertamento",
+    "FechaHora": "2024-10-23 09:51:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E17",
+    "FechaHora": "2024-10-23 09:51:47",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Lugar",
+    "Antes": "-",
+    "Despues": "Acatlán Puebla",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Día",
+    "Antes": "-",
+    "Despues": "5",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Mes",
+    "Antes": "-",
+    "Despues": "junio",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Año",
+    "Antes": "-",
+    "Despues": "2024",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Abogado",
+    "Antes": "-",
+    "Despues": "Mario Octavio Meléndez López",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Inicio",
+    "Antes": "-",
+    "Despues": "12:03",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación",
+    "Antes": "-",
+    "Despues": "las instalaciones de la CDH Puebla",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Peticionario",
+    "Antes": "-",
+    "Despues": "Vdfvdfvdf Garcia  Lopez",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Concentimiento",
+    "Antes": "-",
+    "Despues": "SI",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario",
+    "Antes": "-",
+    "Despues": "Cañada Morelos Puebla",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Identificación",
+    "Antes": "-",
+    "Despues": "INE",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-07",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "11:03",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación de Hechos",
+    "Antes": "-",
+    "Despues": "la escuela Martires",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Termino",
+    "Antes": "-",
+    "Despues": "10:04",
+    "FechaHora": "2024-10-23 10:04:19",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "MOMI880404HDFRNS05",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Israel ",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "El Bello",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "Morales",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "PUEBLA ",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "5 norte y 5 surA modificado 3",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "60",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "1970-01-01",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "45",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2211942825",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "christopher201196@gmail.com",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Quejoso",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Masculino",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "Secundaria",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Unión libre",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "Funcionario(a) del sector público",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "Auditiva",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No pertenece",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otro grupo social",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Otra lengua indigena",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2024-10-23 10:05:16",
+    "Usuario": "MOML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Lugar",
+    "Antes": "-",
+    "Despues": "Acatlán Puebla",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Día",
+    "Antes": "-",
+    "Despues": "6",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Mes",
+    "Antes": "-",
+    "Despues": "febrero",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Año",
+    "Antes": "-",
+    "Despues": "2024",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Abogado",
+    "Antes": "-",
+    "Despues": "Mario Octavio Meléndez López",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Inicio",
+    "Antes": "-",
+    "Despues": "10:05",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación",
+    "Antes": "-",
+    "Despues": "las instalaciones de la CDH Puebla",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Peticionario",
+    "Antes": "-",
+    "Despues": "Vdfvdfvdf Garcia  Lopez",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Concentimiento",
+    "Antes": "-",
+    "Despues": "SI",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario",
+    "Antes": "-",
+    "Despues": "Acateno Puebla",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Identificación",
+    "Antes": "-",
+    "Despues": "INE",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-15",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "10:06",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación de Hechos",
+    "Antes": "-",
+    "Despues": "la escuela Martires",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Termino",
+    "Antes": "-",
+    "Despues": "10:06",
+    "FechaHora": "2024-10-23 10:06:21",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Lugar",
+    "Antes": "-",
+    "Despues": "Acateno Puebla",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Día",
+    "Antes": "-",
+    "Despues": "5",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Mes",
+    "Antes": "-",
+    "Despues": "septiembre",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Año",
+    "Antes": "-",
+    "Despues": "2024",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Abogado",
+    "Antes": "-",
+    "Despues": "Mario Octavio Meléndez López",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Inicio",
+    "Antes": "-",
+    "Despues": "11:07",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación",
+    "Antes": "-",
+    "Despues": "las instalaciones de la CDH Puebla",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Peticionario",
+    "Antes": "-",
+    "Despues": "Vdfvdfvdf Garcia  Lopez",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Concentimiento",
+    "Antes": "-",
+    "Despues": "SI",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario",
+    "Antes": "-",
+    "Despues": "Acatzingo Puebla",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Identificación",
+    "Antes": "-",
+    "Despues": "INE",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2024-10-23",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "11:07",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación de Hechos",
+    "Antes": "-",
+    "Despues": "la escuela Martires",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora Termino",
+    "Antes": "-",
+    "Despues": "10:07",
+    "FechaHora": "2024-10-23 10:07:57",
+    "Usuario": "MOML",
+    "IP": ""
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-23 10:25:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Circunstancias Hechos",
+    "Antes": "-------------------------- ISRAEL MORALES CAMBIO -------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES CAMBIO-------------------------- ISRAEL MORALES ",
+    "Despues": "ISRAEL MORALES ISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALESISRAEL MORALES",
+    "FechaHora": "2024-10-23 10:25:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_993_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-23 10:25:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "Christopher",
+    "FechaHora": "2024-10-23 10:25:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "Jefe Depertamento",
+    "FechaHora": "2024-10-23 10:25:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E17",
+    "FechaHora": "2024-10-23 10:25:52",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "lugar_hechos",
+    "Antes": "2",
+    "Despues": "",
+    "FechaHora": "2024-10-23 14:21:39",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Archivo Cargado",
+    "Antes": "escritoInicial_993_1.pdf",
+    "Despues": "-",
+    "FechaHora": "2024-10-23 14:21:39",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Nombre Autoridad",
+    "Antes": "-",
+    "Despues": "Christopher",
+    "FechaHora": "2024-10-23 14:21:39",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Cargo Autoridad",
+    "Antes": "-",
+    "Despues": "Jefe Depertamento",
+    "FechaHora": "2024-10-23 14:21:39",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Modificación",
+    "Campo": "Id de autoridad",
+    "Antes": "-",
+    "Despues": "E17",
+    "FechaHora": "2024-10-23 14:21:39",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  }
+]

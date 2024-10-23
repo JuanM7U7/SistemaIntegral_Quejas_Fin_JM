@@ -938,15 +938,7 @@ namespace SistemaIntegralQuejas.Controllers
                         list_Files.Add(uploaded_file.FileName);
 
                         //< Renombrar nombre del archivo nomenclatura escritoi > 
-                        string uploaded_Filename = "";
-                        if (tipofrm == "buscadorfirmatos")
-                        {
-                            uploaded_Filename = "escritoInicial_" + idQueja + "_" + iCounteredit + type_archivo;
-                        }
-                        else
-                        {
-                            uploaded_Filename = "escritoInicial_" + idQueja + "_" + iCounter + type_archivo;
-                        }
+                        string uploaded_Filename = uploaded_file.FileName;
                         string new_Filename_on_Server = path_for_Uploaded_Files + "\\" + uploaded_Filename;
                         //</ FIN  Renombrar nombre del archivo nomenclatura escritoi  >
 
@@ -2569,8 +2561,17 @@ namespace SistemaIntegralQuejas.Controllers
                     DatosEditPeticionario peticionario = new DatosEditPeticionario();
                     peticionario.IdComplementoPeticionario = Convert.ToInt32(row_petiexp["ID_COMPLEMENTO_PETICIONARIO"]);
                     peticionario.FkRegRecepcion = Convert.ToInt32(row_petiexp["FK_REG_RECEPCION"]);
-                    peticionario.Nombre = (row_petiexp["NOMBRE"]).ToString();
-                    peticionario.ApellidoPat = (row_petiexp["APELLIDO_PAT"]).ToString();
+
+                    if ((row_petiexp["TIPO_USUARIO"]).ToString() == "Peticionario")
+                    {
+                        peticionario.Nombre = "(Q)" + (row_petiexp["NOMBRE"]).ToString();
+                    }
+                    else
+                    {
+                        peticionario.Nombre = "(A)" + (row_petiexp["NOMBRE"]).ToString();
+                    }
+                        
+                    peticionario.ApellidoPat =(row_petiexp["APELLIDO_PAT"]).ToString();
                     peticionario.ApellidoMat = (row_petiexp["APELLIDO_MAT"]).ToString();
                     peticionario.TipoUsuario = (row_petiexp["TIPO_USUARIO"]).ToString();
                     //OBTENER DATOS PETICIONARIO FORMATO
@@ -3363,9 +3364,9 @@ namespace SistemaIntegralQuejas.Controllers
                     if (Ocupacion=="Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra Ocupación", "-", Otraocupacion, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible);
+                    if (Gruposocial == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible);
+                    if (idLenguaindigena == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer, Ipaccesible);
                     if (VioMujer=="Si")
                     {
@@ -3455,9 +3456,9 @@ namespace SistemaIntegralQuejas.Controllers
 
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Discapacidad", "-", Discapacidad, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Grupo social", "-", Gruposocial, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible);
+                    if (Gruposocial == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otro grupo social", "-", otroGruposocial, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Lengua indigena", "-", idLenguaindigena, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible);
+                    if (idLenguaindigena == "Otro") { ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Otra lengua indigena", "-", otraLenguaindigena, Ipaccesible); }
                     ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Violencia a la mujer", "-", VioMujer, Ipaccesible);
                     if (VioMujer == "Si")
                     {

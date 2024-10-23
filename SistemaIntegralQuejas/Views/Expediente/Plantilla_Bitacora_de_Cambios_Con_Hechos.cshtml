@@ -317,7 +317,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="hoja"></div>
+                <div class="hojanulo"></div>
                 <div class="hoja2">
                     <div class="cedula-completo page-break ">
                     <br><h5 class="titulodoc">BITÁCORA DE CAMBIOS. ANEXO DE HECHOS</h5>
@@ -331,6 +331,9 @@
                                     <th>APARTADO</th>
                                     <th>MOV.</th>
                                     <th>CAMPO</th>
+                                    <th>FECHA Y HORA</th>
+                                    <th>USUARIO</th>
+                                    <th>IP</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -342,11 +345,14 @@
                                             <td class="pequenio">@itemuser.Apartado</td>
                                             <td class="pequenio">@itemuser.Tipo</td>
                                             <td class="pequenio">@itemuser.Campo</td>
+                                            <td class="pequenio">@itemuser.FechaHora</td>
+                                            <td class="pequenio">@itemuser.Usuario</td>
+                                            <td class="pequenio">@itemuser.IP</td>
 
                                         </tr>
                                         <tr></tr>
                                         <tr>
-                                            <td class="pequenioh" colspan="3" style=""><bold>CAMBIO:</bold> @itemuser.Despues</td>
+                                            <td class="pequenioh" colspan="6" style=""><bold></bold> @itemuser.Despues</td>
 
 
                                         </tr>
