@@ -1237,7 +1237,8 @@ namespace SistemaIntegralQuejas.Controllers
             string correoPet = form["correoPet" + nformulario].ToString();
             int idEscrito = int.Parse(form["idEscrito_" + nformulario].ToString());
             TimeOnly horaHechos = new TimeOnly(int.Parse(horaHechosC[0]), int.Parse(horaHechosC[1]));
-            string fechaHechos = form["fechaHechos" + nformulario].ToString() + ' ' + horaHechos;
+            string fechaHechos = form["fechaHechos" + nformulario].ToString() + ' '  + horaHechos;
+            string fechaHechosdata = form["fechaHechos" + nformulario].ToString();
             string ubiHechos = form["ubiHechos" + nformulario].ToString();
             string hechos = form["hechos" + nformulario].ToString();
             TimeOnly horaTermino = new TimeOnly(int.Parse(horaTerminoc[0]), int.Parse(horaTerminoc[1]));
@@ -1330,12 +1331,13 @@ namespace SistemaIntegralQuejas.Controllers
                     //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Origen de Peticionario Extranjero", "-", origenPetExtdesc, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Identificación", "-", identificacionPetdesc, Ipaccesible);
                     //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Escrito", "-", idEscrito.ToString(), Ipaccesible);
-                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechos, Ipaccesible);
+                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechosdata, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Hechos", "-", horaHechos.ToString(), Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
-                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", "Consultar Anexo Hechos", Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Termino", "-", horaTermino.ToString(), Ipaccesible);
                     //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
+                   
                 }
 
                 else
@@ -1357,6 +1359,7 @@ namespace SistemaIntegralQuejas.Controllers
                     if (actaAlta.FechaHechos != fechaHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", actaAlta.FechaHechos, fechaHechos, Ipaccesible); }
                     if (actaAlta.HoraHechos.ToString() != fechaHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Hechos", actaAlta.HoraHechos.ToString(), horaHechos.ToString(), Ipaccesible); }
                     if (actaAlta.UbiHechos != ubiHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", actaAlta.UbiHechos, ubiHechos, Ipaccesible); }
+                    if (actaAlta.Hechos != hechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "Consultar Anexo Hechos", "Consultar Anexo Hechos", Ipaccesible); }
                     if (actaAlta.HoraTermino != horaTermino) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Termino", actaAlta.HoraTermino.ToString(), horaTermino.ToString(), Ipaccesible); }
 
 
