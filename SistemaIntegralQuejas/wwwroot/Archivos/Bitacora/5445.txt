@@ -1,0 +1,12 @@
+[
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Eliminación",
+    "Campo": "id",
+    "Antes": "5445",
+    "Despues": "-",
+    "FechaHora": "2024-10-28 16:02:35",
+    "Usuario": "YYVR",
+    "IP": ""
+  }
+]

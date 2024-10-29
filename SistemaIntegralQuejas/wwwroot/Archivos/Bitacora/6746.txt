@@ -1,0 +1,12 @@
+[
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Eliminación",
+    "Campo": "Id de Escrito",
+    "Antes": "6746",
+    "Despues": "-",
+    "FechaHora": "2024-10-29 09:43:50",
+    "Usuario": "YYVR",
+    "IP": ""
+  }
+]

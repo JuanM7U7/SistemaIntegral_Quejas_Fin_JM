@@ -4536,7 +4536,7 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                title: 'Peticionario Elimin',
+                                title: 'Peticionario Eliminado',
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(() => {

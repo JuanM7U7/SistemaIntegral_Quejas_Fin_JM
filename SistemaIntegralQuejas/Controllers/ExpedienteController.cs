@@ -1602,6 +1602,7 @@ namespace SistemaIntegralQuejas.Controllers
 
                 mensajet = "ok";
 
+
                 if (actaAlta.Id == 0)
                 {
 
@@ -4284,22 +4285,41 @@ namespace SistemaIntegralQuejas.Controllers
         // Fin Eliminar Peticionario
 
         // Eliminar Peticionario 
-        public ActionResult DeleteComPeticionario(IFormCollection form)
+        public ActionResult DeleteComPeticionario(IFormCollection form/*, string Ipaccesible*/)
         {
+            //String query = "";
             string idcomplemento = form["id_complemento"].ToString();
             string quey_insertqueja = "EXEC Sp_DeleteComPeticionario '" + idcomplemento + "'";
             int idqueja = conexionsql.InsertUpdateDeleteRegresaid(quey_insertqueja);
             bool statusresp = false;
 
+            //query = "Sp_Regresa_IdExp_ComplementoPet " + idcomplemento;
+            //string idExp = conexionsql.ObtenerReader(query);
+
+            //query = "Sp_GET_NOMBPET_COMPLEMENTO " + idcomplemento;
+            //string nomPet = conexionsql.ObtenerReader(query); 
+            
+
+            //StringBuilder txtcontBuilder = new StringBuilder();
+            //string tipoMod = "";
+        
+            
+
+
             if (idqueja > 0)
             {
                 statusresp = true;
+
+                //tipoMod = "Eliminación";
+
+                //ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Agraviado(a) / Quejoso(a)", nomPet.ToString(), "-", Ipaccesible);
             }
             else
             {
                 statusresp = false;
             }
 
+            //CrearBitacoraTXT(Convert.ToInt32(idExp), txtcontBuilder.ToString());
             return Json(new { status = statusresp });
         }
         // Fin Eliminar Peticionario
@@ -4339,24 +4359,45 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { status = statusresp });
         }
         // Eliminar Actac 
-        public ActionResult DeleteActac(IFormCollection form)
+        public ActionResult DeleteActac(IFormCollection form, string Ipaccesible)
         {
+            String query = "";
             string idactac = form["id_actac"].ToString();
+
+            query = "exec Sp_Regresa_IdExp " + idactac;
+            int idExp = Convert.ToInt32(conexionsql.ObtenerReader(query));
+
+
+            string tipoMod = "";
+
+            
+            
+
+
+            StringBuilder txtcontBuilder = new StringBuilder();
 
             string quey_delexp = "EXEC Sp_DeleteActac '" + idactac + "'";
             int idactamod = conexionsql.InsertUpdateDeleteRegresaid(quey_delexp);
             bool statusresp = false;
 
+
             if (idactamod > 0)
             {
+
                 statusresp = true;
+               
+                tipoMod = "Eliminación";
+
+                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Id de Acta", idactamod.ToString(), "-", Ipaccesible); 
             }
             else
             {
                 statusresp = false;
             }
+            CrearBitacoraTXT(idExp, txtcontBuilder.ToString());
 
             return Json(new { status = statusresp });
+           
         }
         // Fin Eliminar Actac
 
@@ -4381,24 +4422,34 @@ namespace SistemaIntegralQuejas.Controllers
         //}
 
         //Eliminar Escrito
-        public ActionResult DeleteEscrito(IFormCollection form)
+        public ActionResult DeleteEscrito(IFormCollection form, string Ipaccesible)
         {
+         
             string idexpediente = form["id_escrito"].ToString();
             string idqueja_get = form["id_queja"].ToString();
 
             string quey_delexp = "EXEC Sp_DeleteEscrito '" + idexpediente + "', '" + idqueja_get + "'";
             int idqueja = conexionsql.InsertUpdateDeleteRegresaid(quey_delexp);
+
+            int idExp = Convert.ToInt32(idqueja_get);
             bool statusresp = false;
+
+            StringBuilder txtcontBuilder = new StringBuilder();
+            string tipoMod = "";
 
             if (idqueja > 0)
             {
                 statusresp = true;
+                tipoMod = "Eliminación";
+
+                ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, "Id de Escrito", idexpediente.ToString(), "-", Ipaccesible);
             }
             else
             {
                 statusresp = false;
             }
 
+            CrearBitacoraTXT(idExp, txtcontBuilder.ToString());
             return Json(new { status = statusresp });
         }
         // Fin Eliminar Peticionario
