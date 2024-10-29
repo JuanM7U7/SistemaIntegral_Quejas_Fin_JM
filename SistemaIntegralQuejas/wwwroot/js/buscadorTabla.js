@@ -2106,6 +2106,7 @@ function eliminarExpediente() {
                         let FrmDelExp = new FormData();
                         FrmDelExp.append('id_expediente', idexpediente);
                         FrmDelExp.append('motivo', value);
+                        //var ip = $("#ipAccesible").html();
 
                         fetchPost("Expediente/DeleteExpediente", "json", FrmDelExp, (resp) => {
                             //console.log(resp)
@@ -4343,7 +4344,7 @@ function updateDatosPeticionariosBusq() {
                     type: "post",
                     url: 'GuardarDataComplPeticionario',
                     content: "application/json; charset=utf-8",
-                    data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip,
+                    data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip, 
                     dataType: "json",
                     success: function (data) {
                         //console.log(data)

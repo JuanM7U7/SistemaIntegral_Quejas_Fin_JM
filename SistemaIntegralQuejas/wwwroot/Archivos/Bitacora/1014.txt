@@ -1,0 +1,12 @@
+[
+  {
+    "Apartado": "ID de Escrito",
+    "Tipo": "Eliminación",
+    "Campo": "ID de Escrito Inicial de Queja",
+    "Antes": "1014",
+    "Despues": "-",
+    "FechaHora": "2024-10-29 14:06:36",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  }
+]

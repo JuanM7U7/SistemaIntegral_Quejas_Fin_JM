@@ -4347,15 +4347,21 @@ namespace SistemaIntegralQuejas.Controllers
             int idqueja = conexionsql.InsertUpdateDeleteRegresaid(quey_delexp);
             bool statusresp = false;
 
+            StringBuilder txtcontBuilder = new StringBuilder();
+            int idqueja_get = Convert.ToInt32(idexpediente);
+            string tipoMod = "Eliminación";
+            string Ipaccesible = "LocalHost";
+
             if (idqueja > 0)
             {
                 statusresp = true;
+                ContBitacora(txtcontBuilder, "ID de Escrito", tipoMod, "ID de Escrito Inicial", idexpediente, "-", Ipaccesible);
             }
             else
             {
                 statusresp = false;
             }
-
+            CrearBitacoraTXT(idqueja_get, txtcontBuilder.ToString());
             return Json(new { status = statusresp });
         }
         // Eliminar Actac 
