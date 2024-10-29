@@ -279,7 +279,7 @@ var ipAcceso = '';
                                 $('#catMunicipio_hechos1').val($('#Input_LugarHechos').val()).trigger('change.select2');
                                 $('#catEstado_hechos1').val(21)
                                 $('#catEstado_hechos1').val(21).trigger('change.select2');
-                                $('#hechos1').val($('#CircunstanciasHechos').val())
+                                //$('#hechos1').val($('#CircunstanciasHechos').val()) <-- Heredaba el campo de los hechos del escrito y los ponía dentro del Acta Circunstanciada
 
                                 Swal.fire({
                                     position: 'center',
@@ -557,7 +557,7 @@ function funcionesActac(nfrm) {
             frmincompleto("#tab3");
 
         } else {
-            $("#CircunstanciasHechos").val(vari25);
+            //$("#CircunstanciasHechos").val(vari25);
 
             $.ajax({
                 type: "post",
@@ -4002,7 +4002,7 @@ function guardarQueja() {
         }
         else {
             $("#CircunstanciasHechos").val($("#hechos").val());
-            $("#hechos1").val($("#hechos").val());
+            //$("#hechos1").val($("#hechos").val());
             
             $.ajax({
                 type: "POST",
@@ -4029,9 +4029,9 @@ function validarCamposVaciosInput() {
     $("#parrafo").css("color", "#000000");
     var validacion = false;
     try {
-        if ($('#idqueja').val().length === 0) {
+        /*if ($('#idqueja').val().length === 0) {
             validacion = estiloinputvalidacion('#idqueja', validacion);
-        }
+        }*/
     } catch (e) {
         if ($('#idquejaDC').val().length === 0) {
             validacion = estiloinputvalidacion('#idquejaDC', validacion);

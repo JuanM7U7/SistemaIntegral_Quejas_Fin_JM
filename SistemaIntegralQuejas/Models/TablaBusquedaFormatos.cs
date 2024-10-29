@@ -10,6 +10,7 @@ namespace SistemaIntegralQuejas.Models
         public string Status_Expediente { get; set; }
         public string VIA_INTERPOSICION { get; set; }
         public List<DatosEditPeticionario> AgravQuej { get; set; }
+        public List<DatosEditPeticionario> AgravQuejactac { get; set; }
         public List<TblActac> ActaCa { get; set; }
         public List<TblEscritoi> Escritoia { get; set; }
         public List<ExpedienteTurnoModificado> ExpedienteTurno { get;set; }

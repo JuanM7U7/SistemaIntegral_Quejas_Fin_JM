@@ -2150,7 +2150,7 @@ namespace SistemaIntegralQuejas.Controllers
             string[] idsacept = (string[])TempData["acep"];
             string vg = (string)TempData["vg"];
             bool hayidsAceptados = (bool)TempData["hayidsAceptados"];
-
+            idei = 6710; //<---- Campo estatico para poder acceder al reporte y no presente fallas no eliminar este ID de la BD
             string query = "exec Sp_Pdfescritoinicial " + idei;
             string query2 = "exec Sp_Pdfescritoinicial " + idei;
             var data = GetDatosGeneral(query);
@@ -2164,11 +2164,12 @@ namespace SistemaIntegralQuejas.Controllers
                 }
             }
 
+
+            PDF_Formato_Rechazo itemPdfei = new PDF_Formato_Rechazo();
+            List<listadoObservaciones> listadoC = new List<listadoObservaciones>();
             foreach (DataRow row in data.Rows)
             {
 
-                PDF_Formato_Rechazo itemPdfei = new PDF_Formato_Rechazo();
-                List<listadoObservaciones> listadoC = new List<listadoObservaciones>();
 
                 itemPdfei.Visitaduría = vis;
                 itemPdfei.Memorandum = memo;
@@ -2177,6 +2178,7 @@ namespace SistemaIntegralQuejas.Controllers
                 itemPdfei.SegundaParte = p2;
                 itemPdfei.TerceraParte = p3;
                 itemPdfei.Firma_Parte = vg;
+            }
 
 
                 for (int i = 0; i < just.Length; i++)
@@ -2195,7 +2197,6 @@ namespace SistemaIntegralQuejas.Controllers
 
 
                 pdfescritoi.Add(itemPdfei);
-            }
             //Calificacion();
             return new ViewAsPdf("verPDFRechazo", pdfescritoi)
             {
@@ -2558,11 +2559,17 @@ namespace SistemaIntegralQuejas.Controllers
                 // Quejosos y agraviados ligados a esta queja
                 query_petiexp = "exec Sp_GetDataPeticionarioXExp " + "'" + Convert.ToInt32(row["ID_EXPEDIENTE"]) + "'";
                 var data_petiexp = GetDatosGeneral(query_petiexp);
+
+
+
+
                 List<DatosEditPeticionario> peticionariolist = new List<DatosEditPeticionario>();
+                List<DatosEditPeticionario> peticionariolistactac = new List<DatosEditPeticionario>();
 
                 foreach (DataRow row_petiexp in data_petiexp.Rows)
                 {
                     DatosEditPeticionario peticionario = new DatosEditPeticionario();
+                   
                     peticionario.IdComplementoPeticionario = Convert.ToInt32(row_petiexp["ID_COMPLEMENTO_PETICIONARIO"]);
                     peticionario.FkRegRecepcion = Convert.ToInt32(row_petiexp["FK_REG_RECEPCION"]);
 
@@ -2584,6 +2591,36 @@ namespace SistemaIntegralQuejas.Controllers
                     peticionario.lPeticionario = ObtenerlistPeticionario(dataPet);
                     //FIN DE OBTENER DATOS PETICIONARIO FORMATO
                     peticionariolist.Add(peticionario);
+                }
+
+
+                var query_petiexp1 = "exec Sp_GetDataPetiXExpCruceActaC " + "'" + Convert.ToInt32(row["ID_EXPEDIENTE"]) + "'";
+                var data_petiexpactac = GetDatosGeneral(query_petiexp1);
+
+                foreach (DataRow row_petiexp in data_petiexpactac.Rows)
+                {
+                    DatosEditPeticionario listaselectmodalactac = new DatosEditPeticionario();
+                    listaselectmodalactac.IdComplementoPeticionario = Convert.ToInt32(row_petiexp["ID_COMPLEMENTO_PETICIONARIO"]);
+                    listaselectmodalactac.FkRegRecepcion = Convert.ToInt32(row_petiexp["FK_REG_RECEPCION"]);
+
+                    if ((row_petiexp["TIPO_USUARIO"]).ToString() == "Peticionario")
+                    {
+                        listaselectmodalactac.Nombre = "(Q)" + (row_petiexp["NOMBRE"]).ToString();
+                    }
+                    else
+                    {
+                        listaselectmodalactac.Nombre = "(A)" + (row_petiexp["NOMBRE"]).ToString();
+                    }
+
+                    listaselectmodalactac.ApellidoPat = (row_petiexp["APELLIDO_PAT"]).ToString();
+                    listaselectmodalactac.ApellidoMat = (row_petiexp["APELLIDO_MAT"]).ToString();
+                    listaselectmodalactac.TipoUsuario = (row_petiexp["TIPO_USUARIO"]).ToString();
+                    //OBTENER DATOS PETICIONARIO FORMATO
+                    query = "exec Sp_GetDataPeticionarioxIdCompACTAC " + "'" + listaselectmodalactac.IdComplementoPeticionario + "'";
+                    var dataPet = GetDatosGeneral(query);
+                    listaselectmodalactac.lPeticionario = ObtenerlistPeticionario(dataPet);
+                    //FIN DE OBTENER DATOS PETICIONARIO FORMATO
+                    peticionariolistactac.Add(listaselectmodalactac);
                 }
 
                 // Fin Quejosos y agraviados ligados a esta queja
@@ -2698,6 +2735,7 @@ namespace SistemaIntegralQuejas.Controllers
                 itemformatos.ActaCa = listActasc;
                 itemformatos.Escritoia = listEscritoi;
                 itemformatos.ExpedienteTurno = listTurnoexp;
+                itemformatos.AgravQuejactac = peticionariolistactac;
 
                 listformatos.Add(itemformatos);
             }

@@ -1063,7 +1063,6 @@ function mostrarResTblFormatos(response) {
                     let btnEscritook = "";
                     let peticionarios = JSON.stringify(full.agravQuej);
                     let validafecha_modificaciondqot = validafechamodificacionDqot(full.expedienteTurno[0].fechaturnovisitaduria, full.expedienteTurno[0].fechaFinDqot);
-
                     if (full.escritoia.length > 0) {
                         if (full.status_Expediente == 'Pendiente de turnar'
                             || full.status_Expediente == 'Turnado parcial a VG'
@@ -1118,6 +1117,7 @@ function mostrarResTblFormatos(response) {
                     let contadorActa = 0;
                     let status = '';
                     let peticionarios = JSON.stringify(full.agravQuej);
+                    let peticionariosactac = JSON.stringify(full.agravQuejactac);
                     let validafecha_modificaciondqot = validafechamodificacionDqot(full.expedienteTurno[0].fechaturnovisitaduria, full.expedienteTurno[0].fechaFinDqot);
 
                     if (full.status_Expediente == 'Eliminado') {
@@ -1138,7 +1138,7 @@ function mostrarResTblFormatos(response) {
                         iconaddActac = '';
                     } else
                     {
-                        iconaddActac = `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
+                        iconaddActac = `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionariosactac})' class='btn btn - link margin - iconbf'>
                                                <img src="../icons/personalizados/add-file.png" height="40"/>
                                         </button > <br>`;
                     }
@@ -2462,6 +2462,7 @@ function AddActac(idExpediente, idescritoi, peticionarios) {
     $('.formularioActaCircunstanciada').empty();
     $('.formularioActaCircunstanciada').append(iformActaCircunstanciada);
     $(`#anio`).val(2024);
+    console.log(peticionarios);
     ventana_acpeta_visitaduria('Selecciona el peticionario para continuar', idExpediente, peticionarios);
     $('#idescritoim').val(idescritoi)
     Carga_Informacion_selec_quejas();
