@@ -1936,8 +1936,18 @@ function format(data) {
             }
         }
     }
-
-    if (data.agravQuej.length == 1 && data.status_Expediente != 'Eliminado') {
+    if (data.agravQuej.length < 1 && data.status_Expediente != 'Eliminado') {
+            return `<table style="min-width: 100%; width: 1509px;">
+		        <thead></thead>
+		        <tbody>
+			        <tr>
+				        <td style="text-align: end;"> ${btnEliminar} </td>  
+			        </tr>
+		        </tbody>
+	        </table>`;
+        
+    }
+    else if (data.agravQuej.length == 1 && data.status_Expediente != 'Eliminado') {
         if (data.actaCa.length > 1) {
             return `<table style="min-width: 100%; width: 1509px;">
 		    <thead>
@@ -2110,6 +2120,7 @@ function eliminarExpediente() {
 
                         fetchPost("Expediente/DeleteExpediente", "json", FrmDelExp, (resp) => {
                             //console.log(resp)
+                            //$.get("https://api.ipify.org?callback=getIP", "json", (data) => { console.log("Tu ip es: " + data); $("#ipAccesible").html(data); })
 
                             if (resp.status) {
                                 Swal.fire({
