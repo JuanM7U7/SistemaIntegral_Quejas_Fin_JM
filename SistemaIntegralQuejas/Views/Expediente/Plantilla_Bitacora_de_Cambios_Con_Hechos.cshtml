@@ -266,7 +266,7 @@
                                 <tbody>
                                     @foreach (var itemuser in @itemp.biracambios)
                                     {
-                                        if ((itemuser.Campo == "Circunstancias Hechos"))
+                                        if ( (itemuser.Campo == "Circunstancias Hechos") || (itemuser.Campo == "Hechos") )
                                         {
                                             if ((itemuser.Despues != null))
                                             {
@@ -339,7 +339,7 @@
                             <tbody>
                                 @foreach (var itemuser in @itemp.biracambios)
                                 {
-                                if (itemuser.Campo.Contains ("Circunstancias Hechos"))
+                                    if ((itemuser.Campo.Contains("Circunstancias Hechos")) || (itemuser.Campo == "Hechos"))
                                     {
                                         <tr>
                                             <td class="pequenio">@itemuser.Apartado</td>
@@ -358,6 +358,7 @@
                                         </tr>
                                         <tr></tr>
                                     }
+                                   
 
                                 }
                                 

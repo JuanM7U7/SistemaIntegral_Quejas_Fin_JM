@@ -212,7 +212,7 @@
                                 <tbody>
                                     @foreach (var itemuser in @itemp.biracambios)
                                     {
-                                        if ((itemuser.Campo == "Circunstancias Hechos") )
+                                        if ( (itemuser.Campo == "Circunstancias Hechos") || (itemuser.Campo == "Hechos") )
                                         {
                                             if ((itemuser.Despues != null)) {
                                                 <tr>

@@ -1334,7 +1334,7 @@ namespace SistemaIntegralQuejas.Controllers
                      ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechosdata, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Hechos", "-", horaHechos.ToString(), Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
-                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", "Consultar Anexo Hechos", Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Termino", "-", horaTermino.ToString(), Ipaccesible);
                     //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
                    
@@ -1359,7 +1359,7 @@ namespace SistemaIntegralQuejas.Controllers
                     if (actaAlta.FechaHechos != fechaHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", actaAlta.FechaHechos, fechaHechos, Ipaccesible); }
                     if (actaAlta.HoraHechos.ToString() != fechaHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Hechos", actaAlta.HoraHechos.ToString(), horaHechos.ToString(), Ipaccesible); }
                     if (actaAlta.UbiHechos != ubiHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", actaAlta.UbiHechos, ubiHechos, Ipaccesible); }
-                    if (actaAlta.Hechos != hechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "Consultar Anexo Hechos", "Consultar Anexo Hechos", Ipaccesible); }
+                    if (actaAlta.Hechos != hechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", actaAlta.Hechos, hechos, Ipaccesible); }
                     if (actaAlta.HoraTermino != horaTermino) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Termino", actaAlta.HoraTermino.ToString(), horaTermino.ToString(), Ipaccesible); }
 
 
