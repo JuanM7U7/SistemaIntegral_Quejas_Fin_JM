@@ -1180,7 +1180,7 @@ namespace SistemaIntegralQuejas.Controllers
 
         }
 
-        //ALTA ID ESCRITO
+        //ALTA ID ACTA
         public ActionResult GeneraActaCircunstanciadaNuevo(IFormCollection form, string Ipaccesible)
         {
             String query = "";
@@ -4350,7 +4350,7 @@ namespace SistemaIntegralQuejas.Controllers
 
                 tipoMod = "Eliminación";
 
-                ContBitacora(txtcontBuilder, "Datos Personales", tipoMod, "Agraviado(a) / Quejoso(a)", nomPet.ToString(), "-", Ipaccesible);
+                ContBitacora(txtcontBuilder, "Formato de Datos Personales", tipoMod, "Agraviado(a) / Quejoso(a)", nomPet.ToString(), "-", Ipaccesible);
             }
             else
             {
@@ -4393,7 +4393,7 @@ namespace SistemaIntegralQuejas.Controllers
             if (idqueja > 0)
             {
                 statusresp = true;
-                ContBitacora(txtcontBuilder, "ID de Escrito", tipoMod, "ID de Escrito Inicial", idexpediente, "-", Ipaccesible);
+                ContBitacora(txtcontBuilder, "ID de Escrito Inicial", tipoMod, "ID de Escrito Inicial", idexpediente, "-", Ipaccesible);
             }
             else
             {
@@ -4432,7 +4432,7 @@ namespace SistemaIntegralQuejas.Controllers
                
                 tipoMod = "Eliminación";
 
-                ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Id de Acta", idactamod.ToString(), "-", Ipaccesible); 
+                ContBitacora(txtcontBuilder, "Formato de Acta Circunstanciada", tipoMod, "Id de Acta", idactamod.ToString(), "-", Ipaccesible); 
             }
             else
             {
@@ -4486,7 +4486,7 @@ namespace SistemaIntegralQuejas.Controllers
                 statusresp = true;
                 tipoMod = "Eliminación";
 
-                ContBitacora(txtcontBuilder, "Escrito Inicial de queja", tipoMod, "Id de Escrito", idexpediente.ToString(), "-", Ipaccesible);
+                ContBitacora(txtcontBuilder, "Formato de Escrito Inicial de queja", tipoMod, "Id de Escrito", idexpediente.ToString(), "-", Ipaccesible);
             }
             else
             {
