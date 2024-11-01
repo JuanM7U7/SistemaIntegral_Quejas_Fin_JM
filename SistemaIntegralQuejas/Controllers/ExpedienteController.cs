@@ -429,6 +429,66 @@ namespace SistemaIntegralQuejas.Controllers
 
         }
 
+        public bool existeturnopreliminar(int id_queja)
+        {
+            bool existecomplementoqueja = false;
+            string query = "exec Sp_Verificar_primerTurnoPreliminarQueja " + id_queja;
+
+            int estado = int.Parse(conexionsql.ObtenerReader(query));
+
+            if (estado > 0)
+            {
+                existecomplementoqueja = true;
+            }
+
+
+            return existecomplementoqueja;
+        }
+
+        public List<bitacoraTurnoPrel> ObtenerlistTurnoPrel(DataTable data)
+        {
+            List<bitacoraTurnoPrel> lEscritoI = new List<bitacoraTurnoPrel>();
+            string query_archivosadj = "";
+            foreach (DataRow row in data.Rows)
+            {
+                bitacoraTurnoPrel escritoitem = new bitacoraTurnoPrel();
+                escritoitem.status = Convert.ToInt32(row["status"].ToString());
+                escritoitem.fechaTurno = (row["fechaTurno"]).ToString();
+                escritoitem.ClaveVis = int.Parse((row["clavevis"]).ToString());
+                escritoitem.no_memo = row["nomemo"].ToString();
+                escritoitem.fechaUltModificación = row["fechaultmod"].ToString();
+
+                lEscritoI.Add(escritoitem);
+            }
+
+            return lEscritoI;
+
+        }
+
+        public ArrayList getTurnoPrelQuejaBitacora(int idqueja)
+        {
+            List<bitacoraTurnoPrel> complementoqueja = new List<bitacoraTurnoPrel>();
+            ArrayList listadoGeneral = new ArrayList();
+
+            string query = "SP_regresainformacionTurnoPrelQueja " + idqueja;
+            string mensaje = "ok";
+            var data = GetDatosGeneral(query);
+
+            complementoqueja = ObtenerlistTurnoPrel(data);
+
+            foreach (bitacoraTurnoPrel item in complementoqueja)
+            {
+                listadoGeneral.Add(item.status);
+                listadoGeneral.Add(item.fechaTurno);
+                listadoGeneral.Add(item.ClaveVis);
+                listadoGeneral.Add(item.no_memo);
+                listadoGeneral.Add(item.fechaUltModificación);
+            }
+
+            return listadoGeneral;
+        }
+
+
         public async Task<ActionResult> TurnoPreliminar(IFormCollection form)
         {
             string queryupdatestatusext = "";
@@ -455,8 +515,31 @@ namespace SistemaIntegralQuejas.Controllers
 
                     if (n_memo > 0)
                     {
+                        ArrayList arreglovalores = new ArrayList();
                         foreach (ExpedienteTurnoModificado expedT in lstExpedientesTurnados.Where(x=> x.Clavevisitaduria==nm.visitaduria))
                         {
+
+                            arreglovalores.Add(status_exp);
+                            arreglovalores.Add(expedT.Fechaturnovisitaduriatxt);
+                            arreglovalores.Add(expedT.Clavevisitaduria);
+                            arreglovalores.Add(n_memo);
+                            arreglovalores.Add(expedT.FechastrFinDqot);
+
+
+                            if (existeturnopreliminar(int.Parse(expedT.IdExpediente)))
+                            {
+                                ArrayList listavalores = new ArrayList();
+                                listavalores = getTurnoPrelQuejaBitacora(int.Parse(expedT.IdExpediente));
+                                ArmaBitacoraModificaturnoPreliminar(arreglovalores, listavalores, expedT.IdExpediente);
+                            }
+                            else
+                            {
+                                ArmaBItacoraTurnoPreliminar(arreglovalores, expedT.IdExpediente);
+                            }
+
+
+
+
                             queryupdatestatusext = "exec Sp_Update_Status_Expediente '" + expedT.IdExpediente + "','" + status_exp + "'";
                             int sino = conexionsql.InsertUpdateDeleteRegresaid(queryupdatestatusext);
 
@@ -470,11 +553,101 @@ namespace SistemaIntegralQuejas.Controllers
                                     mensajet = "ok";
                                 }
                             }
+
+
+
+
+                           
                         }
                     }
                 }
             }
             return Json(new { mensaje = mensajet, data = resp });
+        }
+
+
+        public string ArmaBitacoraModificaturnoPreliminar(ArrayList arregloValoresActuales, ArrayList arregloValoresanteriores, string id_queja)
+        {
+            string mensaje = "";
+
+
+            StringBuilder txtcontBuilder = new StringBuilder(); //Declaración del stringBuilder
+            string tipoMod = "Modificación";
+            string Ipaccesible = "LocalHost";
+            bool problemas = false;
+            ArrayList nombre_Campos = new ArrayList
+            {
+                "Status",
+                "Fecha  Turno Vis.",
+                "Clave vis",
+                "No_Memo",
+                "Fecha ult Modif. DQOT"
+            };
+            int id_quejaR = 0;
+
+            for (int i = 0; i < arregloValoresActuales.Count; i++)
+            {
+                if (arregloValoresanteriores[i].ToString() != arregloValoresActuales[i].ToString())
+                {
+                    ContBitacora(txtcontBuilder, "Turno Preliminar", tipoMod, nombre_Campos[i].ToString(), arregloValoresanteriores[i].ToString(), arregloValoresActuales[i].ToString(), Ipaccesible);
+                }
+            }
+
+            //Crear_Bitacora
+
+            if (id_queja == "")
+            {
+                id_quejaR = int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE")); //Obtener el Número de expediente
+            }
+            else
+            {
+                id_quejaR = Convert.ToInt32(id_queja);// Genera el que está
+            }
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString()); // Crea la Bitácora
+
+            return mensaje;
+        }
+
+        public string ArmaBItacoraTurnoPreliminar(ArrayList arregloValores, string id_queja)
+        {
+            string mensaje = "";
+            StringBuilder txtcontBuilder = new StringBuilder(); //Declaración del stringBuilder
+            string tipoMod = "Alta";
+            string Ipaccesible = "LocalHost";
+            bool problemas = false;
+            // "id del escritoinicial", "fecha de Hechos", "lugar_hechos", "Calle", "Num. Ext", "Num. Int", "CP", "Colonia", "Circunstancias Hechos" };
+            ArrayList nombre_Campos = new ArrayList
+            {
+                "Status",
+                "Fecha  Turno Vis.",
+                "Clave vis",
+                "No_Memo",
+                "Fecha ult Modif. DQOT"
+
+            };
+            int id_quejaR = 0;
+
+            for (int i = 0; i < arregloValores.Count; i++)
+            {
+                if (arregloValores[i].ToString() != "-")
+                {
+                    ContBitacora(txtcontBuilder, "Turno Preliminar", tipoMod, nombre_Campos[i].ToString(), "-", arregloValores[i].ToString(), Ipaccesible);
+                }
+            }
+
+            //Crear_Bitacora
+
+            if (id_queja == "")
+            {
+                id_quejaR = int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE")); //Obtener el Número de expediente
+            }
+            else
+            {
+                id_quejaR = Convert.ToInt32(id_queja);// Genera el que está
+            }
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString()); // Crea la Bitácora
+
+            return mensaje;
         }
 
         public class Memorandum
@@ -1648,6 +1821,7 @@ namespace SistemaIntegralQuejas.Controllers
                     if (actaAlta.HoraHechos.ToString() != fechaHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Hechos", actaAlta.HoraHechos.ToString(), horaHechos.ToString(), Ipaccesible); }
                     if (actaAlta.UbiHechos != ubiHechos) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", actaAlta.UbiHechos, ubiHechos, Ipaccesible); }
                     if (actaAlta.HoraTermino != horaTermino) { ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Termino", actaAlta.HoraTermino.ToString(), horaTermino.ToString(), Ipaccesible); }
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", actaAlta.Hechos.ToString(), hechos, Ipaccesible);
 
 
 
@@ -4432,7 +4606,7 @@ namespace SistemaIntegralQuejas.Controllers
                
                 tipoMod = "Eliminación";
 
-                ContBitacora(txtcontBuilder, "Formato de Acta Circunstanciada", tipoMod, "Id de Acta", idactamod.ToString(), "-", Ipaccesible); 
+                ContBitacora(txtcontBuilder, "Formato de Acta Circunstanciada", tipoMod, "Formato de acta circunstanciada", idactamod.ToString(), "-", Ipaccesible); 
             }
             else
             {
@@ -4486,7 +4660,7 @@ namespace SistemaIntegralQuejas.Controllers
                 statusresp = true;
                 tipoMod = "Eliminación";
 
-                ContBitacora(txtcontBuilder, "Formato de Escrito Inicial de queja", tipoMod, "Id de Escrito", idexpediente.ToString(), "-", Ipaccesible);
+                ContBitacora(txtcontBuilder, "Formato de Escrito Inicial de queja", tipoMod, "Formato de escrito inicial", idexpediente.ToString(), "-", Ipaccesible);
             }
             else
             {
@@ -4773,6 +4947,8 @@ namespace SistemaIntegralQuejas.Controllers
 
             return lEscritoI;
         }
+
+
 
         public List<EscritoUpdate> ObtenerlistEscriIni(DataTable data)
         {

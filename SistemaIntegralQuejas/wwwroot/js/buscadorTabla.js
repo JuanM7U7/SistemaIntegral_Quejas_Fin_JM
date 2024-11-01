@@ -1138,9 +1138,19 @@ function mostrarResTblFormatos(response) {
                         iconaddActac = '';
                     } else
                     {
-                        iconaddActac = `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionariosactac})' class='btn btn - link margin - iconbf'>
+                        var contadoractac = peticionariosactac.length;
+                        console.log("Contador de los peticionarios del acta circunstanciada:" + peticionariosactac)
+
+                        if (peticionariosactac == '[]') {
+                            iconaddActac = `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionariosactac})' class='btn btn - link margin - iconbf' disabled>
                                                <img src="../icons/personalizados/add-file.png" height="40"/>
                                         </button > <br>`;
+                        } else {
+
+                            iconaddActac = `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${full.fkExpediente}, ${full.escritoia.length > 0 ? full.escritoia[0].idEscrito : 1}, ${peticionariosactac})' class='btn btn - link margin - iconbf'>
+                                               <img src="../icons/personalizados/add-file.png" height="40"/>
+                                        </button > <br>`;
+                        }
                     }
 
                     if (full.actaCa.length > 0) {
@@ -1878,6 +1888,7 @@ function format(data) {
     let acta = '';
     let peticionarioslist = '';
     let peticionarios = JSON.stringify(data.agravQuej);
+    let peticionariosactac = JSON.stringify(data.agravQuejactac);
     let validafecha_modificaciondqot = validafechamodificacionDqot(data.expedienteTurno[0].fechaturnovisitaduria, data.expedienteTurno[0].fechaFinDqot);
     let iconadd = '';
     let iconaddActac = '';
@@ -1886,9 +1897,17 @@ function format(data) {
         iconadd += `<button type='button' title='Agregar nuevo quejoso' onclick='AddFormatDatosPersonales(${data.fkExpediente},${peticionarios} )' class='btn btn - link margin - iconbf'>
                                <span class='fa fa-user-plus color-muted fa-2x'></span >
                                 </button >`;
-        iconaddActac += `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${data.fkExpediente}, ${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
+        if (peticionariosactac == "[]")
+        {
+            iconaddActac += `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${data.fkExpediente}, ${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf' disabled>
+                                               <img src="../icons/personalizados/add-file.png" height="40" />
+                                </button > <br>`;
+
+        } else {
+            iconaddActac += `<button type='button' title='Agregar Acta Circunstanciada' onclick='AddActac(${data.fkExpediente}, ${data.escritoia.length > 0 ? data.escritoia[0].idEscrito : 1}, ${peticionarios})' class='btn btn - link margin - iconbf'>
                                                <img src="../icons/personalizados/add-file.png" height="40"/>
                                 </button > <br>`;
+        }
     }
 
     if (data.status_Expediente != 'Eliminado') {
@@ -5156,6 +5175,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus, fechavalidmodidqo
             //CargaDatosSelectOtro_("", response.lista_autoridad);
             //CargaDatosSelectOtro_("#estadoqueja", response.lista_estado);
             CargaDatosSelectOtro_("#municipioqueja", response.lista_municipio, response.informarcionC.id_lugar_hechos);
+            $('#municipioqueja').attr("disabled", "true");
             CargaDatosSelectOtro_("#sedeRegistro", response.lista_sedes, response.informarcionC.id_sede);
             CargaDatosSelectOtro_("#viainterpos", response.listavi, response.informarcionC.via_interpos);//Cambiar por el id_Via_Interposición
             CargaDatosSelectOtro_("#visitaduriaqueja", response.listavisitadurias, response.informarcionC.visitaduria);
@@ -5326,11 +5346,35 @@ function guardarQueja() {
             });
         }
         else {
+
+            var form_data = new FormData();
+            var form_2 = $('.formQueja').serializeArray();
+
+
+            var abogado = obtenerTextoSelectGenerico('#Abogadoqueja');
+            var estado = "Turno Preliminar"
+            var municipio = obtenerTextoSelectGenerico('#municipioqueja');
+            var sede = obtenerTextoSelectGenerico('#sedeRegistro');
+            var viainter = obtenerTextoSelectGenerico('#viainterpos');
+
+            form_data.append("abogado_desc", abogado);//$("#documento_usuario").val())
+            form_data.append("estadoqueja_desc", estado);
+            form_data.append("municipioqueja_desc", municipio);
+            form_data.append("sederegistro_desc", sede);
+            form_data.append("viainterdesc", viainter);
+
+            form_2.forEach(function (fields) {
+                form_data.append(fields.name, fields.value);
+            });
+
+            let json = formDataToJson(form_data);
+            console.log(json);
+ 
             $.ajax({
                 type: "POST",
                 url: "https://localhost:7126/AltaExpediente/GuardarQueja",
-                data: $('.formQueja').serialize(),
-                dataType: "JSON",
+                data: json,
+                dataType:'JSON',
                 success: function (response) {
                     Swal.fire({
                         position: 'center',
@@ -5345,6 +5389,20 @@ function guardarQueja() {
 
         }
     });
+}
+
+function obtenerTextoSelectGenerico(select)
+{
+    var opcionSeleccionada = $(`${select} option:selected`);
+    var texto = opcionSeleccionada.text();
+    return texto
+}
+function formDataToJson(formData) {
+    let obj = {};
+    formData.forEach((value, key) => {
+        obj[key] = value;
+    });
+    return obj;
 }
 function validarCamposVaciosInput() {
     $("#parrafo").css("color", "#000000");

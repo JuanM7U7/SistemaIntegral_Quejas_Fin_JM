@@ -9,6 +9,10 @@ using System.Net.Sockets;
 using System.IO;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Collections;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Security.Policy;
 
 namespace SistemaIntegralQuejas.Controllers
 {
@@ -16,6 +20,8 @@ namespace SistemaIntegralQuejas.Controllers
     public class AltaExpedienteController : Controller
     {
         private SQLMODEL conexionsql = new SQLMODEL();
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public ActionResult Index()
         {
             return View();
@@ -23,10 +29,11 @@ namespace SistemaIntegralQuejas.Controllers
         public ActionResult GuardarQueja(IFormCollection form)
         {
             int idqueja=99, abogadoqueja = 99, estadoqueja = 99, municipioqueja = 99, visitaduriaqueja = 99, sederegistro = 99,viainter=99;
-            string hechos = "", nombrequejoso = "", apellidos = "", curp = "", fecharegistro = "", observaciones = "";
+            string hechos = "", nombrequejoso = "", apellidos = "", curp = "", fecharegistro = "", observaciones = "",abogadobitacora="",estadobicatcora="",municipiobitacora="",sederegistrobitacora="",viainterposbitacora="";
 
             idqueja = int.Parse(form["idquejaDC"]);
             abogadoqueja = int.Parse(form["Abogadoqueja"]);
+
              
             hechos = form["hechosDC"].ToString();
 
@@ -54,13 +61,289 @@ namespace SistemaIntegralQuejas.Controllers
            // "'" + nombrequejoso + "'," +
            // "'" + apellidos + "'," +
            // "'" + curp + "'," +
-            "" + visitaduriaqueja + "," +
+            "" + visitaduriaqueja + "," +//<<-- este no va en la bitacora ya que está vacio
             "'" + fecharegistro + "'," +
              "" + sederegistro + ","+
              "" + viainter + ","+
             "'" + observaciones + "';";
-            
+
+
+            ArrayList lista = new ArrayList();
+
+            abogadobitacora = form["abogado_desc"].ToString();
+            estadobicatcora= form["estadoqueja_desc"].ToString();
+            municipiobitacora= form["municipioqueja_desc"].ToString();
+            sederegistrobitacora= form["sederegistro_desc"].ToString();
+            viainterposbitacora= form["viainterdesc"].ToString();
+
+
+
+            lista.Add(abogadobitacora);
+            lista.Add(hechos);
+           // lista.Add(estadobicatcora);
+            lista.Add(municipiobitacora);
+            lista.Add(fecharegistro);
+            lista.Add(sederegistrobitacora);
+            lista.Add(viainterposbitacora);
+            lista.Add(observaciones);
+
+            if (existecomplementoqueja(idqueja))
+            {
+                ArrayList listavalores = new ArrayList();
+                listavalores = getComplementoQuejaBitacora(idqueja);
+                ArmaBitacoraModificaComplementoqueja(lista, listavalores, idqueja.ToString());
+            }
+            else
+            {
+                ArmaBItacoraComplementoqueja(lista, idqueja.ToString());
+            }
+
             return Json(new { estatus = conexionsql.InsertUpdateDelete(query)});
+        }
+
+
+        private DataTable GetDatosGeneral(string query)
+        {
+
+            DataTable dataTable = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(conexionsql.ConnectionStrng()))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            dataTable.Load(reader);
+                        }
+                    }
+
+                    return dataTable;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+
+
+        public ArrayList getComplementoQuejaBitacora(int idqueja)
+        {
+            List <bitacoraComplementoqueja> complementoqueja = new List<bitacoraComplementoqueja> ();
+            ArrayList listadoGeneral = new ArrayList();
+
+           string query = "SP_regresainformacionBitacoraComplementoQueja "+ idqueja;
+            string mensaje = "ok";
+            var data = GetDatosGeneral(query);
+
+            complementoqueja = ObtenerlistComplemento(data);
+
+            foreach (bitacoraComplementoqueja item in complementoqueja)
+            {
+                listadoGeneral.Add(item.idAbogado);
+                listadoGeneral.Add(item.Hechos);
+                listadoGeneral.Add(item.municipio);
+                listadoGeneral.Add(item.Fecha_registro);
+                listadoGeneral.Add(item.id_sede);
+                listadoGeneral.Add(item.id_via_interpos);
+                listadoGeneral.Add(item.observaciobes);
+            }
+
+            return listadoGeneral;
+        }
+
+
+        public List<bitacoraComplementoqueja> ObtenerlistComplemento(DataTable data)
+        {
+            List<bitacoraComplementoqueja> lEscritoI = new List<bitacoraComplementoqueja>();
+            string query_archivosadj = "";
+            foreach (DataRow row in data.Rows)
+            {
+                bitacoraComplementoqueja escritoitem = new bitacoraComplementoqueja();
+                escritoitem.idAbogado = Convert.ToInt32(row["id_abogado_recibe"].ToString());
+                escritoitem.Hechos = (row["hechos"]).ToString();
+                escritoitem.paso = (row["paso"]).ToString();
+                escritoitem.municipio = row["estado"].ToString();
+                escritoitem.Fecha_registro = row["fecha_registrro"].ToString();
+                escritoitem.id_sede = int.Parse((row["id_sede"]).ToString());
+                escritoitem.id_via_interpos = int.Parse(row["id_via_interposicion"].ToString());
+                escritoitem.observaciobes = (row["observaciones"]).ToString();
+                
+                lEscritoI.Add(escritoitem);
+            }
+
+            return lEscritoI;
+
+        }
+
+
+
+        public bool existecomplementoqueja(int id_queja)
+        {
+            bool existecomplementoqueja = false;
+            string query = "exec Sp_Verificar_primerComplementoQueja " + id_queja;
+
+            int estado = int.Parse(conexionsql.ObtenerReader(query));
+
+            if (estado > 0)
+            {
+                existecomplementoqueja = true;
+            }
+
+
+            return existecomplementoqueja;
+        }
+
+        public string ArmaBitacoraModificaComplementoqueja(ArrayList arregloValoresActuales, ArrayList arregloValoresanteriores, string id_queja)
+        {
+            string mensaje = "";
+
+
+            StringBuilder txtcontBuilder = new StringBuilder(); //Declaración del stringBuilder
+            string tipoMod = "Modificación";
+            string Ipaccesible = "LocalHost";
+            bool problemas = false;
+            ArrayList nombre_Campos = new ArrayList
+            {
+                "Abogado que recibe",
+                "Hechos",
+                "Lugar de los Hechos",
+                "Fecha y hora de registro",
+                "Sede de registro",
+                "Vía de interposición",
+                "Observaciones"
+            };
+            int id_quejaR = 0;
+
+            for (int i = 0; i < arregloValoresActuales.Count; i++)
+            {
+                if (arregloValoresanteriores[i].ToString() != arregloValoresActuales[i].ToString())
+                {
+                    ContBitacora(txtcontBuilder, "Complemento de queja", tipoMod, nombre_Campos[i].ToString(), arregloValoresanteriores[i].ToString(), arregloValoresActuales[i].ToString(), Ipaccesible);
+                }
+            }
+
+            //Crear_Bitacora
+
+            if (id_queja == "")
+            {
+                id_quejaR = int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE")); //Obtener el Número de expediente
+            }
+            else
+            {
+                id_quejaR = Convert.ToInt32(id_queja);// Genera el que está
+            }
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString()); // Crea la Bitácora
+
+            return mensaje;
+        }     
+        public string ArmaBItacoraComplementoqueja(ArrayList arregloValores,string id_queja)
+        {
+            string mensaje = "";
+            StringBuilder txtcontBuilder = new StringBuilder(); //Declaración del stringBuilder
+            string tipoMod = "Alta";
+            string Ipaccesible = "LocalHost";
+            bool problemas = false;
+            // "id del escritoinicial", "fecha de Hechos", "lugar_hechos", "Calle", "Num. Ext", "Num. Int", "CP", "Colonia", "Circunstancias Hechos" };
+            ArrayList nombre_Campos = new ArrayList
+            {
+                "Abogado que recibe",
+                "Hechos",
+                "Lugar de los hechos",
+                "Fecha y hora de registro",
+                "Sede de registro",
+                "VÍa de interposición",
+                "Observaciones"
+
+            };
+            int id_quejaR = 0;
+
+            for (int i = 0; i < arregloValores.Count; i++)
+            {
+                if (arregloValores[i].ToString() != "-")
+                {
+                    ContBitacora(txtcontBuilder, "Complemento de queja", tipoMod, nombre_Campos[i].ToString(), "-", arregloValores[i].ToString(), Ipaccesible);
+                }
+            }
+
+            //Crear_Bitacora
+
+            if (id_queja == "")
+            {
+                id_quejaR = int.Parse(conexionsql.ObtenerReader("SELECT MAX(id_expediente)+1 FROM EXPEDIENTE")); //Obtener el Número de expediente
+            }
+            else
+            {
+                id_quejaR = Convert.ToInt32(id_queja);// Genera el que está
+            }
+            CrearBitacoraTXT(id_quejaR, txtcontBuilder.ToString()); // Crea la Bitácora
+
+            return mensaje;
+        }
+        public void CrearBitacoraTXT(int idqueja, string contenido)
+        {
+            string rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Archivos\Bitacora", idqueja + ".txt");
+            try
+            {
+                string directorio = Path.GetDirectoryName(rutaArchivo);
+                if (!Directory.Exists(directorio))
+                {
+                    Directory.CreateDirectory(directorio);
+                }
+                List<BitacoraCambio> listaBit;
+
+                if (System.IO.File.Exists(rutaArchivo) && new FileInfo(rutaArchivo).Length > 0)
+                {
+                    string contExis = System.IO.File.ReadAllText(rutaArchivo);
+                    listaBit = JsonConvert.DeserializeObject<List<BitacoraCambio>>(contExis);
+                }
+                else
+                {
+                    listaBit = new List<BitacoraCambio>();
+                }
+                if (contenido != "")
+                {
+                    var lista = "[" + contenido + "]";
+                    var newCont = JsonConvert.DeserializeObject<List<BitacoraCambio>>(lista);
+                    listaBit.AddRange(newCont);
+                }
+                string newContJSON = JsonConvert.SerializeObject(listaBit, Formatting.Indented);
+                System.IO.File.WriteAllText(rutaArchivo, newContJSON);
+                //System.IO.File.AppendAllText(rutaArchivo, contenido);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public AltaExpedienteController(IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
+        {
+
+            _hostingEnvironment = hostingEnvironment;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public void ContBitacora(StringBuilder txtcontBuilder, string apartado, string tipo, string campo, string antes, string despues, string ip)
+        {
+            var usuario = _httpContextAccessor.HttpContext.User;
+
+            DateTime FechaHora = DateTime.Now;
+            txtcontBuilder.Append("{\"Apartado\":").Append("\"" + apartado + "\"")
+                .Append(",\"Tipo\":").Append("\"" + tipo + "\"")
+                .Append(",\"Campo\":").Append("\"" + campo + "\"")
+                .Append(",\"Antes\":").Append("\"" + antes + "\"")
+                .Append(",\"Despues\":").Append("\"" + despues + "\"")
+                .Append(",\"FechaHora\":").Append("\"" + FechaHora.ToString("yyyy-MM-dd HH:mm:ss") + "\"")
+                .Append(",\"Usuario\":").Append("\"" + usuario.Identity.Name + "\"")
+                .Append(",\"IP\":").Append("\"" + ip + "\"").Append("},");
         }
         public async Task<ActionResult> RegresaListaCatalogos(int identificadorQueja)
         {
@@ -633,6 +916,57 @@ namespace SistemaIntegralQuejas.Controllers
             this.id_expediente_apor = id_expediente_apor;
             this.descripcion = descripcion;
             this.noexpe = noexpe;
+        }
+    }
+
+    public class bitacoraComplementoqueja
+    {
+        public int idAbogado { get; set; }
+        public string Hechos { get; set; }
+        public string paso { get; set; }
+        public string municipio { get; set; }
+        public string Fecha_registro { get; set; }
+        public int id_sede { get; set; }
+        public int id_via_interpos { get; set; }
+        public string observaciobes { get;set; }
+
+
+        public bitacoraComplementoqueja() 
+        {
+
+        }
+
+        public bitacoraComplementoqueja(int i1,string s1,string s2,string s3,string s4,int i2,int i3,string s5)
+        {
+            idAbogado = i1;
+            Hechos=s1;
+            paso= s2;
+            municipio = s3;
+            Fecha_registro = s4;
+            id_sede = i2;
+            id_via_interpos = i3;
+            observaciobes= s5;
+        }
+
+    }
+
+
+    public class bitacoraTurnoPrel
+    {
+        public int status { get; set; }
+        public string fechaTurno { get; set; }
+        public int ClaveVis { get; set; }   
+        public string no_memo { get; set; }
+        public string fechaUltModificación { get; set; }
+
+        public bitacoraTurnoPrel() { }
+        public bitacoraTurnoPrel(int status, string fechaTurno, int claveVis, string no_memo, string fechaUltModificación)
+        {
+            this.status = status;
+            this.fechaTurno = fechaTurno;
+            ClaveVis = claveVis;
+            this.no_memo = no_memo;
+            this.fechaUltModificación = fechaUltModificación;
         }
     }
 

@@ -1,0 +1,102 @@
+[
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Abogado que recibe",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-11-14 10:46:29",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Hechos",
+    "Antes": "-",
+    "Despues": "dos uniformados me pusieron una pistola en la cabeza por no traer casco",
+    "FechaHora": "2024-11-14 10:46:29",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Lugar de los hechos",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-11-14 10:46:29",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Fecha y hora de registro",
+    "Antes": "-",
+    "Despues": "2024-11-14",
+    "FechaHora": "2024-11-14 10:46:29",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Sede de registro",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-11-14 10:46:29",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "VÍa de interposición",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-11-14 10:46:29",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Observaciones",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2024-11-14 10:46:29",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Modificación",
+    "Campo": "Fecha  Turno Vis.",
+    "Antes": "2024-11-14 10:41:59",
+    "Despues": "2024/11/18 10:46:05",
+    "FechaHora": "2024-11-14 10:49:49",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Modificación",
+    "Campo": "No_Memo",
+    "Antes": "SVG/621/2024",
+    "Despues": "4172",
+    "FechaHora": "2024-11-14 10:49:49",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Modificación",
+    "Campo": "Fecha ult Modif. DQOT",
+    "Antes": "",
+    "Despues": "2024/11/18 10:46:05",
+    "FechaHora": "2024-11-14 10:49:49",
+    "Usuario": "MOML",
+    "IP": "LocalHost"
+  }
+]

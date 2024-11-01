@@ -3804,6 +3804,7 @@ function Crear_Formulario_Queja() {
     $('#izquierda').append(formualarioCompleto);
     $('#derecha').append(formualarioCompleto1);
     $('#Abogadoqueja').select2();
+    $('#municipioqueja').attr("disabled","true");
     $('#municipioqueja').select2();
     return formualarioCompleto;
 }
@@ -4003,10 +4004,18 @@ function guardarQueja() {
             $("#CircunstanciasHechos").val($("#hechos").val());
             //$("#hechos1").val($("#hechos").val());
 
+            var form_data = new FormData();
+            form_data.append($('.formQueja').serialize());
+            form_data.append("abogado_desc", $("#documento_usuario").val());
+            form_data.append("estadoqueja_desc", $("#documento_usuario").val());
+            form_data.append("municipioqueja_desc", $("#documento_usuario").val());
+            form_data.append("sederegistro_desc", $("#documento_usuario").val());
+            form_data.append("viainterdesc", $("#documento_usuario").val());
+
             $.ajax({
                 type: "POST",
                 url: "https://localhost:7126/AltaExpediente/GuardarQueja",
-                data: $('.formQueja').serialize(),
+                data: form_data,
                 dataType: "JSON",
                 success: function (response) {
                     Swal.fire({
