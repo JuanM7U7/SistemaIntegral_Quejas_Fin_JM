@@ -1024,7 +1024,7 @@ namespace SistemaIntegralQuejas.Controllers
                         }
 
                         arregloanterior.Add(objeto.circuns_Hechos);
-                        arregloanterior.Add(objeto.Rutaarchivo[0].RutaArchivo);
+                        if(objeto.Rutaarchivo.Count!=0)arregloanterior.Add(objeto.Rutaarchivo[0].RutaArchivo);else arregloanterior.Add('-');
 
                         /*Apartado Autoridad*/
 
@@ -1624,7 +1624,7 @@ namespace SistemaIntegralQuejas.Controllers
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Fecha de Hechos", "-", fechaHechos, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Hechos", "-", horaHechos.ToString(), Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Ubicación de Hechos", "-", ubiHechos, Ipaccesible);
-                    //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
+                    ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hechos", "-", hechos, Ipaccesible);
                     ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Hora de Termino", "-", horaTermino.ToString(), Ipaccesible);
                     //ContBitacora(txtcontBuilder, "Acta Circunstanciada", tipoMod, "Complemento de Peticionario", "-", ComplementoPetExt, Ipaccesible);
                 }

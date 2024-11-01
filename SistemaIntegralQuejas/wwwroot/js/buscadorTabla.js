@@ -1892,8 +1892,14 @@ function format(data) {
     }
 
     if (data.status_Expediente != 'Eliminado') {
-        btnEliminar = `<button type="button" class="btn eliminaExpediente btn-rounded btn-danger" style="background-color: red !important;" value="${data.fkExpediente}"><span class="btn-icon-left text-danger"><i style="color: white;" class="fa fa-trash color-danger fa-2x"></i>
+        if ((data.agravQuej.length > 0) || (data.escritoia.length > 0) || (data.actaCa.length > 0)) {
+            btnEliminar = `<button type="button" class="btn eliminaExpediente2 btn-rounded btn-danger" style="background-color: red !important;" value="${data.fkExpediente}"><span class="btn-icon-left text-danger"><i style="color: white;" class="fa fa-trash color-danger fa-2x"></i>
                      </span> Eliminar ID</button>`;
+        }
+        else {
+            btnEliminar = `<button type="button" class="btn eliminaExpediente btn-rounded btn-danger" style="background-color: red !important;" value="${data.fkExpediente}"><span class="btn-icon-left text-danger"><i style="color: white;" class="fa fa-trash color-danger fa-2x"></i>
+                     </span> Eliminar ID</button>`;
+        }
     }
 
     if (data.agravQuej.length > 0) {
@@ -2186,6 +2192,16 @@ function eliminarExpediente() {
         })
 
 
+    });
+    $('.eliminaExpediente2').click(function (e) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Error al eliminar el ID, aún tienes información cargada en el escrito inicial',
+            showConfirmButton: false,
+            timer: 3000
+
+        })
     });
 }
 function eliminarActac(Actacc, nombrepetligado) {

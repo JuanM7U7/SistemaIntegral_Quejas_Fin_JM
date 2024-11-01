@@ -295,7 +295,7 @@ var ipAcceso = '';
 
 
                         });
-                        
+
 
                     } else {
                         Swal.fire({
@@ -444,7 +444,7 @@ var ipAcceso = '';
         //$("input").focus(function () {
         //    $(this).css({ "background": "trasnparent" });
         //});
-      
+
     });
 
 
@@ -473,8 +473,7 @@ function ejecutatab3() {
 
 
 
-function validaVacios( formpapa,tipoelemento ,elementoavalidar,elementoclick)
-{
+function validaVacios(formpapa, tipoelemento, elementoavalidar, elementoclick) {
 
     //$(formpapa).find('span').remove();
     ////contador = 0;
@@ -542,7 +541,7 @@ function funcionesActac(nfrm) {
 
         if ($("#id_lugar" + nfrm).val() == '' || $("#diaFecha" + nfrm).val() == '' || $("#id_mes" + nfrm).val() == '' || $("#id_anio" + nfrm).val() == '' || $("#horaInicio" + nfrm).val() == ''
             || $("#ubicacion" + nfrm).val() == '' || $("#idpeticionarioelegido" + nfrm).val() == '' || $("#idconsentimiento" + nfrm).val() == ''
-            /*|| $("#origenPetval" + nfrm).val() == ''*/ || $("#edadPet" + nfrm).val() == '' || $("#sabeleerPet" + nfrm).val() == '' /*|| $("#escolaridad" + nfrm).val() == '' */|| $("#callePet" + nfrm).val() == ''
+            /*|| $("#origenPetval" + nfrm).val() == ''*/ || $("#edadPet" + nfrm).val() == '' || $("#sabeleerPet" + nfrm).val() == '' /*|| $("#escolaridad" + nfrm).val() == '' */ || $("#callePet" + nfrm).val() == ''
             || $("#numextPet" + nfrm).val() == '' || $("#cpPet" + nfrm).val() == '' || $("#coloniaPet" + nfrm).val() == '' || $("#municipioPet" + nfrm).val() == '' || $("#estadoPet" + nfrm).val() == ''
             || $("#ocupacionPet" + nfrm).val() == '' || $("#telPet" + nfrm).val() == '' || $("#correoPet" + nfrm).val() == '' || $("#idcredencial" + nfrm).val() == '' || $("#horaHechos" + nfrm).val() == ''
             || $("#fechaHechos" + nfrm).val() == '' || $("#ubiHechos" + nfrm).val() == '' || $("#hechos" + nfrm).val() == '' || $("#horaTermino" + nfrm).val() == '') {
@@ -588,7 +587,7 @@ function funcionesActac(nfrm) {
                             fetchPost("Expediente/InsertEnlaceFormatoQueja", "json", FrmEnFormatQueja, (resp) => {
                                 if (resp.status) {
                                     $('#idenlaceformatquejac' + nfrm).val(resp.idinsertado);
-                                    
+
 
                                     Swal.fire({
                                         position: 'center',
@@ -598,7 +597,7 @@ function funcionesActac(nfrm) {
                                         timer: 1500
                                     });
                                 }
-                               
+
                             });
 
                         } else {
@@ -822,7 +821,7 @@ function CreaSelectLabelSelect2(id, tiposelect, arreglo, nombreDiv, textoLabel, 
     htmld += "</select>";
 
     return htmld;
-     $("#" + id).select2();
+    $("#" + id).select2();
 }
 function changeselects() {
     $('#select_viainterposicionc').on('change', function () {
@@ -1492,7 +1491,7 @@ function btnGenerapdfp(element) {
                         input.checked = true;
                     }
                 });
-               
+
                 html.txtNombre.textContent = response.data[0].nombre;
                 html.txtApaterno.textContent = response.data[0].apellidoPat;
                 html.txtAmaterno.textContent = response.data[0].apellidoMat;
@@ -1508,17 +1507,17 @@ function btnGenerapdfp(element) {
                 html.txtEdad.textContent = response.data[0].edad;
                 html.txtEmail.textContent = response.data[0].email;
 
-                if (response.data[0].nombre.toUpperCase() === 'NO PROPORCIONADO') { html.txtNombre.style.fontStyle = 'italic'; } 
+                if (response.data[0].nombre.toUpperCase() === 'NO PROPORCIONADO') { html.txtNombre.style.fontStyle = 'italic'; }
                 if (response.data[0].apellidoPat.toUpperCase() === 'NO PROPORCIONADO') { html.txtApaterno.style.fontStyle = 'italic'; }
-                if (response.data[0].apellidoMat.toUpperCase() === 'NO PROPORCIONADO') { html.txtAmaterno.style.fontStyle = 'italic';}
+                if (response.data[0].apellidoMat.toUpperCase() === 'NO PROPORCIONADO') { html.txtAmaterno.style.fontStyle = 'italic'; }
                 if (response.data[0].calle.toUpperCase() === 'NO PROPORCIONADO') { html.txtCalle.style.fontStyle = 'italic'; }
                 if (response.data[0].numExterior.toUpperCase() === 'NO PROPORCIONADO') { html.numExt.style.fontStyle = 'italic'; }
-                if (response.data[0].numInterior.toUpperCase() === 'NO PROPORCIONADO') { html.numInt.style.fontStyle = 'italic';}
+                if (response.data[0].numInterior.toUpperCase() === 'NO PROPORCIONADO') { html.numInt.style.fontStyle = 'italic'; }
                 if (response.data[0].colonia.toUpperCase() === 'NO PROPORCIONADO') { html.txtColonia.style.fontStyle = 'italic'; }
                 if (response.data[0].ciudad.toUpperCase() === 'NO PROPORCIONADO') { html.txtCiudadloc.style.fontStyle = 'italic'; }
                 if (response.data[0].municipio.toUpperCase() === 'NO PROPORCIONADO') { html.txtMunicipio.style.fontStyle = 'italic'; }
                 if (response.data[0].estado.toUpperCase() === 'NO PROPORCIONADO') { html.txtEstado.style.fontStyle = 'italic'; }
-                if (response.data[0].codigoPostal.toUpperCase() === 'NO PROPORCIONADO') { html.txtCp.style.fontStyle = 'italic';}
+                if (response.data[0].codigoPostal.toUpperCase() === 'NO PROPORCIONADO') { html.txtCp.style.fontStyle = 'italic'; }
                 if (response.data[0].telefono.toUpperCase() === 'NO PROPORCIONADO') { html.txtTelefono.style.fontStyle = 'italic'; }
                 if (response.data[0].edad.toUpperCase() === 'NO PROPORCIONADO') { html.txtEdad.style.fontStyle = 'italic'; }
                 if (response.data[0].email.toUpperCase() === 'NO PROPORCIONADO') { html.txtEmail.style.fontStyle = 'italic'; }
@@ -1605,7 +1604,7 @@ function btnGenerapdfp(element) {
                     }
                 });
                 html.txtOtraLengiai.textContent = response.data[0].lenguaIndigena;
-                if(response.data[0].fechaNacimiento.includes('1900-01-01')) {
+                if (response.data[0].fechaNacimiento.includes('1900-01-01')) {
                     html.txtFechaNaci.textContent = 'No proporcionado';
                     html.txtFechaNaci.style.fontStyle = 'italic';
                 }
@@ -2561,13 +2560,13 @@ function guardaDataComplPeticionario(idForm, numFrm) {
         type: "post",
         url: 'GuardarDataComplPeticionario',
         content: "application/json; charset=utf-8",
-        data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip ,
+        data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip,
         dataType: "json",
         success: function (data) {
-           
+
             console.log(data)
             let selectsPet = document.querySelectorAll('.selectpetactac').length;
-            if (nombre!="") {
+            if (nombre != "") {
                 $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
                 $("#frmDatosPersonales1 select").prop('disabled', true);
                 $("#frmDatosPersonales1 input[type='date']").prop('disabled', true);
@@ -2966,7 +2965,7 @@ function formEscritoInicial2(action, id) {
         + CreaBR()
         //+ CreaInputs_Con_Label('Input_LugarHechos', 'Input_LugarHechos', '', 'text', 'Lugar en donde Ocurrieron los Hechos: ', 'Input_LugarHechos', 'placeholder="Lugar de los Hechos" style ="float:left;"', ' style ="float:left;"')
         + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR EN QUE SE SUSCITARON LOS HECHOS:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
-        + CreaInputs_Con_Label('CheckDcompleta', 'CheckDcompleta', '', 'checkbox', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¿SABE LA DIRECCIÓN COMPLETA?&nbsp;&nbsp;', 'CheckDcompleta', '', '') 
+        + CreaInputs_Con_Label('CheckDcompleta', 'CheckDcompleta', '', 'checkbox', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¿SABE LA DIRECCIÓN COMPLETA?&nbsp;&nbsp;', 'CheckDcompleta', '', '')
         + '<div id="Contenedor_Datos_LE"></div>'
         + CreaBR()
         + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:&nbsp;') + Requeridos()
@@ -3068,7 +3067,7 @@ function formActacircunstanciada2c(idfrm) {
         + CreaSelectLabel('identificacionPet' + numfrm, '', arregloIdentificación(), '', 'identificándose ante el/la suscrito/a con', '', 'identificacionPet', idfrm) + Requeridos()
         + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>DECLARO:</strong><br>')
         + CreaInputs_Con_Label('fechaHechos' + numfrm, 'fechaHechos' + numfrm, 'inputac', 'date', 'Que el día', 'textfield10', '', idfrm) + Requeridos()
-        + CreaInputs_Con_Label('horaHechos' + numfrm, 'horaHechos' + numfrm, 'inputac', 'time', 'a las', 'textfield10', '', idfrm) + Requeridos() 
+        + CreaInputs_Con_Label('horaHechos' + numfrm, 'horaHechos' + numfrm, 'inputac', 'time', 'a las', 'textfield10', '', idfrm) + Requeridos()
         + CreaInputs_Con_Label('ubiHechos' + numfrm, 'ubiHechos' + numfrm, 'inputac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"', idfrm) + Requeridos()
         //+ CreaSelectLabel('catMunicipio_hechos' + numfrm, '', {}, '', 'ubicado en el municipio de', '', 'catMunicipio_hechos', idfrm) + Requeridos()
         //+ CreaSelectLabel('catEstado_hechos' + numfrm, '', arreglo_Estados(), '', 'del estado de ', '', 'catEstado_hechos', idfrm) + Requeridos()
@@ -3878,7 +3877,7 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario) {
         +
         `
 			<div class="dummy dummy-text">
-			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '') }</span><span class="tooltipbox-content clearfix">
+			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario.replace(/No Proporcionado/g, '')}</span><span class="tooltipbox-content clearfix">
             <span class="tooltipbox-text"><span style="color:#c39f76">Infromación del Peticionario</span><br>
              ID DEL PETIC.: ${idpeticionario}<br>
              CURP:${curp}<br>
@@ -4003,7 +4002,7 @@ function guardarQueja() {
         else {
             $("#CircunstanciasHechos").val($("#hechos").val());
             //$("#hechos1").val($("#hechos").val());
-            
+
             $.ajax({
                 type: "POST",
                 url: "https://localhost:7126/AltaExpediente/GuardarQueja",

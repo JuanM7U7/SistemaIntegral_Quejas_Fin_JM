@@ -27,9 +27,15 @@ namespace SistemaIntegralQuejas.Controllers
 
             idqueja = int.Parse(form["idquejaDC"]);
             abogadoqueja = int.Parse(form["Abogadoqueja"]);
+             
             hechos = form["hechosDC"].ToString();
+
+            if (hechos == "") 
+            {
+                hechos = form["hechos"].ToString();
+            }
            // estadoqueja= int.Parse(form["estadoqueja"]);
-            municipioqueja= int.Parse(form["municipioqueja"]);
+            municipioqueja = int.Parse(form["municipioqueja"]);
             nombrequejoso = form["nombrequejoso"].ToString();
             apellidos = form["Apellidos"].ToString();
             curp = form["curp"].ToString();
