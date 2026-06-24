@@ -21,7 +21,7 @@ let agrupado = {};
 
 function agruparPorCedulas(data) {
     agrupado = {};
-
+    //hola
     data.forEach(item => {
         // filtra por expediente o id escrito
         const tipo = item.tipo_cedula;
