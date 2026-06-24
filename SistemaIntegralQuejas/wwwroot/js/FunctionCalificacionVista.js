@@ -2679,7 +2679,7 @@ function updateDatosPeticionarios(idpeticionarioActual, modo) {
     }
 
     // ============================================
-    // ✏️ EDITAR PRUEBA HITHUB JM
+    // ✏️ EDITAR PRUEBA HITHUB
     // ============================================
     if (modo === 'EDITAR') {
 
