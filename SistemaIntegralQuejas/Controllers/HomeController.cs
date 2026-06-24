@@ -29,7 +29,7 @@ namespace SistemaIntegralQuejas.Controllers
                 return RedirectToAction("IniciarSesion", "Login");
             }
 		}
-
+        // Comentario de Prueba
         [Authorize(Roles = "ADMIN_DQOT")]
         public IActionResult Index_ADMIN_DQOT()
         {
