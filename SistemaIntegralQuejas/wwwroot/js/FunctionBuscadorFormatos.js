@@ -4,9 +4,9 @@ let dataBf = [
     [
         "1",
         "Everaldo Garcia López",
-        "<span><a href='javascript:void()' class='mr-4' data-toggle='tooltip' data-placement='top' title='Editar'> <i class='fa fa-pencil color-muted fa-2x'></i> </a> <button type='button' onclick='eliminaFormato(1)' class='btn btn-link margin-iconbf'><span class='fa fa-trash color-danger fa-2x'></span></button> </span>",
-        "<span><a href='javascript:void()' class='mr-4' data-toggle='tooltip' data-placement='top' title='Editar'> <i class='fa fa-pencil color-muted fa-2x'></i> </a> <button type='button' onclick='eliminaFormato(2)' class='btn btn-link margin-iconbf'><span class='fa fa-trash color-danger fa-2x'></span></button> </span>",
-        "<span><a href='javascript:void()' class='mr-4' data-toggle='tooltip' data-placement='top' title='Editar'> <i class='fa fa-pencil color-muted fa-2x'></i> </a> <button type='button' onclick='eliminaFormato(3)' class='btn btn-link margin-iconbf'><span class='fa fa-trash color-danger fa-2x'></span></button> </span>"
+        "<span><a href='javascript:void(0)' class='mr-4' data-toggle='tooltip' data-placement='top' title=\"Editar\"> <i class='fa fa-pencil color-muted fa-2x'></i> </a> <button type='button' onclick='eliminaFormato(1)' class='btn btn-link margin-iconbf'><span class='fa fa-trash color-danger fa-2x'></span></button> </span>",
+        "<span><a href='javascript:void(0)' class='mr-4' data-toggle='tooltip' data-placement='top' title=\"Editar\"> <i class='fa fa-pencil color-muted fa-2x'></i> </a> <button type='button' onclick='eliminaFormato(2)' class='btn btn-link margin-iconbf'><span class='fa fa-trash color-danger fa-2x'></span></button> </span>",
+        "<span><a href='javascript:void(0)' class='mr-4' data-toggle='tooltip' data-placement='top' title=\"Editar\"> <i class='fa fa-pencil color-muted fa-2x'></i> </a> <button type='button' onclick='eliminaFormato(3)' class='btn btn-link margin-iconbf'><span class='fa fa-trash color-danger fa-2x'></span></button> </span>"
     ]
 ];
 
@@ -29,7 +29,8 @@ function mostrarResTblFormatos() {
 
 function eliminaFormato(idformato) {
 
-    swal.fire({
+    
+    .fire({
         title: 'Eliminar Formato Datos Personales',
         text: "¿Desea eliminar el formato de datos personales ligado esta queja?",
         type: 'warning',

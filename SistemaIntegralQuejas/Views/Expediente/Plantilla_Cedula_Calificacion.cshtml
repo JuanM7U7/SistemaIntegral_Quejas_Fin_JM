@@ -4,69 +4,62 @@
     Layout = null;
 }
 <style>
-    *{
-        font-family:Arial;
-    }
-    .cedula-left
-    {
-        margin-left:15%;
-        width:42%;
-        float:left;
+    * {
+        font-family: Arial;
     }
 
-    .cedula-right
-    {
+    .cedula-left {
+        margin-left: 15%;
         width: 42%;
         float: left;
     }
 
-    .cedula-completo
-    {
-        width:100%;
-        text-align:center;
-        margin-bottom:0px;
+    .cedula-right {
+        width: 42%;
         float: left;
-        margin-top:0px;
+    }
+
+    .cedula-completo {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0px;
+        float: left;
+        margin-top: 0px;
     }
 
     .cedula-completo1 {
         width: 100%;
         text-align: center;
         margin-bottom: 0px;
-        float:left
+        float: left
     }
 
-    .linea
-    {
-        width:100%;
-        height:2px;
-        background-color:gray;
-        float:left
+    .linea {
+        width: 100%;
+        height: 2px;
+        background-color: gray;
+        float: left
     }
 
-    .img-responsive
-    {
-        width:25px;
-        height:30px;
-    }
-    .titulos
-    {
-        font-size:15px;
+    .img-responsive {
+        width: 25px;
+        height: 30px;
     }
 
-    .titulodoc
-    {
+    .titulos {
+        font-size: 15px;
+    }
+
+    .titulodoc {
         font-size: 20px;
     }
 
-    .titulodocsec
-    {
+    .titulodocsec {
         font-size: 20px;
     }
 
-    .cedula-completo table
-    {
-        width:100%;
+    .cedula-completo table {
+        width: 100%;
         margin-top: 0px;
     }
 
@@ -75,19 +68,17 @@
     }
 
 
-    .cedula-completo1 > th,td {
-      vertical-align:top;
-       text-align:center;
+    .cedula-completo1 > th, td {
+        vertical-align: top;
+        text-align: center;
         width: 30%;
-        
     }
 
     .cedula-completo > td {
         text-align: left;
         margin-top: 0px;
-        padding-top:0px;
+        padding-top: 0px;
         width: 30%;
-  
     }
 
     .cedula-completo > th {
@@ -97,26 +88,24 @@
     }
 
     .cedula-completo-izquierda {
-        margin-top:15px;
+        margin-top: 15px;
         float: left;
         width: 100%;
     }
 
-    .cedula-completo-izquierda p {
-        font-style: normal;
-        font-weight: 100;
-        font-size: 18px;
-    }
+        .cedula-completo-izquierda p {
+            font-style: normal;
+            font-weight: 100;
+            font-size: 18px;
+        }
 
     .cedula-left p {
-        font-style:normal;
-        font-weight:100;
+        font-style: normal;
+        font-weight: 100;
         font-size: 15px;
         line-height: 1.0;
         margin-top: 0;
         margin-bottom: 10px;
-
-
     }
 
     .cedula-right p {
@@ -129,62 +118,69 @@
     }
 
     .datosfinales {
-        margin-top:100px;
-        text-align:center;
-        float:left;
-        width:100%;
-    }
-    .datosfinales .left
-    {   text-align:center;
-        float:left;
-        width:50%;
-        text-transform: uppercase;
+        margin-top: 100px;
+        text-align: center;
+        float: left;
+        width: 100%;
     }
 
-        .datosfinales .rigth {
-            text-align: center; float: left;
-        width: 50%;
+        .datosfinales .left {
+            text-align: center;
+            float: left;
+            width: 50%;
             text-transform: uppercase;
-    }
-    h5
-    {
+        }
+
+        .datosfinales .rigth {
+            text-align: center;
+            float: left;
+            width: 50%;
+            text-transform: uppercase;
+        }
+
+    h5 {
         margin-top: 0;
         margin-bottom: 8px;
     }
 
-        h5 P
-        {
+        h5 P {
             line-height: 1.0;
             margin-top: 0;
             margin-bottom: 10px;
         }
 
 
-    .NOEXP
-    {
-        text-align:center;
-        margin-bottom:15px;
+    .NOEXP {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .conclusion .pequenio {
+        width: 12.5%;
+    }
+
+    .conclusion .grande {
+        width: 25%;
     }
 </style>
 
 <body>
     @foreach (var itemp in Model)
-{
-    <div class="container receipt-wrap" id="receipt-wrap">
-        <div class="row rowpapa">
-            <div class="receipt-main col-xs-12 col-sm-12 col-md-12">
-                <div class="row">
-                    <div class="col-xs-2 col-sm-2 col-md-2">
-                        <div class="receipt-left">
-                            
+    {
+        <div class="container receipt-wrap" id="receipt-wrap">
+            <div class="row rowpapa">
+                <div class="receipt-main col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2">
+                            <div class="receipt-left">
+                            </div>
                         </div>
-                    </div>                
                         <div class="cedula-completo">
                             <h5 class="titulodoc">CÉDULA DE CALIFICACIÓN POR VISITADURÍA GENERAL</h5>
-                           <div class="linea"></div>
+                            <div class="linea"></div>
                         </div>
 
-                        <h5 class="NOEXP titulos"><b></b>@itemp.Expediente - 2024 <p> ID: @itemp.id</p></h5>
+                        <h5 class="NOEXP titulos"><b></b>@itemp.Expediente <p> ID: @itemp.id</p></h5>
                         <div class="cedula-left">
                             <h5 class="FOR titulos"><b>FECHA Y HORA DE REGISTRO:</b><p>@itemp.fecha_Hora_registro</p></h5>
                             <h5 class="FRVG titulos"><b>FECHA DE RECEPCIÓN EN VISITADURÍA:</b><p>@itemp.fecha_RFV</p></h5>
@@ -200,56 +196,127 @@
                         </div>
 
                         <div class="cedula-completo1">
-                    <h5 class="titulodocsec">PETICIONARIOS(AS)</h5>
-                        <div class="linea"></div>
-                           <table>
-                               <thead>
-                                    <th>ID DEL PETICIONARIO(A)</th>
+                            <h5 class="titulodocsec">PETICIONARIOS(AS)</h5>
+                            <div class="linea"></div>
+                            <table>
+                                <thead>
+                                <th>ID DEL PETICIONARIO(A)</th>
                                 <th>TIPO DEL PETICIONARIO(A)</th>
                                 <th>NOMBRE DEL PETICIONARIO(A)</th>
-                               </thead>
-                               <tbody>
-                                    @foreach (var itemuser in @itemp.listpet)
+                                </thead>
+                                <tbody>
+                                    @* @foreach (var itemuser in @itemp.listpet)
+                                {
+                                <tr>
+                                <td>@itemuser.id</td>
+                                <td>@itemuser.tipopet (a)</td>
+                                <td>@itemuser.nombrepet</td>
+                                </tr>
+                                } *@
+                                    @if (itemp.listpet != null && itemp.listpet.Any())
                                     {
-                                        <tr>
-                                            <td>@itemuser.id</td>
-                                            <td>@itemuser.tipopet (a)</td>
-                                            <td>@itemuser.nombrepet</td>
-                                        </tr>
-                                        
+                                        foreach (var itemuser in itemp.listpet)
+                                        {
+                                            <tr>
+                                                <td>@itemuser.id</td>
+                                                <td>@itemuser.tipopet</td>
+                                                <td>@itemuser.nombrepet</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="3">Aun no hay peticionarios calificados.</td></tr>
                                     }
                                 </tbody>
-                           </table>
-                    </div>
-               <div class="cedula-completo">
-               <h5 class="titulodocsec">AUTORIDAD(ES) / HECHOS VIOLATORIOS</h5>
-                    <div class="linea"></div>
-                       <table>
-                           <thead>
-                            <th>AUTORIDAD(ES)</th>
-                            <th>HECHOS VIOLATORIOS</th>
-                            <th>DERECHO HUMANO</th>
-                       </thead>
-                       <tbody>
-                        @foreach (var itemuser in @itemp.listauth)
-                                    {
-                                        <tr>
-                                            <td>@itemuser.autoridad</td>
-                                            <td>@itemuser.HV</td>
-                                            <td>@itemuser.DH</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                       </table>
+                            </table>
+                        </div>
+                        <div class="cedula-completo">
+                            <h5 class="titulodocsec">AUTORIDAD(ES) / HECHOS VIOLATORIOS</h5>
                             <div class="linea"></div>
-                    </div>
+                            <table>
+                                <thead>
+                                <th>AUTORIDAD(ES)</th>
+                                <th>HECHOS VIOLATORIOS</th>
+                                <th>DERECHO HUMANO</th>
+                                </thead>
+                                <tbody>
+                                    @* @foreach (var itemuser in @itemp.listauth)
+                                {
+                                <tr>
+                                <td>@itemuser.autoridad</td>
+                                <td>@itemuser.HV</td>
+                                <td>@itemuser.DH</td>
+                                </tr>
+                                } *@
+                                    @if (itemp.listauth != null && itemp.listauth.Any())
+                                    {
+                                        foreach (var itemuser in itemp.listauth)
+                                        {
+                                            <tr>
+                                                <td>@itemuser.autoridad</td>
+                                                <td>@itemuser.HV</td>
+                                                <td>@itemuser.DH</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="3">Aun no hay autoridades calificadas.</td></tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="linea"></div>
+                        </div>
 
-               <div class="cedula-completo-izquierda">
+                        <div class="cedula-completo-izquierda">
                             <h5 class="FOR titulos"><b>HECHOS:</b><p>@itemp.hechos</p></h5>
-                    </div>
+                        </div>
+
+                        <div class="cedula-completo conclusion">
+                            <h5 class="titulodocsec">CONCLUSIÓN DEL EXPEDIENTE</h5>
+                            <div class="linea"></div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>FECHA</th>
+                                        <th>CLAVE</th>
+                                        <th>CAUSA</th>
+                                        <th>ACTO RESTITUIDO</th>
+                                        <th>OBSERVACIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (itemp.listacasa == null || itemp.listacasa.Count <= 0)
+                                    {
+                                        <tr>
+                                            <td><em>No aplica</em></td>
+                                            <td><em>No aplica</em></td>
+                                            <td><em>No aplica</em></td>
+                                            <td><em>No aplica</em></td>
+                                            <td><em>No aplica</em></td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        foreach (var itemuser in itemp.listacasa)
+                                        {
+                                            <tr>
+                                                <td class="pequenio">@itemuser.fechac</td>
+                                                <td class="pequenio">@itemuser.causac</td>
+                                                <td class="grande">@itemuser.causacdesc</td>
+                                                <td class="grande">@itemuser.acto_rest</td>
+                                                <td class="grande">@itemuser.obs</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="linea"></div>
+                        </div>
 
                     </div>
-                     </div>
+                </div>
             </div>
 
             <div class="datosfinales">
@@ -265,5 +332,5 @@
             </div>
         </div>
 
-}
+    }
 </body>

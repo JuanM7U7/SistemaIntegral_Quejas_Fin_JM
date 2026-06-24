@@ -1,0 +1,2612 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Prueba Jm",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 12:08:56",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Prueb",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:05:03",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Pruebbbbbbbba",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:42:04",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Pruebbajmmm",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Masculino",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:47:07",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Juanprueba",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 13:51:35",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-15 16:55:32",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Pruebaaaaaaaaaaaa",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "M",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "P",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-15 16:55:33",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "MALJ000502HPLRPNA3",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Juan Rodolfo",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "Márquez",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "López",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "Puebla",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "Del Valle",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "Puebla",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "Heroica Puebla de Zaragoza",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "JARDIN DEL ANGEL",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2000-05-02",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "26",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2215979264",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "juanmarquez020520@gmail.com",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Masculino",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-17 10:15:23",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "MALJ000502HPLRPNA3",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Juan Rodolfo",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "Marquez",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "López",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "Puebla",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "Del Valle",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "Puebla",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "Heroica Puebla de Zaragoza",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "JARDIN DEL ANGEL",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2000-05-02",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "26",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2215979264",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "juanmarquez020520@gmail.com",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Masculino",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-17 11:01:21",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Prueba",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Femenino",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-06-17 16:42:53",
+    "Usuario": "DLGH",
+    "IP": ""
+  }
+]

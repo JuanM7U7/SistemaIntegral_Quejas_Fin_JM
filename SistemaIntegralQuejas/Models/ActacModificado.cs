@@ -25,6 +25,14 @@ public partial class ActacModificado
     public string SabePet { get; set; }
     public string EscolaridadPet { get; set; }
     //----------------------------------------
+
+    //Ricardo 17/09/2025 CAMPO AGREGADO--------------------------
+    //Esta propiedad devuelve el string  "No proporcionado" si Edadpet es igual a 00
+    public string EdadMostrar
+    {
+        get { return EdadPet == 00 ? "No proporcionado" : EdadPet.ToString(); }
+    }
+    //----------------------------------------------------------
     public string CallePet { get; set; }
     public string NumextPet { get; set; }
     public string CpPet { get; set; }
@@ -47,13 +55,16 @@ public partial class ActacModificado
     public int? ComplementoPeticionario { get; set; }
     public int? idPet { get; set; }
     public DateTime? fechaActual { get; set; }
+    public string Autoridad { get; set; }
+
+
 
     public ActacModificado() { }
     public ActacModificado(
        int id, string lugar, int diaFecha, string mes, string anio, string nomAbogado, string puestoAbogado, string areaAbogado, TimeOnly horaInicio,
         string ubicacion, string nombrePet, string consentimiento, string origenPet, int edadPet, string sabePet, string escolaridadPet, string callePet, string numextPet, string cpPet,
         string coloniaPet, string municipioPet, string estadoPet, string ocupacionPet, string telPet, string correoPet, string identificacionPet, string fechaHechos,
-        TimeOnly horaHechos, string ubiHechos, string hechos, TimeOnly horaTermino, string OPE, string COPE, int idp, int compet, DateTime? fechaActual)
+        TimeOnly horaHechos, string ubiHechos, string hechos, TimeOnly horaTermino, string OPE, string COPE, int idp, int compet, DateTime? fechaActual, string autoridad)
 
     {
         Id = id;
@@ -92,5 +103,7 @@ public partial class ActacModificado
         idPet = idp;
         ComplementoPeticionario = compet;
         this.fechaActual = fechaActual;
+        Autoridad = autoridad;
+
     }
 }

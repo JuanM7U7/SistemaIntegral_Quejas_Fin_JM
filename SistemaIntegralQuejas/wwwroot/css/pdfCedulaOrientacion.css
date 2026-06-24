@@ -1,0 +1,36 @@
+p {
+    font-family: Arial;
+    font-size: 19px;
+}
+
+header {
+    text-align: center;
+    font-family: Arial; 
+    font-size: 20px; 
+    margin-left:80px;
+}
+
+table {
+    border: 1px solid black; 
+    border-spacing: 0;
+}
+
+tr {
+    border: 1px solid black;
+    text-align:center;
+    border-spacing: 0;
+}
+
+td {
+    border: 1px solid black;
+    width: 45%;
+}
+
+
+body {
+    background-image: url('../img/imagen-fondo.png');
+    background-position: center center;
+    background-size: 101% auto;
+    background-repeat:repeat-y;
+   
+}

@@ -1,0 +1,342 @@
+@model IEnumerable<SistemaIntegralQuejas.Models.PDF_Escrito_Inical>
+
+@{
+
+    Layout = null;
+
+}
+
+@foreach (var item in Model)
+
+{
+
+    <html>
+
+    <head>
+        <title>Escrito Inicial de Queja</title>
+        <link href="~/css/pdfescritoinicial.css" rel="stylesheet" />
+    </head>
+
+
+    <body>
+        <div class="row">
+            <div style="margin-right:20px;margin-left:80px;">
+                <p align="right">
+                    <b>ID: @item.IdQueja </b><br>
+
+
+                    @foreach (var item_rr in item.reg_recepcion)
+
+                    {
+
+                        //No hay nombre pero si apellidos
+
+                        @if ((@item_rr.Nombre == "No Proporcionado") && (@item_rr.ApellidoPat != "No Proporcionado") && (@item_rr.ApellidoMat != "No Proporcionado"))
+
+                        {
+                            <b>Peticionaria/o: <em>@item_rr.Nombre</em> @item_rr.ApellidoPat @item_rr.ApellidoMat</b>
+
+                        }
+
+                    //si hay apellido paterno
+
+                        @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat == "No Proporcionado") && (@item_rr.ApellidoMat != "No Proporcionado"))
+
+                        {
+                            <b>Peticionaria/o: @item_rr.Nombre <em>@item_rr.ApellidoPat</em> @item_rr.ApellidoMat</b>
+
+                        }
+
+                    //No hay apellido materno
+
+                        @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat != "No Proporcionado") && (@item_rr.ApellidoMat == "No Proporcionado"))
+
+                        {
+                            <b>Peticionaria/o: @item_rr.Nombre @item_rr.ApellidoPat <em>@item_rr.ApellidoMat</em></b>
+
+                        }
+
+                        //No hay apellidos
+
+                        @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat == "No Proporcionado") && (@item_rr.ApellidoMat == "No Proporcionado"))
+
+                        {
+                            <b>Peticionaria/o: @item_rr.Nombre <em>@item_rr.ApellidoPat</em> <em>@item_rr.ApellidoMat</em></b>
+
+                        }
+
+                        //No nay nombre ni apellidos
+
+                        @if ((@item_rr.Nombre == "No Proporcionado") && (@item_rr.ApellidoPat == "No Proporcionado") && (@item_rr.ApellidoMat == "No Proporcionado"))
+
+                        {
+                            <b>Peticionaria/o: <em>@item_rr.Nombre</em> <em>@item_rr.ApellidoPat</em> <em>@item_rr.ApellidoMat</em></b>
+
+                        }
+
+                    //si hay nombre y apellidos
+
+                        @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat != "No Proporcionado") && (@item_rr.ApellidoMat != "No Proporcionado"))
+
+                        {
+                            <b>Peticionaria/o: @item_rr.Nombre @item_rr.ApellidoPat @item_rr.ApellidoMat</b>
+
+                        }
+
+                    }
+                    <br>
+                    <br>
+                    <b>
+                        <script>
+
+                            var fecha = new Date();
+
+                            var meses = new Array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+
+                            document.write("H. Puebla de Zaragoza  a " + fecha.getDate() + " de " + meses[fecha.getMonth()] + " de " + fecha.getFullYear());
+                        </script>
+                    </b>
+                </p>
+            </div>
+
+            <div>
+                <div style="margin-right:20px;margin-left:80px;">
+                    <p>
+                        <b>
+                            <br>ROSA ISELA SANCHEZ SOYA<br>
+
+                            PRESIDENTA DE LA COMISIÓN DE DERECHOS<br>
+
+                            HUMANOS DEL ESTADO DE PUEBLA.
+                        </b>
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div style="margin-right:20px;margin-left:80px;">
+                        <p align="justify">
+
+                            Con fundamento en los artículos 2, 4, 5, 13 fracciones I, II, III, IV y V, 25, 28 y demás relativos y aplicables de la Ley de la Comisión de Derechos Humanos del Estado, ante personal de este organismo y por mi propio derecho, acudo a denunciar actos u omisiones que a mi juicio constituyen violación a mis derechos humanos, en los términos que a continuación se expresan:
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div style="margin-right:20px;margin-left:80px;">
+                            <p align="justify">
+                                <b>FECHA EN QUE OCURRIERON LOS HECHOS: </b> @item.FechaHechos<br>
+                                <b><br>LUGAR EN QUE SE SUSCITARON LOS HECHOS: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                            </p>
+                            @if (@item.lugar_hechos.Count > 0)
+
+                            {
+
+                                @foreach (var item_lh in item.lugar_hechos)
+                                {
+                                    <p>
+                                        Municipio: @if (@item_lh.municipio != "")
+                                        {
+                                            @item_lh.municipio
+                                        }
+                                        else
+                                        {
+                                            <em>"No proporcionado"</em>
+                                        },
+                                        Estado: @if (item_lh.estado != "")
+                                        {
+                                            @item_lh.estado
+                                        }
+                                        else
+                                        {
+                                            <em>"No proporcionado"</em>
+                                        },
+                                        calle: @if (item_lh.calle != "")
+                                        {
+                                            @item_lh.calle
+                                        }
+                                        else
+                                        {
+                                            <em>"No proporcionado"</em>
+                                        },
+                                        colonia: @if (item_lh.colonia != "")
+                                        {
+                                            @item_lh.colonia
+                                        }
+                                        else
+                                        {
+                                            <em>"No proporcionado"</em>
+                                        },
+                                        num.ext: @if (item_lh.num_ext != "")
+                                        {
+                                            @item_lh.num_ext
+                                        }
+                                        else
+                                        {
+                                            <em>"No proporcionado"</em>
+                                        },
+                                        num.int: @if (item_lh.num_int != "")
+                                        {
+                                            @item_lh.num_int
+                                        }
+                                        else
+                                        {
+                                            <em>"No proporcionado"</em>
+                                        },
+                                        cp: @if (item_lh.cp != 0)
+                                        {
+                                            @item_lh.cp
+                                        }
+                                        else
+                                        {
+                                            <em>"No proporcionado"</em>
+                                        }
+
+                                        @*
+                            Estado: <em>@(item_lh.estado != "" ? item_lh.estado : "No proporcionado"),</em>
+                            calle <em>@(item_lh.calle != "" ? item_lh.calle : "No proporcionado")</em>
+                            colonia <em>@(item_lh.colonia != "" ? item_lh.colonia : "No proporcionado"),</em>
+                            num.ext: <em>@(item_lh.num_ext != "" ? item_lh.num_ext : "No proporcionado")</em>
+                            num.int <em>@(item_lh.num_int != "" ? item_lh.num_int : "No proporcionado")</em>
+                            cp <em>@(item_lh.cp != 0 ? item_lh.cp : "No proporcionado") </em>*@
+                                    </p>
+
+                                }
+
+                            }
+                        </div>
+                        <div class="row">
+                            <div style="margin-right:20px;margin-left:80px;">
+                                <p class="text-hecho">
+                                    <b>CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:</b><br>
+                                    "@item.CircuntanciasHechos"
+                                </p>
+                                @if (item.uploadsei.Count > 0)
+                                {
+                                    @foreach (var item_up in item.uploadsei)
+                                    {
+                                        <p> Nombre archivo adjunto: @item_up.RutaArchivo </p>
+
+                                    }
+
+                                }
+                            </div>
+
+                            <div class="row">
+                                <div style="margin-right:20px;margin-left:80px;">
+                                    <p>
+                                        <b><br>AUTORIDAD(ES) INVOLUCRADA(S): <br><br> </b>
+
+                                        @foreach (var item_au in item.enlace_ea)
+                                        {
+
+                                            <b>Nombre autoridad:</b>
+                                            @if (@item_au.nombre_persona != "" && @item_au.cargo_persona != "No proporcionado")
+                                            {
+                                                @item_au.nombre_persona
+                                            }
+                                            else
+                                            {
+                                                <em>"No proporcionado"</em>
+                                            }
+                                            <b>Cargo Autoridad:</b> @if (@item_au.cargo_persona != "" && @item_au.cargo_persona != "No proporcionado")
+                                            {
+                                                @item_au.cargo_persona
+                                            }
+                                            else
+                                            {
+                                                <em>"No proporcionado"</em>
+                                            }
+                                            <b>Autoridad:</b> @if (@item_au.autoridad != "" && @item_au.autoridad != "No proporcionado")
+                                            {
+                                                @item_au.autoridad
+                                            }
+                                            else
+                                            {
+                                                <em>"No proporcionado"</em>
+                                            }
+                                            @*                    <b>Cargo Autoridad: </b> <em>@(item_au.cargo_persona != "" ? item_au.cargo_persona : "No proporcionado")</em>
+                                    <b>Autoridad: </b> <em>@(item_au.autoridad != "" ? item_au.autoridad : "No proporcionado") </em>*@
+                                            <br>
+                                        }
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <div style="margin-right:20px;margin-left:80px;">
+                                        <p align="center" style="font-size:16px;">
+                                            <b>
+                                                <br><br><br><br> C.
+
+                                                @foreach (var item_rr in item.reg_recepcion)
+
+                                                {
+
+                                                //No hay nombre pero si apellidos
+
+                                                    @if ((@item_rr.Nombre == "No Proporcionado") && (@item_rr.ApellidoPat != "No Proporcionado") && (@item_rr.ApellidoMat != "No Proporcionado"))
+
+                                                    {
+                                                        <b><em>@item_rr.Nombre</em> @item_rr.ApellidoPat @item_rr.ApellidoMat</b>
+
+                                                    }
+
+                                                    //si hay apellido paterno
+
+                                                    @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat == "No Proporcionado") && (@item_rr.ApellidoMat != "No Proporcionado"))
+
+                                                    {
+                                                        <b> @item_rr.Nombre <em>@item_rr.ApellidoPat</em> @item_rr.ApellidoMat</b>
+
+                                                    }
+
+                                                    //No hay apellido materno
+
+                                                    @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat != "No Proporcionado") && (@item_rr.ApellidoMat == "No Proporcionado"))
+
+                                                    {
+                                                        <b>@item_rr.Nombre @item_rr.ApellidoPat <em>@item_rr.ApellidoMat</em></b>
+
+                                                    }
+
+                                                    //No hay apellidos
+
+                                                    @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat == "No Proporcionado") && (@item_rr.ApellidoMat == "No Proporcionado"))
+
+                                                    {
+                                                        <b>@item_rr.Nombre <em>@item_rr.ApellidoPat</em> <em>@item_rr.ApellidoMat</em></b>
+
+                                                    }
+
+                                                    //No nay nombre ni apellidos
+
+                                                    @if ((@item_rr.Nombre == "No Proporcionado") && (@item_rr.ApellidoPat == "No Proporcionado") && (@item_rr.ApellidoMat == "No Proporcionado"))
+
+                                                    {
+                                                        <b><em>@item_rr.Nombre</em> <em>@item_rr.ApellidoPat</em> <em>@item_rr.ApellidoMat</em></b>
+
+                                                    }
+
+                                                    //si hay nombre y apellidos
+
+                                                    @if ((@item_rr.Nombre != "No Proporcionado") && (@item_rr.ApellidoPat != "No Proporcionado") && (@item_rr.ApellidoMat != "No Proporcionado"))
+
+                                                    {
+                                                        <b>@item_rr.Nombre @item_rr.ApellidoPat @item_rr.ApellidoMat</b>
+
+                                                    }
+
+                                                }
+                                                <br><br><br><br><br>
+
+                                                ----------------------------------------------------------<br>NOMBRE Y FIRMA
+                                            </b>
+                                        </p>
+                                    </div>
+
+                                    <div class="row"><p align="center" style="font-size:16px;"><b><br><br>NOTA: LOS DATOS PERSONALES SE PRECISAN EN HOJA ANEXA.</b></p></div>
+                                    <div class="row"><p align="center" style="font-size:16px;">@item.fechactual</p></div>
+
+    </body>
+
+    </html>
+
+}
+

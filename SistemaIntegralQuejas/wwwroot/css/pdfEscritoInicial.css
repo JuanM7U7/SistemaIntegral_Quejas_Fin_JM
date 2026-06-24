@@ -1,4 +1,30 @@
 ﻿p {
+    font-size: 20.5px !important;
+}
+
+body {
+    font-size: 15px;
+    font-family: "Segoe UI" Arial, Helvetica, sans-serif;
+}
+
+header {
+    text-align: center;
     font-family: Arial;
-    font-size: 19px;
+    font-size: 20px;
+    margin-left: 80px;
+}
+
+tr {
+    border: 1px solid black;
+    text-align: center;
+    border-spacing: 0;
+}
+
+td {
+    border: 1px solid black;
+    width: 45%;
+}
+.text-hecho {
+    font-size: 20.5px !important;
+    text-align: justify
 }

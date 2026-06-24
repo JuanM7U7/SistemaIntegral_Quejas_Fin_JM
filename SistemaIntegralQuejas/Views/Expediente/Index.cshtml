@@ -1,4 +1,4 @@
-﻿
+﻿<link rel="icon" type="image/png" href="@Url.Content("~/img/logotipo_CDHP_2025.png")">
 <!-- Contact Start -->
 <div class="fondo text-center">
 
@@ -6,7 +6,7 @@
 
     <div class="col-md-6">
         <div class="cardpeque">
-            <h4 class="cardpeque-title">Seleccione la via de interposición</h4>
+            <h4 class="cardpeque-title">Seleccione la via de interposición</h4> <!--Aqui se puede seleccionar La via de Interposicion y de el tipo de Escrito-->
             <div class="card-body">
                 <div class="basic-form">
                         <div class="form-group" id="select_viainterposicion">
@@ -61,6 +61,9 @@
 <script>
     var ExportaDocumento = '@Url.Action("VerPDF", "Expediente")?idescrito=';
     var ExportaDocumentoacta = '@Url.Action("ActaPDF", "Expediente")?idactac=';
+    var listacatalogos = '@Url.Action("RegresaListaCatalogos", "AltaExpediente")?identificadorQueja=';
+    var guardaquejadqot = '@Url.Action("GuardarQueja", "AltaExpediente")';
+    var actualizaestatus = '@Url.Action("ActualizaEstatus", "AltaExpediente")';
 </script>
 
 <style>

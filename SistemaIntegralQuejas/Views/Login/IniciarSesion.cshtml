@@ -1,59 +1,267 @@
 ﻿@{
     Layout = null;
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IniciarSesion</title>
+    <link rel="icon" type="image/png" href="@Url.Content("~/img/logotipo_CDHP_2025.png")">
+    <link href="~/css/StyleLogin.css" rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <style>
+        /* === PREVENCIÓN DE SCROLL EN LOS CONTENEDORES PRINCIPALES === */
+        html, body, .parent {
+            overflow-x: hidden; /* Evita por completo el scroll horizontal global */
+            max-width: 100%;
+        }
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <title>IniciarSesion</title>
-        <link href="~/css/StyleLogin.css" rel="stylesheet" />
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <div class="parent clearfix">
-            <div class="bg-illustration">
-                <img src="~/img/logo_cdh.png" alt="logo">
+        /* Marco de referencia en la sección derecha blanca */
+        .login {
+            position: relative !important;
+            overflow: hidden;
+        }
 
-                <div class="burger-btn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+        /* === CONTENEDOR DEL JUEGO RESPONSIVO === */
+        #ball-easter-egg {
+            position: absolute;
+            bottom: 10px;
+            right: 40px;
+            width: 160px;
+            height: 200px;
+            background: #ffffff;
+            overflow: hidden;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
 
-            </div>
+        /* Marcador de puntos flotante - Oculto al inicio */
+        #score-board {
+            display: none;
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #17A2B8;
+            opacity: 0.8;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1000;
+        }
 
-            <div class="login">
-                <div class="container">
-                    <h1>SISTEMA INTEGRAL DE<br />QUEJAS</h1>
+        #gameCanvas {
+            display: block;
+            cursor: pointer;
+            max-width: 100%;
+            height: auto;
+        }
 
-                    <div class="login-form">
-                        <authentication mode="Forms">
-                        <form id="formLogin" name="formLogin">
-                            @*<h3 class="errorLogin">@ViewBag.Error</h3>*@
-                                <input type="text" placeholder="Usuario" name="username" autocomplete="off" id="username" required>
-                                <input type="password" placeholder="Contraseña" name="password" id="password" required>
-                                <div class="remember-form">
-                                    <input type="checkbox">
-                                    <span>Recuerdame</span>
-                                </div>
-                                <div class="forget-pass">
-                                </div>
+        /* === MEDIA QUERIES PARA RESPONSIVE (ESCAPADOS CON @@ PARA RAZOR) === */
 
-                                <button type="submit" id="ingresa">INGRESAR</button>
-                            </form>
-                        </authentication>
-                    </div>
+        /* Para tablets o laptops chicas */
+        @@media (max-width: 992px) {
+            #ball-easter-egg {
+                right: 20px;
+                bottom: 5px;
+                width: 130px;
+                height: 170px;
+            }
 
-                </div>
+            #score-board {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Para pantallas móviles (Celulares) */
+        @@media (max-width: 576px) {
+            #ball-easter-egg {
+                right: 10px;
+                bottom: 0px;
+                width: 100px;
+                height: 140px;
+                background: transparent;
+            }
+
+            #score-board {
+                font-size: 1.2rem;
+                top: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parent clearfix">
+        <div class="bg-illustration">
+            <img src="~/img/logo_cdh.png" alt="logo">
+
+            <div class="burger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
 
-    </head>
-    <body>
-    </body>
-    </html>
+        <div class="login">
+            <div class="container">
+                <h1>SISTEMA INTEGRAL DE<br />QUEJAS</h1>
+
+                <div class="login-form">
+                    <authentication mode="Forms">
+                        <form id="formLogin" name="formLogin">
+                            @*<h3 class="errorLogin">@ViewBag.Error</h3>*@
+                            <input type="text" placeholder="Usuario" name="username" autocomplete="off" id="username" required>
+                            <input type="password" placeholder="Contraseña" name="password" id="password" required>
+                            <div class="remember-form">
+                                <input type="checkbox">
+                                <span>Recuerdame</span>
+                            </div>
+                            <div class="forget-pass">
+                            </div>
+                            <button type="submit" id="ingresa">INGRESAR</button>
+                        </form>
+                    </authentication>
+                </div>
+
+                <div id="ball-easter-egg">
+                    <div id="score-board">0</div>
+                    <canvas id="gameCanvas" width="160" height="200"></canvas>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/plugins/popper.js"></script>
     <script src="~/js/functionlogin.js"></script>
 
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreBoard = document.getElementById('score-board');
 
+        // --- Configuración y Física ---
+        let score = 0;
+        let isPlaying = false;
+        const gravity = 0.35;
+        const bounceStrength = -8.0;
+        const airResistance = 0.99;
+
+        // --- Propiedades del Balón ---
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height - 60,
+            radius: 70,
+            vx: 0,
+            vy: 0,
+            rotation: 0,
+            vRotation: 0
+        };
+
+        const ballImage = new Image();
+        ballImage.src = '@Url.Content("~/img/BalonMundial_cdhp.png")';
+
+        let imageLoaded = false;
+        ballImage.onload = () => { imageLoaded = true; render(); };
+
+        function update() {
+            if (isPlaying) {
+                ball.vy += gravity;
+                ball.vx *= airResistance;
+                ball.vy *= airResistance;
+
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                ball.rotation += ball.vRotation;
+                ball.vRotation *= 0.98;
+
+                if (ball.x - ball.radius < 0) {
+                    ball.x = ball.radius;
+                    ball.vx *= -0.8;
+                } else if (ball.x + ball.radius > canvas.width) {
+                    ball.x = canvas.width - ball.radius;
+                    ball.vx *= -0.8;
+                }
+
+                if (ball.y - ball.radius > canvas.height) {
+                    resetGame();
+                }
+            }
+
+            render();
+            requestAnimationFrame(update);
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(ball.x, ball.y);
+            ctx.rotate(ball.rotation);
+
+            if (imageLoaded) {
+                ctx.drawImage(ballImage, -ball.radius, -ball.radius, ball.radius * 2, ball.radius * 2);
+            } else {
+                ctx.beginPath();
+                ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00a896';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
+                ctx.closePath();
+            }
+            ctx.restore();
+        }
+
+        function resetGame() {
+            isPlaying = false;
+            score = 0;
+            scoreBoard.textContent = score;
+            scoreBoard.style.display = 'none';
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height - 60;
+            ball.vx = 0;
+            ball.vy = 0;
+            ball.rotation = 0;
+            ball.vRotation = 0;
+        }
+
+        // --- Manejo del clic con cálculo proporcional para pantallas responsivas ---
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+
+            // Corrige la escala lógica del canvas al cambiar de tamaño por CSS
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const clickX = (e.clientX - rect.left) * scaleX;
+            const clickY = (e.clientY - rect.top) * scaleY;
+
+            const distX = clickX - ball.x;
+            const distY = clickY - ball.y;
+            const distance = Math.sqrt(distX * distX + distY * distY);
+
+            if (distance < ball.radius) {
+                if (!isPlaying) {
+                    isPlaying = true;
+                    scoreBoard.style.display = 'block';
+                }
+
+                score++;
+                scoreBoard.textContent = score;
+                ball.vy = bounceStrength;
+                ball.vx = -distX * 0.22;
+                ball.vRotation = distX * 0.015;
+            }
+        });
+
+        update();
+    </script>
+
+</body>
+</html>

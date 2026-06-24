@@ -207,7 +207,8 @@ h2 {
 .modal-body {
     height: 100%;
     width: 100%;
-    overflow-y: auto;
+    /*    overflow-y: auto;*/
+    overflow-x: hidden; /* Oculta la barra horizontal */
 }
 
 .custom-control-input {

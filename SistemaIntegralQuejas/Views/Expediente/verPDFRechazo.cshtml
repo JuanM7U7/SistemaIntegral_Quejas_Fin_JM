@@ -11,36 +11,36 @@
     <html>
 
     <head>
-        <title>Escrito Inicial de Queja</title>
-        <link href="~/css/pdfescritoinicial.css" rel="stylesheet" />
+        <title>Formato de Rechazo de ID´S</title>
+        <link href="@Url.Content("~/css/pdfescritoinicial.css")" rel="stylesheet" />
     </head>
 
 
     <body>
         <div class="row">
             <p align="right">
-                <b>@item.Visitaduría</b><br>
-                <b>Asunto:</b>Rechazo de ID´S<br>
+                <strong>@(item.Visitaduría.ToUpper())</strong><br />
+                <b>MEMORÁNDUM: @item.Memorandum </b><br>
+                <b>ASUNTO: </b>RECHAZO DE ID'S<br>
                 <b>
                     <script>
                         var fecha = new Date();
                         var meses = new Array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
-                        document.write("H. Puebla de Zaragoza  a " + fecha.getDate() + " de " + meses[fecha.getMonth()] + " de " + fecha.getFullYear());
+                        document.write("H. PUEBLA DE ZARAGOZA " + fecha.getDate() + " DE " + meses[fecha.getMonth()].toUpperCase() + " DE " + fecha.getFullYear());
                     </script>
-                 </b>
+                </b>
                 <br>
-                <b>Memorándum No. @item.Memorandum </b><br>
                 <br>
         </div>
 
         <div>
             <p>
-                <b>
-                    <br>Lic.Mario Octavio Meléndez López<br>
-                </b>
-                Director de Quejas, Orientación y Transparencia.
+                <strong> @item.DirectQuejas.GradoAcademico @item.DirectQuejas.Nombre @item.DirectQuejas.Ap @item.DirectQuejas.Am </strong>
+                <br />
+                <strong>@item.DirectQuejas.CargoDocumentos</strong>
             </p>
         </div>
+
 
         <div class="row">
             <p align="justify">
@@ -57,10 +57,10 @@
 
 
             <table id="tablaJustificaciones" style="position:center; border:1px solid black;border-collapse: collapse; margin: auto;padding-left:5px;font-size:15px">
-               <thead>
+                <thead>
                 <th style="position:center; border:1px solid black "> Id queja </th>
                 <th style="position:center; border:1px solid black "> Justificación del Rechazo de ID´S</th>
-               </thead>
+                </thead>
                 @foreach (var item1 in item.listado)
                 {
                     <tr>
@@ -77,7 +77,6 @@
         <div class="row">
 
             <p align="justify">
-
                 @item.TerceraParte
             </p>
 
@@ -90,7 +89,19 @@
                 <b>
                     <br><br><br><br>
                     A T E N T A M E N T E
-                    <br><br><br><br> @item.Firma_Parte
+                    <br><br><br><br>
+
+                    <strong>
+                        @item.Visitador.GradoAcademico
+                        @item.Visitador.Nombre
+                        @item.Visitador.Ap
+                        @item.Visitador.Am
+                    </strong>
+                    <br />
+                    <strong>
+                        @item.Visitador.CargoDocumentos
+                    </strong>
+
                 </b>
             </p>
         </div>

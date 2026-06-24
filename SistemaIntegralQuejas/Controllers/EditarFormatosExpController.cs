@@ -100,7 +100,7 @@ namespace SistemaIntegralQuejas.Controllers
         public ActionResult GuardarDataComplPeticionario(IFormCollection form)
         {
             string numFrm = form["numFrm"].ToString();
-            string idcomplementopet = form["idcomplementopet"].ToString();
+            string idcomplementopet = form["idcomplementopet1"].ToString();
             int violenciamujer = 0;
             string Canalizaciondepen = "";
             string idEmbarazada = "";
@@ -214,7 +214,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             // Se valida si quiere editar el complemento actual de peticionario
 
-            if (idcomplementopet == "")
+            if (string.IsNullOrEmpty(idcomplementopet) || idcomplementopet == "0")
             {
                 query = "exec Sp_InsertComplementoPeticionario " +
                 "'" + tipouser + "'," +

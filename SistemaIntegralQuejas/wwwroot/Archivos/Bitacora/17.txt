@@ -1,0 +1,282 @@
+[
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Lugar",
+    "Antes": "-",
+    "Despues": "Acateno-Puebla",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Día",
+    "Antes": "-",
+    "Despues": "2",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Mes",
+    "Antes": "-",
+    "Despues": "febrero",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Año",
+    "Antes": "-",
+    "Despues": "2026",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Abogado(a)",
+    "Antes": "-",
+    "Despues": "Informatica Cdhp Cdhp",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Inicio",
+    "Antes": "-",
+    "Despues": "04:58 p. m.",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación",
+    "Antes": "-",
+    "Despues": "cdh",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Agraviado(a) / Quejoso(a)",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Consentimiento",
+    "Antes": "-",
+    "Despues": "NO",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario(a)",
+    "Antes": "-",
+    "Despues": "Acateno-Puebla",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Identificación",
+    "Antes": "-",
+    "Despues": "INE",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2026-04-13",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "04:58 p. m.",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación de Hechos",
+    "Antes": "-",
+    "Despues": "sss",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hechos",
+    "Antes": "-",
+    "Despues": "asasa",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Termino",
+    "Antes": "-",
+    "Despues": "04:58 p. m.",
+    "FechaHora": "2026-04-13 16:58:43",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Abogado que recibe",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-04-13 16:59:05",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Hechos",
+    "Antes": "-",
+    "Despues": "sdsdsdsd",
+    "FechaHora": "2026-04-13 16:59:05",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Lugar de los hechos",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-04-13 16:59:05",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Fecha y hora de registro",
+    "Antes": "-",
+    "Despues": "2026-04-13",
+    "FechaHora": "2026-04-13 16:59:05",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Sede de registro",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-04-13 16:59:05",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "VÍa de interposición",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-04-13 16:59:05",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Complemento de queja",
+    "Tipo": "Alta",
+    "Campo": "Observaciones",
+    "Antes": "-",
+    "Despues": "zs",
+    "FechaHora": "2026-04-13 16:59:05",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Alta",
+    "Campo": "Estatus Expediente",
+    "Antes": "(sin valor previo)",
+    "Despues": "Turno Preliminar",
+    "FechaHora": "2026-04-13 16:59:17",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Turno Vis.",
+    "Antes": "(sin valor previo)",
+    "Despues": "2026/04/15 16:57:58",
+    "FechaHora": "2026-04-13 16:59:17",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Alta",
+    "Campo": "Visitaduría",
+    "Antes": "(sin valor previo)",
+    "Despues": "Prímera Visitaduría General",
+    "FechaHora": "2026-04-13 16:59:17",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Alta",
+    "Campo": "Numero de Memo",
+    "Antes": "(sin valor previo)",
+    "Despues": "35",
+    "FechaHora": "2026-04-13 16:59:17",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Turno Preliminar",
+    "Tipo": "Alta",
+    "Campo": "Fecha de ult Modif. DQO",
+    "Antes": "(sin valor previo)",
+    "Despues": "2026/04/15 16:57:58",
+    "FechaHora": "2026-04-13 16:59:17",
+    "Usuario": "DPIT",
+    "IP": "::1"
+  }
+]

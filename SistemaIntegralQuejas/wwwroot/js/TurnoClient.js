@@ -91,7 +91,7 @@ function mostrarModulos(element, idmodulo) {
 
 }
 
-// Funcion para dibujar tabla de la pantalla de turnos DQOT 
+// Funcion para dibujar tabla de la pantalla de turnos DQO 
 
 conexionTurnos_vaq.on("RecibeTurnosEnCurso", (resp) => {
 
@@ -135,7 +135,7 @@ function BindProductsToGridN(products) {
 }
 
 
-// Funcion para sonido TV DQOT
+// Funcion para sonido TV DQO
 
 conexionTurnos_vaq.on("SonidoPantallasTvDqot", (resp) => {
     const sonidoAtendiendoplay = reproducirSonido(sonidoAtendiendo);

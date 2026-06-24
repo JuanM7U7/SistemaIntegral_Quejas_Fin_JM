@@ -100,63 +100,68 @@ $(document).ready(function () {
                //var inputsf= Inputs1 + Inputs;
 
                 /*Metodo de Swetalert*/
-                (async () => {
+                (async () => { // PDF Rechazado -Fred
 
-                    const { value: formValues } = await Swal.fire({
+                    const result = await Swal.fire({
                         title: 'Memorándum de IDs rechazados',
                         html: Inputs1,
                         focusConfirm: false,
-                }).then((result) => {
+                        preConfirm: () => {
+
+                            var arreglo_Justificaciones = [];
+                            var arregloIds = [];
+
+                            $(".input_justi").each(function () {
+                                var idElemento = $(this).attr('id');
+                                var idArreglo = idElemento.replace("swal-input", "");
+                                arreglo_Justificaciones.push($(this).val());
+                                arregloIds.push(idArreglo);
+                            });
+
+                            var memorandum = $("#memoandum").val();
+                            var p1 = $("#p1").val();
+                            var p2 = $("#p2").val();
+                            var p3 = $("#p3").val();
+
+                            var visitaduriad = '';
+                            var visitador = '';
+                            var numeroVisiaduria = codigoArea;
+
+
+                            return {
+                                memorandum,
+                                p1,
+                                p2,
+                                p3,
+                                visitaduriad,
+                                areaId: numeroVisiaduria,
+                                arregloIds,
+                                arreglo_Justificaciones
+                            };
+                        }
+                    });
+
                     if (result.isConfirmed) {
 
-                        var arreglo_Justificaciones = []; var arregloIds = [];
-                        $(".input_justi").each(function (index) {
-
-                            //console.log(index + ": " + $(this).val());
-                            var idElemento=$(this).attr('id');
-                            var idArreglo = idElemento.substr(10, idElemento.length - 3);
-                            //console.log(idArreglo);
-                            arreglo_Justificaciones.push($(this).val());
-                            arregloIds.push(idArreglo);
+                        GeneraPdfRechazados({
+                            idQueja: 225,
+                            visitaduria: result.value.visitaduriad,
+                            areaId: result.value.areaId,
+                            memorandum: result.value.memorandum,
+                            primeraParte: result.value.p1,
+                            segundaParte: result.value.p2,
+                            terceraParte: result.value.p3,
+                            observaciones: result.value.arregloIds.map((id, i) => ({
+                                idExpediente: id,
+                                justificacion: result.value.arreglo_Justificaciones[i]
+                            }))
                         });
-
-
-
-                        var visitaduriad = '';
-                        var numeroVisiaduria = codigoArea;
-                        var memorandum = $("#memoandum").val();
-                        var p1 = $("#p1").val();
-                        var p2 = $("#p2").val();
-                        var p3 = $("#p3").val();
-                        var visitador = "";
-
-                        if (numeroVisiaduria == '1') {
-                            visitaduriad = "Primera Visitaduría General";
-                            visitador ="Victor Kuri Bujaidar - Primer Visitador General"
-                        }
-                        else if (numeroVisiaduria == '2') {
-                            visitaduriad = "Segunda Visitaduría General";
-                            visitador ="Mtro. Israel Villa Cobos - Segundo Visitador General"
-                        }
-                        else if (numeroVisiaduria == '3') {
-                            visitaduriad = "Tercera Visitaduría General";
-                            visitador="Jessica Calderón García - Tercer Visitador General"
-                        }
-                        else if (numeroVisiaduria == '4') {
-                            visitaduriad = "Cuarta Visitaduría General";
-                            visitador ="Iván Andrés Flores Cano - Cuarto Visitador General"
-                        }
-
-                        //console.log("visd:" + visitaduriad + "memo: " + memorandum + " p1:" + p1 + " p2:" + p2 + " p3:" + p3 + " Arreglo: " + arreglo_Justificaciones);
-                        return GeneraPdfRechazados(225, visitaduriad, memorandum, p1, p2, p3, arreglo_Justificaciones, arregloIds, visitador, aceptados);
                     }
-                });
 
-                })()
-            } else
-            {
+                })();
+            } else {
                 console.log(aceptados);
-                return GeneraPdfRechazados(225, '', '', '', '', '', '', '', '', aceptados);
+                return GeneraPdfRechazados({ IdQueja: 225, IdsAceptados: aceptados, Observaciones: [] });
             }
         /*Metodo de swetalert*/
 
@@ -167,12 +172,12 @@ $(document).ready(function () {
 
     $.ajax({
         type: "POST",
-        url: "listadovisitadorGeneral",
+        url: "/Expediente/listadovisitadorGeneral",
         data: { vis: codigoArea },
         dataType: "JSON",
         success: function (response) {
             //console.log(response.data)
-            mostrarResTblFormatos(response.data, response.data1);    
+            mostrarResTblFormatos(response.data, response.data1);
         }
     });
     btn = document.getElementById("myBtn");
@@ -201,7 +206,7 @@ $(document).ready(function () {
     }
     // Get the element with id="defaultOpen" and click on it
 
-  
+
 
 });
 
@@ -233,6 +238,10 @@ function modalShow(id) {
 }
 var tableBuscadorFormatos = $("#tablaRecepcion");
 
+function btnGenraBitacorCamb(exped) {
+    window.open(CedBitacoraCambioPDF + exped, '_blank');
+}
+
 function mostrarResTblFormatos(response,response1) {
 
     tableBuscadorFormatos.DataTable({
@@ -249,7 +258,12 @@ function mostrarResTblFormatos(response,response1) {
 
                     btnEscritook = `<button id="myBtn" type='button' onclick='modalShow(${full.id})' class='btn btn-link margin-iconbf'>
                                                 <span class='fa fa-plus color-muted fa-2x'></span>
-                                           </button>`;
+                                           </button>`+ `</br><button type='button' 
+	                                                    title='Bitácora de cambios' 
+	                                                    onclick='btnGenraBitacorCamb(${full.id})' 
+	                                                    class='btn btn-link margin-iconbf'>
+	                                                    <img src="../icons/personalizados/detective.png" height="35"/>
+	                                                    </button>`;
                     return btnEscritook
                 }
             }                ,          
@@ -346,25 +360,7 @@ function mostrarResTblFormatos(response,response1) {
                             btnEscritook = "";
                         }
 
-                        $('.idAbogados').on('change', function () {
-                            $('#turnarAbo').removeAttr('disabled');
-
-                        });
-
-                        $('.idAbogados').on('change', function () {
-                            $('#turnarAbo').removeAttr('disabled');
-
-                        });
-
-
-                        $('[id *= "returnaIDS"]').on('click', function () {
-                            //alert(this.id);
-                            ventana_acpeta_visitaduria("Selecciona el abogado(a) a returnar", this.id, arregloAbogados)
-
-                        });
-
                     }
-
 
                     return btnEscritook
                 }
@@ -376,6 +372,31 @@ function mostrarResTblFormatos(response,response1) {
         },
         order: [1, 'desc'],
         bDestroy: true
+    });
+
+    // 🔥 EVENTO CORRECTO (DELEGADO)
+    $(document).off('change', '.idAbogados').on('change', '.idAbogados', function () {
+        if ($(this).val() !== "99") {
+            $('#turnarAbo').prop('disabled', false);
+        } else {
+            $('#turnarAbo').prop('disabled', true);
+        }
+    });
+
+    // 🔥 EVENTO PARA RETURNAR
+    $(document).off('click', '[id^="returnaIDS-"]').on('click', '[id^="returnaIDS-"]', function () {
+
+        let arregloAbogados = [];
+
+        for (var i = 0; i < response1.length; i++) {
+            arregloAbogados.push(response1[i].s2 + "-" + response1[i].s1);
+        }
+
+        ventana_acpeta_visitaduria(
+            "Selecciona el abogado(a) a returnar",
+            this.id,
+            arregloAbogados
+        );
     });
 
     tableBuscadorFormatos.DataTable().on("draw", function (data) {
@@ -399,7 +420,7 @@ function RecuperaIds(idexp)
 
     $.ajax({
         type: "POST",
-        url: "RegresaIDSFormatos_chris",
+        url: "/Expediente/RegresaIDSFormatos_chris",
         data: { idExp: idexp },
         dataType: "JSON",
         success: function (response) {
@@ -461,7 +482,7 @@ function Crear_Formulario_Queja(id) {
         + CreaBR()
         + CreaSelectLabeldisabled('sedeRegistro', '', arregloBlanco, '', 'Sede de Registro: ', '')
         + CreaBR()
-        + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQOT: ')
+        + Crea_Label('textfield8', 'textfield8', '', 'Observaciones DQO: ')
         + CreaBR()
         + CreaTextAreadisabled('observaciones', '', 'style="width:100%; height:20%"')
         + CreaBR()
@@ -498,7 +519,7 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
     $('.formulariodatoscomplementariosqueja').append(iformdatosComplementariosQueja);*/
     $.ajax({
         type: "POST",
-        url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogos",
+        url: "/AltaExpediente/RegresaListaCatalogos",
         data: { identificadorQueja: idqueja },
         dataType: "JSON",
         success: function (response) {
@@ -516,15 +537,24 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
             CargaDatosSelectOtro_("#visitaduriaqueja", response.listavisitadurias, response.informarcionC.visitaduria);
             $("#idqueja").val(response.informarcionC.id_expediente);
             $("#hechos").val(response.informarcionC.hechos);
-            var inputDate = document.getElementById("Fecha_Registro");
-            var date = new Date(response.informarcionC.fecha_registro)
-            chargeDateInputDate(inputDate, date);
+            var fechaStr = response.informarcionC.fecha_registro; // "23/12/2025 12:28:52"
+            var partes = fechaStr.split(" ")[0].split("/"); // ["23","12","2025"]
+            var fechaFormateada = partes[2] + "-" + partes[1] + "-" + partes[0]; // "2025-12-23"
+            $("#Fecha_Registro").val(fechaFormateada);
+            console.log("Fecha_Registro en input:", $("#Fecha_Registro").val());
+            $("#observaciones").val(response.informarcionC.observaciones);
+            console.log("Observaciones en textarea:", $("#observaciones").val());
             //$("#Fecha_Registro").val(response.informarcionC.fecha_registro.toJSON().slice(0, 10));
             if (response.informarcionC.informacioncomplementariapeticionario != null) {
                 var contadorpeticionarios = response.informarcionC.informacioncomplementariapeticionario.length;
                 for (var i = 0; i < contadorpeticionarios; i++) {
                     console.log(contadorpeticionarios);
-                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro));
+                    $("#contenedor_Usuarios").html($("#contenedor_Usuarios").html() + DivPequenios(
+                        response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''),
+                        response.informarcionC.informacioncomplementariapeticionario[i].curp,
+                        response.informarcionC.informacioncomplementariapeticionario[i].id_registro,
+                        response.informarcionC.informacioncomplementariapeticionario[i].id_complemento_peticionario
+                    ));
                 }
             }
 
@@ -545,26 +575,40 @@ function traeInformacionDatosComplementarios(idqueja, estatus) {
     });
 }
 function DivPequenios(nombrepeticionario, curp, idpeticionario) {
-    var div = "<div id='Divpequenios'>"
-        +
-        `
-			<div class="dummy dummy-text">
-			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
-            <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación del Peticionario</span><br>
-             ID DEL PETIC.: ${idpeticionario}<br>
-             CURP:${curp}<br>
-             NOMBRE:${nombrepeticionario}<br>
-            </span></span></span>
-            <button id="myBtn" type='button' onclick='btnGenerapdfp(${idpeticionario})' class='btn btn-link margin-iconbf'>
-                                               <span class="fa fa-file-pdf-o color-muted fa-1x"></span></p>
-                                           </button>
-            
-			</div>
-        `+ "</div>";
-    +"<img id='add' src='/img/signomas.png'>"
+
+    // Escapar comillas simples
+    let nombreSafe = nombrepeticionario.replace(/'/g, "\\'");
+    let curpSafe = curp.replace(/'/g, "\\'");
 
 
-
+    var div = `
+<div id='Divpequenios'>
+<div class="dummy dummy-text">
+<p>
+<span class="tooltipbox tooltipbox-effect-1">
+<span class="tooltipbox-item">${nombrepeticionario}</span>
+<span class="tooltipbox-content clearfix">
+<span class="tooltipbox-text">
+<span style="color:black;font-weight: bold;">
+                                Información del Peticionario
+</span><br>
+                            ID DEL PETIC.: ${idpeticionario}<br>
+                            CURP: ${curp}<br>
+                            NOMBRE: ${nombrepeticionario}<br>
+</span>
+</span>
+</span>
+ 
+                <button type="button"
+                    onclick="btnGenerapdfp(${idpeticionario}, '${curpSafe}', '${nombreSafe}', '', '')"
+                    class="btn btn-link margin-iconbf">
+<span class="fa fa-file-pdf-o color-muted fa-1x"></span>
+</button>
+ 
+            </p>
+</div>
+</div>
+    `;
 
     return div;
 }
@@ -618,7 +662,7 @@ function EnviarQueja() {
         else {
             $.ajax({
                 type: "POST",
-                url: "https://localhost:7126/AltaExpediente/ActualizaEstatus",
+                url: "/AltaExpediente/ActualizaEstatus",
                 data: $('.formQueja').serialize(),
                 dataType: "JSON",
                 success: function (response) {
@@ -661,7 +705,7 @@ function guardarQueja() {
         else {
             $.ajax({
                 type: "POST",
-                url: "https://localhost:7126/AltaExpediente/GuardarQueja",
+                url: "/AltaExpediente/GuardarQueja",
                 data: $('.formQueja').serialize(),
                 dataType: "JSON",
                 success: function (response) {
@@ -777,7 +821,7 @@ function Crea_Label_Icono(idParrafo, Name, clas, texto, idexpediente,modo) {
         $.ajax({
             type: "POST",
             async: false,
-            url: "RegresaIDSFormatos_chris",
+            url: "/Expediente/RegresaIDSFormatos_chris",
             data: { idExp: idexpediente },
             dataType: "JSON",
             success: function (response) {
@@ -794,7 +838,7 @@ function Crea_Label_Icono(idParrafo, Name, clas, texto, idexpediente,modo) {
             $.ajax({
                 type: "POST",
                 async: false,
-                url: "RegresaIDSFormatos_chris",
+                url: "/Expediente/RegresaIDSFormatos_chris",
                 data: { idExp: idexpediente },
                 dataType: "JSON",
                 success: function (response) {
@@ -999,7 +1043,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus) {
                     let estado = '';
                     let municipio = '';
 
-                    $.getJSON("https://api.copomex.com/query/info_cp/" + response.data[0].codigoPostal + "?type=simplified&token=pruebas", function (copomex) {
+                    $.getJSON("https://api.copomex.com/query/info_cp/" + response.data[0].codigoPostal + "?type=simplified&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee", function (copomex) {
                         estado = copomex.response.estado;
                         municipio = copomex.response.municipio;
                         $("#municipio_petit-frmDatosPersonales" + idform).val(municipio);
@@ -1008,7 +1052,7 @@ function editFormatDatosPersonales(idregistro, idcomplemento, estatus) {
                         AgregarOptionSelect(idform, 'deloptioncolonia', '#colonia_petit-frmDatosPersonales' + idform, copomex.response.asentamiento);
                     }).done(function () {
 
-                        $.getJSON("https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=" + estado + "&municipio=" + municipio + "&token=pruebas", function (copomex) {
+                        $.getJSON("https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=" + estado + "&municipio=" + municipio + "&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee", function (copomex) {
                             let localidadaes = Object.keys(copomex.response.localidad_clave);
                             AgregarOptionSelect(idform, 'deloptionloca', '#ciudad_petit-frmDatosPersonales' + idform, localidadaes);
                         }).done(function () {
@@ -1708,7 +1752,7 @@ function keypresscp() {
             let estado = '';
             let municipio = '';
 
-            $.getJSON("https://api.copomex.com/query/info_cp/" + this.value + "?type=simplified&token=pruebas", function (copomex) {
+            $.getJSON("https://api.copomex.com/query/info_cp/" + this.value + "?type=simplified&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee", function (copomex) {
                 estado = copomex.response.estado;
                 municipio = copomex.response.municipio;
                 $("#municipio_petit-frmDatosPersonales" + idfrm).val(municipio);
@@ -1717,7 +1761,7 @@ function keypresscp() {
                 AgregarOptionSelect(idfrm, 'deloptioncolonia', '#colonia_petit-frmDatosPersonales' + idfrm, copomex.response.asentamiento);
             }).done(function () {
 
-                $.getJSON("https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=" + estado + "&municipio=" + municipio + "&token=pruebas", function (copomex) {
+                $.getJSON("https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=" + estado + "&municipio=" + municipio + "&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee", function (copomex) {
                     let localidadaes = Object.keys(copomex.response.localidad_clave);
                     AgregarOptionSelect(idfrm, 'deloptionloca', '#ciudad_petit-frmDatosPersonales' + idfrm, localidadaes);
                 }).fail(function () { console.log('Ha ocurrido un error en obtener las localidades') });
@@ -1740,7 +1784,7 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja) {
     $("#origenPetExtedo").css("display", "none");
     $.ajax({
         type: "POST",
-        url: "GetDataActaCircunstanciada",
+        url: "GetDataActaCircunstanciada", // Acta Circunstanciada 1
         data: { identificadorActac: idActaC },
         dataType: "JSON",
         success: function (response) {
@@ -1754,7 +1798,7 @@ function traeInformacionActaC(idActaC, estatus, idescrito, idqueja) {
 
                 Carga_Informacion_selec_quejas();
                 console.log('termina')
-                $("input[name='diaFecha']").val(response.data[0].diaFecha);
+                $("input[name='diaFecha']").val(response.data[0].diaFecha); 
                 $('#mes > option[value="' + response.data[0].mes + '"]').attr('selected', 'selected');
                 $('#anio > option[value="' + response.data[0].anio + '"]').attr('selected', 'selected');
                 $("input[name='horaInicio']").val(response.data[0].horaInicio);
@@ -1840,19 +1884,19 @@ function formActacircunstanciada2c() {
         CreaSelectLabel('lugar', '', arregloBlanco, '', 'En', '', 'validaselectdac')
         + CreaInputs_Con_Label('diaFecha', 'diaFecha', 'validanumerosac', 'number', ', a los', 'textfield', 'mes')
         + CreaSelectLabel('mes', '', arregloMeses(), '', 'días del mes de', 'textfield4', 'validaselectdac')
-        + CreaSelectLabel('anio', '', arregloAnio(), '', 'de', '', 'validaselectdac')
-        //+ CreaInputs_Con_Label('nomAbogado', 'nomAbogado', '', 'text', ', el suscrito, licenciado', 'textfield5', 'placeholder="nombre de abogado"')
+        + CreaSelectLabeldisabled('anio', '', arregloAnio(), '', 'de', 'textfield4', 'validaselectdac')
+        //+ CreaInputs_Con_Label('nomAbogado', 'nomAbogado', '', 'text', ', , licenciado', 'textfield5', 'placeholder="nombre de abogado"')
         + CreaSelectLabel('nomAbogado', '', arregloBlanco, '', ', el/la suscrito/a, abogado/a', '', 'validaselectdac')
         + CreaInputs_Con_Label('puestoAbogado', 'puestoAbogado', '', 'text', ', en mi carácter de', 'textfield6', 'placeholder="cargo de abogado" value="' + Cargo + '" disabled')
         + CreaInputs_Con_Label('areaAbogado', 'areaAbogado', '', 'text', ', de la', 'textfield7', 'placeholder="área de abogado" value="' + Area + '" disabled')
         + Crea_Label('textfield8', 'textfield8', '', 'de la Comisión de Derechos Humanos del Estado de Puebla, con la fe pública que me confiere el artículo 21 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, así como 30, 37, y 39 de su Reglamento Interno, publicados en el Periódico Oficial del Estado, respectivamente')
-        + Crea_LabelCentro('textfield8', 'textfield8', '', '<b>CERTIFICO:</b>')
+        + Crea_LabelCentro('textfield8', 'textfield8', '', '<b>.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.CERTIFICO:.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-</b>')
         + CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'time', 'Que siendo las', 'textfield9', '')
-        + CreaInputs_Con_Label('ubicacion', 'ubicacion', 'validatxtac', 'text', 'horas del día del día en que se actúa, me constituí en', 'textfield10', 'placeholder="lugar de entrevista"')
-        + CreaInputs_Con_Label('nombrePet', 'nombrePet', '', 'text', ', donde atendí a quien dijo llamarse', 'textfield10', 'placeholder="nombre de peticionario"')
-        + CreaSelectLabel('consentimiento', '', SeleccionMultiple(), '', 'ante quien una vez que me identifiqué plenamente como servidor público adscrito a este Organismo Autónomo, con la respectiva identificación que esta Comisión de Derechos Humanos del Estado de Puebla me expidió, se le hizo de su conocimiento el motivo de la diligencia, se le solicitó su autorización para ser entrevistado, expresando que', '', 'validaselectdac')
+        + CreaInputs_Con_Label('ubicacion', 'ubicacion', 'validatxtac', 'text', 'horas del día del día en que se actúa, encontrándome en las instalaciones que ocupa', 'textfield10', 'placeholder="lugar de entrevista"')
+        + CreaInputs_Con_Label('nombrePet', 'nombrePet', '', 'text', ', donde procedo a entrevistarme con la persona que dijo llamarse ', 'textfield10', 'placeholder="nombre de peticionario"')
+        + CreaSelectLabel('consentimiento', '', SeleccionMultiple(), '', 'a quien previa identificación de la persona suscrita, le hago saber que derivado de su queja deberá manifestar su deseo de ratificar la misma, y en su uso de la voz la persona peticionaria <strong>MANIFESTÓ: </strong>', '', 'validaselectdac', '')
         //+ CreaInputs_Con_Label('origenPet', 'origenPet', '', 'text', 'otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <strong>MANIFESTÓ: </strong>Llamarse como ha quedado escrito, ser originario de', 'textfield10', 'placeholder="origen de peticionario"')
-        + CreaSelectLabel('origenPet', '', arregloBlanco, '', 'otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <strong>MANIFESTÓ: </strong>Llamarse como ha quedado escrito, ser originario de', '', 'validaselectdac')
+        + CreaSelectLabel('origenPet', '', arregloBlanco, '', 'ratifico la presente queja. Acto seguido, indicó llamarse como ha quedado escrito, ser originario/a de ', '', 'validaselectdac')
         + CreaSelectLabel('origenPetExt', '', arregloBlanco, '', '', '', 'validaselectdac')
         + CreaInputs_Con_Label('origenPetExtedo', 'origenPetExtedo', '', 'text', '', 'textfield', '')
         + CreaInputs_Con_Label('edadPet', 'edadPet', '', 'number', 'de', 'textfield10', 'placeholder="edad de peticionario"')
@@ -1868,18 +1912,19 @@ function formActacircunstanciada2c() {
         + CreaInputs_Con_Label('ocupacionPet', 'ocupacionPet', '', 'text', 'de ocupación', 'textfield10', 'placeholder="ocupación de peticionario"')
         + CreaInputs_Con_Label('telPet', 'telPet', '', 'text', 'con número de teléfono', 'textfield10', 'placeholder="telefono de peticionario"')
         + CreaInputs_Con_Label('correoPet', 'correoPet', '', 'text', ', correo electrónico,', 'textfield10', 'placeholder="correo de peticionario"')
-        + CreaSelectLabel('identificacionPet', '', arregloIdentificación(), '', 'identificándose ante el/la suscrito/a con', '', 'validaselectdac')
-        + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>DECLARO:</strong><br>')
-        + CreaInputs_Con_Label('fechaHechos', 'fechaHechos', 'validadateac', 'date', 'Que el día', 'textfield10', '')
+        + CreaSelectLabel('identificacionPet', '', arregloIdentificación(), '', 'quien se identifica con', '', 'validaselectdac')
+        + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>MANIFESTÓ: </strong><br>')
+        + CreaInputs_Con_Label('fechaHechos', 'fechaHechos', 'validadateac', 'date', 'Que es mi deseo ratificar la queja, precisando la fecha de los hechos', 'textfield10', '')
         + CreaInputs_Con_Label('horaHechos', 'horaHechos', 'validatimeac', 'time', 'a las', 'textfield10', '')
-        + CreaInputs_Con_Label('ubiHechos', 'ubiHechos', 'validatxtac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"')
+        + CreaInputs_Con_Label('ubiHechos', 'ubiHechos', 'validatxtac', 'text', 'encontrándome en', 'textfield10', 'placeholder="lugar de hechos"')
         //+ CreaSelectLabel('catMunicipio_hechos', '', arregloMun(), '', 'ubicado en el municipio de', '', 'validaselectdac')
-        //+ CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado de ', '', 'validaselectdac')
-       /* + CreaSelectLabel('catAutoridad', '', arregloEstado(), '', ', la(s) autoridad(es)', '')*/
-        + CreaInputs_Con_Label('AutoridadesEI', 'AutoridadesEI', '', 'text', 'la(s) autoridad(es)', 'textfield10', 'placeholder="Autoridades"')
+        /*+ CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado de ', '', 'validaselectdac')*/
+        //+ CreaSelectLabel('catAutoridad', '', arregloEstado(), '', ', la(s) autoridad(es)', '')
+        + CreaInputs_Con_Label('AutoridadesEI', 'AutoridadesEI', '', 'text', 'la(s) autoridad(es)', 'textfield10', 'placeholder="Autoridades" style = "width:100%"')
         + CreaTextArea('hechos', 'validanovacioac', 'style="width:100%"')
-        + CreaInputs_Con_Label('horaTermino', 'horaTermino', 'validatimeac', 'time', 'dando por terminada la presente actuación a  las', 'textfield10', '')
-        + Crea_LabelCentro('textfield12', 'textfield12', '', 'horas. Hago constar lo anterior de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla para los efectos correspondientes----------------------------------<b>DOY FE.</b> ')
+        + Crea_LabelCentro('textfield12', 'textfield12', '', 'que es todo lo que tiene que manifestar. DOY FE..-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-<b></b> ')
+        + CreaInputs_Con_Label('horaTermino', 'horaTermino', 'validatimeac', 'time', 'Dando por terminada la presente diligencia siendo las ', 'textfield10', '')
+        + CreaInputs_Con_Label('', '', 'inputac', 'text', 'horas, del día en que se actúa. Lo anterior se hace constar para los efectos legales a que haya lugar, de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla DOY FE. .-.-.-.-.-.-.-.-.-.-..-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-', 'textfield10', 'hidden', '')
         + crea_Boton('button', 'Previsualizar PDF', 'generaPDFActaC', 'btn btn-pinterest', 'GeneraActaC_pdf()')
         + crea_Boton('button', 'Guardar', 'saveActaC', 'btn btn-success', 'GeneraActaCircunstanciada()')
         + CreaInputs('idabogado', 'idabogado', '', 'hidden')
@@ -1890,6 +1935,7 @@ function formActacircunstanciada2c() {
         + CreaInputs('id_lugar', 'id_lugar', '', 'hidden')
         + CreaInputs('id_mes', 'id_mes', '', 'hidden')
         + CreaInputs('id_anio', 'id_anio', '', 'hidden')
+        + CreaInputs('anioND', 'anioND', '', 'hidden')
         + CreaInputs('origenPetval', 'origenPetval', '', 'hidden')
         + CreaInputs('origenPetvalExt', 'origenPetvalExt', '', 'hidden')
         + CreaInputs('idactac', 'idactac', '', 'hidden')
@@ -2020,7 +2066,7 @@ function formEscritoInicial2(action, id) {
         + CreaBR()
         + CreaInputs_Con_Label('Input_Peticionario2', 'Input_Peticionario2', '', 'text', 'Peticionaria/o:&nbsp;', 'textfield', 'placeholder="Nombre del peticionario"', 'style ="margin-left: 60%;"')
         + '</div>'
-        + Crea_Parrafos('parrafo0', 'parrafo0', 'col-md-3 parrafo', 'DR. JOSÉ FELIX CEREZO VÉLEZ</br>PRESIDENTE DE LA COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA', 'style ="text-align: left;font-weight: bold;"')
+        + Crea_Parrafos('parrafo0', 'parrafo0', 'col-md-3 parrafo', 'ROSA ISELA SANCHEZ SOYA</br>PRESIDENTA DE LA COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA', 'style ="text-align: left;font-weight: bold;"')
         + '<div class="text-justify">'
         + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en los artículos 2, 4, 5, 13 fracciones I, II, III, IV y V, 25, 28 y demás relativos y aplicables de la Ley de la Comisión de Derechos Humanos del Estado, ante personal de este organismo y por mi propio derecho, acudo a denunciar actos u omisiones que a mi juicio constituyen violación a mis derechos humanos, en los términos que a continuación se expresan:', 'style ="text-align: left"')
         + '</div>'
@@ -2057,7 +2103,7 @@ function formEscritoInicial2(action, id) {
         + Crea_Label('parrafo7', 'parrafo6', 'col-md-12 parrafo', 'NOTA: LOS DATOS PERSONALES SE PRECISAN EN HOJA ANEXA')
         + CreaBR()
         + CreaBR()
-        + crea_Boton('button', 'Previsualizar PDF', 'generaPDF', 'btn btn-pinterest', 'GeneraEscrito_pdf()')
+        + crea_Boton('button', 'Previsualizar PDF', 'generaPDF', 'btn btn-pinterest', 'GeneraEscrito_pdf(${nuevoId})')  ///
         + crea_Boton('button', 'Guardar', 'save', 'btn btn-success', 'GeneraEscrito_Inicial()')
         + '</div>'
         + CreaInputs('sino', 'sino', '', 'hidden')
@@ -2116,59 +2162,41 @@ function turnoAbogado(idquej,idabogad)
 
 }
 
-function GeneraPdfRechazados(id,visd,memo,p1,p2,p3,just,idsa,visitadorGeneral,aceptados)
-{
+async function GeneraPdfRechazados(data) {
 
-    if (visd == '' && memo == '' && p1 == '' && p2 == '' && p3 == '' && just == '' && idsa == '' && visitadorGeneral == '')
-    {
-        $.ajax({
-            type: "POST",
-            url: "verPDFRechazo",
-            data: { idqueja: id, visd: visd, memo: memo, p1: p1, p2: p2, p3: p3, just: just, idsa: idsa, vg: visitadorGeneral, acep: aceptados.toString() },
-            dataType: "JSON",
-            success: function (response) {
-                Swal.fire({
-                    icon: "success",
-                    title: "ID´s Aceptados",
-                    text: "Todos los ID´s Fueron aceptados",
-                }).then(function () {
-                    location.reload();
-                });
-            }
-        });
-        //location.reload();
-    }
-    else {
-        codigoArea = $("#idArea").val();
-        console.log(codigoArea);
+    const response = await fetch('/Expediente/GenerarFormatoRechazo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
 
-        $.ajax({
-            type: "POST",
-            url: "listadovisitadorGeneral",
-            data: { vis: codigoArea },
-            dataType: "JSON",
-            success: function (response) {
-                //console.log(response.data)
-                //mostrarResTblFormatos(response.data, response.data1);
-                Swal.fire({
-                    icon: "success",
-                    title: "ID´s Aceptados y/o Rechazados",
-                    text: "Todos los ID´s Fueron aceptados y/o Rechazados",
-                }).then(function () {
-                    location.reload();
-                });
-            }
-        });
-        // console.log(ExportaDocumentorechazo + "?idqueja=" + id + "&visd=" + visd + "&memo=" + memo + "&p1=" + p1 + "&p2=" + p2 + "&p3=" + p3 + "&just=" + just + "&idsa=" + idsa + "&vg=" + visitadorGeneral); 
-        window.open(ExportaDocumentorechazo + "?idqueja=" + id + "&visd=" + visd + "&memo=" + memo + "&p1=" + p1 + "&p2=" + p2 + "&p3=" + p3 + "&just=" + just + "&idsa=" + idsa + "&vg=" + visitadorGeneral + "&acep=" + aceptados, '_blank');
+    const contentType = response.headers.get("content-type");
+    if (contentType.includes("application/json")) {
+        const json = await response.json();
+
+        if (json.soloAceptados) {
+            Swal.fire({
+                icon: "success",
+                title: "ID´s Aceptados",
+                text: "Todos los ID´s Fueron aceptados"
+            }).then(() => location.reload());
+
+            return;
+        }
     }
-     //location.reload();
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
+
+    setTimeout(() => location.reload(), 800);
 }
+
+
 
 function btnGenerapdfp(Idcomplemento, Curpd, Nombrep, Apellidope, Apellidome) {
 
     let wspFrame = document.getElementById('frame').contentWindow;
-    let html = wspFrame.document.all;
+    let html = wspFrame.document;
     let fechActual = new Date().getDate() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getFullYear() + ' ' + new Date().getHours() + ':' + new Date().getMinutes();
     let fechatxt = fechActual.toString();
 
@@ -2177,183 +2205,17 @@ function btnGenerapdfp(Idcomplemento, Curpd, Nombrep, Apellidope, Apellidome) {
     let nombrep = Nombrep;
     let apellidope = Apellidope;
     let apellidome = Apellidome;
+    let esCurpValida = curpd && curpd !== "No Proporcionado";
 
 
     $.ajax({
         type: "POST",
         url: "GetDataPeticionario",
-        data: { curp: curpd, nombre: nombrep, apellidop: apellidope, apellidom: apellidome, idcomp: idcomplemento },
+        data: { curp: esCurpValida ? curpd : null, nombre: nombrep, apellidop: apellidope, apellidom: apellidome, idcomp: idcomplemento, tipoBusqueda: esCurpValida ? "FISICA" : "MORAL" },
         dataType: "JSON",
         success: function (response) {
 
-            if (response.data.length > 0) {
-                console.log(response.data[0]);
-                html.dateact.textContent = fechatxt;
-
-                (Array.from(html.chkTipoaq)).forEach(function (input, index) {
-                    if (input.value != response.data[0].tipoUsuario) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
-                html.txtNombre.textContent = response.data[0].nombre;
-                html.txtApaterno.textContent = response.data[0].apellidoPat;
-                html.txtAmaterno.textContent = response.data[0].apellidoMat;
-                html.txtCalle.textContent = response.data[0].calle;
-                html.numExt.textContent = response.data[0].numExterior;
-                html.numInt.textContent = response.data[0].numInterior;
-                html.txtColonia.textContent = response.data[0].colonia;
-                html.txtCiudadloc.textContent = response.data[0].ciudad;
-                html.txtMunicipio.textContent = response.data[0].municipio;
-                html.txtEstado.textContent = response.data[0].estado;
-                html.txtCp.textContent = response.data[0].codigoPostal;
-                html.txtTelefono.textContent = response.data[0].telefono;
-                html.txtEdad.textContent = response.data[0].edad;
-                html.txtEmail.textContent = response.data[0].email;
-                (Array.from(html.chkTipoaq)).forEach(function (input, index) {
-                    if (input.value != response.data[0].tipoUsuario) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
-                (Array.from(html.chkSexo)).forEach(function (input, index) {
-                    if (input.value != response.data[0].fkSexo) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
-                (Array.from(html.chkGenero)).forEach(function (input, index) {
-                    if (input.value != response.data[0].genero) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
-                html.txtOtroGenero.textContent = response.data[0].otroGenero;
-                (Array.from(html.chkEscolaridad)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkEscolaridad) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkEstadocon)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkEstadoConyugal) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkOcupacion)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkOcupacion) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                html.chkOtraocupacion.textContent = response.data[0].otraOcupacion;
-                (Array.from(html.chkNacionalidad)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].nacionalidad) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkSabeleer)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].sabeLeer) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkDispacacidad)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkDiscapacidad) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkGsocial)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkGrupoSocial) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                html.txtOtroGsoc.textContent = response.data[0].otroGsocial;
-                (Array.from(html.chkHablali)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].hablaLenguai) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                html.txtOtraLengiai.textContent = response.data[0].lenguaIndigena;
-                html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
-
-                html.txtOrigenmig.textContent = response.data[0].origenMigrante.length > 0 ? response.data[0].origenMigrante : "";
-                html.txtDestinomig.textContent = response.data[0].destinoMigrante;
-                (Array.from(html.chkPrimeravm)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].primeravmexMigrante) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkViolenmuj)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].violenciaVm) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                if (response.data[0].violenciaVm == 1) {
-                    html.txtCanalizacionvm.textContent = response.data[0].canalizacionVm;
-                    (Array.from(html.chkEmbarazada)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].embarazadaVm) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkSinhijos)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkHijosVivos) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkModalidadv)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkModalidadViolencia) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkTipov)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkTipoViolencia) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkRelacionAgr)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkRelacionAgresor) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    html.txtIngresosmens.textContent = '$' + response.data[0].ingresosMensuales;
-                }
-
-
-                wspFrame.focus();
-                wspFrame.print();
-            } else {
+            if (!response.data || response.data.length === 0) {
                 Swal.fire({
                     position: 'center',
                     icon: 'warning',
@@ -2361,8 +2223,86 @@ function btnGenerapdfp(Idcomplemento, Curpd, Nombrep, Apellidope, Apellidome) {
                     showConfirmButton: false,
                     timer: 1500
                 });
-
                 return;
+            }
+
+            const data = response.data[0];
+            const frame = document.getElementById('frame');
+
+            if (!frame) {
+                console.error("Iframe no encontrado");
+                return;
+            }
+
+            const cargarDatos = () => {
+
+                const doc = frame.contentWindow.document;
+                const setText = (id, value) => {
+                    const el = doc.getElementById(id);
+                    if (el) el.textContent = value ?? '';
+                };
+
+                const setChecks = (name, value) => {
+                    doc.querySelectorAll(`input[name="${name}"]`)
+                        .forEach(input => input.checked = (String(input.value) === String(value)));
+                };
+                const ahora = new Date();
+                const fechaTxt = `${ahora.getDate()}/${ahora.getMonth() + 1}/${ahora.getFullYear()} ${ahora.getHours()}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+                setText("dateact", fechaTxt);
+                setText("txtNombre", data.nombre);
+                setText("txtApaterno", data.apellidoPat);
+                setText("txtAmaterno", data.apellidoMat);
+                setText("txtEdad", data.edad);
+                setText("txtEmail", data.email);
+                setText("txtTelefono", data.telefono);
+                setText("txtCalle", data.calle);
+                setText("numExt", data.numExterior);
+                setText("numInt", data.numInterior);
+                setText("txtColonia", data.colonia);
+                setText("txtCiudadloc", data.ciudad);
+                setText("txtMunicipio", data.municipio);
+                setText("txtEstado", data.estado);
+                setText("txtCp", data.codigoPostal);
+                setChecks("chkTipoaq", data.tipoUsuario);
+                setChecks("chkSexo", data.fkSexo);
+                setChecks("chkGenero", data.genero);
+                setChecks("chkEscolaridad", data.fkEscolaridad);
+                setChecks("chkEstadocon", data.fkEstadoConyugal);
+                setChecks("chkOcupacion", data.fkOcupacion);
+                setChecks("chkNacionalidad", data.nacionalidad);
+                setChecks("chkSabeleer", data.sabeLeer);
+                setChecks("chkDispacacidad", data.fkDiscapacidad);
+                setChecks("chkGsocial", data.fkGrupoSocial);
+                setChecks("chkHablali", data.hablaLenguai);
+                setText("txtOtroGenero", data.otroGenero);
+                setText("chkOtraocupacion", data.otraOcupacion);
+                setText("txtOtroGsoc", data.otroGsocial);
+                setText("txtOtraLengiai", data.lenguaIndigena);
+                if (data.fechaNacimiento) {
+                    const fechaNac = moment(data.fechaNacimiento).format('DD/MM/YYYY');
+                    setText("txtFechaNaci", fechaNac);
+                }
+                setText("txtOrigenmig", data.origenMigrante || "");
+                setText("txtDestinomig", data.destinoMigrante);
+                setChecks("chkPrimeravm", data.primeravmexMigrante);
+                setChecks("chkViolenmuj", data.violenciaVm);
+
+                if (data.violenciaVm == 1) {
+                    setText("txtCanalizacionvm", data.canalizacionVm);
+                    setChecks("chkEmbarazada", data.embarazadaVm);
+                    setChecks("chkSinhijos", data.fkHijosVivos);
+                    setChecks("chkModalidadv", data.fkModalidadViolencia);
+                    setChecks("chkTipov", data.fkTipoViolencia);
+                    setChecks("chkRelacionAgr", data.fkRelacionAgresor);
+                    setText("txtIngresosmens", `$${data.ingresosMensuales}`);
+                }
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            };
+            if (frame.contentDocument.readyState === 'complete') {
+                cargarDatos();
+            } else {
+                frame.onload = cargarDatos;
             }
         }
     });

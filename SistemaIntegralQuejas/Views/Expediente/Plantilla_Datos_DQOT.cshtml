@@ -84,6 +84,7 @@
         margin: 0px;
         width: 30%;
     }
+
     .cedula-completo-izquierda {
         float: left;
         width: 100%;
@@ -169,7 +170,7 @@
                             </div>
                         </div>
                         <div class="cedula-completo">
-                            <h5 class="titulodoc">CÉDULA DE INFORMACIÓN RECABADA POR LA DQOT</h5>
+                            <h5 class="titulodoc">CÉDULA DE INFORMACIÓN RECABADA POR LA DQO</h5>
                             <div class="linea"></div>
                             <h5 class="FOR titulos"><b>ID: @itemp.id_expediente</h5><br>
                         </div>
@@ -186,7 +187,7 @@
                         </div>
                         <div class="cedula-completo">
                             <br><h5 class="hechos_observaciones"><b>HECHOS:</b><p class="texto_largos">@itemp.hechos</p></h5>
-                            <br><h5 class="hechos_observaciones"><b>OBSERVACIONES DQOT:</b><p class="texto_largos">@itemp.observaciones</p></h5>
+                            <br><h5 class="hechos_observaciones"><b>OBSERVACIONES DQO:</b><p class="texto_largos">@itemp.observaciones</p></h5>
                             <br><h5 class="titulodocsec">AUTORIDAD(ES)</h5>
                             <div class="linea"></div>
                             <table>
@@ -196,13 +197,28 @@
                                 <th>NOMBRE AUTORIDAD(ES)</th>
                                 </thead>
                                 <tbody>
-                                    @foreach (var itemuser in @itemp.listaut)
+                                    @* @foreach (var itemuser in @itemp.listaut)
+                                {
+                                <tr>
+                                <td>@itemuser.idautoridad</td>
+                                <td>@itemuser.ambito</td>
+                                <td>@itemuser.nombre</td>
+                                </tr>
+                                } *@
+                                    @if (itemp.listaut != null && itemp.listaut.Any())
                                     {
-                                        <tr>
-                                            <td>@itemuser.idautoridad</td>
-                                            <td>@itemuser.ambito</td>
-                                            <td>@itemuser.nombre</td>
-                                        </tr>
+                                        foreach (var itemuser in itemp.listaut)
+                                        {
+                                            <tr>
+                                                <td>@itemuser.idautoridad</td>
+                                                <td>@itemuser.ambito</td>
+                                                <td>@itemuser.nombre</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="3">No hay autoridades registradas.</td></tr>
                                     }
                                 </tbody>
                             </table>
@@ -219,14 +235,29 @@
                                 <th>NOMBRE DEL PETICIONARIO(A)</th>
                                 </thead>
                                 <tbody>
-                                    @foreach (var itemuser in @itemp.listpeti)
-                                    {
-                                        <tr>
-                                            <td>@itemuser.id</td>
-                                            <td>@itemuser.tipopet (a)</td>
-                                            <td>@itemuser.nombrepet</td>
-                                        </tr>
+                                    @* @foreach (var itemuser in @itemp.listpeti)
+                                {
+                                <tr>
+                                <td>@itemuser.id</td>
+                                <td>@itemuser.tipopet (a)</td>
+                                <td>@itemuser.nombrepet</td>
+                                </tr>
 
+                                } *@
+                                    @if (itemp.listpeti != null && itemp.listpeti.Any())
+                                    {
+                                        foreach (var itemuser in itemp.listpeti)
+                                        {
+                                            <tr>
+                                                <td>@itemuser.id</td>
+                                                <td>@itemuser.tipopet</td>
+                                                <td>@itemuser.nombrepet</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="3">No hay peticionarios registrados.</td></tr>
                                     }
                                 </tbody>
                             </table>

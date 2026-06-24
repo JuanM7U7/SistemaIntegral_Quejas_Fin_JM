@@ -12,7 +12,8 @@ namespace SistemaIntegralQuejas.Models
     public class SQLMODEL
     {
         //string ConnectionString = @"Data Source=192.168.1.14; Initial Catalog=DB_SistemaIntegralQuejas;TrustServerCertificate=True; User Id=sbdquejasok; Password=123456";
-        public static string ConnectionString = @"Data Source=192.168.1.50; Initial Catalog=DB_SistemaIntegralQuejasQA;TrustServerCertificate=True; User Id=CDHDPITQA; Password=Cdhp2022*-+;";
+        //public static string ConnectionString = @"Data Source=192.168.1.50; Initial Catalog=DB_SistemaIntegralQuejasQA;TrustServerCertificate=True; User Id=CDHDPITQA; Password=Cdhp2022*-+;"; 
+        public static string ConnectionString = @"Data Source=158.23.88.159; Initial Catalog=DB_SistemaIntegralQuejasQA;TrustServerCertificate=True; User Id=CDHPDPIT; Password=Cdhp2022*-+;";
         //public static string ConnectionString = @"Data Source=20.246.13.106; Initial Catalog=DB_SistemaIntegralQuejas;TrustServerCertificate=True; User Id=CDHPDPIT; Password=Cdhp2022*-+;";
 
 
@@ -83,6 +84,24 @@ namespace SistemaIntegralQuejas.Models
             }
             return idinsertado;
         }
+
+        //public int InsertUpdateDeleteRegresaid(string query)
+        //{
+        //    string mensaje = "";
+
+        //    using (SqlConnection conn = conexion(ref mensaje))
+        //    using (SqlCommand cmd = new SqlCommand(query, conn))
+        //    {
+        //        object result = cmd.ExecuteScalar();
+
+        //        if (result == null || result == DBNull.Value)
+        //            throw new Exception("El INSERT no regresó el ID de ACTAC");
+
+        //        return Convert.ToInt32(result);
+        //    }
+        //}
+
+
         public List<object> datos_Usuario(string query, ref string mensaje)
         {
             mensaje = "";
@@ -634,14 +653,44 @@ namespace SistemaIntegralQuejas.Models
                     cmd.CommandText = query;
                     cmd.Connection = conn;
                     lector = cmd.ExecuteReader();
+                    if (!lector.HasRows) 
+                    {
+                        mensaje = "No hay registros";
+                        return modelo;
+                    }
                     while (lector.Read())
                     {
-                        string[] arreglofechaI = lector[8].ToString().Split(' ');
-                        string[] arregloHoraI = arreglofechaI[1].ToString().Split(':');
-                        string[] arreglofechaH = lector[22].ToString().Split(' ');
-                        string[] arregloHoraH = arreglofechaH[1].ToString().Split(':');
-                        string[] arreglofechaT = lector[25].ToString().Split(' ');
-                        string[] arregloHoraT = arreglofechaT[1].Split(':');
+                        DateTime fechaInicioDT = DateTime.Parse(lector[8].ToString());
+                        TimeOnly HoraInicio = new TimeOnly(
+                        fechaInicioDT.Hour,
+                        fechaInicioDT.Minute
+                        );
+
+
+
+                        DateTime fechaHechosDT = DateTime.Parse(lector[22].ToString());
+
+
+
+                        string FechaHechos = fechaHechosDT.ToString("yyyy-MM-dd");
+
+
+
+                        TimeOnly HoraHechos = new TimeOnly(
+                        fechaHechosDT.Hour,
+                        fechaHechosDT.Minute
+                        );
+
+
+
+                        DateTime fechaTerminoDT = DateTime.Parse(lector[25].ToString());
+
+
+
+                        TimeOnly HoraTermino = new TimeOnly(
+                        fechaTerminoDT.Hour,
+                        fechaTerminoDT.Minute
+                        );
                         int Id = int.Parse(lector[0].ToString());
                         string Lugar = lector[1].ToString();
                         int DiaFecha = int.Parse(lector[2].ToString());
@@ -650,7 +699,7 @@ namespace SistemaIntegralQuejas.Models
                         string NomAbogado = lector[5].ToString();
                         string PuestoAbogado = lector[6].ToString();
                         string AreaAbogado = lector[7].ToString();
-                        TimeOnly HoraInicio = new TimeOnly(int.Parse(arregloHoraI[0]), int.Parse(arregloHoraI[1]));
+                        //TimeOnly HoraInicio = new TimeOnly(int.Parse(arregloHoraI[0]), int.Parse(arregloHoraI[1]));
                         string Ubicacion = lector[9].ToString();
                         string NombrePet = lector[10].ToString();
                         string consentiemiento = lector[11].ToString();
@@ -664,11 +713,11 @@ namespace SistemaIntegralQuejas.Models
                         string OcupacionPet = lector[19].ToString();
                         string TelPet = lector[20].ToString();
                         string CorreoPet = lector[21].ToString();
-                        string FechaHechos = arreglofechaH[0].ToString();
-                        TimeOnly HoraHechos = new TimeOnly(int.Parse(arregloHoraH[0]), int.Parse(arregloHoraH[1]));
+                        //string FechaHechos = arreglofechaH[0].ToString();
+                        //TimeOnly HoraHechos = new TimeOnly(int.Parse(arregloHoraH[0]), int.Parse(arregloHoraH[1]));
                         string UbiHechos = lector[23].ToString();
                         string Hechos = lector[24].ToString();
-                        TimeOnly HoraTermino = new TimeOnly(int.Parse(arregloHoraT[0]), int.Parse(arregloHoraT[1]));
+                        //TimeOnly HoraTermino = new TimeOnly(int.Parse(arregloHoraT[0]), int.Parse(arregloHoraT[1]));
                         /*Datos Faltantes*/
                         string sabeLeer = lector[29].ToString();
                         string escolaridadPet = lector[30].ToString();
@@ -679,11 +728,17 @@ namespace SistemaIntegralQuejas.Models
                         int id_pet = int.Parse(lector[31].ToString());
                         int id_complementopet = int.Parse(lector[32].ToString());
                         DateTime fechaActual = DateTime.Now;
+                        string Autoridad = lector["AUTORIDAD"].ToString();
+
+
+
                         /*Datos Faltantes*/
 
+
+
                         modelo = new ActacModificado(Id, Lugar, DiaFecha, Mes, Anio, NomAbogado, PuestoAbogado, AreaAbogado, HoraInicio, Ubicacion, NombrePet, consentiemiento, OrigenPet,
-                                                    EdadPet, sabeLeer, escolaridadPet, CallePet, NumextPet, CpPet, ColoniaPet, MunicipioPet, EstadoPet, OcupacionPet, TelPet,
-                                                    CorreoPet, IdenttificacionPet, FechaHechos, HoraHechos, UbiHechos, Hechos, HoraTermino, OrigenPetExt, ComplementoPetExt, id_pet, id_complementopet, fechaActual);
+                     EdadPet, sabeLeer, escolaridadPet, CallePet, NumextPet, CpPet, ColoniaPet, MunicipioPet, EstadoPet, OcupacionPet, TelPet,
+                     CorreoPet, IdenttificacionPet, FechaHechos, HoraHechos, UbiHechos, Hechos, HoraTermino, OrigenPetExt, ComplementoPetExt, id_pet, id_complementopet, fechaActual, Autoridad);
                     };
                 }
             }

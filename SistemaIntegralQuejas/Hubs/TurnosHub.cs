@@ -167,7 +167,7 @@ namespace SistemaIntegralQuejas.Hubs
                 await Clients.Group(grupotv).SendAsync("RecibeTurnosEnCurso", turnos);
             }
         }
-        // Sonido para pantalla TV DQOT
+        // Sonido para pantalla TV DQO
         public async Task Sonido_TV_DQOT(string grupotv)
         {
             bool status = true;

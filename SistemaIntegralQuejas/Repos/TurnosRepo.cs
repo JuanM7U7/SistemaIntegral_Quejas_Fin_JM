@@ -92,7 +92,7 @@ namespace SistemaIntegralQuejas.Repos
 
         }
          
-        // Turnos Administradores DQOT con filtros
+        // Turnos Administradores DQO con filtros
         public List<TurnoModificado> GetTurnosAdmin_Filtros(int status, string fechainicio, string fechafin)
         {
             List<TurnoModificado> turnosadm = new List<TurnoModificado>();
@@ -342,7 +342,7 @@ namespace SistemaIntegralQuejas.Repos
             return turnosA;
         }
 
-        // Dibujar tabla TV DQOT (Turnos atendiendo)
+        // Dibujar tabla TV DQO (Turnos atendiendo)
 
         public List<TurnoModificado> GetTurnosAtendiendo()
         {

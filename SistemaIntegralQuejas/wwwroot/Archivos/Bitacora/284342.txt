@@ -1,0 +1,32 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Apellido Paterno",
+    "Antes": "Paez",
+    "Despues": "Paezp",
+    "FechaHora": "2026-04-17 12:38:37",
+    "Usuario": "FOMC",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "FeCPcha Nacimiento",
+    "Antes": "01/01/1900 12:00:00 a. m.",
+    "Despues": "",
+    "FechaHora": "2026-04-17 12:38:37",
+    "Usuario": "FOMC",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Tipo Usuario",
+    "Antes": "Peticionario",
+    "Despues": "Quejoso",
+    "FechaHora": "2026-04-17 12:38:37",
+    "Usuario": "FOMC",
+    "IP": ""
+  }
+]

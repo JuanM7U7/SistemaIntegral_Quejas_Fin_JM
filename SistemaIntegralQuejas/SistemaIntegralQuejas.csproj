@@ -14,8 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Archivos\Bitacora\986.txt" />
+    <Content Remove="wwwroot\Archivos\Bitacora\989.txt" />
+    <Content Remove="wwwroot\Archivos\Bitacora\992.txt" />
+    <Content Remove="wwwroot\Archivos\Bitacora\993.txt" />
+    <Content Remove="wwwroot\Archivos\Bitacora\994.txt" />
     <Content Remove="wwwroot\js\buscadorTabla - Copia.json" />
     <Content Remove="wwwroot\js\buscadorTabla.json" />
+    <Content Remove="wwwroot\js\FuncionGuardarCalificacion.js" />
+    <Content Remove="wwwroot\js\FunctionCalificacionVista - Copia.js" />
   </ItemGroup>
 
   <ItemGroup>

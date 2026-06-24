@@ -20,7 +20,7 @@
                             <tr>
                                 <th>DETALLE</th>
                                 <th>ID QUEJA</th>
-                                <th>FECHA DE TURNO DQOT</th>
+                                <th>FECHA DE TURNO DQO</th>
                                 <th>FECHA DE RECEPCIÓN EN VG</th>
                                 <th>STATUS</th>
                                 <th>Aceptar/Rechazar ID's</th>
@@ -57,7 +57,7 @@
         </div>
         <div class="modal-body">
             <div class="tab">
-                <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpen">Información recabada por la DQOT</button>
+                <button class="tablinks" onclick="openCity(event, 'Detalle_Quejak')" id="defaultOpen">Información recabada por la DQO</button>
             </div>
 
             <div id="Detalle_Quejak" class="tabcontent">
@@ -75,6 +75,10 @@
 
 </div>
 
+<iframe id="frame"
+        src="./PlantillaDPeticionario"
+        style="width:0;height:0;border:0;position:absolute;">
+</iframe>
 
 <style>
 .modal {
@@ -329,6 +333,7 @@
     var ExportaDocumento = '@Url.Action("VerPDF", "Expediente")?idescrito=';
     var ExportaDocumentoacta = '@Url.Action("ActaPDF", "Expediente")?idactac=';
     var ExportaDocumentorechazo = '@Url.Action("verPDFRechazo", "Expediente")';
+        var CedBitacoraCambioPDF = '@Url.Action("BitacoraCambiosPDF", "Expediente")?idexped=';
    // var ExportaDocumentorechazo = '@Url.Action("verPDFRechazo", "Expediente")?idqueja=&vis=&memo=&p1=&p2=&p3=';
 
 

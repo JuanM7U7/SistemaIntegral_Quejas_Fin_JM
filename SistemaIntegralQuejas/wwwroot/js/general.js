@@ -507,7 +507,6 @@ function validarInput(input) {
         );
         $("[id^='submitForm']").attr("disabled", true);
     }
-
 }
 
 function validarTxtKeyPress(input) {
@@ -635,29 +634,46 @@ function validaNum(clas) {
 }
 
 function validaNumero() {
+
     let doctxt = document.querySelectorAll('.validaNumero');
+
     let contador = 0;
 
     for (var i = 0; i < doctxt.length; i++) {
-        let numeroInput = doctxt[i].value;
 
-        if (isNaN(numeroInput) && numeroInput != 'No proporcionado') {
+        let numeroInput = doctxt[i].value.trim();
+
+        // 🔥 ignorar vacíos
+        if (numeroInput === '') {
+            continue;
+        }
+
+        // 🔥 ignorar No proporcionado
+        if (numeroInput.toUpperCase() === 'NO PROPORCIONADO') {
+            continue;
+        }
+
+        // 🔥 validar números reales
+        if (!/^[0-9]+$/.test(numeroInput)) {
+
             $('#' + doctxt[i].id).notify(
                 "Solo se permiten números en este campo",
-                { position: "top left", autoHide: false }
+                {
+                    position: "top left",
+                    autoHide: false
+                }
             );
+
             $('#' + doctxt[i].id).focus();
+
             contador++;
         }
     }
-    console.log(contador)
-    if (contador > 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
+    console.log("ERRORES NUMÉRICOS:", contador);
+
+    return contador > 0;
+}
 function validaNumeroKeyPress(input) {
 
     let numeroInput = input.value;

@@ -110,7 +110,7 @@ const table = $('#turnosVGQ');
 
 })(jQuery);
 
-// Dibujar tabla administrador DQOT
+// Dibujar tabla administrador DQO
 
 function DibujaTblTodosTurnos(resp) {
 

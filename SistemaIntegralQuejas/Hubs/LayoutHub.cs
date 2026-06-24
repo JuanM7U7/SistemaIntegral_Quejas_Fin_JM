@@ -127,7 +127,7 @@ namespace SistemaIntegralQuejas.Hubs
             
         }
 
-        // Reasignar turno (Solo para Administradores DQOT)
+        // Reasignar turno (Solo para Administradores DQO)
         bool reasignado = false;
         public async Task CambiarAbogadoAdmin(string idturno, string idAbogadoNuevo, string usuario, string idUser_ant)
         {

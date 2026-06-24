@@ -33,27 +33,32 @@ namespace SistemaIntegralQuejas.Controllers
                     vistaPrincipal = "Index_ADMIN_DQOT";
                     controlador = "Home";
                 }
-                if (User.IsInRole("VA_DQOT"))
+                else if (User.IsInRole("VA_DQOT"))
                 {
                     vistaPrincipal = "Index";
                     controlador = "Home";
                 }
-                if (User.IsInRole("TV_DQOT"))
+                else if(User.IsInRole("TV_DQOT"))
                 {
                     vistaPrincipal = "Index_TV_DQOT";
                     controlador = "Home";
                 }
-                if (User.IsInRole("VG"))
+                else if(User.IsInRole("VG"))
                 {
                     vistaPrincipal = "Calificacion";
                     controlador = "Expediente";
 
                 }
-                if (User.IsInRole("VAV"))
+                else if(User.IsInRole("VAV"))
                 {
                     vistaPrincipal = "VistaCalificacion";
                     controlador = "Expediente";
 
+                }
+                else if(User.IsInRole("ADMIN_DQOT_ESPECIAL"))
+                {
+                    vistaPrincipal = "Index_ADMIN_DQOT_ESPECIAL";
+                    controlador = "Home";
                 }
 
 
@@ -131,7 +136,12 @@ namespace SistemaIntegralQuejas.Controllers
                         login_page = "VistaCalificacion";
 
                     }
+                    if (((Usuarios)listaContenedora[0]).Rol == "ADMIN_DQOT_ESPECIAL")
+                    {
+                        login_page = "Index_ADMIN_DQOT_ESPECIAL";
 
+                    }
+                    
 
                 }
                 else
@@ -189,6 +199,11 @@ namespace SistemaIntegralQuejas.Controllers
                         vistaPrincipal = "VistaCalificacion";
                         login_page = "VistaCalificacion";
 
+                    }
+                    if ((((Usuarios)listaContenedora[0]).Rol) == "ADMIN_DQOT_ESPECIAL")
+                    {
+                        vistaPrincipal = "Index_ADMIN_DQOT_ESPECIAL";
+                        login_page = "Index_ADMIN_DQOT_ESPECIAL";
                     }
                 }
 

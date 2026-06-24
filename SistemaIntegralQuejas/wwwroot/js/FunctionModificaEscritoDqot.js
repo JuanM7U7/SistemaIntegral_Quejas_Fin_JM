@@ -14,6 +14,7 @@ let TipoViolencia = "";
 var activopeticionario = '';
 var activoAltaEscrito = '';
 var activoActaC = '';
+var activoAltaQ = '';
 let escolaridadInicio = '';
 let escolaridadFinal = '';
 let contadorSelect = 0;
@@ -235,7 +236,7 @@ let formulariorientacion = `
             <div class="pt-4 eliminaformaes">
             <h4 class="eliminaformaes">Formulario Orientación</h4>
                 <p class="eliminaformaes">
-                    Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
+                    Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche temporm jkglh.
                 </p>
                 <p class="eliminaformaes">
                     Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
@@ -350,7 +351,9 @@ let formulariocanalizacion = `
 
     })
     CreaSelect("selectTipoQueja", "multiple='multiple'", arregloDocumentos(), "#select_Documentos_LLenar");
-    $("#selectTipoQueja").select2();
+    $("
+    
+    ").select2();
     fetchGet("EditarFormatosExp/SelectEscolaridad", "json", (data) => {
         Escolaridad = data.escolaridad;
         escolaridadInicio = Escolaridad.slice(0, 9);
@@ -466,31 +469,37 @@ let formulariocanalizacion = `
             }
         });
     });
-    $(document).on('keypress', "#cpPet", function (e) { //esta función se ejecutará en todos los casos
-        if (e.which == 13) {
-            $.getJSON("https://api.copomex.com/query/info_cp/" + $("#cpPet").val() + "?type=simplified&token=pruebas", function (copomex) {
+    $(document).on('keypress', "#cpPet", function (e) { // se ejecuta al presionar tecla en #cpPet
+        if (e.key === 'Enter' || e.which === 13) {
+            e.preventDefault();
+
+            // Sanitizar: solo dígitos y máximo 5
+            var cp = ($("#cpPet").val() || '').replace(/\D+/g, '').slice(0, 5);
+            $("#cpPet").val(cp);
+
+            if (cp.length !== 5) {
+                console.warn('CP inválido (debe ser 5 dígitos).');
+                return;
+            }
+
+            $.getJSON("https://api.copomex.com/query/info_cp/" + cp + "?type=simplified&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee", function (copomex) {
+                if (!copomex || !copomex.response) {
+                    console.warn('Sin datos para el CP proporcionado.');
+                    return;
+                }
+
                 console.log(copomex.response);
-                $("#municipioPet").val(copomex.response.municipio);
-                $("#estadoPet").val(copomex.response.estado);
-                $("#cpPet").val(copomex.response.cp);
-                CargaDatosSelect('#coloniaPet', copomex.response.asentamiento);
+                $("#municipioPet").val(copomex.response.municipio || '');
+                $("#estadoPet").val(copomex.response.estado || '');
+                $("#cpPet").val(copomex.response.cp || cp);
+
+                var asentamientos = copomex.response.asentamiento || [];
+                CargaDatosSelect('#coloniaPet', asentamientos);
             })
-
-                .fail(function () { console.log('Ha ocurrido un error') });
+                .fail(function () {
+                    console.log('Ha ocurrido un error');
+                });
         }
-
-    });
-    $(document).on('keypress', "#cpLH", function (e) { //esta función se ejecutará en todos los casos
-        if (e.which == 13) {
-            $.getJSON("https://api.copomex.com/query/info_cp/" + $("#cpLH").val() + "?type=simplified&token=pruebas", function (copomex) {
-                console.log(copomex.response);
-                $("#cpLH").val(copomex.response.cp);
-                CargaDatosSelect('#coloniaLH', copomex.response.asentamiento);
-            })
-
-                .fail(function () { console.log('Ha ocurrido un error') });
-        }
-
     });
     $(document).on('change', '#nomAbogado', function (event) {
         console.log($("#nomAbogado option:selected").val());
@@ -813,10 +822,10 @@ function creaFormularioCompleto(act1,act2,act3)
 </div>
 `;
     return formularioqueja;
-}
+}// se decalro activoAltaQ ya que no y no mostraba el formulario de datos personales 07/05/2025 cris
 function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
     console.log("Entró a la creación del formulario de quejas ");
-   var visibilidadPestaniaRDP = false;
+    var visibilidadPestaniaRDP = false;
     var visibilidadPestaniaAQ = false;
     var visibilidadPestañaAI = false;
     var visibilidadPestañaAC = false;
@@ -825,9 +834,8 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
     if (arregloSelects.indexOf("1") >= 0) { visibilidadPestaniaRDP = true; activopeticionario = 'active' } else { visibilidadPestaniaRDP = false; activopeticionario = ''; }
     if (arregloSelects.indexOf("2") >= 0) { visibilidadPestañaAI = true; activoAltaEscrito = 'active' } else { visibilidadPestañaAI = false; activoAltaEscrito = ''; }
     if (arregloSelects.indexOf("3") >= 0) { visibilidadPestañaAC = true; activoActaC = 'active' } else { visibilidadPestañaAC = false; activoActaC = ''; }
-    if (arregloSelects.indexOf("4") >= 0) { visibilidadPestaniaAQ = true; } else { visibilidadPestaniaAQ = false; }
-
-        /**/
+    if (arregloSelects.indexOf("4") >= 0) { visibilidadPestaniaAQ = true; activoAltaQ = 'active' } else { visibilidadPestaniaAQ = false; activoAltaQ = '' }
+    /**/
     console.log('vi: ' + vinterpoiscion + ' te: ' + tescrito)
     let eliminarform = document.querySelectorAll('.eliminaformaes');
     for (var i = 0; i < eliminarform.length; i++) {
@@ -840,30 +848,31 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
 
 
 
-    $('#formularioaltaescritodqot').append(creaFormularioCompleto(activopeticionario, activoAltaEscrito, activoActaC));
+    $('#formularioaltaescritodqot').append(creaFormularioCompleto(activopeticionario, activoAltaEscrito, activoActaC, activoAltaQ));
 
-            $("#tab1").css('display', 'none');
-            $("#tab2").css('display', 'none');
-            $("#tab3").css('display', 'none');
-    if (visibilidadPestaniaRDP) {
-        console.log("RDP"); $("#tab1").css('display', 'block'); $('#ref-frm-frmDatosPersonales1').append(formPetit); TraeInformaciónPet('GALE991231HPLRPV04', 'Alexa', 'Vdfvdfvdf', 'Lopez');} else { $("#tab1").css('display', 'none'); }
-            if (visibilidadPestañaAI){let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');$('#divformularioEscritoInicial').append(iformEscritoInicial);$("#tab2").css('display', 'block');console.log($('#divformularioEscritoInicial'));} else {$("#tab2").css('display', 'none');}
-            if (visibilidadPestañaAC) {let iformActaCircunstanciada = formActacircunstanciada2c();$('#divformularioActaCircunstanciada').append(formActacircunstanciada2c());console.log("Se ve AC");$("#tab3").css('display', 'block');} else {$("#tab3").css('display', 'none');}
-         
-            addPeticionarios();
-            guardarDatosPeticionarios();
-            chkNoproporcinado();
-            seltxt();
-            keypresscp();
-            fetchGet("Expediente/SelectPaises", "json", (data) => {
-                let Paises = data.relacionpaises;
-                console.log(Paises)
-                AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
-                AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
-            })
+    $("#tab1").css('display', 'none');
+    $("#tab2").css('display', 'none');
+    $("#tab3").css('display', 'none');
+    $("#tab4").css('display', 'none');
+    if (visibilidadPestaniaRDP) { console.log("RDP"); $("#tab1").css('display', 'block'); $('#ref-frm-frmDatosPersonales1').append(formPetit); TraeInformaciónPet('GALE991231HPLRPV04', 'Alexa', 'Que Pasho', 'Lopyerugebcjhdsbchbez'); } else { $("#tab1").css('display', 'none'); }
+    if (visibilidadPestañaAI) { let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja'); $('#divformularioEscritoInicial').append(iformEscritoInicial); $("#tab2").css('display', 'block'); console.log($('#divformularioEscritoInicial')); } else { $("#tab2").css('display', 'none'); }
+    if (visibilidadPestañaAC) { let iformActaCircunstanciada = formActacircunstanciada2c(); $('#divformularioActaCircunstanciada').append(formActacircunstanciada2c()); console.log("Se ve AC"); $("#tab3").css('display', 'block'); } else { $("#tab3").css('display', 'none'); }
+    if (visibilidadPestaniaAQ) { console.log("Se ve AQ"); $("#tab4").css('display', 'block'); $('#frm_altaqueja').append(altaqueja) } else { $("#tab4").css('display', 'none'); }
+
+    addPeticionarios();
+    guardarDatosPeticionarios();
+    chkNoproporcinado();
+    seltxt();
+    keypresscp();
+    fetchGet("Expediente/SelectPaises", "json", (data) => {
+        let Paises = data.relacionpaises;
+        console.log(Paises)
+        AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
+        AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
+    })
 
 
-   
+
 
     Carga_Informacion_selec_quejas();
     $('#Input_autoridades').select2();
@@ -871,8 +880,9 @@ function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
     $("#origenPetExtedo").css("display", "none");
 
 
-   
+
 }
+
 function addPeticionarios() {
     $('#addPeticionariodp').click(function (e) {
         e.preventDefault();
@@ -1892,7 +1902,7 @@ function formEscritoInicial2(action, id) {
         + CreaBR()
         + CreaInputs_Con_Label('Input_Peticionario', 'Input_Peticionario', '', 'text', 'Peticionaria/o:&nbsp;', 'textfield', 'placeholder="Nombre del peticionario"', 'style ="margin-left: 60%;"')
         + '</div>'
-        + Crea_Parrafos('parrafo0', 'parrafo0', 'col-md-3 parrafo', 'DR. JOSÉ FELIX CEREZO VÉLEZ</br>PRESIDENTE DE LA COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA', 'style ="text-align: left;font-weight: bold;"')
+        + Crea_Parrafos('parrafo0', 'parrafo0', 'col-md-3 parrafo', 'ROSA ISELA SANCHEZ SOYA</br>PRESIDENTA DE LA COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA', 'style ="text-align: left;font-weight: bold;"')
         + '<div class="text-justify">'
         + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en los artículos 2, 4, 5, 13 fracciones I, II, III, IV y V, 25, 28 y demás relativos y aplicables de la Ley de la Comisión de Derechos Humanos del Estado, ante personal de este organismo y por mi propio derecho, acudo a denunciar actos u omisiones que a mi juicio constituyen violación a mis derechos humanos, en los términos que a continuación se expresan:', 'style ="text-align: left"')
         + '</div>'
@@ -1965,24 +1975,23 @@ function formActacircunstanciada2c() {
 
     var formInnicial = '<form class="text-justify form_acta" id="formActa" name="formActa" method="post" style="width:90%; margin-left:5%" >';
     var cuerpo =
-        //CreaInputs_Con_Label('lugar', 'lugar', '', 'text', 'En', 'textfield2')
-        CreaSelectLabel('lugar', '', arregloBlanco, '', 'En', '')
-        + CreaInputs_Con_Label('diaFecha', 'diaFecha', '', 'number', ', a los', 'textfield', 'mes')
-        + CreaSelectLabel('mes', '', arregloMeses(), '', 'días del mes de', 'textfield4')
-        + CreaSelectLabel('anio', '', arregloAnio(), '', 'de', '')
-        //+ CreaInputs_Con_Label('nomAbogado', 'nomAbogado', '', 'text', ', el suscrito, licenciado', 'textfield5', 'placeholder="nombre de abogado"')
-        + CreaSelectLabel('nomAbogado', '', arregloBlanco, '', ', el/la suscrito/a, abogado/a', '')
+        CreaSelectLabel('lugar', '', arregloBlanco, '', 'En', '', 'validaselectdac')
+        + CreaInputs_Con_Label('diaFecha', 'diaFecha', 'validanumerosac', 'number', ', a los', 'textfield', 'mes')
+        + CreaSelectLabel('mes', '', arregloMeses(), '', 'días del mes de', 'textfield4', 'validaselectdac')
+        + CreaSelectLabeldisabled('anio', '', arregloAnio(), '', 'de', 'textfield4', 'validaselectdac')
+        //+ CreaInputs_Con_Label('nomAbogado', 'nomAbogado', '', 'text', ', , licenciado', 'textfield5', 'placeholder="nombre de abogado"')
+        + CreaSelectLabel('nomAbogado', '', arregloBlanco, '', ', el/la suscrito/a, abogado/a', '', 'validaselectdac')
         + CreaInputs_Con_Label('puestoAbogado', 'puestoAbogado', '', 'text', ', en mi carácter de', 'textfield6', 'placeholder="cargo de abogado" value="' + Cargo + '" disabled')
         + CreaInputs_Con_Label('areaAbogado', 'areaAbogado', '', 'text', ', de la', 'textfield7', 'placeholder="área de abogado" value="' + Area + '" disabled')
         + Crea_Label('textfield8', 'textfield8', '', 'de la Comisión de Derechos Humanos del Estado de Puebla, con la fe pública que me confiere el artículo 21 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, así como 30, 37, y 39 de su Reglamento Interno, publicados en el Periódico Oficial del Estado, respectivamente')
-        + Crea_LabelCentro('textfield8', 'textfield8', '', '<b>CERTIFICO:</b>')
-        + CreaInputs_Con_Label('horaInicio', 'horaInicio', '', 'time', 'Que siendo las', 'textfield9', '')
-        + CreaInputs_Con_Label('ubicacion', 'ubicacion', '', 'text', 'horas del día del día en que se actúa, me constituí en', 'textfield10', 'placeholder="lugar de entrevista"')
-        + CreaInputs_Con_Label('nombrePet', 'nombrePet', '', 'text', ', donde atendí a quien dijo llamarse', 'textfield10', 'placeholder="nombre de peticionario"')
-        + CreaSelectLabel('consentimiento', '', SeleccionMultiple(), '', 'ante quien una vez que me identifiqué plenamente como servidor público adscrito a este Organismo Autónomo, con la respectiva identificación que esta Comisión de Derechos Humanos del Estado de Puebla me expidió, se le hizo de su conocimiento el motivo de la diligencia, se le solicitó su autorización para ser entrevistado, expresando que', '')
+        + Crea_LabelCentro('textfield8', 'textfield8', '', '<b>.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.CERTIFICO:.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-</b>')
+        + CreaInputs_Con_Label('horaInicio', 'horaInicio', 'validatimeac', 'time', 'Que siendo las', 'textfield9', '')
+        + CreaInputs_Con_Label('ubicacion', 'ubicacion', 'validatxtac', 'text', 'horas del día del día en que se actúa, encontrándome en las instalaciones que ocupa', 'textfield10', 'placeholder="lugar de entrevista"')
+        + CreaInputs_Con_Label('nombrePet', 'nombrePet', '', 'text', ', donde procedo a entrevistarme con la persona que dijo llamarse ', 'textfield10', 'placeholder="nombre de peticionario"')
+        + CreaSelectLabel('consentimiento', '', SeleccionMultiple(), '', 'a quien previa identificación de la persona suscrita, le hago saber que derivado de su queja deberá manifestar su deseo de ratificar la misma, y en su uso de la voz la persona peticionaria <strong>MANIFESTÓ: </strong>', '', 'validaselectdac', '')
         //+ CreaInputs_Con_Label('origenPet', 'origenPet', '', 'text', 'otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <strong>MANIFESTÓ: </strong>Llamarse como ha quedado escrito, ser originario de', 'textfield10', 'placeholder="origen de peticionario"')
-        + CreaSelectLabel('origenPet', '', arregloBlanco, '', 'otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <strong>MANIFESTÓ: </strong>Llamarse como ha quedado escrito, ser originario de', '')
-        + CreaSelectLabel('origenPetExt', '', arregloBlanco, '', '', '')
+        + CreaSelectLabel('origenPet', '', arregloBlanco, '', 'ratifico la presente queja. Acto seguido, indicó llamarse como ha quedado escrito, ser originario/a de ', '', 'validaselectdac')
+        + CreaSelectLabel('origenPetExt', '', arregloBlanco, '', '', '', 'validaselectdac')
         + CreaInputs_Con_Label('origenPetExtedo', 'origenPetExtedo', '', 'text', '', 'textfield', '')
         + CreaInputs_Con_Label('edadPet', 'edadPet', '', 'number', 'de', 'textfield10', 'placeholder="edad de peticionario"')
         + CreaInputs_Con_Label('sabeleerPet', 'sabeleerPet', '', 'text', 'años de edad, que', '', 'placeholder="sabe leer"')
@@ -1997,19 +2006,21 @@ function formActacircunstanciada2c() {
         + CreaInputs_Con_Label('ocupacionPet', 'ocupacionPet', '', 'text', 'de ocupación', 'textfield10', 'placeholder="ocupación de peticionario"')
         + CreaInputs_Con_Label('telPet', 'telPet', '', 'text', 'con número de teléfono', 'textfield10', 'placeholder="telefono de peticionario"')
         + CreaInputs_Con_Label('correoPet', 'correoPet', '', 'text', ', correo electrónico,', 'textfield10', 'placeholder="correo de peticionario"')
-        + CreaSelectLabel('identificacionPet', '', arregloIdentificación(), '', 'identificándose ante el/la suscrito/a con', '')
-        + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>DECLARO:</strong><br>')
-        + CreaInputs_Con_Label('fechaHechos', 'fechaHechos', '', 'date', 'Que el día', 'textfield10', '')
-        + CreaInputs_Con_Label('horaHechos', 'horaHechos', '', 'time', 'a las', 'textfield10', '')
-        + CreaInputs_Con_Label('ubiHechos', 'ubiHechos', '', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"')
-        //+ CreaSelectLabel('catMunicipio_hechos', '', arregloMun(), '', 'ubicado en el municipio de', '')
-        //+ CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado de ', '')
-        + CreaSelectLabel('catAutoridad', '', arregloEstado(), '', ', la(s) autoridad(es)', '')
-        + CreaTextArea('hechos', '', 'style="width:100%"')
-        + CreaInputs_Con_Label('horaTermino', 'horaTermino', '', 'time', ', dando por terminada la presente actuación a  las', 'textfield10', '')
-        + Crea_LabelCentro('textfield12', 'textfield12', '', 'horas. Hago constar lo anterior de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla para los efectos correspondientes----------------------------------<b>DOY FE.</b> ')
-        + crea_Boton('button', 'Previsualizar PDF', 'generaPDFActaC', 'btn btn-pinterest')
-        + crea_Boton('button', 'Guardar', 'saveActaC', 'btn btn-success')
+        + CreaSelectLabel('identificacionPet', '', arregloIdentificación(), '', 'quien se identifica con', '', 'validaselectdac')
+        + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>MANIFESTÓ: </strong><br>')
+        + CreaInputs_Con_Label('fechaHechos', 'fechaHechos', 'validadateac', 'date', 'Que es mi deseo ratificar la queja, precisando la fecha de los hechos', 'textfield10', '')
+        + CreaInputs_Con_Label('horaHechos', 'horaHechos', 'validatimeac', 'time', 'a las', 'textfield10', '')
+        + CreaInputs_Con_Label('ubiHechos', 'ubiHechos', 'validatxtac', 'text', 'encontrándome en', 'textfield10', 'placeholder="lugar de hechos"')
+        //+ CreaSelectLabel('catMunicipio_hechos', '', arregloMun(), '', 'ubicado en el municipio de', '', 'validaselectdac')
+        /*+ CreaSelectLabel('catEstado_hechos', '', arreglo_Estados(), '', 'del estado de ', '', 'validaselectdac')*/
+        //+ CreaSelectLabel('catAutoridad', '', arregloEstado(), '', ', la(s) autoridad(es)', '')
+        + CreaInputs_Con_Label('AutoridadesEI', 'AutoridadesEI', '', 'text', 'la(s) autoridad(es)', 'textfield10', 'placeholder="Autoridades" style = "width:100%"')
+        + CreaTextArea('hechos', 'validanovacioac', 'style="width:100%"')
+        + Crea_LabelCentro('textfield12', 'textfield12', '', 'que es todo lo que tiene que manifestar. DOY FE..-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-<b></b> ')
+        + CreaInputs_Con_Label('horaTermino', 'horaTermino', 'validatimeac', 'time', 'Dando por terminada la presente diligencia siendo las ', 'textfield10', '')
+        + CreaInputs_Con_Label('', '', 'inputac', 'text', 'horas, del día en que se actúa. Lo anterior se hace constar para los efectos legales a que haya lugar, de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla DOY FE. .-.-.-.-.-.-.-.-.-.-..-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-', 'textfield10', 'hidden', '')
+        + crea_Boton('button', 'Previsualizar PDF', 'generaPDFActaC', 'btn btn-pinterest', 'GeneraActaC_pdf()')
+        + crea_Boton('button', 'Guardar', 'saveActaC', 'btn btn-success', 'GeneraActaCircunstanciada()')
         + CreaInputs('idabogado', 'idabogado', '', 'hidden')
         + CreaInputs('idpet', 'idpet', '', 'hidden')
         + CreaInputs('idconsentimiento', 'idconsentimiento', '', 'hidden')
@@ -2018,8 +2029,15 @@ function formActacircunstanciada2c() {
         + CreaInputs('id_lugar', 'id_lugar', '', 'hidden')
         + CreaInputs('id_mes', 'id_mes', '', 'hidden')
         + CreaInputs('id_anio', 'id_anio', '', 'hidden')
+        + CreaInputs('anioND', 'anioND', '', 'hidden')
         + CreaInputs('origenPetval', 'origenPetval', '', 'hidden')
         + CreaInputs('origenPetvalExt', 'origenPetvalExt', '', 'hidden')
+        + CreaInputs('idactac', 'idactac', '', 'hidden')
+        + CreaInputs('idqueja', 'idqueja', '', 'hidden')
+        + CreaInputs('idcompet', 'idcompet', '', 'hidden')
+        + CreaInputs('idpeti', 'idpeti', '', 'hidden')
+        + CreaInputs('idescritoim', 'idescritoim', '', 'hidden')
+        + CreaInputs('idactaedit', 'idactaedit', '', 'hidden');
     
 
 
@@ -2047,7 +2065,9 @@ function Crea_LabelCentro(idParrafo, Name, clas, texto) {
 function CreaInputs(idParrafo, Name, clas, tipo) {
     return "<input type='" + tipo + "' id='" + idParrafo + "' class='" + clas + "' name='" + Name + "' > </br> "
 }
-function CreaInputs_Con_Label(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
+function 
+
+(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
     return "<label for= '" + namelabel + "' " + adicionlabel + " >" + textolabel + "</label ><input type='" + tipo + "' id='" + idParrafo + "' class='" + clas + "' name='" + Name + "' " + adicion + " >"
 }
 function CreaInputs_Con_Labelfecha(idParrafo, Name, clas, tipo, textolabel, namelabel, adicion, adicionlabel) {
@@ -2411,25 +2431,22 @@ function arregloMeses() {
     return arreglo;
 }
 function arregloAnio() {
-    var arreglo = [];
-    const objeto0 = { idSelect: 0, descripcion: '-- anio --' }
-    const objeto = { idSelect: 2023, descripcion: '2023' }
-    const objeto1 = { idSelect: 2024, descripcion: '2024' }
-    const objeto2 = { idSelect: 2025, descripcion: '2025' }
-    const objeto3 = { idSelect: 2026, descripcion: '2026' }
-    const objeto4 = { idSelect: 2027, descripcion: '2027' }
-    const objeto5 = { idSelect: 2028, descripcion: '2028' }
+    const arreglo = [];
+    const anioActual = new Date().getFullYear();
 
-    arreglo.push(objeto0);
-    arreglo.push(objeto);
-    arreglo.push(objeto1);
-    arreglo.push(objeto2);
-    arreglo.push(objeto3);
-    arreglo.push(objeto4);
-    arreglo.push(objeto5);
+    arreglo.push({ idSelect: 0, descripcion: '-- año --' });
+
+    for (let i = 0; i <= 10; i++) {
+        arreglo.push({
+            idSelect: anioActual + i,
+            descripcion: (anioActual + i).toString()
+        });
+    }
 
     return arreglo;
 }
+
+
 function SeleccionMultiple() {
     var arreglo = [];
     const objeto0 = { idSelect: 0, descripcion: '-- Selecciona --' }
@@ -2576,26 +2593,50 @@ function Carga_Informacion_selec_quejas() {
         $('#nomAbogado > option[value="' + idUser + '"]').attr('selected', 'selected');
         $('#idabogado').val(idUser);
         $('#idpet').val('1165');
-        $('#idEscrito_').val('2');
+        $('#idEscrito_').val('1');
         //$("#nomAbogado").val(idUser);
         $('#nomAbogado').val(idUser).trigger('change.select2');
         $("#nomAbogado").prop('disabled', true);
     })
 }
-function arreglo_Estados()
-{
+function arreglo_Estados() {
     var arregloEdos = [];
-    $.getJSON("https://api.copomex.com/query/get_estado_clave?token=pruebas", function (copomex) {
-        console.log(copomex.response.estado_clave);
-        arregloEdos = copomex.response.estado_clave;
-       
 
-        for (i = 0; i < arregloEdos.length; i++) {
-            var objeto0 = { idSelect: arregloEdos[i][0], descripcion: arregloEdos[i] };
-            arregloEdos.push(objeto0);
-        } 
+    // Reemplazo solo el token y corrijo el manejo de la respuesta.
+    return $.getJSON("https://api.copomex.com/query/get_estado_clave?token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee")
+        .done(function (copomex) {
+            var estadoClave = copomex && copomex.response && copomex.response.estado_clave;
 
-        
-    })
-    return arregloEdos;
+            if (!estadoClave) return;
+
+            // Si es OBJETO: { Estado: Clave }
+            if (typeof estadoClave === 'object' && !Array.isArray(estadoClave)) {
+                for (var estado in estadoClave) {
+                    if (Object.prototype.hasOwnProperty.call(estadoClave, estado)) {
+                        var clave = estadoClave[estado];
+                        arregloEdos.push({
+                            idSelect: clave,        // ej. "PUE"
+                            descripcion: estado     // ej. "Puebla"
+                        });
+                    }
+                }
+            }
+            // Si es ARREGLO: [["PUE","Puebla"], ...]
+            else if (Array.isArray(estadoClave)) {
+                for (var i = 0; i < estadoClave.length; i++) {
+                    var par = estadoClave[i];
+                    arregloEdos.push({
+                        idSelect: par[0],         // clave
+                        descripcion: par[1]       // nombre del estado
+                    });
+                }
+            }
+        })
+        .fail(function (xhr) {
+            console.error('Error al cargar estados:', xhr && xhr.status);
+        })
+        .then(function () {
+            // Devuelve el arreglo ya transformado
+            return arregloEdos;
+        });
 }

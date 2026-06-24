@@ -1,14 +1,4 @@
-﻿<style>
-
-    body
-    {
-        font-size:15px;
-    }
-</style>
-
-
-
-@model List<SistemaIntegralQuejas.Models.PDF_Escrito_Inical>
+﻿@model List<SistemaIntegralQuejas.Models.PDF_Escrito_Inical>
 
 @{
 
@@ -30,6 +20,7 @@
 
     <body>
         <div class="row">
+            <div style="margin-right:20px;margin-left:80px;">
             <p align="right">
                 <b>ID: @item.IdQueja </b><br>
 
@@ -109,11 +100,12 @@
         </div>
 
         <div>
+                <div style="margin-right:20px;margin-left:80px;">
             <p>
                 <b>
-                    <br>DR. JOSÉ FELIX CEREZO VÉLEZ.<br>
+                    <br>ROSA ISELA SANCHEZ SOYA<br>
 
-                    PRESIDENTE DE LA COMISIÓN DE DERECHOS<br>
+                    PRESIDENTA DE LA COMISIÓN DE DERECHOS<br>
 
                     HUMANOS DEL ESTADO DE PUEBLA.
                 </b>
@@ -121,6 +113,7 @@
         </div>
 
         <div class="row">
+                <div style="margin-right:20px;margin-left:80px;">
             <p align="justify">
 
                 Con fundamento en los artículos 2, 4, 5, 13 fracciones I, II, III, IV y V, 25, 28 y demás relativos y aplicables de la Ley de la Comisión de Derechos Humanos del Estado, ante personal de este organismo y por mi propio derecho, acudo a denunciar actos u omisiones que a mi juicio constituyen violación a mis derechos humanos, en los términos que a continuación se expresan:
@@ -128,6 +121,7 @@
         </div>
 
         <div class="row">
+                    <div style="margin-right:20px;margin-left:80px;">
             <p align="justify">
                 <b>FECHA EN QUE OCURRIERON LOS HECHOS: </b> @item.FechaHechos<br>
                 <b><br>LUGAR EN QUE SE SUSCITARON LOS HECHOS: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
@@ -161,6 +155,7 @@
                 }
         </div>
          <div class="row">
+                        <div style="margin-right:20px;margin-left:80px;">
             <p>
                     <b>CIRCUNSTANCIAS BAJO LAS CUALES OCURRIERON LOS HECHOS:</b><br>
                     "@item.CircuntanciasHechos"
@@ -177,6 +172,7 @@
                 </div>
 
         <div class="row">
+                            <div style="margin-right:20px;margin-left:80px;">
             <p>
                 <b><br>AUTORIDAD(ES) INVOLUCRADA(S): <br><br> </b>
 
@@ -211,6 +207,7 @@
             </p>
         </div>
         <div class="row">
+                                <div style="margin-right:20px;margin-left:80px;">
             <p align="center" style="font-size:16px;">
                 <b>
                     <br><br><br><br> C.

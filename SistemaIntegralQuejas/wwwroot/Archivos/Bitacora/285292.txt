@@ -1,0 +1,512 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "MALJ000502HPLRPNA3",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Juan",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "Marquez",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "López",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "72310",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "Puebla",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "Del Valle",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "Puebla",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "Heroica Puebla de Zaragoza",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "JARDIN DEL ANGEL",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "35",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "2000-05-02",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "26",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "2215979264",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "juanmarquez020520@gmail.com",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "Masculino",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "Hombre",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "Mexicano",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "Si",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-05-20 15:08:33",
+    "Usuario": "JRML",
+    "IP": "201.139.97.36"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "id del escritoinicial",
+    "Antes": "-",
+    "Despues": "285292",
+    "FechaHora": "2026-05-20 15:08:51",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2026-05-20",
+    "FechaHora": "2026-05-20 15:08:51",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "15:08",
+    "FechaHora": "2026-05-20 15:08:51",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "lugar de los hechos",
+    "Antes": "-",
+    "Despues": "Acateno-Puebla",
+    "FechaHora": "2026-05-20 15:08:51",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Sabe dirección completa",
+    "Antes": "-",
+    "Despues": "NO",
+    "FechaHora": "2026-05-20 15:08:51",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Escrito Inicial de queja",
+    "Tipo": "Alta",
+    "Campo": "Circunstancias Hechos",
+    "Antes": "-",
+    "Despues": "prueba 6",
+    "FechaHora": "2026-05-20 15:08:51",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Lugar",
+    "Antes": "-",
+    "Despues": "Acajete-Puebla",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Día",
+    "Antes": "-",
+    "Despues": "3",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Mes",
+    "Antes": "-",
+    "Despues": "mayo",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Año",
+    "Antes": "-",
+    "Despues": "2026",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Abogado(a)",
+    "Antes": "-",
+    "Despues": "Juan Rodolfo Márquez López",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Inicio",
+    "Antes": "-",
+    "Despues": "03:09 p. m.",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación",
+    "Antes": "-",
+    "Despues": "cdh",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Agraviado(a) / Quejoso(a)",
+    "Antes": "-",
+    "Despues": "Juan Marquez López",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Consentimiento",
+    "Antes": "-",
+    "Despues": "SI",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Origen de Peticionario(a)",
+    "Antes": "-",
+    "Despues": "Acajete-Puebla",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Identificación",
+    "Antes": "-",
+    "Despues": "INE",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Fecha de Hechos",
+    "Antes": "-",
+    "Despues": "2026-05-20",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Hechos",
+    "Antes": "-",
+    "Despues": "03:08 p. m.",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Ubicación de Hechos",
+    "Antes": "-",
+    "Despues": "cdhp",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hechos",
+    "Antes": "-",
+    "Despues": "prueba 6 ",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  },
+  {
+    "Apartado": "Acta Circunstanciada",
+    "Tipo": "Alta",
+    "Campo": "Hora de Termino",
+    "Antes": "-",
+    "Despues": "03:09 p. m.",
+    "FechaHora": "2026-05-20 15:09:40",
+    "Usuario": "JRML",
+    "IP": "::1"
+  }
+]

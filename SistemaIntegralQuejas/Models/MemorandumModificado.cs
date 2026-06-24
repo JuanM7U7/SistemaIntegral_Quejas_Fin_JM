@@ -8,7 +8,10 @@
         public List<Usuario> lstUsuario { get; set; }
         public List<ExpedienteTurno> lstExpturnados { get; set; }
 
+        public Usuario DirectQuejas { get; set; }
+
     }
+
 }
 
 

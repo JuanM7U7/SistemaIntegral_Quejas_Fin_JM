@@ -56,6 +56,19 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN_DQOT,VA_DQOT,ADMIN_DQOT_ESPECIAL")]
+        public IActionResult Index_ADMIN_DQOT_ESPECIAL()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("~/Views/Expediente/vistaCalificacion.cshtml");
+            }
+            else
+            {
+                return RedirectToAction("IniciarSesion", "Login");
+            }
+        }
+
         public IActionResult Privacy()
 		{
 			return View();

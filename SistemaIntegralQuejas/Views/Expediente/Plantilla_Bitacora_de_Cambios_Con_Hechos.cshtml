@@ -167,7 +167,7 @@
 
     .pequenioh {
         width: 12.5%;
-        float:left!important;
+        float: left !important;
     }
 
     .grande {
@@ -179,7 +179,7 @@
         page-break-after: always;
     }
 
-    .hojapapa{
+    .hojapapa {
         height: 100%;
         width: 100%;
         float: left
@@ -192,17 +192,17 @@
         margin-bottom: 0px;
         /* background-color:lightgray;*/
         page-break-after: always;
-        margin-bottom:inherit;
+        margin-bottom: inherit;
     }
-    .hoja
-    {
-        margin-top:0px;
+
+    .hoja {
+        margin-top: 0px;
         width: 1250px;
-        height:60%;
+        height: 60%;
         float: left;
         /*background-color:lightyellow;*/
         display: block;
-        background-color:lightgoldenrodyellow
+        background-color: lightgoldenrodyellow
     }
 
     .hoja2 {
@@ -213,19 +213,18 @@
         float: left;
         /* background-color:lightblue;*/
         /* background-color: lightgray;*/
-        align-self:start;
+        align-self: start;
     }
-
 
 </style>
 
 <script>
-    $(".hoja").css('height','20% !important')
+    $(".hoja").css('height', '20% !important')
 </script>
 <body>
     @foreach (var itemp in Model)
     {
-        <div class="container receipt-wrap" id="receipt-wrap" >
+        <div class="container receipt-wrap" id="receipt-wrap">
             <div class="row rowpapa hojapapa">
                 <div class="receipt-main col-xs-12 col-sm-12 col-md-12 hojauno">
                     <div class="row">
@@ -263,54 +262,67 @@
                                         <th>IP</th>
                                     </tr>
                                 </thead>
+
+                                @using System.Linq  @*Solución al problema de las bitacoras parte 1*@
+
                                 <tbody>
-                                    @foreach (var itemuser in @itemp.biracambios)
+                                    @if (itemp?.biracambios != null && itemp.biracambios.Any())
                                     {
-                                        if ( (itemuser.Campo == "Circunstancias Hechos") || (itemuser.Campo == "Hechos") )
+                                        foreach (var itemuser in itemp.biracambios)
                                         {
-                                            if ((itemuser.Despues != null))
+                                            var campo = itemuser?.Campo ?? string.Empty;
+                                            var despues = itemuser?.Despues;
+                                            var antes = itemuser?.Antes;
+
+                                            if (campo == "Circunstancias Hechos" || campo == "Hechos")
                                             {
-                                                <tr>
-                                                    <td class="pequenio">@itemuser.Apartado</td>
-                                                    <td class="pequenio">@itemuser.Tipo</td>
-                                                    <td class="pequenio">@itemuser.Campo</td>
-                                                    <td class="pequenio">Consultar Anexo Hechos</td>
-                                                    <td class="pequenio">Consultar Anexo Hechos</td>
-                                                    <td class="grande">@itemuser.FechaHora</td>
-                                                    <td class="pequenio">@itemuser.Usuario</td>
-                                                    <td class="pequenio">@itemuser.IP</td>
-                                                </tr>
+                                                if (!string.IsNullOrEmpty(despues))
+                                                {
+                                                    <tr>
+                                                        <td class="pequenio">@itemuser?.Apartado</td>
+                                                        <td class="pequenio">@itemuser?.Tipo</td>
+                                                        <td class="pequenio">@campo</td>
+                                                        <td class="pequenio">Consultar Anexo Hechos</td>
+                                                        <td class="pequenio">Consultar Anexo Hechos</td>
+                                                        <td class="grande">@itemuser?.FechaHora</td>
+                                                        <td class="pequenio">@itemuser?.Usuario</td>
+                                                        <td class="pequenio">@itemuser?.IP</td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td class="pequenio">@itemuser?.Apartado</td>
+                                                        <td class="pequenio">@itemuser?.Tipo</td>
+                                                        <td class="pequenio">@campo</td>
+                                                        <td class="pequenio">Sin información Registrada</td>
+                                                        <td class="pequenio">Sin información Registrada</td>
+                                                        <td class="grande">@itemuser?.FechaHora</td>
+                                                        <td class="pequenio">@itemuser?.Usuario</td>
+                                                        <td class="pequenio">@itemuser?.IP</td>
+                                                    </tr>
+                                                }
                                             }
                                             else
                                             {
-
                                                 <tr>
-                                                    <td class="pequenio">@itemuser.Apartado</td>
-                                                    <td class="pequenio">@itemuser.Tipo</td>
-                                                    <td class="pequenio">@itemuser.Campo</td>
-                                                    <td class="pequenio">Sin información Registrada</td>
-                                                    <td class="pequenio">Sin información Registrada</td>
-                                                    <td class="grande">@itemuser.FechaHora</td>
-                                                    <td class="pequenio">@itemuser.Usuario</td>
-                                                    <td class="pequenio">@itemuser.IP</td>
+                                                    <td class="pequenio">@itemuser?.Apartado</td>
+                                                    <td class="pequenio">@itemuser?.Tipo</td>
+                                                    <td class="pequenio">@campo</td>
+                                                    <td class="pequenio">@antes</td>
+                                                    <td class="pequenio">@despues</td>
+                                                    <td class="grande">@itemuser?.FechaHora</td>
+                                                    <td class="pequenio">@itemuser?.Usuario</td>
+                                                    <td class="pequenio">@itemuser?.IP</td>
                                                 </tr>
                                             }
                                         }
-                                        else
-                                        {
-                                            <tr>
-                                                <td class="pequenio">@itemuser.Apartado</td>
-                                                <td class="pequenio">@itemuser.Tipo</td>
-                                                <td class="pequenio">@itemuser.Campo</td>
-                                                <td class="pequenio">@itemuser.Antes</td>
-                                                <td class="pequenio">@itemuser.Despues</td>
-                                                <td class="grande">@itemuser.FechaHora</td>
-                                                <td class="pequenio">@itemuser.Usuario</td>
-                                                <td class="pequenio">@itemuser.IP</td>
-                                            </tr>
-                                        }
-
-
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="8" class="pequenio">NO HAY CAMBIOS REGISTRADOS.</td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -320,7 +332,7 @@
                 <div class="hojanulo"></div>
                 <div class="hoja2">
                     <div class="cedula-completo page-break ">
-                    <br><h5 class="titulodoc">BITÁCORA DE CAMBIOS. ANEXO DE HECHOS</h5>
+                        <br><h5 class="titulodoc">BITÁCORA DE CAMBIOS. ANEXO DE HECHOS</h5>
                     </div>
                     <div class="cedula-completo1">
                         <h5 class="titulodocsec">MOVIMIENTOS REALIZADOS</h5>
@@ -336,50 +348,57 @@
                                     <th>IP</th>
                                 </tr>
                             </thead>
+
+                            @using System.Linq  @*Solución al problema de las bitacoras parte 2*@
+
                             <tbody>
-                                @foreach (var itemuser in @itemp.biracambios)
+                                @if (itemp?.biracambios != null && itemp.biracambios.Any())
                                 {
-                                    if ((itemuser.Campo.Contains("Circunstancias Hechos")) || (itemuser.Campo == "Hechos"))
+                                    foreach (var itemuser in itemp.biracambios)
                                     {
-                                        <tr>
-                                            <td class="pequenio">@itemuser.Apartado</td>
-                                            <td class="pequenio">@itemuser.Tipo</td>
-                                            <td class="pequenio">@itemuser.Campo</td>
-                                            <td class="pequenio">@itemuser.FechaHora</td>
-                                            <td class="pequenio">@itemuser.Usuario</td>
-                                            <td class="pequenio">@itemuser.IP</td>
+                                        var campo = itemuser?.Campo ?? string.Empty;
 
-                                        </tr>
-                                        <tr></tr>
-                                        <tr>
-                                            <td class="pequenioh" colspan="6" style=""><bold></bold> @itemuser.Despues</td>
-
-
-                                        </tr>
-                                        <tr></tr>
+                                        if (campo.Contains("Circunstancias Hechos") || campo == "Hechos")
+                                        {
+                                            <tr>
+                                                <td class="pequenio">@itemuser?.Apartado</td>
+                                                <td class="pequenio">@itemuser?.Tipo</td>
+                                                <td class="pequenio">@campo</td>
+                                                <td class="grande">@itemuser?.FechaHora</td>
+                                                <td class="pequenio">@itemuser?.Usuario</td>
+                                                <td class="pequenio">@itemuser?.IP</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">@itemuser?.Despues</td>
+                                            </tr>
+                                        }
                                     }
-                                   
-
                                 }
-                                
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="pequenio">NO HAY MOVIMIENTOS DEL ANEXO DE HECHOS.</td>
+                                    </tr>
+                                }
                             </tbody>
+
                         </table>
                     </div>
 
-               </div>
-
                 </div>
+
             </div>
-            @* <div class="datosfinales">
-                <div class="left">
-                    <p>@itemp.abogado</p>
-                    <p><b>VISITADOR/A ADJUNTO/A</b></p>
+        </div>
+        @* <div class="datosfinales">
+    <div class="left">
+    <p>@itemp.abogado</p>
+    <p><b>VISITADOR/A ADJUNTO/A</b></p>
 
-                </div>
-                <div class="rigth">
-                    <p>@itemp.visitador</p>
-                    <p><b>@itemp.visitaduría</b></p>
-                </div>
-            </div> *@
+    </div>
+    <div class="rigth">
+    <p>@itemp.visitador</p>
+    <p><b>@itemp.visitaduría</b></p>
+    </div>
+    </div> *@
     }
 </body>

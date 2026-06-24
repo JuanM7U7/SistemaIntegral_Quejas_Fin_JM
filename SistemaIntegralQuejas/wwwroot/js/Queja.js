@@ -77,7 +77,8 @@ function changeselects() {
         //CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito);
     });
 
-    $('#select_tipoescritoc').on('change', function () {
+    $('#
+    ').on('change', function () {
         tipoescrito = this.value;
         // CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito);
     });

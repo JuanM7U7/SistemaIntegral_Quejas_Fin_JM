@@ -1,0 +1,292 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo de Persona",
+    "Antes": "-",
+    "Despues": "Física",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CURP",
+    "Antes": "-",
+    "Despues": "NO PROPORCIONADO",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nombre",
+    "Antes": "-",
+    "Despues": "Prueba 0.3",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Paterno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Apellido Materno",
+    "Antes": "-",
+    "Despues": "No Proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "CP",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Colonia",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Municipio",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ciudad/Localidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Calle",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Exterior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "No. Interior",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Fecha Nacimiento",
+    "Antes": "-",
+    "Despues": "",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Edad",
+    "Antes": "-",
+    "Despues": "0",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Teléfono",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Correo Electrónico",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Tipo Usuario",
+    "Antes": "-",
+    "Despues": "Agraviado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Sexo",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Género",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Nacionalidad",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "¿Sabe leer y escribir?",
+    "Antes": "-",
+    "Despues": "No proporcionado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Escolaridad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Estado Conyugal",
+    "Antes": "-",
+    "Despues": "Se desconoce",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Ocupación",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Discapacidad",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Grupo social",
+    "Antes": "-",
+    "Despues": "No especificado",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Lengua indigena",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Alta",
+    "Campo": "Violencia a la mujer",
+    "Antes": "-",
+    "Despues": "No",
+    "FechaHora": "2026-05-27 11:18:56",
+    "Usuario": "LEBG",
+    "IP": ""
+  }
+]

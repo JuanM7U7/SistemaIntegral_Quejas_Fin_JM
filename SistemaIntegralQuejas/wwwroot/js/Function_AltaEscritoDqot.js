@@ -12,7 +12,7 @@ let GrupoSocial = "";
 let TipoViolencia = "";
 let escolaridadInicio = '';
 let escolaridadFinal = '';
-let contadorSelect = 0;
+//let contadorSelect = 0;
 let peticionariosGuardados = [];
 let peticionariosGuardadosok = [];
 let SelAutoridad = [];
@@ -22,39 +22,44 @@ let idqueja = "";
 let crearformularios = 0;
 let Morales = "";
 var ipAcceso = '';
+let tipoPeticionarioSeleccionado = "";
 
 (function ($) {
     "use strict"
 
     fetchGet("Expediente/Llenarselects_tevi", "json", (data) => {
-        //console.log(data)
         let res = data.tipoescrito;
         let viainterposicion = data.viainterposicion;
+
         console.log(res)
         console.log(viainterposicion)
 
-        let html = '<select id="select_tipoescritoc" class="form-control form-control-lg"> ';
+        // CORREGIDO: Se agrega la opción por defecto
+        let html = '<select id="select_tipoescritoc" class="form-control form-control-lg">';
+        html += '<option value="">Seleccione una opción</option>'; // Esta línea estaba faltando
         for (let i = 0; i < res.length; i++) {
-            html += `
-                <option value="${res[i].idSelect}">${res[i].descripcion}</option>
-            `;
+            html += `<option value="${res[i].idSelect}">${res[i].descripcion}</option>`;
         }
         html += "</select>";
-        $("#select_tipoescrito").append(html)
+        $("#select_tipoescrito").empty().append(html); // Se recomienda usar .empty() antes de .append()
 
-
-        let htmld = '<select id="select_viainterposicionc" class="form-control form-control-lg"> <option value="">Seleccione una opción</option>';
+        let htmld = '<select id="select_viainterposicionc" class="form-control form-control-lg">';
+        htmld += '<option value="">Seleccione una opción</option>';
         for (let v = 0; v < viainterposicion.length; v++) {
-            htmld += `
-                <option value="${viainterposicion[v].idSelect}">${viainterposicion[v].descripcion}</option>
-            `;
+            htmld += `<option value="${viainterposicion[v].idSelect}">${viainterposicion[v].descripcion}</option>`;
         }
         htmld += "</select>";
-        $("#select_viainterposicion").append(htmld)
+        $("#select_viainterposicion").empty().append(htmld);
+
+        // --- Evento: cuando cambia la vía, reiniciar tipo de escrito --- JM --------------------------------------
+        $("#select_viainterposicionc").on("change", function () {
+            // Reinicia el select de tipo de escrito al valor por defecto
+            $("#select_tipoescritoc").val("");
+        });
 
         changeselects();
+    });
 
-    })
 
     CreaSelect("selectTipoQueja", "multiple='multiple'", arregloDocumentos(), "#select_Documentos_LLenar");
     $("#selectTipoQueja").select2();
@@ -87,77 +92,13 @@ var ipAcceso = '';
     fetchGet("Expediente/SelectMorales", "json", (data) => { Morales = data.tipomorales; })
 
 
-
-
-    $(document).on('change', '#selectTipoQueja', function (event) {
-
-        console.log($("#selectTipoQueja").val());
-        var arreTemas = [];
-        arreTemas = $("#selectTipoQueja").val();
-        var TemasSele = arreTemas.toString();
-        console.log(TemasSele);
-
-        if (crearformularios == 0) {
-
-            CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito, arreTemas);
-            crearformularios = 1;
-        } else {
-
-            console.log("Entró a la creación del formulario de quejas")
-            var visibilidadPestaniaRDP = false;
-            var visibilidadPestaniaAQ = false;
-            var visibilidadPestañaAI = false;
-            var visibilidadPestañaAC = false;
-            var arreglo1 = [];
-            let arregloSelects = arreTemas;
-
-            if (arregloSelects.indexOf("1") >= 0) { visibilidadPestaniaRDP = true } else { visibilidadPestaniaRDP = false }
-            if (arregloSelects.indexOf("2") >= 0) { visibilidadPestañaAI = true } else { visibilidadPestañaAI = false }
-            if (arregloSelects.indexOf("3") >= 0) { visibilidadPestañaAC = true } else { visibilidadPestañaAC = false }
-            if (arregloSelects.indexOf("4") >= 0) { visibilidadPestaniaAQ = true } else { visibilidadPestaniaAQ = false }
-            $("#tab4").css('display', 'none');
-
-            if (visibilidadPestaniaRDP) {
-                console.log("RDP");
-                $("#tab1").css('display', 'block');
-            } else {
-                $("#tab1").css('display', 'none');
-            }
-
-            if (visibilidadPestañaAI) {
-                let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
-                //$('#Input_autoridades1').select2();
-                $("#tab2").css('display', 'block');
-                console.log($('#divformularioEscritoInicial'));
-            } else {
-                $("#tab2").css('display', 'none');
-            }
-            if (visibilidadPestañaAC) {
-                let iformActaCircunstanciada = formActacircunstanciada2c();
-                console.log("Se ve AC");
-                $("#tab3").css('display', 'block');
-            } else {
-                $("#tab3").css('display', 'none');
-            }
-
-            if (visibilidadPestaniaAQ) {
-
-                console.log("Se ve Aq");
-                $("#tab4").css('display', 'block');
-            } else {
-                $("#tab4").css('display', 'none');
-            }
-
-
-
-
-
-        }
-
-    });
-    //CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito);
-
     $(document).on('click', "#save", function () { /*Guardado Escrito Inicial 2023*/
+
+        let btn = $(this);
+
+        if (btn.prop('disabled')) return; // evita doble ejecución
+
+        btn.prop('disabled', true); // 🔒 bloquea botón
 
         let autoridades = document.querySelectorAll('.arrInput_nombres');
         let npmax = '';
@@ -312,6 +253,2203 @@ var ipAcceso = '';
 
     });
 
+    // David 16 06 2025 Añadi un metodo para el guardado unicamente del formulario de orientacion
+    /// Modificacion 26 06 2025: Ajuste a los cambios en los campos del formulario
+    /// Modificacion Cris y David 15 07 2025: Ajuste a los cambios en los campos del formulario
+    /// Modificacion Cris 28.07.2025 Ajuste a los cambios en los campos del formulario
+
+    $(document).on('click', '#saveOrientacion', function () {
+        // Deshabilitar el botón 
+        $('#saveOrientacion').prop('disabled', true);
+        // Validación general antes de iniciar
+        if (
+            !$('#Input_Peticionario').val() ||
+            !$('#Input_ID').val() ||
+            !$('#ExplicacionOrientacion').val() ||
+            !$('#Input_LugarHechos').val() ||
+            !$('#Input_FechaRecepcion').val() ||
+            !$('#Input_HoraRecepcion').val() ||
+            !$('#sedeRegistro').val()
+        ) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Para guardar debe llenar todos los datos necesarios',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        // Validacion campos no requeridos pero vacios - agrega un default
+        let defaultOrientacionText = 'No proporcionado';
+        if (
+            !$('#Input_autoridadresp').val() ||
+            !$('#Input_institucion').val()
+        ) {
+            $('#Input_autoridadresp').val(defaultOrientacionText);
+            $('#Input_institucion').val(defaultOrientacionText);
+        }
+
+        let peticionarios = $('.linksfrmpetit');
+        let totalPeticionarios = peticionarios.length;
+
+        if (totalPeticionarios === 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'No hay peticionarios para guardar',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return;
+        }
+
+        // Obtenemos el peticionario seleccionado en el select de orientación
+        let peticionarioSeleccionado = $('#Input_Peticionario').find('option:selected').text().trim();
+
+        let peticionariosData = [];
+
+        for (let i = 1; i <= totalPeticionarios; i++) {
+            let dataOrientacionInd = new FormData();
+
+            // Campos generales
+            dataOrientacionInd.append('Input_ID', $('#Input_ID').val() || '');
+            dataOrientacionInd.append('Input_folio', $('#Input_folio').val() || '');
+            dataOrientacionInd.append('Input_LugarHechos', $('#Input_LugarHechos').val() || '');
+            dataOrientacionInd.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text() || '');
+            dataOrientacionInd.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val() || '');
+            dataOrientacionInd.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val() || '');
+            dataOrientacionInd.append('Input_autoridadresp', $('#Input_autoridadresp').val() || '');
+            dataOrientacionInd.append('Input_institucion', $('#Input_institucion').val() || '');
+            dataOrientacionInd.append('ExplicacionOrientacion', $('#ExplicacionOrientacion').val() || '');
+            dataOrientacionInd.append('sedeRegistro', $('#sedeRegistro').val() || '');
+            dataOrientacionInd.append('sederegistro_desc', $('#sedeRegistro option:selected').text() || '');
+            dataOrientacionInd.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text() || '');
+            dataOrientacionInd.append('usuarioL', $('#usuarioL').text() || '');
+
+            // Obtener id complemento peticionario para buscar nombre en peticionariosGuardados
+            let idComplemento = $(`#idcomplementopet${i}`).val();
+
+            // Buscar el peticionario en arreglo guardado
+            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
+
+            let petName = pet ? pet.nombrepeti.trim() : '';
+            if (!petName) {
+                // Si por alguna razón no existe, tratar de obtenerlo desde el select (fallback)
+                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim() || '';
+            }
+
+            dataOrientacionInd.append('Input_Peticionario', petName);
+
+            let idPersona = pet ? pet.idpeticionario : '';  // O ajusta según tu estructura real
+            dataOrientacionInd.append('id_personas', idPersona);
+
+            // Aquí agregamos el campo documento
+            if (petName === peticionarioSeleccionado) {
+                dataOrientacionInd.append('documento', 'SI');
+            } else {
+                dataOrientacionInd.append('documento', 'NO');
+            }
+
+            // Edad
+            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
+            // Si 'edad' es "No proporcionado" asigna un nulo
+            if (edad === "No proporcionado" || edad.trim() === "") {
+                edad = null;
+            } else {
+                edad = parseInt(edad) || null; // Verifica que sea un entero
+            }
+            dataOrientacionInd.append('edad', edad);
+
+            // Sexo
+            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
+            let sexoTexto = '';
+            if (sexoId === '1') sexoTexto = 'Masculino';
+            else if (sexoId === '2') sexoTexto = 'Femenino';
+            else if (sexoId === '3') sexoTexto = 'No proporcionado';
+            dataOrientacionInd.append('sexo', sexoTexto);
+
+            // Género
+            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
+            if (genero === 'Otro') {
+                let generoOtro = ($(`#ogenero_petit-frmDatosPersonales${i}`).val() || '').trim();
+                genero = generoOtro.length > 0 ? generoOtro : '';
+            }
+            dataOrientacionInd.append('genero', genero);
+
+            // Tipo usuario
+            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
+            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
+            dataOrientacionInd.append('tipo_usuario', tipoUsuario);
+
+            // Solo el primer peticionario incluye el archivo PDF
+            if (i === 1) {
+                let archivo = $('#pdfEscritoi')[0]?.files[0];
+                if (archivo) {
+                    dataOrientacionInd.append('pdfEscritoi', archivo);
+                }
+            }
+
+            // DEBUG: Mostrar datos en consola
+            for (let pair of dataOrientacionInd.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+
+            peticionariosData.push(dataOrientacionInd);
+        }
+
+        // Variables para control de respuestas
+        let enviados = 0;
+        let errores = 0;
+
+        peticionariosData.forEach(function (formData) {
+            $.ajax({
+                type: 'POST',
+                url: '/AltaExpediente/GuardarOrientacion',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    console.log('Respuesta del servidor:', res);
+                    enviados++;
+                    if (res.status !== true) errores++;
+                    console.warn('Error en registro individual:', res);
+                    if (enviados === peticionariosData.length) {
+                        if (errores === 0) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Todos los datos se guardaron correctamente',
+                                showConfirmButton: false,
+                                timer: 2500
+                            });
+                            frmcompleto("#tab2");
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Algunos registros no se guardaron correctamente',
+                                text: 'Verifica la información ingresada',
+                                timer: 3000
+                            });
+                        }
+                    }
+                },
+                error: function () {
+                    errores++;
+                    enviados++;
+                    if (enviados === peticionariosData.length) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de red',
+                            text: 'Hubo errores al guardar uno o más registros.'
+                        });
+                    }
+                }
+            });
+        });
+    });
+    //bloque para actualizar e insertar orientaciones
+    //metodo update orientacion 21/10/25
+    $(document).on('click', '#updateOrientacion', function () {
+        let tablaReferencia = "ORIENTACION";
+        // Validación general
+        if (
+
+            !$('#Input_ID').val() ||
+            !$('#ExplicacionCedula').val() ||
+            !$('#Input_LugarHechos_C').val() ||
+            !$('#Input_FechaRecepcion_C').val() ||
+            !$('#Input_HoraRecepcion_C').val() ||
+            !$('#sedeRegistro_C').val()
+        ) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Debe llenar todos los campos obligatorios para actualizar',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        // Valores por defecto si están vacíos
+        let defaultText = 'No proporcionado';
+        if (!$('#Input_autoridadresp_C').val()) $('#Input_autoridadresp_C').val(defaultText);
+        if (!$('#Input_institucion_C').val()) $('#Input_institucion_C').val(defaultText);
+
+        let formData = new FormData();
+
+        // Campos del formulario
+        formData.append('tablaReferencia', 'ORIENTACION');
+        formData.append('Input_ID', $('#Input_ID').val());
+        formData.append('Input_folio_C', $('#Input_folio_C').val());
+        formData.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        formData.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        formData.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        formData.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        formData.append('Input_autoridadresp_C', $('#Input_autoridadresp_C').val());
+        formData.append('Input_institucion_C', $('#Input_institucion_C').val());
+        formData.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        formData.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        formData.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        formData.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text() || '');
+        formData.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        formData.append('Input_Peticionario', $('#Input_Peticionario_C option:selected').text().trim());
+
+        // Documento
+        formData.append('documento', 'SI');
+
+        // Datos personales
+        let edad = $('#edad_petit-frmDatosPersonales1').val();
+        formData.append('edad', edad || '');
+        let sexo = $('input[name="radsexo_petit-frmDatosPersonales1"]:checked').val();
+        formData.append('sexo', sexo || '');
+        let genero = $('#genero_petit-frmDatosPersonales1').val();
+        if (genero === 'Otro') {
+            let otroGenero = $('#ogenero_petit-frmDatosPersonales1').val().trim();
+            genero = otroGenero.length > 0 ? otroGenero : '';
+        }
+        formData.append('genero', genero || '');
+        let tipoUsuario = $('input[name="qatu_petit-frmDatosPersonales1"]:checked').val();
+        formData.append('tipo_usuario', tipoUsuario === 'Peticionario' ? 'Quejoso' : tipoUsuario || '');
+
+        // ID persona
+        let idPersonas = $('#id_personas').val();
+        if (idPersonas) {
+            formData.append('id_personas', idPersonas);
+        } else {
+            formData.append('id_personas', 0);  // pendiente
+        }
+
+        // Archivo PDF
+        // modificado
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                formData.append('pdfEscritoi', archivos[i]);
+            }
+        }
+
+
+        console.log("PRUEBAS DATOS ORIENTACION", formData);
+        // Enviar al backend
+        fetchPost("AltaExpediente/GuardarEditarCedula", "json", formData, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+    //METODO INSERTAR ORIENTACION
+    $(document).on('click', '#insertOrientacion', function () {
+        let tablaReferencia = "ORIENTACION";
+        // Validación general
+        if (
+
+            !$('#Input_ID').val() ||
+            !$('#ExplicacionCedula').val() ||
+            !$('#Input_LugarHechos_C').val() ||
+            !$('#Input_FechaRecepcion_C').val() ||
+            !$('#Input_HoraRecepcion_C').val() ||
+            !$('#sedeRegistro_C').val()
+        ) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Debe llenar todos los campos obligatorios para actualizar',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        // Valores por defecto si están vacíos
+        let defaultText = 'No proporcionado';
+        if (!$('#Input_autoridadresp_C').val()) $('#Input_autoridadresp_C').val(defaultText);
+        if (!$('#Input_institucion_C').val()) $('#Input_institucion_C').val(defaultText);
+
+        let formData = new FormData();
+
+        // Campos del formulario
+        formData.append('tablaReferencia', 'ORIENTACION');
+        formData.append('Input_ID', $('#Input_ID').val());
+        formData.append('Input_folio_C', $('#Input_folio_C').val());
+        formData.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        formData.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        formData.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        formData.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        formData.append('Input_autoridadresp_C', $('#Input_autoridadresp_C').val());
+        formData.append('Input_institucion_C', $('#Input_institucion_C').val());
+        formData.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        formData.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        formData.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        formData.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text() || '');
+        formData.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        formData.append('Input_Peticionario', $('#Input_Peticionario option:selected').text().trim());
+        formData.append('via_interposicion', $('#via_interposicion').val());
+
+        // Documento
+        formData.append('documento', 'SI');
+
+        // Datos personales
+        formData.append('edad', $('#edad').val() || 0);
+        formData.append('genero', $('#genero').val() || '');
+        formData.append('tipo_usuario', $('#tipo_usuario').val() || '');
+        formData.append('sexo', $('#sexo').val() || '');
+
+        // ID persona
+        let idPersonas = $('#id_personas').val();
+        if (idPersonas) {
+            formData.append('id_personas', idPersonas);
+        } else {
+            formData.append('id_personas', 0);  // pendiente
+        }
+
+        // Archivo PDF
+        // modificado
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                formData.append('pdfEscritoi', archivos[i]);
+            }
+        }
+
+
+        console.log("PRUEBAS DATOS ORIENTACION", formData);
+        // Enviar al backend
+        fetchPost("AltaExpediente/InsertarCedula", "json", formData, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+    //fin bloque
+
+
+
+    /// Cris y David 17 06 2025: Metodo guardado de Alta de Remision
+    /// Modificacion 26 06 2025: Ajuste a los cambios en los campos del formulario
+    /// Modificacion David 17 07 2025: Cambio en la info del formdata, pdf adjunto y campos requeridos
+
+    $(document).on('click', '#saveRemision', function () {
+        // Validación general
+        if (
+            !$('#Input_Peticionario').val() ||
+            !$('#Input_ID').val() ||
+            !$('#Input_LugarHechos').val() ||
+            !$('#Input_FechaRecepcion').val() ||
+            !$('#Input_HoraRecepcion').val() ||
+            !$('#nomAbogado2').val() ||
+            !$('#Input_numOficio').val() ||
+            !$('#Input_institucion').val() ||
+            !$('#ExplicacionRemision').val() ||
+            !$('#sedeRegistro').val()
+        ) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Para guardar debe llenar todos los datos necesarios',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            frmincompleto("#tab5");
+            return;
+        }
+
+        let peticionarios = $('.linksfrmpetit');
+        let totalPeticionarios = peticionarios.length;
+
+        if (totalPeticionarios === 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'No hay peticionarios para guardar',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return;
+        }
+
+        let peticionarioSeleccionado = $('#Input_Peticionario option:selected').text().trim();
+
+        let peticionariosData = [];
+
+        for (let i = 1; i <= totalPeticionarios; i++) {
+            let formData = new FormData();
+
+            // Datos generales del formulario
+            formData.append('Input_ID', $('#Input_ID').val());
+            formData.append('Input_folio', $('#Input_folio').val());
+            formData.append('Input_LugarHechos', $('#Input_LugarHechos').val());
+            formData.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text());
+            formData.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val());
+            formData.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val());
+            formData.append('Input_numOficio', $('#Input_numOficio').val());
+            formData.append('Input_institucion', $('#Input_institucion').val());
+            formData.append('nomAbogado', $('#nomAbogado2 option:selected').text());
+            formData.append('ExplicacionRemision', $('#ExplicacionRemision').val());
+            formData.append('sedeRegistro', $('#sedeRegistro').val());
+            formData.append('sederegistro_desc', $('#sedeRegistro option:selected').text());
+            formData.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+            formData.append('usuarioL', $('#usuarioL').text());
+
+            // Peticionario
+            let idComplemento = $(`#idcomplementopet${i}`).val();
+            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
+            let petName = pet ? pet.nombrepeti.trim() : '';
+            if (!petName) {
+                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim();
+            }
+
+            formData.append('Input_Peticionario', petName);
+            formData.append('id_personas', pet ? pet.idpeticionario : '');
+
+            // Documento
+            if (petName === peticionarioSeleccionado) {
+                formData.append('documento', 'SI');
+            } else {
+                formData.append('documento', 'NO');
+            }
+
+            // Datos personales
+            // Edad
+            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
+            // Si 'edad' es "No proporcionado" asigna un nulo
+            if (edad === "No proporcionado" || edad.trim() === "") {
+                edad = null;
+            } else {
+                edad = parseInt(edad) || null; // Verifica que sea un entero
+            }
+            formData.append('edad', edad);
+
+            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
+            let sexoTexto = '';
+            if (sexoId === '1') sexoTexto = 'Masculino';
+            else if (sexoId === '2') sexoTexto = 'Femenino';
+            else sexoTexto = 'No proporcionado';
+            formData.append('sexo', sexoTexto);
+
+            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
+            if (genero === 'Otro') {
+                let otroGenero = $(`#ogenero_petit-frmDatosPersonales${i}`).val().trim();
+                genero = otroGenero || '';
+            }
+            formData.append('genero', genero);
+
+            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
+            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
+            formData.append('tipo_usuario', tipoUsuario);
+
+            // PDF solo para el primer peticionario
+            if (i === 1) {
+                let archivo = $('#pdfEscritoi')[0]?.files[0];
+                if (archivo) {
+                    formData.append('pdfEscritoi', archivo);
+                }
+            }
+
+            peticionariosData.push(formData);
+        }
+
+        // Enviar los datos
+        let enviados = 0;
+        let errores = 0;
+
+        peticionariosData.forEach(function (formData) {
+            $.ajax({
+                type: 'POST',
+                url: '/AltaExpediente/GuardarRemision',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    enviados++;
+                    if (!res.status) errores++;
+
+                    if (enviados === peticionariosData.length) {
+                        if (errores === 0) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Todos los datos se guardaron correctamente',
+                                showConfirmButton: false,
+                                timer: 2500
+                            });
+                            frmcompleto("#tab6");
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Algunos registros no se guardaron correctamente',
+                                text: 'Verifica la información ingresada',
+                                timer: 3000
+                            });
+                        }
+                    }
+                },
+                error: function () {
+                    errores++;
+                    enviados++;
+                    if (enviados === peticionariosData.length) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de red',
+                            text: 'Hubo errores al guardar uno o más registros.'
+                        });
+                    }
+                }
+            });
+        });
+    });
+    //bloque para actualizar e insertar remisiones
+    //INSERTAR REMISION 08/12/2025
+    $(document).on('click', '#insertRemision', function () {
+        let tablaReferencia = "REMISION";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#nomAbogado4', nombre: 'Nombre de la persona remitente' },
+            { id: '#Input_numOficio_C', nombre: 'Número de oficio' },
+            { id: '#Input_institucion_C', nombre: 'Institución' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación de la Remisión' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        let remisionDatos = new FormData();
+        // Campos del formulario
+        remisionDatos.append('tablaReferencia', 'REMISION');
+        remisionDatos.append('Input_ID', $('#Input_ID').val());
+        remisionDatos.append('Input_folio_C', $('#Input_folio_C').val());
+        remisionDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        remisionDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        remisionDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        remisionDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        remisionDatos.append('Input_numOficio_C', $('#Input_numOficio_C').val());
+        remisionDatos.append('Input_institucion_C', $('#Input_institucion_C').val());
+        remisionDatos.append('nomAbogado', $('#nomAbogado4 option:selected').text());
+        remisionDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        remisionDatos.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        remisionDatos.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        remisionDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        remisionDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        remisionDatos.append('Input_Peticionario', $('#Input_Peticionario option:selected').text().trim());
+        remisionDatos.append('via_interposicion', $('#via_interposicion').val());
+
+        // Documento
+        remisionDatos.append('documento', 'SI');
+
+        // Datos personales
+        remisionDatos.append('edad', $('#edad').val() || '');
+        remisionDatos.append('genero', $('#genero').val() || '');
+        remisionDatos.append('tipo_usuario', $('#tipo_usuario').val() || '');
+        remisionDatos.append('sexo', $('#sexo').val() || '');
+
+        // ID persona
+        let idPersonas = $('#id_personas').val();
+        if (idPersonas) {
+            remisionDatos.append('id_personas', idPersonas);
+        } else {
+            remisionDatos.append('id_personas', 0);  // pendiente
+        }
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //  remisionDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                remisionDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS REMISION", remisionDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/InsertarCedula", "json", remisionDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+    // Metodo actualizado: Guardado Remision 27 10 2025 David
+    $(document).on('click', '#updateRemision', function () {
+        let tablaReferencia = "REMISION";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#nomAbogado4', nombre: 'Nombre de la persona remitente' },
+            { id: '#Input_numOficio_C', nombre: 'Número de oficio' },
+            { id: '#Input_institucion_C', nombre: 'Institución' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación de la Remisión' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        let remisionDatos = new FormData();
+        // Campos del formulario
+        remisionDatos.append('tablaReferencia', 'REMISION');
+        remisionDatos.append('Input_ID', $('#Input_ID').val());
+        remisionDatos.append('Input_folio_C', $('#Input_folio_C').val());
+        remisionDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        remisionDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        remisionDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        remisionDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        remisionDatos.append('Input_numOficio_C', $('#Input_numOficio_C').val());
+        remisionDatos.append('Input_institucion_C', $('#Input_institucion_C').val());
+        remisionDatos.append('nomAbogado', $('#nomAbogado4 option:selected').text());
+        remisionDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        remisionDatos.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        remisionDatos.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        remisionDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        remisionDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        remisionDatos.append('Input_Peticionario', $('#Input_peticionario_C').val());
+
+        // Documento
+        remisionDatos.append('documento', 'SI');
+
+        // Datos personales
+        let edad = $('#edad_petit-frmDatosPersonales1').val();
+        remisionDatos.append('edad', edad || '');
+        let sexo = $('input[name="radsexo_petit-frmDatosPersonales1"]:checked').val();
+        remisionDatos.append('sexo', sexo || '');
+        let genero = $('#genero_petit-frmDatosPersonales1').val();
+        if (genero === 'Otro') {
+            let otroGenero = $('#ogenero_petit-frmDatosPersonales1').val().trim();
+            genero = otroGenero.length > 0 ? otroGenero : '';
+        }
+        remisionDatos.append('genero', genero || '');
+        let tipoUsuario = $('input[name="qatu_petit-frmDatosPersonales1"]:checked').val();
+        remisionDatos.append('tipo_usuario', tipoUsuario === 'Peticionario' ? 'Quejoso' : tipoUsuario || '');
+
+        // ID persona
+        remisionDatos.append('id_personas', $('#id_personas').val() || '');
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //  remisionDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                remisionDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS REMISION", remisionDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/GuardarEditarCedula", "json", remisionDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+    //fin bloque
+
+
+    /// David: Modificacion 27 06 2025: Ajuste a los cambios en los campos del formulario de Incompetencia
+    /// Modificacion David 17 07 2025: Cambio en la info del formdata, pdf adjunto y campos requeridos
+
+    $(document).on('click', '#saveIncompetencia', function () {
+        // Validación general
+        if (
+            !$('#Input_ID').val() ||
+            !$('#Input_Peticionario').val() ||
+            !$('#Input_LugarHechos').val() ||
+            !$('#Input_FechaRecepcion').val() ||
+            !$('#Input_HoraRecepcion').val() ||
+            !$('#nomAbogado3').val() ||
+            !$('#ExplicacionIncompetencia').val() ||
+            !$('#sedeRegistro').val()
+        ) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Para guardar debe llenar todos los datos necesarios',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            frmincompleto("#tab5");
+            return;
+        }
+
+        // Validacion campos no requeridos pero vacios - agrega un default
+        let defaultIncompetenciaText = 'No proporcionado';
+        if (
+            !$('#Input_numOficio').val() ||
+            !$('#Input_institucion').val()
+        ) {
+            $('#Input_numOficio').val(defaultIncompetenciaText);
+            $('#Input_institucion').val(defaultIncompetenciaText);
+        }
+
+        let peticionarios = $('.linksfrmpetit');
+        let totalPeticionarios = peticionarios.length;
+
+        if (totalPeticionarios === 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'No hay peticionarios para guardar',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return;
+        }
+
+        let peticionarioSeleccionado = $('#Input_Peticionario option:selected').text().trim();
+
+        let peticionariosData = [];
+
+        for (let i = 1; i <= totalPeticionarios; i++) {
+            let dataIncompetencia = new FormData();
+
+            // Datos generales del formulario
+            dataIncompetencia.append('Input_ID', $('#Input_ID').val());
+            dataIncompetencia.append('Input_folio', $('#Input_folio').val());
+            dataIncompetencia.append('Input_LugarHechos', $('#Input_LugarHechos').val());
+            dataIncompetencia.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text());
+            dataIncompetencia.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val());
+            dataIncompetencia.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val());
+            dataIncompetencia.append('Input_numOficio', $('#Input_numOficio').val());
+            dataIncompetencia.append('Input_institucion', $('#Input_institucion').val());
+            dataIncompetencia.append('nomAbogado', $('#nomAbogado3 option:selected').text());
+            dataIncompetencia.append('ExplicacionIncompetencia', $('#ExplicacionIncompetencia').val());
+            dataIncompetencia.append('sedeRegistro', $('#sedeRegistro').val());
+            dataIncompetencia.append('sederegistro_desc', $('#sedeRegistro option:selected').text());
+            dataIncompetencia.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+            dataIncompetencia.append('usuarioL', $('#usuarioL').text());
+
+            // Peticionario
+            let idComplemento = $(`#idcomplementopet${i}`).val();
+            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
+            let petName = pet ? pet.nombrepeti.trim() : '';
+            if (!petName) {
+                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim();
+            }
+
+            dataIncompetencia.append('Input_Peticionario', petName);
+            dataIncompetencia.append('id_personas', pet ? pet.idpeticionario : '');
+
+            // Documento
+            if (petName === peticionarioSeleccionado) {
+                dataIncompetencia.append('documento', 'SI');
+            } else {
+                dataIncompetencia.append('documento', 'NO');
+            }
+
+            // Datos personales
+            // Edad
+            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
+            // Si 'edad' es "No proporcionado" asigna un nulo
+            if (edad === "No proporcionado" || edad.trim() === "") {
+                edad = null;
+            } else {
+                edad = parseInt(edad) || null; // Verifica que sea un entero
+            }
+            dataIncompetencia.append('edad', edad);
+
+            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
+            let sexoTexto = '';
+            if (sexoId === '1') sexoTexto = 'Masculino';
+            else if (sexoId === '2') sexoTexto = 'Femenino';
+            else sexoTexto = 'No proporcionado';
+            dataIncompetencia.append('sexo', sexoTexto);
+
+            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
+            if (genero === 'Otro') {
+                let otroGenero = $(`#ogenero_petit-frmDatosPersonales${i}`).val().trim();
+                genero = otroGenero || '';
+            }
+            dataIncompetencia.append('genero', genero);
+
+            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
+            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
+            dataIncompetencia.append('tipo_usuario', tipoUsuario);
+
+            // PDF solo para el primer peticionario
+            if (i === 1) {
+                let archivo = $('#pdfEscritoi')[0]?.files[0];
+                if (archivo) {
+                    dataIncompetencia.append('pdfEscritoi', archivo);
+                }
+            }
+
+            peticionariosData.push(dataIncompetencia);
+        }
+
+        // Enviar los datos
+        let enviados = 0;
+        let errores = 0;
+
+        peticionariosData.forEach(function (dataIncompetencia) {
+            $.ajax({
+                type: 'POST',
+                url: '/AltaExpediente/GuardarIncompetencia',
+                data: dataIncompetencia,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    enviados++;
+                    if (!res.status) errores++;
+
+                    if (enviados === peticionariosData.length) {
+                        if (errores === 0) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Todos los datos se guardaron correctamente',
+                                showConfirmButton: false,
+                                timer: 2500
+                            });
+                            frmcompleto("#tab6");
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Algunos registros no se guardaron correctamente',
+                                text: 'Verifica la información ingresada',
+                                timer: 3000
+                            });
+                        }
+                    }
+                },
+                error: function () {
+                    errores++;
+                    enviados++;
+                    if (enviados === peticionariosData.length) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de red',
+                            text: 'Hubo errores al guardar uno o más registros.'
+                        });
+                    }
+                }
+            });
+        });
+    });
+
+    //bloque actualizar e insertar incompetencia
+    //INSERT INCOMPETENCIA 08/12/2025
+    $(document).on('click', '#insertIncompetencia', function () {
+        let tablaReferencia = "INCOMPETENCIA";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_ID', nombre: 'Id de expediente' },
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#nomAbogado5', nombre: 'Nombre de la persona remitente' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación de la Incompetencia' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        // Validacion campos no requeridos pero vacios - agrega un default
+        let defaultIncompetenciaText = 'No proporcionado';
+        if (
+            !$('#Input_numOficio').val() ||
+            !$('#Input_institucion').val()
+        ) {
+            $('#Input_numOficio').val(defaultIncompetenciaText);
+            $('#Input_institucion').val(defaultIncompetenciaText);
+        }
+
+        let incompetenciaDatos = new FormData();
+
+        // Campos del formulario
+        incompetenciaDatos.append('tablaReferencia', 'INCOMPETENCIA');
+        incompetenciaDatos.append('Input_ID', $('#Input_ID').val());
+        incompetenciaDatos.append('Input_folio_C', $('#Input_folio_C').val());
+        incompetenciaDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        incompetenciaDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        incompetenciaDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        incompetenciaDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        incompetenciaDatos.append('Input_numOficio_C', $('#Input_numOficio_C').val());
+        incompetenciaDatos.append('nomAbogado', $('#nomAbogado5 option:selected').val());
+        incompetenciaDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        incompetenciaDatos.append('Input_institucion_C', $('#Input_institucion_C').val());
+        incompetenciaDatos.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        incompetenciaDatos.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        incompetenciaDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        incompetenciaDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        incompetenciaDatos.append('Input_Peticionario', $('#Input_Peticionario option:selected').text().trim());
+        incompetenciaDatos.append('via_interposicion', $('#via_interposicion').val());
+
+        // Documento
+        incompetenciaDatos.append('documento', 'SI');
+
+        // Datos personales
+        incompetenciaDatos.append('edad', $('#edad').val() || '');
+        incompetenciaDatos.append('genero', $('#genero').val() || '');
+        incompetenciaDatos.append('tipo_usuario', $('#tipo_usuario').val() || '');
+        incompetenciaDatos.append('sexo', $('#sexo').val() || '');
+
+        // ID persona
+        let idPersonas = $('#id_personas').val();
+        if (idPersonas) {
+            incompetenciaDatos.append('id_personas', idPersonas);
+        } else {
+            incompetenciaDatos.append('id_personas', 0);  // pendiente
+        }
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //incompetenciaDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                incompetenciaDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS INCOMPETENCIA", incompetenciaDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/InsertarCedula", "json", incompetenciaDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+
+
+
+    //27 10 25 Metodo update incompetencia
+    $(document).on('click', '#updateIncompetencia', function () {
+        let tablaReferencia = "INCOMPETENCIA";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_ID', nombre: 'Id de expediente' },
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#nomAbogado5', nombre: 'Nombre de la persona remitente' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación de la Incompetencia' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        // Validacion campos no requeridos pero vacios - agrega un default
+        let defaultIncompetenciaText = 'No proporcionado';
+        if (
+            !$('#Input_numOficio').val() ||
+            !$('#Input_institucion').val()
+        ) {
+            $('#Input_numOficio').val(defaultIncompetenciaText);
+            $('#Input_institucion').val(defaultIncompetenciaText);
+        }
+
+        let incompetenciaDatos = new FormData();
+
+        // Campos del formulario
+        incompetenciaDatos.append('tablaReferencia', 'INCOMPETENCIA');
+        incompetenciaDatos.append('Input_ID', $('#Input_ID').val());
+        incompetenciaDatos.append('Input_folio_C', $('#Input_folio_C').val());
+        incompetenciaDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        incompetenciaDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        incompetenciaDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        incompetenciaDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        incompetenciaDatos.append('Input_numOficio_C', $('#Input_numOficio_C').val());
+        incompetenciaDatos.append('nomAbogado', $('#nomAbogado5 option:selected').val());
+        incompetenciaDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        incompetenciaDatos.append('Input_institucion_C', $('#Input_institucion_C').val());
+        incompetenciaDatos.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        incompetenciaDatos.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        incompetenciaDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        incompetenciaDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        incompetenciaDatos.append('Input_Peticionario', $('#Input_peticionario_C').val());
+
+        // Documento
+        incompetenciaDatos.append('documento', 'SI');
+
+        // Datos personales
+        let edad = $('#edad_petit-frmDatosPersonales1').val();
+        incompetenciaDatos.append('edad', edad || '');
+        let sexo = $('input[name="radsexo_petit-frmDatosPersonales1"]:checked').val();
+        incompetenciaDatos.append('sexo', sexo || '');
+        let genero = $('#genero_petit-frmDatosPersonales1').val();
+        if (genero === 'Otro') {
+            let otroGenero = $('#ogenero_petit-frmDatosPersonales1').val().trim();
+            genero = otroGenero.length > 0 ? otroGenero : '';
+        }
+        incompetenciaDatos.append('genero', genero || '');
+        let tipoUsuario = $('input[name="qatu_petit-frmDatosPersonales1"]:checked').val();
+        incompetenciaDatos.append('tipo_usuario', tipoUsuario === 'Peticionario' ? 'Quejoso' : tipoUsuario || '');
+
+        // ID persona
+        incompetenciaDatos.append('id_personas', $('#id_personas').val() || '');
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //incompetenciaDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                incompetenciaDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS INCOMPETENCIA", incompetenciaDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/GuardarEditarCedula", "json", incompetenciaDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+    //fin bloque
+
+
+    /// David: Modificacion 27 06 2025: Ajuste a los cambios en los campos del formulario de Antecedente
+    /// Modificacion Cris y David 16 07 2025: Cambio en la info del formdata, pdf adjunto y campos requeridos
+    $(document).on('click', '#saveAntecedente', function () {
+        // Validación general antes de iniciar
+        if (
+            !$('#Input_ID').val() ||
+            !$('#Input_Peticionario').val() ||
+            !$('#Input_autoridadresp').val() ||
+            !$('#ExplicacionAntecedente').val() ||
+            !$('#Input_LugarHechos').val() ||
+            !$('#Input_FechaRecepcion').val() ||
+            !$('#Input_HoraRecepcion').val() ||
+            !$('#sedeRegistro').val()
+        ) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Para guardar debe llenar todos los datos necesarios',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            frmincompleto("#tab5"); // Indicador visual
+            return;
+        }
+
+        let peticionarios = $('.linksfrmpetit');
+        let totalPeticionarios = peticionarios.length;
+
+        if (totalPeticionarios === 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'No hay peticionarios para guardar',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return;
+        }
+
+        let peticionarioSeleccionado = $('#Input_Peticionario').find('option:selected').text().trim();
+        let peticionariosData = [];
+
+        for (let i = 1; i <= totalPeticionarios; i++) {
+            let dataAntecedente = new FormData();
+
+            // Campos originales
+            dataAntecedente.append('Input_ID', $('#Input_ID').val());
+            dataAntecedente.append('Input_folio', $('#Input_folio').val());
+            dataAntecedente.append('Input_LugarHechos', $('#Input_LugarHechos').val());
+            dataAntecedente.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text());
+            dataAntecedente.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val());
+            dataAntecedente.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val());
+            dataAntecedente.append('Input_autoridadresp', $('#Input_autoridadresp').val());
+            dataAntecedente.append('ExplicacionAntecedente', $('#ExplicacionAntecedente').val());
+            dataAntecedente.append('sedeRegistro', $('#sedeRegistro').val());
+            dataAntecedente.append('sederegistro_desc', $('#sedeRegistro option:selected').text());
+            dataAntecedente.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+            dataAntecedente.append('usuarioL', $('#usuarioL').text());
+
+            // Peticionario dinámico
+            let idComplemento = $(`#idcomplementopet${i}`).val();
+            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
+
+            let petName = pet ? pet.nombrepeti.trim() : '';
+            if (!petName) {
+                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim() || '';
+            }
+
+            dataAntecedente.append('Input_Peticionario', petName);
+
+            let idPersona = pet ? pet.idpeticionario : '';
+            dataAntecedente.append('id_personas', idPersona);
+
+            // Campo documento
+            dataAntecedente.append('documento', petName === peticionarioSeleccionado ? 'SI' : 'NO');
+
+            // Edad
+            // Edad
+            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
+            // Si 'edad' es "No proporcionado" asigna un nulo
+            if (edad === "No proporcionado" || edad.trim() === "") {
+                edad = null;
+            } else {
+                edad = parseInt(edad) || null; // Verifica que sea un entero
+            }
+            dataAntecedente.append('edad', edad);
+
+            // Sexo
+            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
+            let sexoTexto = '';
+            if (sexoId === '1') sexoTexto = 'Masculino';
+            else if (sexoId === '2') sexoTexto = 'Femenino';
+            else if (sexoId === '3') sexoTexto = 'No proporcionado';
+            dataAntecedente.append('sexo', sexoTexto);
+
+            // Género
+            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
+            if (genero === 'Otro') {
+                let generoOtro = ($(`#ogenero_petit-frmDatosPersonales${i}`).val() || '').trim();
+                genero = generoOtro.length > 0 ? generoOtro : '';
+            }
+            dataAntecedente.append('genero', genero);
+
+            // Tipo usuario
+            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
+            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
+            dataAntecedente.append('tipo_usuario', tipoUsuario);
+
+            // Archivo solo para el primer peticionario
+            if (i === 1) {
+                let archivo = $('#pdfEscritoi')[0]?.files[0];
+                if (archivo) {
+                    dataAntecedente.append('pdfEscritoi', archivo);
+                }
+            }
+
+            peticionariosData.push(dataAntecedente);
+        }
+
+        let enviados = 0;
+        let errores = 0;
+
+        peticionariosData.forEach(function (formData) {
+            $.ajax({
+                type: 'POST',
+                url: '/AltaExpediente/GuardarAntecedente',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    enviados++;
+                    if (res.status !== true) errores++;
+
+                    if (enviados === peticionariosData.length) {
+                        if (errores === 0) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Todos los datos se guardaron correctamente',
+                                showConfirmButton: false,
+                                timer: 2500
+                            });
+                            frmcompleto("#tab6"); // Indicador visual de formulario completo
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Algunos registros no se guardaron correctamente',
+                                text: 'Verifica la información ingresada',
+                                timer: 3000
+                            });
+                        }
+                    }
+                },
+                error: function () {
+                    errores++;
+                    enviados++;
+                    if (enviados === peticionariosData.length) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de red',
+                            text: 'Hubo errores al guardar uno o más registros.'
+                        });
+                    }
+                }
+            });
+        });
+    });
+    //bloque para actualiza e insertar antecedente
+    //INSERTAR ANTECEDENTE 08/12/2025
+    $(document).on('click', '#insertAntecedente', function () {
+        let tablaReferencia = "ANTECEDENTE";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_ID', nombre: 'ID de expediente' },
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#Input_autoridadresp_C', nombre: 'Autoridad responsable' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación del Antecedente' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        let AntecedenteDatos = new FormData();
+
+        // Campos del formulario
+        AntecedenteDatos.append('tablaReferencia', 'ANTECEDENTE');
+        AntecedenteDatos.append('Input_ID', $('#Input_ID').val());
+        AntecedenteDatos.append('Input_folio_C', $('#Input_folio_C').val());
+        AntecedenteDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        AntecedenteDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        AntecedenteDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        AntecedenteDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        AntecedenteDatos.append('Input_autoridadresp_C', $('#Input_autoridadresp_C').val());
+        AntecedenteDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        AntecedenteDatos.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        AntecedenteDatos.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        AntecedenteDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        AntecedenteDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        AntecedenteDatos.append('Input_Peticionario', $('#Input_Peticionario option:selected').text().trim());
+        AntecedenteDatos.append('via_interposicion', $('#via_interposicion').val());
+
+        // Documento
+        AntecedenteDatos.append('documento', 'SI');
+
+        // Datos personales
+        AntecedenteDatos.append('edad', $('#edad').val() || '');
+        AntecedenteDatos.append('genero', $('#genero').val() || '');
+        AntecedenteDatos.append('tipo_usuario', $('#tipo_usuario').val() || '');
+        AntecedenteDatos.append('sexo', $('#sexo').val() || '');
+
+
+        // ID persona
+        let idPersonas = $('#id_personas').val();
+        if (idPersonas) {
+            AntecedenteDatos.append('id_personas', idPersonas);
+        } else {
+            AntecedenteDatos.append('id_personas', 0);  // pendiente
+        }
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //AntecedenteDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                AntecedenteDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS ANTECEDENTE", AntecedenteDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/InsertarCedula", "json", AntecedenteDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+
+
+
+    // metodo updateAntecedente 27 10 2025
+    $(document).on('click', '#updateAntecedente', function () {
+        let tablaReferencia = "ANTECEDENTE";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_ID', nombre: 'ID de expediente' },
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#Input_autoridadresp_C', nombre: 'Autoridad responsable' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación del Antecedente' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        let AntecedenteDatos = new FormData();
+
+        // Campos del formulario
+        AntecedenteDatos.append('tablaReferencia', 'ANTECEDENTE');
+        AntecedenteDatos.append('Input_ID', $('#Input_ID').val());
+        AntecedenteDatos.append('Input_folio_C', $('#Input_folio_C').val());
+        AntecedenteDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        AntecedenteDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        AntecedenteDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        AntecedenteDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        AntecedenteDatos.append('Input_autoridadresp_C', $('#Input_autoridadresp_C').val());
+        AntecedenteDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        AntecedenteDatos.append('sedeRegistro_C', $('#sedeRegistro_C').val());
+        AntecedenteDatos.append('sederegistro_desc_C', $('#sedeRegistro_C option:selected').text());
+        AntecedenteDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        AntecedenteDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Peticionario
+        AntecedenteDatos.append('Input_Peticionario', $('#Input_peticionario_C').val());
+
+        // Documento
+        AntecedenteDatos.append('documento', 'SI');
+
+        // Datos personales
+        let edad = $('#edad_petit-frmDatosPersonales1').val();
+        AntecedenteDatos.append('edad', edad || '');
+        let sexo = $('input[name="radsexo_petit-frmDatosPersonales1"]:checked').val();
+        AntecedenteDatos.append('sexo', sexo || '');
+        let genero = $('#genero_petit-frmDatosPersonales1').val();
+        if (genero === 'Otro') {
+            let otroGenero = $('#ogenero_petit-frmDatosPersonales1').val().trim();
+            genero = otroGenero.length > 0 ? otroGenero : '';
+        }
+        AntecedenteDatos.append('genero', genero || '');
+        let tipoUsuario = $('input[name="qatu_petit-frmDatosPersonales1"]:checked').val();
+        AntecedenteDatos.append('tipo_usuario', tipoUsuario === 'Peticionario' ? 'Quejoso' : tipoUsuario || '');
+
+        // ID persona
+        AntecedenteDatos.append('id_personas', $('#id_personas').val() || '');
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //AntecedenteDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                AntecedenteDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS ANTECEDENTE", AntecedenteDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/GuardarEditarCedula", "json", AntecedenteDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo eliminar el peticionario.'
+                });
+            }
+        });
+    });
+
+    //fin bloque
+
+    /// Cris y David 21 07 2025: Metodo guardado de Alta de Aportacion
+    $(document).on('click', '#saveAportacion', function () {
+        let dataAportacion = new FormData();
+
+        // Validacion campos no requeridos pero vacios - agrega un default
+        let defaultAportacionText = 'No proporcionado';
+        if (!$('#Input_autoridadresp').val()) {
+            $('#Input_autoridadresp').val(defaultAportacionText);
+        }
+
+        // Concatenar Expediente y Año
+        let expediente = $('#Input_ExpedienteAportacion').val();
+        let año = $('#Input_year').val();
+        let expedienteCompleto = expediente + '-' + año;  // Formato: expediente-año (ejemplo: 31265564-2025)
+
+        // Llenar datos del formulario
+        dataAportacion.append('Input_LugarHechos', $('#Input_LugarHechos').val());
+        dataAportacion.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text());
+        dataAportacion.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val());
+        dataAportacion.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val());
+        dataAportacion.append('Input_NombrePetAportacion', $('#Input_NombrePetAportacion').val());
+        dataAportacion.append('Input_autoridadresp', $('#Input_autoridadresp').val());
+        dataAportacion.append('Input_ExpedienteAportacion', expedienteCompleto); // Agregar el expediente concatenado
+        dataAportacion.append('JustificacionAportacion', $('#JustificacionAportacion').val());
+        dataAportacion.append('sedeRegistroAportacion', $('#sedeRegistroAportacion option:selected').text());
+        dataAportacion.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        dataAportacion.append('usuarioL', $('#usuarioL').text());
+
+        let archivo = $('#pdfEscritoi')[0].files[0];
+        if (archivo) {
+            dataAportacion.append('pdfEscritoi', archivo);
+        }
+
+        // Validaciones de campos vacíos antes de enviar
+        if (
+            $('#JustificacionAportacion').val() === '' ||
+            $('#Input_LugarHechos').val() === '' ||
+            $('#Input_FechaRecepcion').val() === '' ||
+            $('#Input_HoraRecepcion').val() === '' ||
+            $('#Input_NombrePetAportacion').val() === '' ||
+            $('#Input_ExpedienteAportacion').val() === '' ||
+            $('#Input_year').val() === '' ||  // Validación del año
+            $('#sedeRegistro').val() === ''
+        ) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Para guardar debe llenar todos los datos necesarios',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            frmincompleto("#tab5");
+            return;
+        }
+
+        // Llamada al controlador para guardar
+        $.ajax({
+            type: 'POST',
+            url: '/AltaExpediente/GuardarAportacion',
+            data: dataAportacion,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.status === true) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Información guardada Correctamente: ',
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                    frmcompleto("#tab6");
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al guardar',
+                        text: res.mensaje || 'Error interno',
+                        timer: 2000
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de red o servidor',
+                    text: xhr.responseText || 'Error desconocido'
+                });
+            }
+        });
+    });
+    //bloque para actualizar e insertar aportaciones
+    //INSERT APORTACION 08/12/2025
+    $(document).on('click', '#insertAportacion', function () {
+        let tablaReferencia = "APORTACION";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#Input_NombrePetAportacion_C', nombre: 'Nombre del peticionario' },
+            { id: '#Input_ExpedienteAportacion_C', nombre: 'Expediente al que aporta' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación de la Aportacion' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' },
+            { id: '#Input_year', nombre: 'Año' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        // Valores por defecto si están vacíos
+        let defaultAportacionTexto = 'No proporcionado';
+        if (!$('#Input_autoridadresp_C').val()) $('#Input_autoridadresp_C').val(defaultAportacionTexto);
+
+        let AportacionDatos = new FormData();
+
+        // Concatenar Expediente y Año
+        let expediente = $('#Input_ExpedienteAportacion_C').val();
+        let año = $('#Input_year').val();
+        let expedienteCompleto = expediente + '-' + año;  // Formato: expediente-año (ejemplo: 31265564-2025)
+        let idaport = $('#Id_Tipo').val(); // recupera el hidden
+
+
+
+
+        // Campos del formulario
+        AportacionDatos.append('tablaReferencia', 'APORTACION');
+        AportacionDatos.append('Id_aportacion', $('#Input_IdAportacion_C').val()); // 🔑 enviar el id único
+        AportacionDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        AportacionDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        AportacionDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        AportacionDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        AportacionDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        AportacionDatos.append('Input_Peticionario', $('#Input_NombrePetAportacion_C').val());
+        AportacionDatos.append('Input_autoridadresp_C', $('#Input_autoridadresp_C').val());
+        AportacionDatos.append('Input_ExpedienteAportacion_C', expedienteCompleto); // Agregar el expediente concatenado
+        AportacionDatos.append('sedeRegistro_C', $('#sedeRegistro_C option:selected').text());
+        AportacionDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        AportacionDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Documento
+        AportacionDatos.append('documento', 'SI');
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //  AportacionDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                AportacionDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS APORTACION", AportacionDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/InsertarCedula", "json", AportacionDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo Insertar la aportacion'
+                });
+            }
+        });
+    });
+
+    // metodo updateAportacion
+    $(document).on('click', '#updateAportacion', function () {
+        let tablaReferencia = "APORTACION";
+        // Validación general: Se hace un arreglo de los campos con su nombre
+        let campos = [
+            { id: '#Input_LugarHechos_C', nombre: 'Lugar de los hechos' },
+            { id: '#Input_FechaRecepcion_C', nombre: 'Fecha de recepción' },
+            { id: '#Input_HoraRecepcion_C', nombre: 'Hora de recepción' },
+            { id: '#Input_NombrePetAportacion_C', nombre: 'Nombre del peticionario' },
+            { id: '#Input_ExpedienteAportacion_C', nombre: 'Expediente al que aporta' },
+            { id: '#ExplicacionCedula', nombre: 'Explicación de la Aportacion' },
+            { id: '#sedeRegistro_C', nombre: 'Sede de registro' },
+            { id: '#Input_year', nombre: 'Año' }
+        ];
+
+        // Se buscan campos vacíos
+        let camposFaltantes = campos
+            .filter(campo => !$(campo.id).val() || $(campo.id).val().trim() === '')
+            .map(campo => `• ${campo.nombre}`);
+
+        // Si hay algun campo vacío se muestra una alerta añadiendo el campo faltante
+        if (camposFaltantes.length > 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Faltan campos obligatorios',
+                html: `<br>${camposFaltantes.join('<br>')}`,
+                showConfirmButton: true
+            });
+            frmincompleto("#tab2");
+            return;
+        }
+
+        // Valores por defecto si están vacíos
+        let defaultAportacionTexto = 'No proporcionado';
+        if (!$('#Input_autoridadresp_C').val()) $('#Input_autoridadresp_C').val(defaultAportacionTexto);
+
+        let AportacionDatos = new FormData();
+
+        // Concatenar Expediente y Año
+        let expediente = $('#Input_ExpedienteAportacion_C').val();
+        let año = $('#Input_year').val();
+        let expedienteCompleto = expediente + '-' + año;  // Formato: expediente-año (ejemplo: 31265564-2025)
+
+
+
+
+
+        // Campos del formulario
+        AportacionDatos.append('tablaReferencia', 'APORTACION');
+        AportacionDatos.append('Id_aportacion', $('#Input_IdAportacion_C').val()); // 🔑 enviar el id único
+        AportacionDatos.append('ExplicacionCedula', $('#ExplicacionCedula').val());
+        AportacionDatos.append('Input_LugarHechos_C', $('#Input_LugarHechos_C').val());
+        AportacionDatos.append('Input_LugarHechosDescripcion_C', $('#Input_LugarHechos_C option:selected').text());
+        AportacionDatos.append('Input_FechaRecepcion_C', $('#Input_FechaRecepcion_C').val());
+        AportacionDatos.append('Input_HoraRecepcion_C', $('#Input_HoraRecepcion_C').val());
+        AportacionDatos.append('Input_Peticionario', $('#Input_NombrePetAportacion_C').val());
+        AportacionDatos.append('Input_autoridadresp_C', $('#Input_autoridadresp_C').val());
+        AportacionDatos.append('Input_ExpedienteAportacion_C', expedienteCompleto); // Agregar el expediente concatenado
+        AportacionDatos.append('sedeRegistro_C', $('#sedeRegistro_C option:selected').text());
+        AportacionDatos.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
+        AportacionDatos.append('usuarioL', $('#usuarioL').text());
+
+        // Documento
+        AportacionDatos.append('documento', 'SI');
+
+        // Archivo PDF
+        //let archivo = $('#pdfEscritoi')[0]?.files[0];
+        //if (archivo) {
+        //  AportacionDatos.append('pdfEscritoi', archivo);
+        //}
+        let archivos = $('#pdfEscritoi')[0]?.files;
+        if (archivos && archivos.length > 0) {
+            for (let i = 0; i < archivos.length; i++) {
+                AportacionDatos.append('pdfEscritoi', archivos[i]);
+            }
+        }
+        console.log("PRUEBAS DATOS APORTACION", AportacionDatos);
+        // Enviar al backend
+        fetchPost("AltaExpediente/GuardarEditarCedula", "json", AportacionDatos, (resp) => {
+            if (resp.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Datos actualizados correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    Swal.fire({
+                        text: 'Cargando Cedulas...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "TablaObtenerCedulas",
+                        data: $('#frm_busquedorCedulas').serialize(),
+                        dataType: "JSON",
+                        success: function (response) {
+                            console.log(response.data);
+                            if (typeof mostrarTablaCedulas === 'function') {
+                                mostrarTablaCedulas(response.data);
+                            } else {
+                                console.warn("mostrarTablaCedulas no está definida");
+                            }
+                            Swal.close();
+                            $('#modalCedulas').modal('hide');
+                        },
+                        error: function (err) {
+                            console.error("Error al obtener las cédulas:", err);
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al cargar las cédulas',
+                                text: 'Intenta nuevamente más tarde'
+                            });
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resp.message || 'No se pudo actualizar la aportacion'
+                });
+            }
+        });
+    });
+
+    //fin bloque
+
+
+
     $(document).on('click', "#generaPDF", function () { //esta función se ejecutará en todos los casos
 
         let idei = document.getElementById('id_escritoigenerado').value.trim();
@@ -326,6 +2464,103 @@ var ipAcceso = '';
             return;
         }
         window.open(ExportaDocumento + idei, '_blank');
+
+    });
+
+        // Evento de pevisualizacion de pdf para Orientacion - nos lleva a los metodos de la rotativa mediante ese url
+    $(document).on('click', "#OrientacionPDF", function () {
+        let idExpediente = $("#Input_ID").val()?.trim();
+
+        if (!idExpediente) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Debe ingresar primero un ID de expediente',
+                timer: 2500
+            });
+            return;
+        }
+
+        const url = "/Expediente/Cedula_Orientacion?idescrito=" +
+            encodeURIComponent(idExpediente);
+
+        window.open(url, "_blank");
+
+
+    });
+
+        // Evento de pevisualizacion de pdf para Remision - nos lleva a los metodos de la rotativa mediante ese url
+    $(document).on('click', "#RemisionPDF", function () {
+        let idExpediente = $("#Input_ID").val()?.trim();
+
+        if (!idExpediente) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Debe ingresar primero un ID de expediente',
+                timer: 2500
+            });
+            return;
+        }
+
+        const url = "/Expediente/Cedula_Remision?idescrito=" +
+            encodeURIComponent(idExpediente);
+
+        window.open(url, "_blank");
+
+    });
+
+        //Evento de pevisualizacion de pdf para Incompetencia - nos lleva a los metodos de la rotativa mediante ese url
+    $(document).on('click', "#IncompetenciaPDF", function () {
+        let idExpediente = $("#Input_ID").val()?.trim();
+
+        if (!idExpediente) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Debe ingresar primero un ID de expediente',
+                timer: 2500
+            });
+            return;
+        }
+
+        const url = "/Expediente/Cedula_Incompetencia?idescrito=" +
+            encodeURIComponent(idExpediente);
+
+        window.open(url, "_blank");
+
+
+    });
+
+        // Evento de pevisualizacion de pdf para Antecedente - nos lleva a los metodos de la rotativa mediante ese url
+    $(document).on('click', "#AntecedentePDF", function () {
+        let idExpediente = $("#Input_ID").val()?.trim();
+
+        if (!idExpediente) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Debe ingresar primero un ID de expediente',
+                timer: 2500
+            });
+            return;
+        }
+
+        const url = "/Expediente/Cedula_Antecedente?idescrito=" +
+            encodeURIComponent(idExpediente);
+
+        window.open(url, "_blank");
+
+
+    });
+
+        // Evento de pevisualizacion de pdf para Aportacion - nos lleva a los metodos de la rotativa mediante ese url
+    $(document).on('click', "#AportacionPDF", function () {
+
+        const url = "/Expediente/Cedula_Aportacion";
+
+        window.open(url, "_blank");
+
+        // Recargar la página después de 5 segundos
+        setTimeout(function () {
+            location.reload();
+        }, 15000);
 
     });
 
@@ -349,17 +2584,38 @@ var ipAcceso = '';
 
     });
 
-    $(document).on('keypress', "#cpLH", function (e) { //esta función se ejecutará en todos los casos
-        if (e.which == 13) {
-            $.getJSON("https://api.copomex.com/query/info_cp/" + $("#cpLH").val() + "?type=simplified&token=pruebas", function (copomex) {
+    $(document).on('keypress', "#cpLH", function (e) { // se ejecuta al presionar tecla en #cpLH
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            // Sanitizar: solo dígitos y máximo 5
+            var cp = ($("#cpLH").val() || '').replace(/\D+/g, '').slice(0, 5);
+            $("#cpLH").val(cp);
+
+            if (cp.length !== 5) {
+                console.warn('CP inválido (debe ser 5 dígitos).');
+                return;
+            }
+
+            $.getJSON("https://api.copomex.com/query/info_cp/" + cp + "?type=simplified&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee", function (copomex) {
+                if (!copomex || !copomex.response) {
+                    console.warn('Sin datos para el CP proporcionado.');
+                    return;
+                }
+
                 console.log(copomex.response);
-                $("#cpLH").val(copomex.response.cp);
-                CargaDatosSelect('#coloniaLH', copomex.response.asentamiento);
+                // Asegura que el input queda con el CP normalizado de la API
+                $("#cpLH").val(copomex.response.cp || cp);
+
+                // Llenar colonias/asentamientos en tu select
+                // Asumo que CargaDatosSelect(selector, arregloStrings) ya limpia/agrega opciones
+                var asentamientos = copomex.response.asentamiento || [];
+                CargaDatosSelect('#coloniaLH', asentamientos);
             })
-
-                .fail(function () { console.log('Ha ocurrido un error') });
+                .fail(function () {
+                    console.log('Ha ocurrido un error al consultar Copomex');
+                });
         }
-
     });
 
     $(document).on('change', '#CheckDcompleta', function (event) {/*Evento del check, datos complementarios de la calle*/
@@ -378,7 +2634,7 @@ var ipAcceso = '';
         return body;
     });
 
-    $(document).on('click', '#icono_agregar', function (event) {/*Evento del check, datos complementarios de la calle*/
+    $(document).on('click', '#icono_agregarI', function (event) {/*Evento del check, datos complementarios de la calle*/
         var contenedor = '';
         let arrNumPet = [];
         let npmax = 1;
@@ -505,7 +2761,7 @@ function funcionesActac(nfrm) {
         e.stopImmediatePropagation();
 
         let nfrm = this.dataset.idfrmac;
-        //habilitarAlta(nfrm);
+        //habilitarAlta(nfrm);   
         console.log('frm actac: ' + nfrm)
 
         var vari = $("#id_lugar" + nfrm).val()
@@ -517,7 +2773,16 @@ function funcionesActac(nfrm) {
         var vari6 = $("#idpeticionarioelegido" + nfrm).val()
         var vari7 = $("#idconsentimiento" + nfrm).val()
         var vari8 = $("#origenPet" + nfrm).val()
-        var vari9 = $("#edadPet" + nfrm).val()
+        /*var vari9 = $("#edadPet" + nfrm).val()*/
+        var vari9 = $("#edadPet" + nfrm).val();
+
+        if (!vari9 || vari9.trim() === "" || vari9 === "No proporcionado") {
+            vari9 = 0;
+        } else {
+            vari9 = parseInt(vari9);
+        }
+        // 🔥 IMPORTANTE: actualizar el input antes de enviar
+        $("#edadPet" + nfrm).val(vari9);
         var vari10 = $("#sabeleerPet" + nfrm).val()
         var vari11 = $("#escolaridad" + nfrm).val()
         var vari12 = $("#callePet" + nfrm).val()
@@ -572,22 +2837,32 @@ function funcionesActac(nfrm) {
                         let idenlaceformatos = $('#idenlaceformatquejac' + nfrm).val();
                         console.log(idenlaceformatos)
 
-                        if (idenlaceformatos == '') {
+                        if (!idenlaceformatos || idenlaceformatos == 0) {
                             console.log('se inserto enlace')
-                            $('#id_actacgenerado' + nfrm).val(data.listat.id);
-                            let idescritook = $('#id_escritoigenerado').val() != '' ? $('#id_escritoigenerado').val() : 1;
+                            $('#id_actacgenerado' + nfrm).val(data.idActac);
+                            /* let idescritook = $('#id_escritoigenerado').val() != '' ? $('#id_escritoigenerado').val() : 1;*/
+                            let idescritook = $('#id_escritoigenerado' + nfrm).val() != ''
+                                ? $('#id_escritoigenerado' + nfrm).val()
+                                : 1;
 
                             let FrmEnFormatQueja = new FormData();
                             FrmEnFormatQueja.append('id_queja', $('.idquejagenerado').val());
                             FrmEnFormatQueja.append('id_escrito', idescritook);
-                            FrmEnFormatQueja.append('id_actac', data.listat.id);
+                            FrmEnFormatQueja.append('id_actac', data.idActac);
                             FrmEnFormatQueja.append('id_peticionario', data.listat.idPet);
                             FrmEnFormatQueja.append('id_complementopet', data.listat.complementoPeticionario);
+                            console.log({
+                                id: data.listat.id,
+                                idPet: data.listat.idPet,
+                                complemento: data.listat.complementoPeticionario
+                            });
 
                             fetchPost("Expediente/InsertEnlaceFormatoQueja", "json", FrmEnFormatQueja, (resp) => {
                                 if (resp.status) {
-                                    $('#idenlaceformatquejac' + nfrm).val(resp.idinsertado);
 
+                                    $('#saveActaC').prop('disabled', true);
+
+                                    $('#idenlaceformatquejac' + nfrm).val(resp.idinsertado);
 
                                     Swal.fire({
                                         position: 'center',
@@ -602,15 +2877,18 @@ function funcionesActac(nfrm) {
 
                         } else {
                             console.log('se actualizo enlace')
-                            $('#id_actacgenerado' + nfrm).val(data.listat.id);
+                            $('#id_actacgenerado' + nfrm).val(data.idActac);
                             let FrmEnFormatQueja = new FormData();
-                            FrmEnFormatQueja.append('id_documento', data.listat.id);
+                            FrmEnFormatQueja.append('id_documento', data.idActac);
                             FrmEnFormatQueja.append('id_enlace', $('#idenlaceformatquejac' + nfrm).val());
                             FrmEnFormatQueja.append('documento', 'actac');
                             FrmEnFormatQueja.append('num_frm', nfrm);
 
                             fetchPost("Expediente/ActualizaEnlaceFormatoQueja", "json", FrmEnFormatQueja, (resp) => {
                                 if (resp.status) {
+
+                                    $('#saveActaC').prop('disabled', true);
+
                                     $('#idenlaceformatquejac' + nfrm).val(resp.respidenlacequeja);
                                     Swal.fire({
                                         position: 'center',
@@ -696,7 +2974,8 @@ function funcionesActac(nfrm) {
         let nfrm = this.dataset.idfrmac;
 
         var seleccion = $("#origenPet" + nfrm + " option:selected").val();
-        $('#origenPetval').val($("#origenPet" + nfrm + " option:selected").val());
+        /*  $('#origenPetval').val($("#origenPet" + nfrm + " option:selected").val());*/
+        $('#origenPetval' + nfrm).val($("#origenPet" + nfrm + " option:selected").val());
 
         if (seleccion == '218') {
             $("#origenPetExt" + nfrm).css("display", "block");
@@ -763,18 +3042,7 @@ function CreaSelect(id, tiposelect, arreglo, nombreDiv, clas = '', atributos = '
     $("#" + id).select2();
 
 }
-function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '', atributos = '') {
-    let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select data-idfrmac="' + atributos + '" class="' + clas + '" name="' + id + '" id="' + id + '" ' + tiposelect + '> <option value="99">Seleccione una opción</option>';
-    for (let v = 0; v < arreglo.length; v++) {
-        htmld += `
-                <option value="${arreglo[v].idSelect}">${arreglo[v].descripcion}</option>
-            `;
-    }
-    htmld += "</select>";
 
-    return htmld
-    //$("#" + id).select2();
-}
 function CreaSelectLabelinverso(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '', atributos = '') {
     let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select data-idfrmac="' + atributos + '" class="' + clas + '" name="' + id + '" id="' + id + '" ' + tiposelect + '> <option value="99">Seleccione una opción</option>';
     for (let v = 0; v < arreglo.length; v++) {
@@ -788,7 +3056,7 @@ function CreaSelectLabelinverso(id, tiposelect, arreglo, nombreDiv, textoLabel, 
     //$("#" + id).select2();
 }
 function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '', atributos = '') {
-    let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select class="' + clas + '" data-idfrmac="' + atributos + '" name="' + id + '" id="' + id + '" ' + tiposelect + '> <option value="99">Seleccione una opción</option>';
+    let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select class="' + clas + '" data-idfrmac="' + atributos + '" name="' + id + '" id="' + id + '" ' + tiposelect + '> <option value="99" selected disabled hidden>Seleccione una opción</option>';
     for (let v = 0; v < arreglo.length; v++) {
         htmld += `
                 <option value="${arreglo[v].idSelect}">${arreglo[v].descripcion}</option>
@@ -798,6 +3066,23 @@ function CreaSelectLabel(id, tiposelect, arreglo, nombreDiv, textoLabel, namelab
 
     return htmld
     //$("#" + id).select2();
+}
+function CreaSelectLabel_UNO(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, clas = '', atributos = '') {
+
+    let htmld = `
+        <label for="${namelabel}">${textoLabel}</label>
+        <select ${atributos}class="${clas}" name="${id}" id="${id}" ${tiposelect}></select>`;
+    for (let v = 0; v < arreglo.length; v++) {
+        if (arreglo[v].descripcion.trim().toLowerCase() === 'seleccione una opción') {
+            continue;
+        }
+        htmld += `
+            <option selected disabled hidden value="${arreglo[v].idSelect}">
+                ${arreglo[v].descripcion}
+            </option>
+        `;
+    }
+    return htmld;
 }
 function CreaSelectLabeldisabled(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel) {
     let htmld = '<label for= "' + namelabel + '" >' + textoLabel + '</label ><select id="' + id + '" name="' + id + '" ' + tiposelect + ' disabled > <option value="99">Seleccione una opción</option>';
@@ -812,397 +3097,505 @@ function CreaSelectLabeldisabled(id, tiposelect, arreglo, nombreDiv, textoLabel,
     //$("#" + id).select2();
 }
 function CreaSelectLabelSelect2(id, tiposelect, arreglo, nombreDiv, textoLabel, namelabel, estiloLabel, estiloselect, clas = '', atributos = '') {
-    let htmld = '<label for= "' + namelabel + '" ' + estiloLabel + ' >' + textoLabel + '</label ><select "' + atributos + '" class="' + clas + '" id="' + id + '" ' + tiposelect + ' ' + estiloselect + '> <option value="">Seleccione una opción</option>';
+    let htmld = `
+    <label for="${namelabel}" ${estiloLabel}>${textoLabel}</label>
+    <select ${atributos} class="${clas}" id="${id}" ${tiposelect} ${estiloselect}></select>`;
+
     for (let v = 0; v < arreglo.length; v++) {
-        htmld += `
-                <option value="${arreglo[v].idSelect}">${arreglo[v].descripcion}</option>
-            `;
+        htmld += `<option value="${arreglo[v].idSelect}">${arreglo[v].descripcion}</option>`;
     }
-    htmld += "</select>";
 
     return htmld;
-    $("#" + id).select2();
 }
+
+// Corregi partes de, optimice el codigo retirando lineas como el 'case', ahora necesitas seleccionar ambas opciones para que te cargue el formulario correspondiente 28/03/2025 -Fred & cristobal
+// reduccion a de codigo
+// cambio 25/06/2025    
+
+$(document).ready(function () {
+    changeselects();
+});
+
+// David 12 08 2025: Cambios en los metodos relacionados con las personas fisicas y morales de la via de interposicion - abajo se describen
+    //  Esta version de cambios para petit fisico - moral solo contempla un registro de petit, esta pendiente la implementacion final (formularios dinamicos)
 function changeselects() {
-    $('#select_viainterposicionc').on('change', function () {
+    let valueVInterposicion = "";
+    let tipoescrito = "";
+    let tipoPeticionarioSeleccionado = null;
+
+    const tabsPorDefault = ["#tab1", "#tab2", "#tab3", "#tab4"];
+
+    // 🔹 Mostrar tabs específicos
+    function mostrarTabs(tabs) {
+        $("#tab1,#tab2,#tab3,#tab4").hide();
+        tabs.forEach(tab => $(tab).show());
+    }
+
+    // 🔹 Limpiar selectTipoQueja
+    function limpiarSelectTipoQueja() {
+        $("#selectTipoQueja").val(null).trigger('change.select2');
+        $('#selectTipoQueja').next('.select2-container').hide();
+    }
+
+    // 🔹 Limpiar selectTipoEscrito
+    function limpiarSelectTipoEscrito() {
+        $("#select_tipoescritoc").val(null).trigger('change.select2');
+        tipoescrito = "";
+    }
+
+    // 🔹 Limpiar contenedor dependiente
+    function limpiarDependeSeleccionado() {
+        $('#contenedorDependeSeleccionado').empty();
+    }
+
+    // 🔹 Reiniciar dependencias
+    function reiniciarDependencias() {
+        limpiarSelectTipoQueja();
+        limpiarDependeSeleccionado();
+    }
+
+    // 🔹 Asignar valores al selectTipoQueja
+    function asignarValoresSelectTipoQueja(te, valores) {
+        if (te == 1) {
+            $("#selectTipoQueja").val(valores).trigger('change.select2');
+            $('#selectTipoQueja').next('.select2-container').show();
+        }
+    }
+
+    // 🔹 Crear formulario y asignar selectTipoQueja
+    function crearFormulario(valor, te, valoresQueja = []) {
+        if (valoresQueja.length === 0) {
+            if (["1", "2", "3"].includes(valor)) {
+                valoresQueja = [1, 2, 3, 4];
+            } else if (["4", "5", "6", "7", "8"].includes(valor)) {
+                valoresQueja = [1, 2, 4];
+            }
+        }
+
+        CrearFormularioCrearEscrito(valor, te, valoresQueja);
+        asignarValoresSelectTipoQueja(te, valoresQueja);
+
+        if (["1", "2", "3"].includes(valor)) {
+            mostrarTabs(tabsPorDefault);
+            validaVacios("#frmFromatoQueja", "input", "", "");
+            validaVacios("#frmFromatoQueja", "select", "", "");
+            validaVacios("#frmFromatoQueja", "textarea", "", "");
+        } else if (["4", "5", "6", "7", "8"].includes(valor)) {
+            mostrarTabs(["#tab1", "#tab2", "#tab4"]);
+        }
+    }
+
+    // 🔹 Swal Peticionario
+
+    //// 🔹 Reemplazar input por select Morales
+    //function reemplazarInputPorSelectMorales() {
+    //    let $input = $('#nombre_petit-frmDatosPersonales1');
+    //    let $select = $('<select></select>')
+    //        .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
+    //        .attr({
+    //            'data-idfrmit': '',
+    //            'name': $input.attr('name'),
+    //            'id': $input.attr('id'),
+    //            'required': true
+    //        });
+
+    //    $.each(Morales, function (index, item) {
+    //        $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+    //    });
+
+    //    $input.replaceWith($select);
+    //    $('.noproporcionado').prop('checked', true).trigger('change');
+    //    $("#frmDatosPersonales1 input, #frmDatosPersonales1 select").prop("disabled", true);
+    //    $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+    //    $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true).prop("checked", false).trigger("change");
+    //}
+
+    // 🔹 Limpiar todo el formulario principal
+    function limpiarFormularioCompleto() {
+        const $form = $("#formularioaltaescritodqot");
+
+        if ($form.length) {
+            if ($form.is("form")) {
+                // Si realmente es un <form>, usa reset()
+                $form[0].reset();
+            } else {
+                // Si NO es un <form>, limpiamos manualmente todos los campos
+                $form.find("input[type='text'], input[type='number'], input[type='date'], input[type='email'], textarea").val('');
+                $form.find("input[type='checkbox'], input[type='radio']").prop('checked', false);
+                $form.find("select").val(null).trigger('change.select2');
+                $form.find("select").prop('selectedIndex', 0);
+            }
+        }
+
+        // También limpia dependencias y tabs
+        reiniciarDependencias();
+        mostrarTabs([]); // Oculta todos
+        console.log("🧹 Formulario limpiado completamente");
+    }
+
+    // 🔹 Ejecutar cuando cambie vía o escrito
+    function ejecutarCambio() {
+        reiniciarDependencias();
+        limpiarSelectTipoQueja();
+
+        if (!valueVInterposicion || !tipoescrito) return;
+
+        crearFormulario(valueVInterposicion, tipoescrito);
+
+        if (["6", "7"].includes(valueVInterposicion)) {
+            manejarSwalPeticionario();
+        }
+    }
+
+    // 🔹 EVENTOS
+    $('#select_viainterposicionc').off('change').on('change', function () {
         valueVInterposicion = this.value;
-        //CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito);
-        var valor = this.value;
-        console.log(valor);
+        console.log("Vía de interposición cambiada:", valueVInterposicion);
 
-        switch (valor) {
+        // 🔹 Reiniciar todo al cambiar vía
+        limpiarFormularioCompleto();
+        limpiarSelectTipoEscrito();
 
-            case "1":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 3, 4]);
-                crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab3").show();
-                $("#tab4").show();
-                //alert("Pilin");
-                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
-
-                validaVacios("#frmFromatoQueja", "input", "", "");
-                validaVacios("#frmFromatoQueja", "select", "", "");
-                validaVacios("#frmFromatoQueja", "textarea", "", "");
-                break;
-            case "2":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 3, 4]);
-                crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab3").show();
-                $("#tab4").show();
-                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
-                break;
-            case "3":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 3, 4]);
-                crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab3").show();
-                $("#tab4").show();
-                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
-                break;
-            case "4":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 3, 4]);
-                crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab4").show();
-                $("#selectTipoQueja").val([1, 2, 3, 4]).trigger('change.select2');
-                break;
-            case "5":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
-                crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab4").show();
-                $("#selectTipoQueja").val([1, 2, 4]).trigger('change.select2');
-                break;
-            case "6":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
-                $("#selectTipoQueja").val([1, 2, 4]).trigger('change.select2');
-                crearformularios = 1;
-                Swal.fire({
-                    title: 'Tipo de Peticionario(a)',
-                    html: `
-                                <label for="options">Selecciona una opción:</label>
-                                <select id="options" class="swal2-input">
-                                <option value="opcion1">Moral</option>
-                                <option value="opcion2">Física</option>
-                                </select>
-                             `,
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar',
-                    preConfirm: () => {
-                        const selectedOption = document.getElementById('options').value;
-                        return selectedOption;
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-
-                        if (result.value == 'opcion2') {
-                            $("#tab1").show();
-                            $("#tab2").show();
-                            $("#tab4").show();
-                        }
-                        else {
-                            var $input = $('#nombre_petit-frmDatosPersonales1');
-
-                            // Creamos el nuevo select con las mismas clases y atributos que el input
-                            var $select = $('<select></select>')
-                                .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
-                                .attr({
-                                    'data-idfrmit': '',
-                                    'name': $input.attr('name'),
-                                    'id': $input.attr('id'),
-                                    'required': true
-                                });
-
-                            // Llenamos el select con las opciones del arreglo
-                            $.each(Morales, function (index, item) {
-                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
-                            });
-
-                            // Reemplazamos el input con el select
-                            $input.replaceWith($select);
-
-                            $('.noproporcionado').prop('checked', true).trigger('change');
-                            $("#frmDatosPersonales1 input[type='checkbox'].noproporcionado").prop("disabled", true);
-                            $("#frmDatosPersonales1 input[type='text']").prop("disabled", true);
-                            $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
-                            $("#frmDatosPersonales1 input[type='date']").prop("disabled", true);
-                            $("#frmDatosPersonales1 select").prop("disabled", true);
-                            $("#colonia_petit-frmDatosPersonales1").val('No proporcionado');
-                            $("#ciudad_petit-frmDatosPersonales1").val('No proporcionado');
-                            $("#genero_petit-frmDatosPersonales1").val('No proporcionado');
-                            $("#escosel_petit-frmDatosPersonales1").val(14);
-                            $("#econyugal_petit-frmDatosPersonales1").val(8);
-                            $("#ocupacion_petit-frmDatosPersonales1").val(9);
-                            $("#discapacidad_petit-frmDatosPersonales1").val(7);
-                            $("#gsoci_petit-frmDatosPersonales1").val(9);
-                            $("#leindi_petit-frmDatosPersonales1").val('No');
-                            $("#idQuejoso").prop("checked", true);
-                            $("#idNosexo").prop("checked", true);
-                            $("#idNoGenero").prop("checked", true);
-                            $("#idNopSabeLeer").prop("checked", true);
-                            $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
-                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
-                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
-
-                            $("#tab1").show();
-                            $("#tab2").show();
-                            $("#tab4").show();
-                        }
-                    }
-                });
-                break;
-            case "7":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
-                crearformularios = 1;
-                Swal.fire({
-                    title: 'Tipo de Peticionario(a)',
-                    html: `
-                                <label for="options">Selecciona una opción:</label>
-                                <select id="options" class="swal2-input">
-                                <option value="opcion1">Moral</option>
-                                <option value="opcion2">Física</option>
-                                </select>
-                             `,
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar',
-                    preConfirm: () => {
-                        const selectedOption = document.getElementById('options').value;
-                        return selectedOption;
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-
-                        if (result.value == 'opcion2') {
-                            $("#tab1").show();
-                            $("#tab2").show();
-                            $("#tab4").show();
-                        }
-                        else {
-                            /*let options = {};
-                            $.map(Morales, function (o) {
-                                options[o.idSelect] = o.descripcion;
-                            });
-
-                            Swal.fire({
-                                title: "Selecciona el Peticionario Moral",
-                                input: 'select',
-                                inputOptions: options,
-                                showCancelButton: true,
-                                confirmButtonText: 'Aceptar',
-                                cancelButtonText: 'Cancelar',
-                                allowOutsideClick: false,
-                                inputValidator: function (value) {
-                                    return new Promise(function (resolve, reject) {
-                                        if (value !== '') {
-                                            resolve();
-                                        } else {
-                                            resolve('Debes seleccionar un elemento');
-                                        }
-                                    });
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    
-                                    $("#tab2").show();
-                                    $("#tab4").show();
-                                }
-                            });*/
-
-                            //$('select').prop('disabled', true);
-                            //$('input[type="radio"]').prop('disabled', true);
-
-                            var $input = $('#nombre_petit-frmDatosPersonales1');
-
-                            // Creamos el nuevo select con las mismas clases y atributos que el input
-                            var $select = $('<select></select>')
-                                .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
-                                .attr({
-                                    'data-idfrmit': '',
-                                    'name': $input.attr('name'),
-                                    'id': $input.attr('id'),
-                                    'required': true
-                                });
-
-                            // Llenamos el select con las opciones del arreglo
-                            $.each(Morales, function (index, item) {
-                                $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
-                            });
-
-                            // Reemplazamos el input con el select
-                            $input.replaceWith($select);
-
-                            $('.noproporcionado').prop('checked', true).trigger('change');
-                            $("#frmDatosPersonales1 input[type='checkbox'].noproporcionado").prop("disabled", true);
-                            $("#frmDatosPersonales1 input[type='text']").prop("disabled", true);
-                            $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
-                            $("#frmDatosPersonales1 input[type='date']").prop("disabled", true);
-                            $("#frmDatosPersonales1 select").prop("disabled", true);
-                            $("#colonia_petit-frmDatosPersonales1").val('No proporcionado');
-                            $("#ciudad_petit-frmDatosPersonales1").val('No proporcionado');
-                            $("#genero_petit-frmDatosPersonales1").val('No proporcionado');
-                            $("#escosel_petit-frmDatosPersonales1").val(14);
-                            $("#econyugal_petit-frmDatosPersonales1").val(8);
-                            $("#ocupacion_petit-frmDatosPersonales1").val(9);
-                            $("#discapacidad_petit-frmDatosPersonales1").val(7);
-                            $("#gsoci_petit-frmDatosPersonales1").val(9);
-                            $("#leindi_petit-frmDatosPersonales1").val('No');
-                            $("#idQuejoso").prop("checked", true);
-                            $("#idNosexo").prop("checked", true);
-                            $("#idNoGenero").prop("checked", true);
-                            $("#idNopSabeLeer").prop("checked", true);
-                            $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
-                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("hidden", true);
-                            $("input[name='nombre_petitno-frmDatosPersonales1']").prop("checked", false).trigger("change");
-
-                            $("#tab1").show();
-                            $("#tab2").show();
-                            $("#tab4").show();
-                        }
-                    }
-                });
-                break;
-            case "8":
-                CrearFormularioCrearEscrito(valueVInterposicion, 1, [1, 2, 4]);
-                crearformularios = 1;
-                $("#tab1").show();
-                $("#tab2").show();
-                $("#tab4").show();
-                break;
-
-
-            default:
-                break;
-        }
-
-
+        ejecutarCambio();
     });
 
-    $('#select_tipoescritoc').on('change', function () {
+    $('#select_tipoescritoc').off('change').on('change', function () {
         tipoescrito = this.value;
-        // CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito);
+        console.log("Escrito:", tipoescrito);
+        ejecutarCambio();
     });
-
-    //CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito);
-
-
 }
-function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
 
-    console.log("Entró a la creación del formulario de quejas")
-    var visibilidadPestaniaRDP = false;
-    var visibilidadPestaniaAQ = false;
-    var visibilidadPestañaAI = false;
-    var visibilidadPestañaAC = false;
-    var arreglo1 = [];
-    arreglo1 = arregloSelects;
-    if (arregloSelects.indexOf("1") >= 0) { visibilidadPestaniaRDP = true } else { visibilidadPestaniaRDP = false }
-    if (arregloSelects.indexOf("2") >= 0) { visibilidadPestañaAI = true } else { visibilidadPestañaAI = false }
-    if (arregloSelects.indexOf("3") >= 0) { visibilidadPestañaAC = true } else { visibilidadPestañaAC = false }
+function manejarSwalPeticionario(nfin) {
+    Swal.fire({
+        title: 'Tipo de Peticionario(a)',
+        html: `
+            <label for="options">Selecciona una opción:</label>
+            <select id="options" class="swal2-input">
+                <option value="moral">Moral</option>
+                <option value="fisica">Física</option>
+            </select>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        preConfirm: () => document.getElementById('options').value
+    }).then((result) => {
+        if (result.isConfirmed) {
+            tipoPeticionarioSeleccionado = result.value;
+            if (result.value === 'fisica') {
+                /*mostrarTabs(["#tab1", "#tab2", "#tab4"]);*/
+            } else if (result.value === 'moral') {
+                // Aquí aplicamos los cambios sobre el bloque específicoEST
+                reemplazarInputPorSelectNombre(nfin);
+                deshabilitarCamposPersonales(nfin);
+                rellenarCamposPorDefecto(nfin);
+               /* mostrarTabs(["#tab1", "#tab2", "#tab4"]);*/
+            }
+        }
+    });
+}
 
+// ============================ JM INICIO
+// FUNCIONES DE MOSTRAR/OCULTAR
+// ============================
+function mostrarPestaniaPorValor(valor) {
+    switch (String(valor)) {
+        case '1': $("#tab1").show(); break; // Datos Personales
+        case '2': $("#tab2").show(); break; // Escrito Inicial
+        case '3': $("#tab3").show(); break; // Acta Circunstanciada
+        case '4': $("#tab4").show(); break; // Datos Complementarios
+    }
+}
 
-    console.log('vi: ' + vinterpoiscion + ' te: ' + tescrito)
-    let eliminarform = document.querySelectorAll('.eliminaformaes');
-    for (var i = 0; i < eliminarform.length; i++) {
-        eliminarform[i].remove();
+function ocultarPestaniaPorValor(valor) {
+    switch (String(valor)) {
+        case '1': $("#tab1").hide(); break;
+        case '2': $("#tab2").hide(); break;
+        case '3': $("#tab3").hide(); break;
+        case '4': $("#tab4").hide(); break;
+    }
+}
+
+// ============================
+// SINCRONIZA PESTAÑAS CON SELECT
+// ============================
+function syncTabsWithSelect() {
+    $("#tab1, #tab2, #tab3, #tab4").hide(); // Oculta todas
+    const valores = $("#selectTipoQueja").val() || [];
+    valores.forEach(v => mostrarPestaniaPorValor(v));
+}
+
+// ============================
+// EVENTOS SELECT2
+// ============================
+
+// Cuando se selecciona una opción
+$(document).on('select2:select', '#selectTipoQueja', function (e) {
+    const valor = e.params.data.id;
+
+    // 🚫 Evita seleccionar la opción "Selecciona una opción"
+    if (valor === "" || valor === "0") {
+        // La quita inmediatamente
+        $(this).find('option[value=""]').prop('selected', false);
+        $(this).trigger('change.select2');
+        return;
     }
 
-    let formPetit = formPeticionario(1);
-    //let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
-    //let iformActaCircunstanciada = formActacircunstanciada2c();
+    mostrarPestaniaPorValor(valor);
+});
 
-    if (vinterpoiscion != '' && tescrito != '') {
+// Cuando se deselecciona una opción (clic en la X)
+$(document).on('select2:unselect', '#selectTipoQueja', function (e) {
+    const valor = e.params.data.id;
+    ocultarPestaniaPorValor(valor);
+});
 
-        //Queja
-        if (tescrito == 1) {
-            $('#formularioaltaescritodqot').append(formularioqueja);
+// Si algo cambia fuera de los eventos select2 (por .val().trigger('change'))
+$(document).on('change', '#selectTipoQueja', function () {
+    syncTabsWithSelect();
+});
 
-            $("#tab4").css('display', 'none');
-            $("#tab1").css('display', 'none');
-            $("#tab2").css('display', 'none');
-            $("#tab3").css('display', 'none');
+// ============================
+// LLAMAR DESPUÉS DE REGENERAR FORMULARIO
+// ============================
+// Ejemplo: al final de CrearFormularioCrearEscrito(...)
+function despuesDeCrearFormulario() {
+    // Re-sincroniza pestañas con lo que esté seleccionado
+    syncTabsWithSelect();
 
+    // Si usas placeholder en Select2, asegúrate de definirlo así:
+    $('#selectTipoQueja').select2({
+        placeholder: 'Selecciona una opción',
+        allowClear: true
+    });
+}
+// ============================JM FIN
+function mostrarSelectorTipoPeticionario(callback) {
+    Swal.fire({
+        title: 'Tipo de Peticionario(a)',
+        html: `
+            <label for="options">Selecciona una opción:</label>
+            <select id="options" class="swal2-input">
+                <option value="opcion1">Moral</option>
+                <option value="opcion2">Física</option>
+            </select>`,
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        preConfirm: () => document.getElementById('options').value
+    }).then((result) => {
+        if (result.isConfirmed) {
+            callback(result.value);
+        }
+    });
+}
 
-            $('#ref-frm-frmDatosPersonales1').append(formPetit);
-            $('#divformularioEscritoInicial').append(formEscritoInicial2('#', 'frmFromatoQueja'));
-            //$('#Input_autoridades1').select2();
-            $('#divformularioActaCircunstanciada').append(formActacircunstanciada2c(1));
-            CargaDatosSelecAutori("#catAutoridad1", SelAutoridad);
-            $(`#anio${1}`).val(2024);
-            if (visibilidadPestaniaRDP) {
-                console.log("RDP");
-                $("#tab1").css('display', 'block');
-            } else {
-                $("#tab1").css('display', 'none');
-            }
+function prepararFormularioTipoPeticionario(tipo) {
+    // Si el formulario esta cargado solo se deshabilitaran/habilitaran los labels
+    if ($('#formularioaltaescritodqot').children().length === 0) {
+        const formPetit = formPeticionario(1); // Formulario de datos personales
 
-            if (visibilidadPestañaAI) {
-                //let iformEscritoInicial = formEscritoInicial2('#', 'frmFromatoQueja');
-                $("#tab2").css('display', 'block');
-                console.log($('#divformularioEscritoInicial'));
-            } else {
-                $("#tab2").css('display', 'none');
-            }
-
-            if (visibilidadPestañaAC) {
-                // let iformActaCircunstanciada = formActacircunstanciada2c();
-                console.log("Se ve AC");
-                $("#tab3").css('display', 'block');
-            } else {
-                $("#tab3").css('display', 'none');
-            }
-
-
-            addPeticionarios();
-            guardarDatosPeticionarios();
-            chkNoproporcinado();
-            seltxt();
-            keypresscp();
-            buscapeticionariocurpnom();
-            /* Funciones escritoi */
-            funcionesEscritoi();
-            /* Actac */
-            addActacir();
-            funcionesActac(1);
-            Carga_Informacion_selec_quejas(1);
-            /* Fin Actac */
-            fetchGet("Expediente/SelectPaises", "json", (data) => {
-                let Paises = data.relacionpaises;
-                console.log(Paises)
-                AgregarOptionSelectPais(1, 'dellistpaiseso', '#migorig_petit-frmDatosPersonales1', Paises);
-                AgregarOptionSelectPais(1, 'dellistpaisesd', '#migdesti_petit-frmDatosPersonales1', Paises);
-            })
-
-            Crear_Formulario_Queja();
-            var idqueja = 0;
-            /*Metodos para jalar el ID de la queja al formulario del complemento*/
-            idqueja = $('#Input_ID').val();//Asiganción del id de la queja cuando se esta dando de alta
-            console.log("Id_Queja:" + idqueja);
-            traeInformacionDatosComplementarios(idqueja);
-            /*Metodos para jalar el ID de la queja al formulario del complemento*/
-        } else if (tescrito == 2) {
-            // Orientación
-            $('#formularioaltaescritodqot').append(formulariorientacion);
-        } else if (tescrito == 3) {
-            //Canalización
-            $('#formularioaltaescritodqot').append(formulariocanalizacion);
+        // Si es físico o moral, se agrega el formulario correspondiente
+        if (tipo === 'opcion2') {
+            $('#formularioaltaescritodqot').append(formularioFisica);
+        } else {
+            $('#formularioaltaescritodqot').append(formularioMoral);
         }
 
+        $('#ref-frm-frmDatosPersonales1').append(formPetit);
+        $('#frm_altaqueja').append(traeInformacionDatosComplementarios);
     }
-
-    $('#Input_autoridades').select2();
-    $('#Input_autoridades1').select2();
-    $(".origenPetExt").css("display", "none");
-    $(".origenPetExtedo").css("display", "none");
-
-
+    // Checamos que los campos están deshabilitados correctamente
+    deshabilitarCamposPersonales();
+    reemplazarInputPorSelectNombre();
+    rellenarCamposPorDefecto();
 }
+
+
+function reemplazarInputPorSelectNombre(nfin) {
+    const $input = $('#nombre_petit-frmDatosPersonales' + nfin);
+    console.log("Reemplazando input en bloque:", nfin, "Elemento encontrado:", $input.length);
+
+    if ($input.length === 0) return; // si no existe, salir
+
+    const $select = $('<select></select>')
+        .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
+        .attr({
+            'data-idfrmit': '',
+            'name': $input.attr('name'),
+            'id': $input.attr('id'),
+            'required': true
+        });
+
+    $.each(Morales, function (index, item) {
+        $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+    });
+
+    $input.replaceWith($select);
+}
+
+function deshabilitarCamposPersonales(nfin) {
+    const prefix = "#frmDatosPersonales" + nfin;
+    $(prefix + " input[type='checkbox'].noproporcionado")
+        .prop("disabled", true).prop('checked', true).trigger('change');
+    $(prefix + " input[type='text'], " + prefix + " input[type='radio'], " + prefix + " input[type='date'], " + prefix + " select")
+        .prop("disabled", true);
+    $("#nombre_petit-frmDatosPersonales" + nfin).prop("disabled", false);
+    $("input[name='nombre_petitno-frmDatosPersonales" + nfin + "']")
+        .prop("hidden", true).prop("checked", false).trigger("change");
+}
+
+function rellenarCamposPorDefecto(nfin) {
+    $("#colonia_petit-frmDatosPersonales" + nfin).val('No proporcionado');
+    $("#ciudad_petit-frmDatosPersonales" + nfin).val('No proporcionado');
+    $("#genero_petit-frmDatosPersonales" + nfin).val('No proporcionado');
+    $("#escosel_petit-frmDatosPersonales" + nfin).val(14);
+    $("#econyugal_petit-frmDatosPersonales" + nfin).val(8);
+    $("#ocupacion_petit-frmDatosPersonales" + nfin).val(9);
+    $("#discapacidad_petit-frmDatosPersonales" + nfin).val(7);
+    $("#gsoci_petit-frmDatosPersonales" + nfin).val(9);
+    $("#leindi_petit-frmDatosPersonales" + nfin).val('No');
+    $("#idQuejoso" + nfin + ", #idNosexo" + nfin + ", #idNoGenero" + nfin + ", #idNopSabeLeer" + nfin)
+        .prop("checked", true);
+    $("#edad_petit-frmDatosPersonales" + nfin).val('');
+}
+
+function CrearFormularioCrearEscrito(vinterpoiscion, tescrito, arregloSelects) {
+    console.log("Entró a la creación del formulario de quejas");
+
+    const visibilidadTabs = {
+        1: arregloSelects.includes(1),
+        2: arregloSelects.includes(2),
+        3: arregloSelects.includes(3),
+        4: arregloSelects.includes(4)
+    };
+
+    // 25 05 2025 Cris y David: 
+
+    const formPetit = formPeticionario(1);
+    const formularios = {
+        1: formularioqueja,
+        2: formulariorientacion,
+        3: formularioRemsion,
+        4: formularioIncompetencia,
+        5: formularioAntecedente,
+        6: formularioAportacion,
+    };
+
+    if (!formularios[tescrito]) return;
+
+    $('.eliminaformaes').remove();
+    $('#formularioaltaescritodqot').empty();
+    $('#formularioaltaescritodqot').append(formularios[tescrito]);
+
+    //$('#ref-frm-frmDatosPersonales1').append(formPetit);
+    if ($('#ref-frm-frmDatosPersonales1').children().length === 0) {
+        const formPetit = formPeticionario(1);
+        $('#ref-frm-frmDatosPersonales1').append(formPetit);
+    }
+    $('#divformularioEscritoInicial').append(formEscritoInicial2('#', 'frmFromatoQueja'));
+    $('#divformularioActaCircunstanciada').append(formActacircunstanciada2c(1));
+    $('#divformularioOrientacion').append(formOrientacion('#', 'formularioAltaOrientacion'));
+    //$('#divformularioremision').append(formRemision('#', 'formularioremision'));
+    $('#divformularioremision').append(formRemision('#', 'formularioremision', 2));
+    cargarSelectAbogados(2);    // David 17 07 2025: Cambio para ver la lista de abogados
+    $('#divformularioIncompetencia').append(formIncompetencia('#', 'formularioIncompetencia', 3));
+    cargarSelectAbogados(3);    // David 17 07 2025: Cambio para ver la lista de abogados
+    $('#divformularioAntecedente').append(formAntecedente('#', 'formularioAntecedente'));
+    $('#divformularioaportacion').append(formAportacion('#', 'formularioaportacion'));
+    cargarSedes("#sedeRegistroAportacion"); // David 21 07 2025 Carga las sedes para el id del select de Aportacion
+
+    $('#frm_altaqueja').append(traeInformacionDatosComplementarios);
+
+    mostrarTabs(visibilidadTabs);
+
+    CargaDatosSelecAutori("#catAutoridad1", SelAutoridad);
+    funcionesGeneralesFormulario();
+    $('#Input_autoridades, #Input_autoridades1').select2();
+    $(".origenPetExt, .origenPetExtedo").hide();
+}
+
+
+
+// David 21 07 2025: Metodo para cargar las sedes mediante el controlador ObtenerListaSedes, pensado para funcionar con el form de Aportacion
+function cargarSedes(selectorSede) {
+    $.ajax({
+        type: "GET",
+        url: "/AltaExpediente/ObtenerListaSedes",
+        dataType: "json",
+        success: function (response) {
+            // Vacía el select y carga los datos en el select indicado
+            $(selectorSede).empty();
+            CargaDatosSelectOtro_(selectorSede, response.lista_sedes, null);
+        },
+        error: function () {
+            console.error("No se pudo cargar la lista de sedes");
+        }
+    });
+}
+
+    // David 17 07 2025 Nueva funcion para la  carga de la lista completa de abogados en el select de los formularios
+function cargarSelectAbogados(idFrm) {
+    fetchGet("Expediente/selectsCreacionExpediente", "json", (data) => {
+        let lista = data.lista3;
+        //console.log('Lista de abogados:', lista);
+
+        const $select = $('#nomAbogado' + idFrm);
+        const $hidden = $('#idabogado' + idFrm);
+        const idActual = $('#idusuario').val();
+
+        if (!$select.length) {
+            console.warn('No se encontró el select #nomAbogado' + idFrm);
+            return;
+        }
+
+        // Limpiar y cargar opciones
+        $select.empty();
+        $select.append('<option value="">Seleccione abogado</option>');
+
+        lista.forEach(item => {
+            const selected = item.idSelectGenerico == idActual ? 'selected' : '';
+            $select.append(`<option value="${item.idSelectGenerico}" ${selected}>${item.descripcion}</option>`);
+        });
+
+        // Inicializar/refrescar Select2
+        if ($select.hasClass('select2-hidden-accessible')) {
+            $select.select2('destroy');
+        }
+
+        $select.select2({ width: '100%' });
+
+        $hidden.val(idActual);
+    });
+}
+
+function mostrarTabs(visibilidad) {
+    const tabIds = {
+        1: "#tab1",
+        2: "#tab2",
+        3: "#tab3",
+        4: "#tab4"
+    };
+
+    Object.entries(tabIds).forEach(([key, selector]) => {
+        visibilidad[key] ? $(selector).show() : $(selector).hide();
+    });
+}
+
+function funcionesGeneralesFormulario() {
+    addPeticionarios();
+    guardarDatosPeticionarios();
+    chkNoproporcinado();
+    seltxt();
+    keypresscp();
+    buscapeticionariocurpnom();
+    funcionesEscritoi();
+    addActacir();
+    funcionesActac(1);
+    Carga_Informacion_selec_quejas(1);
+}
+
+
+/////////////////////////////////////////////////////////////
 function buscapeticionariocurpnom() {
 
     $('.bucaporcurp').keypress(function (e) {
@@ -1317,37 +3710,80 @@ function buscapeticionariocurpnom() {
 
 
                         if (response.data[0].codigoPostal != "") {
-                            $("#cp_petit-frmDatosPersonales" + idform).val(response.data[0].codigoPostal)
+                            // Normaliza CP por si llega con espacios/guiones
+                            var cp = (response.data[0].codigoPostal || '').replace(/\D+/g, '').slice(0, 5);
+                            $("#cp_petit-frmDatosPersonales" + idform).val(cp);
 
                             let estado = '';
                             let municipio = '';
 
-                            $.getJSON("https://api.copomex.com/query/info_cp/" + response.data[0].codigoPostal + "?type=simplified&token=pruebas", function (copomex) {
-                                estado = copomex.response.estado;
-                                municipio = copomex.response.municipio;
-                                $("#municipio_petit-frmDatosPersonales" + idform).val(municipio);
-                                $("#estado_petit-frmDatosPersonales" + idform).val(estado);
-                                $("#cp_petit-frmDatosPersonales" + idform).val(copomex.response.cp);
-                                AgregarOptionSelect(idform, 'deloptioncolonia', '#colonia_petit-frmDatosPersonales' + idform, copomex.response.asentamiento);
-                            }).done(function () {
+                            $.getJSON(
+                                "https://api.copomex.com/query/info_cp/" + cp + "?type=simplified&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee",
+                                function (copomex) {
+                                    if (!copomex || !copomex.response) {
+                                        console.warn('No se encontraron datos para el CP.');
+                                        return;
+                                    }
 
-                                $.getJSON("https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=" + estado + "&municipio=" + municipio + "&token=pruebas", function (copomex) {
-                                    let localidadaes = Object.keys(copomex.response.localidad_clave);
-                                    AgregarOptionSelect(idform, 'deloptionloca', '#ciudad_petit-frmDatosPersonales' + idform, localidadaes);
-                                }).done(function () {
-                                    $("#estado_petit-frmDatosPersonales" + idform).val(response.data[0].estado)
-                                    $("#municipio_petit-frmDatosPersonales" + idform).val(response.data[0].municipio)
-                                    $("#colonia_petit-frmDatosPersonales" + idform).val(response.data[0].colonia)
-                                    $("#ciudad_petit-frmDatosPersonales" + idform).val(response.data[0].ciudad)
+                                    estado = copomex.response.estado || '';
+                                    municipio = copomex.response.municipio || '';
+
+                                    $("#municipio_petit-frmDatosPersonales" + idform).val(municipio);
+                                    $("#estado_petit-frmDatosPersonales" + idform).val(estado);
+                                    $("#cp_petit-frmDatosPersonales" + idform).val(copomex.response.cp || cp);
+
+                                    // Colonias / asentamientos
+                                    var asentamientos = copomex.response.asentamiento || [];
+                                    AgregarOptionSelect(
+                                        idform,
+                                        'deloptioncolonia',
+                                        '#colonia_petit-frmDatosPersonales' + idform,
+                                        asentamientos
+                                    );
+                                }
+                            ).done(function () {
+
+                                // Evita la consulta si estado/municipio quedaron vacíos
+                                if (!estado || !municipio) {
+                                    console.warn('Estado/Municipio vacíos; se omite consulta de localidades.');
+                                    return;
+                                }
+
+                                $.getJSON(
+                                    "https://api.copomex.com/query/get_localidad_por_estado_municipio/?" +
+                                    "estado=" + encodeURIComponent(estado) +
+                                    "&municipio=" + encodeURIComponent(municipio) +
+                                    "&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee",
+                                    function (copomex2) {
+                                        if (!copomex2 || !copomex2.response || !copomex2.response.localidad_clave) {
+                                            console.warn('No se encontraron localidades para el estado/municipio proporcionados.');
+                                            return;
+                                        }
+                                        var localidades = Object.keys(copomex2.response.localidad_clave);
+                                        AgregarOptionSelect(
+                                            idform,
+                                            'deloptionloca',
+                                            '#ciudad_petit-frmDatosPersonales' + idform,
+                                            localidades
+                                        );
+                                    }
+                                ).done(function () {
+                                    // Restaura valores del registro como en tu flujo original
+                                    $("#estado_petit-frmDatosPersonales" + idform).val(response.data[0].estado || estado);
+                                    $("#municipio_petit-frmDatosPersonales" + idform).val(response.data[0].municipio || municipio);
+                                    $("#colonia_petit-frmDatosPersonales" + idform).val(response.data[0].colonia || '');
+                                    $("#ciudad_petit-frmDatosPersonales" + idform).val(response.data[0].ciudad || '');
 
                                     $("#colonia_petit-frmDatosPersonales" + idform).selectpicker('refresh');
                                     $("#ciudad_petit-frmDatosPersonales" + idform).selectpicker('refresh');
 
-                                }).fail(function () { console.log('Ha ocurrido un error en obtener las localidades') });
+                                }).fail(function () {
+                                    console.log('Ha ocurrido un error en obtener las localidades');
+                                });
 
-                            }).fail(function () { console.log('Ha ocurrido un error al obtener datos de un cp') });
-
-
+                            }).fail(function () {
+                                console.log('Ha ocurrido un error al obtener datos de un CP');
+                            });
                         }
 
                     } else {
@@ -1367,6 +3803,10 @@ function buscapeticionariocurpnom() {
     });
 
 }
+// David 12 08 2025: Cambios en los metodos relacionados con las personas fisicas y morales de la via de interposicion - abajo se describen
+//  Esta version de cambios para petit fisico - moral solo contempla un registro de petit, esta pendiente la implementacion final (formularios dinamicos)
+
+// Ricardo 03 09 2025: Cambios para mostrar labels de peticionarios(petit) como "no proporcionados" en todos los formularios.
 function addPeticionarios() {
     $('#addPeticionariodp').click(function (e) {
         e.preventDefault();
@@ -1382,6 +3822,7 @@ function addPeticionarios() {
 
         npmax = Math.max.apply(null, arrNumPet);
         let nfin = npmax + 1;
+        console.log(nfin);
 
         if ($('#idcomplementopet' + npmax).val() != '' && $('#idpeticionarioi' + npmax).val() != '') {
             NuevoNavHrzPeticionario(nfin);
@@ -1390,6 +3831,15 @@ function addPeticionarios() {
             seltxt();
             keypresscp();
             buscapeticionariocurpnom();
+
+            let valueVInterposicion = $('#select_viainterposicionc').val();
+            console.log("valueVInterposicion actual:", valueVInterposicion);
+
+            if (["6", "7"].includes(valueVInterposicion)) {
+                manejarSwalPeticionario(nfin);
+            }
+
+
         } else {
             Swal.fire({
                 position: 'center',
@@ -1403,6 +3853,159 @@ function addPeticionarios() {
 
     });
 }
+// David 12 08 2025: Cambios en los metodos relacionados con las personas fisicas y morales de la via de interposicion - abajo se describen
+//  Esta version de cambios para petit fisico - moral solo contempla un registro de petit, esta pendiente la implementacion final (formularios dinamicos)
+//function changeselects() {
+//    //let valueVInterposicion = "";
+//    //let tipoescrito = "";
+
+//    function validarYCrearFormulario() {
+//        if (valueVInterposicion && tipoescrito) {
+//            CrearFormularioCrearEscrito(valueVInterposicion, tipoescrito, [1, 2, 3, 4, 5]);
+//        }
+//    }
+
+//    $('#select_viainterposicionc').on('change', function () {
+//        valueVInterposicion = this.value;
+//        console.log("Valor de select_viainterposicionc:", valueVInterposicion);
+//        validarYCrearFormulario();
+
+//        if (valueVInterposicion === "6" || valueVInterposicion === "7") {
+//            $("#selectTipoQueja").val([1, 2, 4]).trigger('change.select2');
+
+//            mostrarSelectorTipoPeticionario(tipoSeleccionado => {
+
+//                // Guarda el tipo de persona fisica o moral para usar como identificador adelante
+//                tipoPeticionarioSeleccionado = tipoSeleccionado;
+
+//                // Solo ejecuta el metodo de preparación si el tipo de escrito ya está seleccionado
+//                if (tipoescrito) {
+//                    prepararFormularioTipoPeticionario(tipoSeleccionado);
+//                }
+//            });
+//        } else {
+//            $('#formularioaltaescritodqot').empty();
+//        }
+//    });
+
+//    $('#select_tipoescritoc').on('change', function () {
+//        tipoescrito = this.value;
+//        console.log("Valor de select_tipoescritoc:", tipoescrito);
+//        validarYCrearFormulario();
+//        // Si ya se eligio vía entonces hace una validacion y si se tiene el tipo peticionario, ejecuta la preparación
+//        if ((valueVInterposicion === "6" || valueVInterposicion === "7") && tipoPeticionarioSeleccionado) {
+//            prepararFormularioTipoPeticionario(tipoPeticionarioSeleccionado);
+//        }
+
+//    });
+//}
+
+
+//function mostrarSelectorTipoPeticionario(callback) {
+//    Swal.fire({
+//        title: 'Tipo de Peticionario(a)',
+//        html: `
+//            <label for="options">Selecciona una opción:</label>
+//            <select id="options" class="swal2-input">
+//                <option value="opcion1">Moral</option>
+//                <option value="opcion2">Física</option>
+//            </select>`,
+//        showCancelButton: true,
+//        confirmButtonText: 'Aceptar',
+//        preConfirm: () => document.getElementById('options').value
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            callback(result.value);
+//        }
+//    });
+//}
+
+//function prepararFormularioTipoPeticionario(tipo, numFormulario = 1) {
+//    const refContenedor = `#ref-frm-frmDatosPersonales${numFormulario}`;
+//    const idFormulario = `#frmDatosPersonales${numFormulario}`;
+
+//    // Verificar si el contenedor del formulario de peticionario ya tiene contenido
+//    if ($(refContenedor).children().length === 0) {
+//        const formPetit = formPeticionario(numFormulario); // Formulario dinámico
+
+//        // Insertar el formulario dinámico en su contenedor específico
+//        $(refContenedor).append(formPetit);
+
+//        // Insertar el formulario correspondiente a tipo físico/moral (solo si es el primer formulario)
+//        if (numFormulario === 1) {
+//            if (tipo === 'opcion2') {
+//                $('#formularioaltaescritodqot').append(formularioFisica);
+//            } else {
+//                $('#formularioaltaescritodqot').append(formularioMoral);
+//            }
+
+//            $('#frm_altaqueja').append(traeInformacionDatosComplementarios);
+//        }
+//        deshabilitarCamposPersonales(numFormulario);
+//        reemplazarInputPorSelectNombre(numFormulario);
+//        rellenarCamposPorDefecto(numFormulario);
+//    }
+//    deshabilitarCamposPersonales(numFormulario);
+//    reemplazarInputPorSelectNombre(numFormulario);
+//    rellenarCamposPorDefecto(numFormulario);
+
+//}
+
+
+
+function reemplazarInputPorSelectNombre(numFormulario = 1) {
+    const idInput = `#nombre_petit-frmDatosPersonales${numFormulario}`;
+    const $input = $(idInput);
+
+    //verificar que exista el input antes de reemplazar
+    if ($input.length === 0) return;
+
+    const $select = $('<select></select>')
+        .addClass('form-control eliminaformaes ob max-20 eliminaformaes')
+        .attr({
+            'data-idfrmit': '',
+            'name': $input.attr('name'),
+            'id': $input.attr('id'),
+            'required': true
+        });
+
+    $.each(Morales, function (index, item) {
+        $select.append($('<option></option>').val(item.idSelect).text(item.descripcion));
+    });
+
+    $input.replaceWith($select);
+}
+
+function deshabilitarCamposPersonales(numFormulario = 1) {
+    const formPrefix = `#frmDatosPersonales${numFormulario}`;
+    $(`${formPrefix} input[type='checkbox'].noproporcionado`).prop("disabled", true).prop('checked', true).trigger('change');
+    $(`${formPrefix} input[type='text'], ${formPrefix} input[type='radio'], ${formPrefix} input[type='date'], ${formPrefix} select`).prop("disabled", true);
+
+    $(`#nombre_petit-frmDatosPersonales${numFormulario}`).prop("disabled", false);
+    $(`input[name='nombre_petitno-frmDatosPersonales${numFormulario}']`).prop("hidden", true).prop("checked", false).trigger("change");
+}
+
+
+function rellenarCamposPorDefecto(numFormulario = 1) {
+    const prefix = `#frmDatosPersonales${numFormulario}`;
+
+    console.log("Ejecutando rellenarCamposPorDefecto para:", numFormulario);
+
+    $(`${prefix} #colonia_petit-frmDatosPersonales${numFormulario}`).val('No proporcionado');
+    $(`${prefix} #ciudad_petit-frmDatosPersonales${numFormulario}`).val('No proporcionado');
+    $(`${prefix} #genero_petit-frmDatosPersonales${numFormulario}`).val('No proporcionado');
+    $(`${prefix} #escosel_petit-frmDatosPersonales${numFormulario}`).val(14);
+    $(`${prefix} #econyugal_petit-frmDatosPersonales${numFormulario}`).val(8);
+    $(`${prefix} #ocupacion_petit-frmDatosPersonales${numFormulario}`).val(9);
+    $(`${prefix} #discapacidad_petit-frmDatosPersonales${numFormulario}`).val(7);
+    $(`${prefix} #gsoci_petit-frmDatosPersonales${numFormulario}`).val(9);
+    $(`${prefix} #leindi_petit-frmDatosPersonales${numFormulario}`).val('No');
+    $(`${prefix} #idQuejoso, ${prefix} #idNosexo, ${prefix} #idNoGenero, ${prefix} #idNopSabeLeer`).prop("checked", true);
+    // David 19 08 2025: Relleno del campo de edad por un vacio - evita que se guarde No proporcionado
+    $(`${prefix} #edad_petit-frmDatosPersonales${numFormulario}`).val('00');
+}
+
+
 function addActacir() {
 
     $('#addActac').click(function (e) {
@@ -1431,260 +4034,146 @@ function addActacir() {
     });
 
 }
+
+// btn Imprimir registro datos personales David Y Cris 2/06/25
+// Correccion btn imprimir: 1) Vertificacion del frame, sino existe se crea. 2) seleccion y carga de plantilla. 
+//3) Cambios del blopque de estructura del AJAX (datos y checkbox). 4) Nueva funcion para marcar visualmente los cehckbox
 function btnGenerapdfp(element) {
+    const idform = element.dataset.idform;
 
-    let idform = element.dataset.idform;
-    let wspFrame = document.getElementById('frame').contentWindow;
-    let html = wspFrame.document.all;
-
-    let idcomplemento = $("#idcomplementopet" + idform).val()
-    let curpd = $("#CURP_petit-frmDatosPersonales" + idform).val()
-    let nombrep = $("#nombre_petit-frmDatosPersonales" + idform).val()
-    let apellidope = $("#apellidop_petit-frmDatosPersonales" + idform).val()
-    let apellidome = $("#apellidom_petit-frmDatosPersonales" + idform).val()
-
-    if (idcomplemento == '') {
-        Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'Aún no guarda los datos del peticionario',
-            showConfirmButton: false,
-            timer: 1500
-        });
-        return;
-    } else if (curpd == '') {
-        Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'Ingrese la CURP o el nombre completo del peticionario',
-            showConfirmButton: false,
-            timer: 1500
-        });
-
-        return;
-    } else if (curpd == 'No proporcionado' && nombrep == '' && apellidope == '' && apellidome == '') {
-        Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'En caso de no tener CURP ingrese el nombre completo del peticionario',
-            showConfirmButton: false,
-            timer: 1500
-        });
-
-        return;
+    // Verifica si el iframe ya existe
+    let iframe = document.getElementById('frame');
+    if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'frame';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
     }
 
-    $.ajax({
-        type: "POST",
-        url: "GetDataPeticionario",
-        data: { curp: curpd, nombre: nombrep, apellidop: apellidope, apellidom: apellidome, idcomp: idcomplemento },
-        dataType: "JSON",
-        success: function (response) {
+    // Cargar la plantilla en el iframe
+    iframe.src = './PlantillaDPeticionario';
+    iframe.onload = function () {
+        const doc = iframe.contentWindow.document;
+        const html = doc.all;
 
-            if (response.data.length > 0) {
-                console.log(response.data[0]);
+        const idcomplemento = $("#idcomplementopet" + idform).val();
+        const curpd = $("#CURP_petit-frmDatosPersonales" + idform).val();
+        const nombrep = $("#nombre_petit-frmDatosPersonales" + idform).val();
+        const apellidope = $("#apellidop_petit-frmDatosPersonales" + idform).val();
+        const apellidome = $("#apellidom_petit-frmDatosPersonales" + idform).val();
 
-                (Array.from(html.chkTipoaq)).forEach(function (input, index) {
-                    if (input.value != response.data[0].tipoUsuario) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
+        const fechaActual = new Date();
+        const fechTxt = `${fechaActual.getDate()}/${fechaActual.getMonth() + 1}/${fechaActual.getFullYear()} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
 
-                html.txtNombre.textContent = response.data[0].nombre;
-                html.txtApaterno.textContent = response.data[0].apellidoPat;
-                html.txtAmaterno.textContent = response.data[0].apellidoMat;
-                html.txtCalle.textContent = response.data[0].calle;
-                html.numExt.textContent = response.data[0].numExterior;
-                html.numInt.textContent = response.data[0].numInterior;
-                html.txtColonia.textContent = response.data[0].colonia;
-                html.txtCiudadloc.textContent = response.data[0].ciudad;
-                html.txtMunicipio.textContent = response.data[0].municipio;
-                html.txtEstado.textContent = response.data[0].estado;
-                html.txtCp.textContent = response.data[0].codigoPostal;
-                html.txtTelefono.textContent = response.data[0].telefono;
-                html.txtEdad.textContent = response.data[0].edad;
-                html.txtEmail.textContent = response.data[0].email;
-
-                if (response.data[0].nombre.toUpperCase() === 'NO PROPORCIONADO') { html.txtNombre.style.fontStyle = 'italic'; }
-                if (response.data[0].apellidoPat.toUpperCase() === 'NO PROPORCIONADO') { html.txtApaterno.style.fontStyle = 'italic'; }
-                if (response.data[0].apellidoMat.toUpperCase() === 'NO PROPORCIONADO') { html.txtAmaterno.style.fontStyle = 'italic'; }
-                if (response.data[0].calle.toUpperCase() === 'NO PROPORCIONADO') { html.txtCalle.style.fontStyle = 'italic'; }
-                if (response.data[0].numExterior.toUpperCase() === 'NO PROPORCIONADO') { html.numExt.style.fontStyle = 'italic'; }
-                if (response.data[0].numInterior.toUpperCase() === 'NO PROPORCIONADO') { html.numInt.style.fontStyle = 'italic'; }
-                if (response.data[0].colonia.toUpperCase() === 'NO PROPORCIONADO') { html.txtColonia.style.fontStyle = 'italic'; }
-                if (response.data[0].ciudad.toUpperCase() === 'NO PROPORCIONADO') { html.txtCiudadloc.style.fontStyle = 'italic'; }
-                if (response.data[0].municipio.toUpperCase() === 'NO PROPORCIONADO') { html.txtMunicipio.style.fontStyle = 'italic'; }
-                if (response.data[0].estado.toUpperCase() === 'NO PROPORCIONADO') { html.txtEstado.style.fontStyle = 'italic'; }
-                if (response.data[0].codigoPostal.toUpperCase() === 'NO PROPORCIONADO') { html.txtCp.style.fontStyle = 'italic'; }
-                if (response.data[0].telefono.toUpperCase() === 'NO PROPORCIONADO') { html.txtTelefono.style.fontStyle = 'italic'; }
-                if (response.data[0].edad.toUpperCase() === 'NO PROPORCIONADO') { html.txtEdad.style.fontStyle = 'italic'; }
-                if (response.data[0].email.toUpperCase() === 'NO PROPORCIONADO') { html.txtEmail.style.fontStyle = 'italic'; }
-
-
-                (Array.from(html.chkTipoaq)).forEach(function (input, index) {
-                    if (input.value != response.data[0].tipoUsuario) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
-                (Array.from(html.chkSexo)).forEach(function (input, index) {
-                    if (input.value != response.data[0].fkSexo) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
-                (Array.from(html.chkGenero)).forEach(function (input, index) {
-                    if (input.value != response.data[0].genero) {
-                        input.checked = false
-                    } else {
-                        input.checked = true;
-                    }
-                });
-                html.txtOtroGenero.textContent = response.data[0].otroGenero;
-                (Array.from(html.chkEscolaridad)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkEscolaridad) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkEstadocon)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkEstadoConyugal) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkOcupacion)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkOcupacion) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                html.chkOtraocupacion.textContent = response.data[0].otraOcupacion;
-                (Array.from(html.chkNacionalidad)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].nacionalidad) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkSabeleer)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].sabeLeer) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkDispacacidad)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkDiscapacidad) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkGsocial)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].fkGrupoSocial) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                html.txtOtroGsoc.textContent = response.data[0].otroGsocial;
-                (Array.from(html.chkHablali)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].hablaLenguai) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                html.txtOtraLengiai.textContent = response.data[0].lenguaIndigena;
-                if (response.data[0].fechaNacimiento.includes('1900-01-01')) {
-                    html.txtFechaNaci.textContent = 'No proporcionado';
-                    html.txtFechaNaci.style.fontStyle = 'italic';
-                }
-                else {
-                    html.txtFechaNaci.textContent = moment(new Date(response.data[0].fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
-                }
-
-                html.txtOrigenmig.textContent = response.data[0].origenMigrante.length > 0 ? response.data[0].origenMigrante : "";
-                html.txtDestinomig.textContent = response.data[0].destinoMigrante;
-                (Array.from(html.chkPrimeravm)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].primeravmexMigrante) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                (Array.from(html.chkViolenmuj)).forEach(function (persona, index) {
-                    if (persona.value != response.data[0].violenciaVm) {
-                        persona.checked = false
-                    } else {
-                        persona.checked = true;
-                    }
-                });
-                if (response.data[0].violenciaVm == 1) {
-                    html.txtCanalizacionvm.textContent = response.data[0].canalizacionVm;
-                    (Array.from(html.chkEmbarazada)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].embarazadaVm) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkSinhijos)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkHijosVivos) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkModalidadv)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkModalidadViolencia) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkTipov)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkTipoViolencia) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    (Array.from(html.chkRelacionAgr)).forEach(function (persona, index) {
-                        if (persona.value != response.data[0].fkRelacionAgresor) {
-                            persona.checked = false
-                        } else {
-                            persona.checked = true;
-                        }
-                    });
-                    html.txtIngresosmens.textContent = '$' + response.data[0].ingresosMensuales;
-                }
-
-
-                wspFrame.focus();
-                wspFrame.print();
-            } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'warning',
-                    title: 'Datos no encontrados, verifique la curp o el nombre del peticionario',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-
-                return;
-            }
+        if (!idcomplemento || (!curpd && (!nombrep || !apellidope || !apellidome))) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Complete la CURP o el nombre completo del peticionario',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return;
         }
+
+        $.ajax({
+            type: "POST",
+            url: "GetDataPeticionario",
+            data: { curp: curpd, nombre: nombrep, apellidop: apellidope, apellidom: apellidome, idcomp: idcomplemento },
+            dataType: "JSON",
+            success: function (response) {
+                if (!response.data.length) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: 'Datos no encontrados, verifique la CURP o el nombre del peticionario',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    return;
+                }
+
+                const data = response.data[0];
+                if (html.dateact) html.dateact.textContent = fechTxt;
+
+                // Textos básicos
+                html.txtNombre.textContent = data.nombre || '';
+                html.txtApaterno.textContent = data.apellidoPat || '';
+                html.txtAmaterno.textContent = data.apellidoMat || '';
+                html.txtCalle.textContent = data.calle || '';
+                html.numExt.textContent = data.numExterior || '';
+                html.numInt.textContent = data.numInterior || '';
+                html.txtColonia.textContent = data.colonia || '';
+                html.txtCiudadloc.textContent = data.ciudad || '';
+                html.txtMunicipio.textContent = data.municipio || '';
+                html.txtEstado.textContent = data.estado || '';
+                html.txtCp.textContent = data.codigoPostal || '';
+                html.txtTelefono.textContent = data.telefono || '';
+                html.txtEdad.textContent = data.edad || '';
+                html.txtEmail.textContent = data.email || '';
+
+                html.txtOtroGenero.textContent = data.otroGenero || '';
+                html.txtOtraLengiai.textContent = data.lenguaIndigena || '';
+                html.txtOtroGsoc.textContent = data.otroGsocial || '';
+                html.txtOrigenmig.textContent = data.origenMigrante || '';
+                html.txtDestinomig.textContent = data.destinoMigrante || '';
+
+                // Fecha de nacimiento
+                if (html.txtFechaNaci) {
+                    if (data.fechaNacimiento.includes('1900-01-01')) {
+                        html.txtFechaNaci.textContent = 'No proporcionado';
+                        html.txtFechaNaci.style.fontStyle = 'italic';
+                    } else {
+                        html.txtFechaNaci.textContent = moment(new Date(data.fechaNacimiento).toISOString().split("T")[0]).format('DD/MM/YYYY');
+                    }
+                }
+
+                // === Marcar checkboxes ===
+                marcarGrupo(doc, 'chkSexo', data.fkSexo);
+                marcarGrupo(doc, 'chkGenero', data.genero);
+                marcarGrupo(doc, 'chkEscolaridad', data.fkEscolaridad);
+                marcarGrupo(doc, 'chkEstadocon', data.fkEstadoConyugal);
+                marcarGrupo(doc, 'chkOcupacion', data.fkOcupacion);
+                marcarGrupo(doc, 'chkNacionalidad', data.nacionalidad);
+                marcarGrupo(doc, 'chkSabeleer', data.sabeLeer);
+                marcarGrupo(doc, 'chkDispacacidad', data.fkDiscapacidad);
+                marcarGrupo(doc, 'chkGsocial', data.fkGrupoSocial);
+                marcarGrupo(doc, 'chkHablali', data.hablaLenguai);
+                marcarGrupo(doc, 'chkTipoaq', data.tipoUsuario);
+                marcarGrupo(doc, 'chkPrimeravm', data.primeravmexMigrante);
+                marcarGrupo(doc, 'chkViolenmuj', data.violenciaVm);
+
+                if (data.violenciaVm == 1) {
+                    html.txtCanalizacionvm.textContent = data.canalizacionVm || '';
+                    html.txtIngresosmens.textContent = '$' + (data.ingresosMensuales || '0');
+                    marcarGrupo(doc, 'chkEmbarazada', data.embarazadaVm);
+                    marcarGrupo(doc, 'chkSinhijos', data.fkHijosVivos);
+                    marcarGrupo(doc, 'chkModalidadv', data.fkModalidadViolencia);
+                    marcarGrupo(doc, 'chkTipov', data.fkTipoViolencia);
+                    marcarGrupo(doc, 'chkRelacionAgr', data.fkRelacionAgresor);
+                }
+
+                // Deshabilitar todos los checkboxes
+                doc.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.disabled = true);
+
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+            }
+        });
+    };
+}
+
+
+// 4) Nueva función agregada al btn auxiliar para marcar checkboxes  visualmente en el pdf - 04062025
+function marcarGrupo(doc, groupName, valor) {
+    const checkboxes = doc.getElementsByName(groupName);
+    if (!checkboxes.length) return;
+    checkboxes.forEach(cb => {
+        cb.checked = cb.value == valor;
     });
 }
+
+////
 function NuevoNavHrzPeticionario(numconsecutivo) {
 
     let elementNav = `<a href="#ref-frm-frmDatosPersonales${numconsecutivo}" data-toggle="pill" data-numpetit="${numconsecutivo}" class="nav-link show eliminaformaes linksfrmpetit frmDatosPersonales${numconsecutivo}">Peticionario ${numconsecutivo}
@@ -1834,41 +4323,82 @@ function seltxt() {
     })
 }
 
-// Buscar informacion sobre cp
+// Buscar informacion sobre cp; Cambio de aceptacion de la solicitud de las APIS usando el Token, mensajes de alertas al buscar un CP y cambio de la posisión de de los datos en otro orden 19/03/2025 - Fred
 function keypresscp() {
-    $(document).on('keypress', ".buscacp", function (e) {
-        if (e.which == 13) {
-            let idfrm = this.dataset.idfrmit;
-            let estado = '';
-            let municipio = '';
+    $(document).on('input', ".buscacp", function () {
+        let codigoPostal = this.value.trim();
+        let idfrm = this.dataset.idfrmit;
 
-            $.getJSON("https://api.copomex.com/query/info_cp/" + this.value + "?type=simplified&token=pruebas", function (copomex) {
-                estado = copomex.response.estado;
-                municipio = copomex.response.municipio;
-                $("#municipio_petit-frmDatosPersonales" + idfrm).val(municipio);
-                $("#estado_petit-frmDatosPersonales" + idfrm).val(estado);
-                $("#cp_petit-frmDatosPersonales" + idfrm).val(copomex.response.cp);
-                AgregarOptionSelect(idfrm, 'deloptioncolonia', '#colonia_petit-frmDatosPersonales' + idfrm, copomex.response.asentamiento);
-            }).done(function () {
+        if (codigoPostal.length === 5 && !isNaN(codigoPostal)) {
+            // Primera petición: obtener estado, municipio y colonias
+            $.getJSON(`https://api.copomex.com/query/info_cp/${codigoPostal}?type=simplified&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee`)
+                .done(function (copomex) {
+                    if (!copomex.response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se encontraron datos para este código postal.',
+                            confirmButtonColor: '#d33'
+                        });
+                        return;
+                    }
 
-                $.getJSON("https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=" + estado + "&municipio=" + municipio + "&token=pruebas", function (copomex) {
-                    let localidadaes = Object.keys(copomex.response.localidad_clave);
-                    AgregarOptionSelect(idfrm, 'deloptionloca', '#ciudad_petit-frmDatosPersonales' + idfrm, localidadaes);
-                }).fail(function () { console.log('Ha ocurrido un error en obtener las localidades') });
+                    let estado = copomex.response.estado || '';
+                    let municipio = copomex.response.municipio || '';
 
-            }).fail(function () { console.log('Ha ocurrido un error al obtener datos de un cp') });
+                    $("#municipio_petit-frmDatosPersonales" + idfrm).val(municipio);
+                    $("#estado_petit-frmDatosPersonales" + idfrm).val(estado);
+                    $("#cp_petit-frmDatosPersonales" + idfrm).val(codigoPostal);
 
+                    AgregarOptionSelect(idfrm, 'deloptioncolonia', '#colonia_petit-frmDatosPersonales' + idfrm, copomex.response.asentamiento);
+
+                    // Segunda petición: obtener localidades
+                    $.getJSON(`https://api.copomex.com/query/get_localidad_por_estado_municipio/?estado=${estado}&municipio=${municipio}&token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee`)
+                        .done(function (copomexLocalidad) {
+                            if (!copomexLocalidad.response) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Sin Localidades',
+                                    text: 'No se encontraron localidades para este estado y municipio.',
+                                    confirmButtonColor: '#3085d6'
+                                });
+                                return;
+                            }
+
+                            let localidades = Object.keys(copomexLocalidad.response.localidad_clave);
+                            AgregarOptionSelect(idfrm, 'deloptionloca', '#ciudad_petit-frmDatosPersonales' + idfrm, localidades);
+                        })
+                        .fail(function () {
+                            console.log('Error al obtener las localidades');
+                        });
+                })
+                .fail(function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron obtener los datos del código postal.',
+                        confirmButtonColor: '#d33'
+                    });
+                });
+        } else if (codigoPostal.length > 5) {
+            this.value = codigoPostal.slice(0, 5); // Limita a 5 caracteres
         }
     });
 }
+
+
+
+
 function formPeticionario(idformulario) {
+    const selectorPais = `#migorig_petit-frmDatosPersonales${idformulario}`;
+    const selectorEstado = `#migdesti_petit-frmDatosPersonales${idformulario}`;
 
     let frmDatosPersonales = crearForumulario(
         {
             idformulario: "frmDatosPersonales" + idformulario,
             numForm: idformulario
         },
-        {
+        {//Formulario para el "Alta de escrito inicial" cambio de posision 17/03/2025 - Fred
             formulario:
                 [
                     {
@@ -1960,18 +4490,30 @@ function formPeticionario(idformulario) {
                         name: "estado_petit-frmDatosPersonales" + idformulario,
                         type: "text",
                         iformularioit: idformulario,
-                        classControl: "ob max-300 eliminaformaes validaTxt",
+                        classControl: "ob max-300 eliminaformaes",
                         noproporcionado: true,
-                        required: 'required oninput="validarTxtKeyPress(this)"',
+                        required: 'required',
                         namenoprop: "estado_petitno-frmDatosPersonales" + idformulario,
                         typechk: "chkx"
                     },
                     {
                         class: "col-md-3",
-                        label: "Colonia",
-                        name: "colonia_petit-frmDatosPersonales" + idformulario,
-                        type: "combobox",
+                        label: "Municipio",
+                        name: "municipio_petit-frmDatosPersonales" + idformulario,
+                        type: "text",
+                        iformularioit: idformulario,
                         required: 'required',
+                        classControl: "ob max-300 eliminaformaes",
+                        noproporcionado: true,
+                        namenoprop: "municipio_petitno-frmDatosPersonales" + idformulario,
+                        typechk: "chkx"
+                    },
+                    {
+                        class: "col-md-3",
+                        label: "Ciudad/Localidad",
+                        required: 'required',
+                        name: "ciudad_petit-frmDatosPersonales" + idformulario,
+                        type: "combobox",
                         iformularioit: idformulario,
                         classControl: "ob max-300 eliminaformaes",
                         combooptions: [
@@ -1983,22 +4525,10 @@ function formPeticionario(idformulario) {
                     },
                     {
                         class: "col-md-3",
-                        label: "Municipio",
-                        name: "municipio_petit-frmDatosPersonales" + idformulario,
-                        type: "text",
-                        iformularioit: idformulario,
-                        required: 'required oninput="validarTxtKeyPress(this)"',
-                        classControl: "ob max-300 eliminaformaes validaTxt",
-                        noproporcionado: true,
-                        namenoprop: "municipio_petitno-frmDatosPersonales" + idformulario,
-                        typechk: "chkx"
-                    },
-                    {
-                        class: "col-md-3",
-                        label: "Ciudad/Localidad",
-                        required: 'required',
-                        name: "ciudad_petit-frmDatosPersonales" + idformulario,
+                        label: "Colonia",
+                        name: "colonia_petit-frmDatosPersonales" + idformulario,
                         type: "combobox",
+                        required: 'required',
                         iformularioit: idformulario,
                         classControl: "ob max-300 eliminaformaes",
                         combooptions: [
@@ -2059,7 +4589,7 @@ function formPeticionario(idformulario) {
                         type: "text",
                         classControl: "ob max-300 eliminaformaes validaNumero",
                         noproporcionado: true,
-                        required: 'required oninput="validaNumeroKeyPress(this)"',
+                        required: 'required oninput="validaNumeroKeyPress(this)" maxlength="3"',
                         namenoprop: "edad_petitno-frmDatosPersonales" + idformulario,
                         typechk: "chkx"
                     },
@@ -2072,7 +4602,8 @@ function formPeticionario(idformulario) {
                         noproporcionado: true,
                         required: 'required oninput="validaNumeroKeyPress(this)"',
                         namenoprop: "telefono_petitno-frmDatosPersonales" + idformulario,
-                        typechk: "chkx"
+                        typechk: "chkx",
+                        maxlength: "10"
                     },
                     {
                         class: "col-md-4",
@@ -2488,9 +5019,64 @@ function formPeticionario(idformulario) {
                 ]
         }
     );
+    cargarPais(selectorPais);
+    cargarEstado(selectorEstado);
 
     return frmDatosPersonales;
 }
+//17/12/2025
+function cargarPais(selectorPais) {
+    $.ajax({
+        type: "GET",
+        url: "/AltaExpediente/ObtenerListaPaises",
+        dataType: "json",
+        success: function (response) {
+            // Vacía el select y carga los datos en el select indicado
+            $(selectorPais).empty();
+            CargaDatosSelectOtro_(selectorPais, response.lista_paises, null);
+        },
+        error: function () {
+            console.error("No se pudo cargar la lista de paises");
+        }
+    });
+}
+
+function cargarEstado(selectorEstado) {
+    $.ajax({
+        type: "GET",
+        url: "/AltaExpediente/ObtenerListaEstados",
+        dataType: "json",
+        success: function (response) {
+            // Vacía el select y carga los datos en el select indicado
+            $(selectorEstado).empty();
+            CargaDatosSelectOtro_(selectorEstado, response.lista_estados, null);
+            console.log("listaestados", response.lista_estados)
+        },
+        error: function () {
+            console.error("No se pudo cargar la lista de estados");
+        }
+    });
+}
+
+//fin bloque
+// se le puso un limite de caracteres al edad  23/05/2025 Cris
+function validaNumeroKeyPress(input) {
+    if (input.name.startsWith("edad_petit-frmDatosPersonales")) {
+        input.value = input.value.replace(/\D/g, '').slice(0, 3);
+    } else {
+        input.value = input.value.replace(/\D/g, ''); // Solo limpia no números
+    }
+}
+
+// se le puso un limite de caracteres del telefono 23/05/2025 Cris
+function validaNumeroKeyPress(input) {
+    if (input.name.startsWith("telefono_petit-frmDatosPersonales")) {
+        input.value = input.value.replace(/\D/g, '').slice(0, 10);
+    } else {
+        input.value = input.value.replace(/\D/g, ''); // Solo limpia no números
+    }
+}
+
 function guardarDatosPeticionarios() {
 
     $('.formularioPeticionario').submit(function (e) {
@@ -2541,21 +5127,78 @@ function guardarDatosPeticionarios() {
 
         }
     });
-
-
 }
 
-function guardaDataComplPeticionario(idForm, numFrm) {
-    $("#frmDatosPersonales1 input[type='text']").prop('disabled', false);
-    $("#frmDatosPersonales1 input[type='radio']").prop('disabled', false);
-    $("#frmDatosPersonales1 input[type='date']").prop('disabled', false);
-    $("#frmDatosPersonales1 select").prop('disabled', false);
+//  David 01 09 2025 Nuevo metodo: Actualiza el campo de tipo de escrito dado el id de expediente y el tipo de escrito seleccionado
+function insertarTipoEscrito(idExpediente, tipoescrito) {
+    if (!idExpediente || !tipoescrito) {
+        console.warn("❗ Falta idExpediente o tipoescrito");
+        return;
+    }
 
-    let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
+    $.ajax({
+        type: "POST",
+        url: '/Expediente/InsertarTipoEscrito',
+        data: {
+            idExpediente: idExpediente,
+            tipo: tipoescrito
+        },
+        dataType: "json",
+        success: function (response) {
+            if (response.status) {
+                console.log("Tipo escrito insertado correctamente.");
+            } else {
+                console.error("Error del servidor:", response.mensaje);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error AJAX:", error);
+        }
+    });
+}
+
+// [Modificado] Ricardo 12-09-2025:  El nombre del peticionario se guardaba vacío en formularios 2+, ahora ya en el select del Alta se guardan todos los nombres
+// Se estaba obteniendo el nombre del peticionario del formulario 1, ahora se obtiene de cada formulario con valor dinamico "numFrm"
+
+function obtenerFechaHora() {
+    let fechaActual = new Date();
+
+    // Fecha en formato YYYY-MM-DD
+    let year = fechaActual.getFullYear();
+    let month = String(fechaActual.getMonth() + 1).padStart(2, '0');
+    let day = String(fechaActual.getDate()).padStart(2, '0');
+    let fechaRecepcion = `${year}-${month}-${day}`;
+
+    // Hora en formato HH:mm:ss
+    let hours = String(fechaActual.getHours()).padStart(2, '0');
+    let minutes = String(fechaActual.getMinutes()).padStart(2, '0');
+    let seconds = String(fechaActual.getSeconds()).padStart(2, '0');
+    let horaRecepcion = `${hours}:${minutes}:${seconds}`;
+
+    return { fechaRecepcion, horaRecepcion };
+}
+
+
+//Se obtienen los datos de formularios de manera dinámica con numFrm
+function guardaDataComplPeticionario(idForm, numFrm) {
+
+    let btn = $(`#submitForm-${numFrm}`);
+
+    // 🔥 EVITA DOBLE CLICK
+    if (btn.prop('disabled')) return false;
+    btn.prop('disabled', true);
+
+    $(`#frmDatosPersonales${numFrm} input[type='text']`).prop('disabled', false);
+    $(`#frmDatosPersonales${numFrm} input[type='radio']`).prop('disabled', false);
+    $(`#frmDatosPersonales${numFrm} input[type='date']`).prop('disabled', false);
+    $(`#frmDatosPersonales${numFrm} select`).prop('disabled', false);
+
+    let nombre = $(`#nombre_petit-frmDatosPersonales${numFrm} option:selected`).text();
     //FrmEnlacefq.append('ip_acceso', ipAcceso);
 
     var ip = $("#ipAccesible").html();
     console.log("Esta es la ip que se va a pasar:" + ip);
+
     $.ajax({
         type: "post",
         url: 'GuardarDataComplPeticionario',
@@ -2563,31 +5206,55 @@ function guardaDataComplPeticionario(idForm, numFrm) {
         data: $(idForm).serialize() + '&nombreS=' + nombre + '&Ipaccesible=' + ip,
         dataType: "json",
         success: function (data) {
-
             console.log(data)
             let selectsPet = document.querySelectorAll('.selectpetactac').length;
+
             if (nombre != "") {
-                $("#frmDatosPersonales1 input[type='radio']").prop("disabled", true);
-                $("#frmDatosPersonales1 select").prop('disabled', true);
-                $("#frmDatosPersonales1 input[type='date']").prop('disabled', true);
-                $("#nombre_petit-frmDatosPersonales1").prop("disabled", false);
+                $(`#frmDatosPersonales${numFrm} input[type='radio']`).prop("disabled", true);
+                $(`#frmDatosPersonales${numFrm} select`).prop('disabled', true);
+                $(`#frmDatosPersonales${numFrm} input[type='date']`).prop('disabled', true);
+                $(`#nombre_petit-frmDatosPersonales${numFrm}`).prop("disabled", false);
             }
             // Si se guardo de forma correcta te regresa el id de peticionario generado de la tabla Reg_recepcion
             // De igual forma te regresa el id de complemento generado
             if (data.idpeticionario > 0 && data.idcomplemento > 0) {
 
-                $('#idcomplementopet' + numFrm).val(data.idcomplemento);
-                $('#idpeticionarioi' + numFrm).val(data.idpeticionario);
+                $(`#idcomplementopet${numFrm}`).val(data.idcomplemento);
+                $(`#idpeticionarioi${numFrm}`).val(data.idpeticionario);
 
                 console.log('Input_Peticionario');
 
                 let arrids_competicionarios = [];
+
                 // Se crea arreglo de peticinarios registrados para un select, ya que se usara uno para los siguientes formatos
-                peticionariosGuardados.push({
-                    idpeticionario: data.idpeticionario,
-                    idcomplementopet: data.idcomplemento,
-                    nombrepeti: data.nombrepet.replace(/No Proporcionado/g, '') //Se quita de lista las palabras 'No Proporcionado'
-                });
+                let nombreDesdeData = (data.nombrepet || '').replace(/No Proporcionado/g, '').trim();
+                let nombreFinal = nombreDesdeData;
+
+                // Fallback: si viene vacío, tomamos el texto seleccionado en el formulario
+                if (!nombreFinal) {
+                    nombreFinal = $(`#frmDatosPersonales${numFrm} select[name="Input_Peticionario"]`)
+                        .find('option:selected')
+                        .text()
+                        .trim();
+                }
+
+                let index = peticionariosGuardados.findIndex(p => p.idpeticionario == data.idpeticionario);
+
+                if (index !== -1) {
+                    // ✅ ACTUALIZA
+                    peticionariosGuardados[index] = {
+                        idpeticionario: data.idpeticionario,
+                        idcomplementopet: data.idcomplemento,
+                        nombrepeti: nombreFinal
+                    };
+                } else {
+                    // ✅ INSERTA SOLO SI NO EXISTE
+                    peticionariosGuardados.push({
+                        idpeticionario: data.idpeticionario,
+                        idcomplementopet: data.idcomplemento,
+                        nombrepeti: nombreFinal
+                    });
+                }
 
                 // Se valida que el arreglo de peticionarios para los select no se repitan usuarios 
                 let petnoduplicados = peticionariosGuardados.reduce(function (prev, curr) {
@@ -2601,6 +5268,7 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                     }
                     return prev;
                 }, { array: [], ids: [] });
+
                 console.log(petnoduplicados)
                 peticionariosGuardados = petnoduplicados.array;
                 filtradonuevo = petnoduplicados.array;
@@ -2610,13 +5278,12 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                 peticionariosGuardadosok = peticionariosGuardados.filter(({ idcomplementopet }, index) => !ids_unicos.includes(idcomplementopet, index + 1));
                 // Si el peticionario agregado es Agraviado procede a obtener un id de queja, si es quejoso aun no se le da id de queja
                 if (data.tipousuario == 'Agraviado' || data.tipousuario == 'Peticionario') {
-                    // Se valida que el input hidden que guarda el id de queja ste vacio
+                    // Se valida que el input hidden que guarda el id de queja este vacio
                     if ($('.idquejagenerado').val() == '') {
-
                         let FrmEnlacefq = new FormData();
                         FrmEnlacefq.append('num_frmpetit', numFrm);
-                        FrmEnlacefq.append('id_complemento', $('#idcomplementopet' + numFrm).val());
-                        FrmEnlacefq.append('id_peticionario', $('#idpeticionarioi' + numFrm).val());
+                        FrmEnlacefq.append('id_complemento', $(`#idcomplementopet${numFrm}`).val());
+                        FrmEnlacefq.append('id_peticionario', $(`#idpeticionarioi${numFrm}`).val());
                         FrmEnlacefq.append('id_via_interposicion', $('#select_viainterposicionc').val());
                         FrmEnlacefq.append('id_Abogado_Queja', $('#idusuario').val());
 
@@ -2635,7 +5302,18 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                                 $('#Input_ID').prop('readonly', true);
                                 // Pasar ide de queja a Acta circunstanciada
                                 $('#idquejaactac1').val(idqueja);
+                                let tipoescrito = $('#select_tipoescritoc').val();
+                                
                                 // Si ya esta creado el id de queja se actualiza en la DB campo ID_EXPEDIENTE del complemento peticionario
+                                let { fechaRecepcion, horaRecepcion } = obtenerFechaHora();
+
+                                $('#Input_FechaRecepcion').val(fechaRecepcion).prop("disabled", true);
+                                $('#Input_HoraRecepcion').val(horaRecepcion).prop("disabled", true);
+
+                                
+                                console.log(idqueja);
+                                console.log(tipoescrito);
+                                insertarTipoEscrito(idqueja, tipoescrito);
                                 let FrmIdQueja = new FormData();
                                 let idscomplementos_petit = document.querySelectorAll(".idscomplepeticionarios");
 
@@ -2645,25 +5323,20 @@ function guardaDataComplPeticionario(idForm, numFrm) {
 
                                 FrmIdQueja.append('id_queja', idqueja);
                                 FrmIdQueja.append('ids_complementos', arrids_competicionarios);
-
+                                0
                                 fetchPost("Expediente/UpdateComPetExpQujoso", "json", FrmIdQueja, (resp) => {
                                     console.log(resp)
                                     let update = resp.data;
-
-
                                 });
 
                                 // Si se genero el id de queja se crea select de los peticionarios dados de alta
                                 // para que puedan ser seleccionados en los otros formatos
                                 if (filtradonuevo.length > 0) {
-                                    console.log('entra al primero 2')
-                                    console.log(filtradonuevo)
                                     $('.listapet').append(selectPetACircunstanciada(idqueja, filtradonuevo, 'escritoi', 'Input_Peticionario'));
-                                } $('.listapetactac').append(selectPetACircunstanciada(idqueja, filtradonuevo, 'actac', 'nombrePet'));
-
+                                }
+                                $('.listapetactac').append(selectPetACircunstanciada(idqueja, filtradonuevo, 'actac', 'nombrePet'));
                                 changeSelectPetActac();
                             } else {
-                                console.log('entra al segundo')
                                 $('.listapet').append(selectPetACircunstanciada(idqueja, peticionariosGuardadosok, 'escritoi', 'Input_Peticionario'));
                                 $('.listapetactac').append(selectPetACircunstanciada(idqueja, peticionariosGuardadosok, 'actac', 'nombrePet'));
                                 changeSelectPetActac();
@@ -2683,13 +5356,13 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                         });
 
                     } else {
-
-                        let idquejahidden = $('.idquejagenerado').val()
+                        let idquejahidden = $('.idquejagenerado').val();
                         // Al dar de alta un quejoso se valida si ya se genero id de queja
                         if (idquejahidden != '') {
                             // Si ya esta creado el id de queja se actualiza en la DB campo ID_EXPEDIENTE del complemento peticionario
                             let FrmIdQueja = new FormData();
                             let idscomplementos_petit = document.querySelectorAll(".idscomplepeticionarios");
+
                             for (var cp = 0; cp < idscomplementos_petit.length; cp++) {
                                 arrids_competicionarios.push(idscomplementos_petit[cp].value);
                             }
@@ -2698,39 +5371,33 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                             FrmIdQueja.append('ids_complementos', arrids_competicionarios);
 
                             fetchPost("Expediente/UpdateComPetExpQujoso", "json", FrmIdQueja, (resp) => {
-                                let update = resp.data;
-
-                                if (resp.status) {
-                                    console.log(update)
-                                }
-
+                                console.log(resp.data)
                             });
                         }
 
                         if (filtradonuevo.length > 0) {
                             console.log(filtradonuevo)
-
                             let updatedArray = filtradonuevo.map(p =>
                                 p.idcomplementopet != data.idcomplemento && p.idpeticionario === data.idpeticionario
                                     ? { idpeticionario: data.idpeticionario, idcomplementopet: data.idcomplemento, nombrepeti: data.nombrepet }
                                     : p
                             );
 
-                            console.log('entra al primero 1')
+                            console.log('entra el primero 1')
                             console.log(updatedArray)
+
+
                             $('.listapet').append(selectPetACircunstanciada(idqueja, updatedArray, 'escritoi', 'Input_Peticionario'));
                             $('.listapetactac').append(selectPetACircunstanciada(idqueja, updatedArray, 'actac', 'nombrePet'));
                             changeSelectPetActac();
-
                         } else {
-
                             let updatedArrayd = peticionariosGuardadosok.map(p =>
                                 p.idcomplementopet === data.idcomplemento
                                     ? { idpeticionario: data.idpeticionario, idcomplementopet: data.idcomplemento, nombrepeti: data.nombrepet }
                                     : p
                             );
 
-                            console.log('entra al segundo')
+                            console.log('entra el segundo')
                             $('.listapet').append(selectPetACircunstanciada(idqueja, updatedArrayd, 'escritoi', 'Input_Peticionario'));
                             $('.listapetactac').append(selectPetACircunstanciada(idqueja, updatedArrayd, 'actac', 'nombrePet'));
                             changeSelectPetActac();
@@ -2746,15 +5413,15 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                             timer: 1500
                         });
                     }
-
                 } else {
-                    let idquejahidden = $('.idquejagenerado').val()
+                    let idquejahidden = $('.idquejagenerado').val();
 
                     // Al dar de alta un quejoso se valida si ya se genero id de queja
                     if (idquejahidden != '') {
                         // Si ya esta creado el id de queja se actualiza en la DB campo ID_EXPEDIENTE del complemento peticionario
                         let FrmIdQueja = new FormData();
                         let idscomplementos_petit = document.querySelectorAll(".idscomplepeticionarios");
+
                         for (var cp = 0; cp < idscomplementos_petit.length; cp++) {
                             arrids_competicionarios.push(idscomplementos_petit[cp].value);
                         }
@@ -2766,21 +5433,18 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                             let update = resp.data;
 
                             if (resp.status) {
-                                console.log(update)
+                                console.log(resp.data)
                             }
-
                         });
                     }
 
                     // Se crea select de los peticionarios dados de alta
                     // para que puedan ser seleccionados en los otros formatos
                     if (filtradonuevo.length > 0) {
-                        console.log('entra al tercero')
                         $('.listapet').append(selectPetACircunstanciada($('.idquejagenerado').val(), filtradonuevo, 'escritoi', 'Input_Peticionario'));
                         $('.listapetactac').append(selectPetACircunstanciada($('.idquejagenerado').val(), filtradonuevo, 'actac', 'nombrePet'));
                         changeSelectPetActac();
                     } else {
-                        console.log('entra al cuarto')
                         $('.listapet').append(selectPetACircunstanciada($('.idquejagenerado').val(), peticionariosGuardadosok, 'escritoi', 'Input_Peticionario'));
                         $('.listapetactac').append(selectPetACircunstanciada($('.idquejagenerado').val(), peticionariosGuardadosok, 'actac', 'nombrePet'));
                         changeSelectPetActac();
@@ -2795,7 +5459,6 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                     });
                 }
 
-
             } else {
                 Swal.fire({
                     position: 'center',
@@ -2803,24 +5466,62 @@ function guardaDataComplPeticionario(idForm, numFrm) {
                     title: 'Error al Insertar los datos, reporte el error del sistema',
                     showConfirmButton: false,
                     timer: 1500
-                })
+                });
             }
-
         }
-
     });
 }
+
+
 function Agrega_PersonaAutoridad(nfin) {
     var arregloBlanco = [];
 
-    var cuerpo = CreaInputs_Con_Label('Input_nombres' + nfin, 'Input_nombres' + nfin, 'arrInput_nombres', 'text', 'PROPORCIONAR SUS NOMBRES, APELLIDOS:&nbsp;', 'Input_nombres' + nfin, 'placeholder="Nombres y apellidos"  data-idinei="' + nfin + '" style ="float:left;"', ' style ="float:left;"')
-        + CreaInputs_Con_Label('Input_cargo' + nfin, 'Input_cargo' + nfin, '', 'text', '&nbsp;&nbsp;&nbsp;CARGO:&nbsp;', 'Input_cargo', 'placeholder="cargo" style ="float:left;" data-idinei="' + nfin + '"', ' style ="float:left;"')
-        + CreaSelectLabelSelect2('Input_autoridades' + nfin, "", arregloBlanco, '', '&nbsp;&nbsp;&nbsp;AUTORIDAD:&nbsp;', '', ' style ="float:left;"', 'data-idinei="' + nfin + '" style ="float:left;max-width: 180px !important;"', '')
-        + CreaBR()
-        + CreaBR();
-    return cuerpo;
+    var cuerpo = `
+        <div class="autoridad-item" id="autoridad_${nfin}" data-idinei="${nfin}">
+            ${CreaInputs_Con_Label(
+        'Input_nombres' + nfin,
+        'Input_nombres' + nfin,
+        'arrInput_nombres',
+        'text',
+        'PROPORCIONAR SUS NOMBRES, APELLIDOS:&nbsp;',
+        'Input_nombres' + nfin,
+        'placeholder="Nombres y apellidos" data-idinei="' + nfin + '" style="float:left;"',
+        'style="float:left;"'
+    )}
+            ${CreaInputs_Con_Label(
+        'Input_cargo' + nfin,
+        'Input_cargo' + nfin,
+        '',
+        'text',
+        '&nbsp;&nbsp;&nbsp;CARGO:&nbsp;',
+        'Input_cargo',
+        'placeholder="cargo" style="float:left;" data-idinei="' + nfin + '"',
+        'style="float:left;"'
+    )}
+            ${CreaSelectLabelSelect2(
+        'Input_autoridades' + nfin,
+        "",
+        arregloBlanco,
+        '',
+        '&nbsp;&nbsp;&nbsp;AUTORIDAD:&nbsp;',
+        '',
+        'style="float:left;"',
+        'data-idinei="' + nfin + '" style="float:left;max-width:180px!important;"',
+        ''
+    )}
+            <button type="button" class="btn btn-danger btn-sm eliminarAutoridad" data-id="${nfin}" style="margin-left:10px;">Eliminar</button>
+            ${CreaBR()}
+            ${CreaBR()}
+        </div>
+    `;
 
+    return cuerpo;
 }
+$(document).on('click', '.eliminarAutoridad', function () {
+    let id = $(this).data('id');
+    $('#autoridad_' + id).remove();
+});
+
 function selectPetACircunstanciada(idqueja, arrPeticionarios, frm, idelement) {
 
     //  document.querySelectorAll('.delselect').forEach(p => p.remove() );
@@ -2955,7 +5656,7 @@ function formEscritoInicial2(action, id) {
         + CreaBR()
         + '<div class="listapet">'
         + '</div></div>'
-        + Crea_Parrafos('parrafo0', 'parrafo0', 'col-md-3 parrafo', 'DR. JOSÉ FELIX CEREZO VÉLEZ</br>PRESIDENTE DE LA COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA', 'style ="text-align: left;font-weight: bold;"')
+        + Crea_Parrafos('parrafo0', 'parrafo0', 'col-md-3 parrafo', 'ROSA ISELA SANCHEZ SOYA</br>PRESIDENTA DE LA COMISIÓN DE DERECHOS HUMANOS DEL ESTADO DE PUEBLA', 'style ="text-align: left;font-weight: bold;"')
         + '<div class="text-justify">'
         + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en los artículos 2, 4, 5, 13 fracciones I, II, III, IV y V, 25, 28 y demás relativos y aplicables de la Ley de la Comisión de Derechos Humanos del Estado, ante personal de este organismo y por mi propio derecho, acudo a denunciar actos u omisiones que a mi juicio constituyen violación a mis derechos humanos, en los términos que a continuación se expresan:', 'style ="text-align: left"')
         + '</div>'
@@ -2974,10 +5675,10 @@ function formEscritoInicial2(action, id) {
         + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'AUTORIDAD(ES) INVOLUCRADA(S):&nbsp;&nbsp;&nbsp;')
         + CreaBR()
         + CreaBR()
-        + CreaInputs_Con_Label('Input_nombres1', 'Input_nombres1', 'arrInput_nombres', 'text', 'PROPORCIONAR SUS NOMBRES, APELLIDOS:&nbsp;', 'Input_nombres1', 'placeholder="Nombres y apellidos" data-idinei="1" style ="float:left;"', ' style ="float:left;"')
-        + CreaInputs_Con_Label('Input_cargo1', 'Input_cargo1', 'arrInput_cargo', 'text', '&nbsp;&nbsp;&nbsp;CARGO:&nbsp;', 'Input_cargo', 'placeholder="cargo" data-idinei="1" style ="float:left;"', ' style ="float:left;"')
-        + CreaSelectLabelSelect2('Input_autoridades1', "", arregloBlanco, '', '&nbsp;&nbsp;&nbsp;AUTORIDAD:&nbsp;', '', ' data-idinei="1" style="float:left;"', ' style ="width:180px!important; float:left;max-width:180px!important;"', 'arrInput_autoridades')
-        + '&nbsp;&nbsp;<img src="/img/Agregar_PNG.png" id="icono_agregar" style="width:32px;height:32px;">'
+        //+ CreaInputs_Con_Label('Input_nombres1', 'Input_nombres1', 'arrInput_nombres', 'text', 'PROPORCIONAR SUS NOMBRES, APELLIDOS:&nbsp;', 'Input_nombres1', 'placeholder="Nombres y apellidos" data-idinei="1" style ="float:left;"', ' style ="float:left;"')
+        //+ CreaInputs_Con_Label('Input_cargo1', 'Input_cargo1', 'arrInput_cargo', 'text', '&nbsp;&nbsp;&nbsp;CARGO:&nbsp;', 'Input_cargo', 'placeholder="cargo" data-idinei="1" style ="float:left;"', ' style ="float:left;"')
+        //+ CreaSelectLabelSelect2('Input_autoridades1', "", arregloBlanco, '', '&nbsp;&nbsp;&nbsp;AUTORIDAD:&nbsp;', '', ' data-idinei="1" style="float:left;"', ' style ="width:180px!important; float:left;max-width:180px!important;"', 'arrInput_autoridades')
+        + '&nbsp;&nbsp;<img src="/img/Agregar_PNG.png" id="icono_agregarI" style="width:32px;height:32px;">'
         + CreaBR()
         + CreaBR()
         + '<div id="Contenedor_Cargos_Personas"></div>'
@@ -3031,24 +5732,25 @@ function formActacircunstanciada2c(idfrm) {
     console.log("CARGO_USER:" + Cargo);
     var f = new Date();
     var arregloBlanco = [];
-
-    var formInnicial = `<h1>FE DE HECHOS</h1><form class="text-justify form_acta" data-nformac=${numfrm} id="formActa${numfrm}" name="formActa${numfrm}" method="post" style="width:90%; margin-left:5%" >`;
+    //Formulario para llenar DATOS EN "generar Acta circunstanciada"
+    var formInnicial = `<h1>ACTA CIRCUNSTANCIADA</h1><form class="text-justify form_acta" data-nformac=${numfrm} id="formActa${numfrm}" name="formActa${numfrm}" method="post" style="width:90%; margin-left:5%" >`;
     var cuerpo =
         CreaSelectLabel('lugar' + numfrm, '', arregloBlanco, '', 'En', '', 'lugar', idfrm) + Requeridos()
         + CreaInputs_Con_Label('diaFecha' + numfrm, 'diaFecha' + numfrm, 'inputac', 'number', ', a los', 'textfield', '', idfrm) + Requeridos()
         + CreaSelectLabel('mes' + numfrm, '', arregloMeses(), '', 'días del mes de', 'textfield4', 'mes', idfrm) + Requeridos()
-        + CreaSelectLabeldisabled('anio' + numfrm, '', arregloAnio(), '', 'de', '', 'anio', idfrm)
+        + CreaSelectLabeldisabled('anio' + numfrm, '', arregloAnio(), '', 'de', 'anio', idfrm)
+        //+ CreaSelectLabeldisabled('anio' + numfrm, '', arregloAnio(), '', 'de', '', 'anio', idfrm) //cambio para que el abogado seleccione el año-06/03/2025 - Fred
         + CreaSelectLabel('nomAbogado' + numfrm, '', arregloBlanco, '', ', el/la suscrito/a, abogado/a', '', 'nomAbogado', idfrm)
         + CreaInputs_Con_Label('puestoAbogado' + numfrm, 'puestoAbogado' + numfrm, 'inputac', 'text', ', en mi carácter de', 'textfield6', 'placeholder="cargo de abogado" value="' + Cargo + '" disabled', idfrm)
         + CreaInputs_Con_Label('areaAbogado' + numfrm, 'areaAbogado' + numfrm, 'inputac', 'text', ', de la', 'textfield7', 'placeholder="área de abogado" value="' + Area + '" disabled', idfrm)
-        + Crea_Label('textfield8', 'textfield8', '', 'de la Comisión de Derechos Humanos del Estado de Puebla, con la fe pública que me confiere el artículo 21 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, así como 30, 37, y 39 de su Reglamento Interno, publicados en el Periódico Oficial del Estado, respectivamente')
-        + Crea_LabelCentro('textfield8', 'textfield8', '', '<b>CERTIFICO:</b>')
+        + Crea_Label('textfield8', 'textfield8', '', 'de la Comisión de Derechos Humanos del Estado de Puebla, con la fe pública que me confiere el artículo 21 y 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, así como 7, 8, 9, 48, 59, 60, 61, 64 y 66 de su Reglamento Interno, publicados en el Periódico Oficial del Estado, respectivamente')
+        + Crea_LabelCentro('textfield8', 'textfield8', '', '<b>.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.CERTIFICO:.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-</b>')
         + CreaInputs_Con_Label('horaInicio' + numfrm, 'horaInicio' + numfrm, 'inputac', 'time', 'Que siendo las', 'textfield9', '', idfrm) + Requeridos()
-        + CreaInputs_Con_Label('ubicacion' + numfrm, 'ubicacion' + numfrm, 'inputac', 'text', 'horas del día en que se actúa, me constituí en', 'textfield10', 'placeholder="lugar de entrevista"', idfrm) + Requeridos()
-        + Crea_Label('textfield8', 'textfield8', '', ', donde atendí a quien dijo llamarse ') + Requeridos()
+        + CreaInputs_Con_Label('ubicacion' + numfrm, 'ubicacion' + numfrm, 'inputac', 'text', 'horas del día del día en que se actúa, encontrándome en las instalaciones que ocupa', 'textfield10', 'placeholder="lugar de entrevista"', idfrm) + Requeridos()
+        + Crea_Label('textfield8', 'textfield8', '', ',donde procedo a entrevistarme con la persona que dijo llamarse') + Requeridos()
         + '<div style="margin-top: -28px; display: flex; justify-content: flex-end;" data--idfrmac="' + numfrm + '" class="listapetactac listapetactacc' + numfrm + ' d-flex"></div>'
-        + CreaSelectLabel('consentimiento' + numfrm, '', SeleccionMultiple(), '', 'ante quien una vez que me identifiqué plenamente como servidor público adscrito a este Organismo Autónomo, con la respectiva identificación que esta Comisión de Derechos Humanos del Estado de Puebla me expidió, se le hizo de su conocimiento el motivo de la diligencia, se le solicitó su autorización para ser entrevistado, expresando que', '', 'consentimiento', idfrm) + Requeridos()
-        + CreaSelectLabel('origenPet' + numfrm, '', arregloBlanco, '', 'otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <strong>MANIFESTÓ: </strong>Llamarse como ha quedado escrito, ser originario de', '', 'origenPet', idfrm) + Requeridos()
+        + CreaSelectLabel('consentimiento' + numfrm, '', SeleccionMultiple(), '', 'a quien previa identificación de la persona suscrita, le hago saber que derivado de su queja deberá manifestar su deseo de ratificar la misma, y en su uso de la voz la persona peticionaria <strong>MANIFESTÓ: </strong>', '', 'consentimiento', idfrm) + Requeridos()
+        + CreaSelectLabel('origenPet' + numfrm, '', arregloBlanco, '', 'ratifico la presente queja. Acto seguido, indicó llamarse como ha quedado escrito, ser originario/a de', '', 'origenPet', idfrm) + Requeridos()
         + CreaSelectLabel('origenPetExt' + numfrm, '', arregloBlanco, '', '', '', 'origenPetExt', idfrm)
         + CreaInputs_Con_Label('origenPetExtedo' + numfrm, 'origenPetExtedo' + numfrm, 'inputac', 'text', '', 'textfield', '', idfrm)
         + CreaInputs_Con_Label('edadPet' + numfrm, 'edadPet' + numfrm, 'datapet inputac', 'number', 'de', 'textfield10', 'placeholder="edad de peticionario"', idfrm)
@@ -3064,18 +5766,18 @@ function formActacircunstanciada2c(idfrm) {
         + CreaInputs_Con_Label('ocupacionPet' + numfrm, 'ocupacionPet' + numfrm, 'datapet inputac', 'text', 'de ocupación', 'textfield10', 'placeholder="ocupación de peticionario"', idfrm)
         + CreaInputs_Con_Label('telPet' + numfrm, 'telPet' + numfrm, 'datapet inputac', 'text', 'con número de teléfono', 'textfield10', 'placeholder="telefono de peticionario"', idfrm)
         + CreaInputs_Con_Label('correoPet' + numfrm, 'correoPet' + numfrm, 'datapet inputac', 'text', ', correo electrónico,', 'textfield10', 'placeholder="correo de peticionario"', idfrm)
-        + CreaSelectLabel('identificacionPet' + numfrm, '', arregloIdentificación(), '', 'identificándose ante el/la suscrito/a con', '', 'identificacionPet', idfrm) + Requeridos()
-        + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>DECLARO:</strong><br>')
-        + CreaInputs_Con_Label('fechaHechos' + numfrm, 'fechaHechos' + numfrm, 'inputac', 'date', 'Que el día', 'textfield10', '', idfrm) + Requeridos()
+        + CreaSelectLabel('identificacionPet' + numfrm, '', arregloIdentificación(), '', 'quien se identifica con', '', 'identificacionPet', idfrm) + Requeridos()
+        + Crea_LabelCentro('textfield11', 'textfield11', '', 'y en relación a los hechos de la queja que nos ocupa, <strong>MANIFESTÓ: </strong><br>')
+        + CreaInputs_Con_Label('fechaHechos' + numfrm, 'fechaHechos' + numfrm, 'inputac', 'date', 'Que es mi deseo ratificar la queja, precisando la fecha de los hechos', 'textfield10', '', idfrm) + Requeridos()
         + CreaInputs_Con_Label('horaHechos' + numfrm, 'horaHechos' + numfrm, 'inputac', 'time', 'a las', 'textfield10', '', idfrm) + Requeridos()
-        + CreaInputs_Con_Label('ubiHechos' + numfrm, 'ubiHechos' + numfrm, 'inputac', 'text', 'estando en', 'textfield10', 'placeholder="lugar de hechos"', idfrm) + Requeridos()
+        + CreaInputs_Con_Label('ubiHechos' + numfrm, 'ubiHechos' + numfrm, 'inputac', 'text', 'encontrándome en', 'textfield10', 'placeholder="lugar de hechos"', idfrm) + Requeridos()
         //+ CreaSelectLabel('catMunicipio_hechos' + numfrm, '', {}, '', 'ubicado en el municipio de', '', 'catMunicipio_hechos', idfrm) + Requeridos()
         //+ CreaSelectLabel('catEstado_hechos' + numfrm, '', arreglo_Estados(), '', 'del estado de ', '', 'catEstado_hechos', idfrm) + Requeridos()
         + CreaSelectLabel('catAutoridad' + numfrm, '', [], '', ', la(s) autoridad(es)', '', 'catAutoridad', idfrm) + Requeridos()
         + CreaTextArea('hechos' + numfrm, '', 'style="width:100%"', idfrm) + Requeridos()
-        + CreaInputs_Con_Label('horaTermino' + numfrm, 'horaTermino' + numfrm, 'inputac', 'time', ', dando por terminada la presente actuación a  las', 'textfield10', '', idfrm) + Requeridos()
-        + CreaInputs_Con_Label('', '', 'inputac', 'text', 'horas.', 'textfield10', 'hidden', idfrm)
-        + Crea_LabelCentro('textfield12', 'textfield12', '', 'Hago constar lo anterior de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla para los efectos correspondientes----------------------------------<b>DOY FE.</b> ')
+        + CreaInputs_Con_Label('', '', 'inputac', 'text', 'que es todo lo que tiene que manifestar.  DOY FE. ---------------------------------------------------------------------------------------', 'textfield10', 'hidden', idfrm)
+        + CreaInputs_Con_Label('horaTermino' + numfrm, 'horaTermino' + numfrm, 'inputac', 'time', 'Dando por terminada la presente diligencia siendo las', 'textfield10', '', idfrm) + Requeridos()
+        + CreaInputs_Con_Label('', '', 'inputac', 'text', 'horas, del día en que se actúa. Lo anterior se hace constar para los efectos legales a que haya lugar, de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla DOY FE. ----------------------------------', 'textfield10', 'hidden', idfrm)
         + crea_Boton('button', 'Previsualizar PDF', 'generaPDFActaC', 'btn btn-pinterest nfrm generaPDFActaC', idfrm)
         + crea_Boton('button', 'Guardar', 'saveActaC', 'btn btn-success saveActaC', idfrm)
         + CreaInputs('idabogado' + idfrm, 'idabogado' + idfrm, '', 'hidden', idfrm)
@@ -3098,9 +5800,967 @@ function formActacircunstanciada2c(idfrm) {
     var fin_form = '</form>';
 
     let formualarioCompleto = formInnicial + cuerpo + fin_form;
+    setTimeout(() => {
+        const anioActual = new Date().getFullYear();
+        const select = document.getElementById('anio' + numfrm);
+        const hidden = document.getElementById('id_anio' + numfrm);
+
+        if (select) {
+            select.value = anioActual;
+        }
+
+        if (hidden) {
+            hidden.value = anioActual;
+        }
+    }, 100);
+
 
     return formualarioCompleto;
 }
+// se puso el nuevo formulario de orintacion y una nueva pestaña 07/05/2025 cris 
+//Actualizacion de formatos 26/06/2025 Cris
+function formOrientacion(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        // 09 07 25 Pendiente revisar: Input folio validacion al enviar solo acepte numeros. Caso de que no admite ceros a la izquierda
+    //+ CreaInputs_Con_Label('Input_folio', 'Input_folio', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio', 'placeholder="No. de folio" ', '')
+        + CreaInputs_Con_Label('Input_folio', 'Input_folio', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">' 
+        + '</div></div>' 
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion', 'Input_FechaRecepcion', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion', 'Input_HoraRecepcion', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp', 'Input_autoridadresp', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp', 'placeholder="Nombre de la Autoridad" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion', 'Input_institucion', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE CANALIZACIÓN:&nbsp;&nbsp;', 'Input_institucion', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción II </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Orientación</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE ORIENTACIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionOrientacion', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'OrientacionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'saveOrientacion', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+// Formularios para edicion y insertar orientaciones adair 16/12/2025
+function formOrientacionCedula(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        // 09 07 25 Pendiente revisar: Input folio validacion al enviar solo acepte numeros. Caso de que no admite ceros a la izquierda
+        //+ CreaInputs_Con_Label('Input_folio', 'Input_folio', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio', 'placeholder="No. de folio" ', '')
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp_C', 'Input_autoridadresp_C', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp_C', 'placeholder="Nombre de la Autoridad" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion_C', 'Input_institucion_C', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE CANALIZACIÓN:&nbsp;&nbsp;', 'Input_institucion_C', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción II </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Orientación</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE ORIENTACIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'OrientacionPDF', 'btn btn-pinterest')
+       /* + crea_Botonei('button', 'Guardar', 'updateOrientacion', 'btn btn-success')*/
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+//INSERTAR ORIENTACION 08/12/2025
+function InsertarOrientacionCedula(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        // 09 07 25 Pendiente revisar: Input folio validacion al enviar solo acepte numeros. Caso de que no admite ceros a la izquierda
+        //+ CreaInputs_Con_Label('Input_folio', 'Input_folio', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio', 'placeholder="No. de folio" ', '')
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp_C', 'Input_autoridadresp_C', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp_C', 'placeholder="Nombre de la Autoridad" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion_C', 'Input_institucion_C', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE CANALIZACIÓN:&nbsp;&nbsp;', 'Input_institucion_C', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción II </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Orientación</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE ORIENTACIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'OrientacionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'insertOrientacion', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+        + CreaInputs('tipo_usuario', 'tipo_usuario', '', 'hidden')
+        + CreaInputs('genero', 'genero', '', 'hidden')
+        + CreaInputs('edad', 'edad', '', 'hidden')
+        + CreaInputs('via_interposicion', 'via_interposicion', '', 'hidden')
+        + CreaInputs('sexo', 'sexo', '', 'hidden')
+
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+
+//fin del bloque
+
+
+//Actualizacion de formatos 26/06/2025 Cris
+// David 17 07 2025 Actualice el label para mostrar correctamente la lista de abogados en el formulario
+function formRemision(action, id, idfrm) {
+    let nfrm = idfrm;
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio', 'Input_folio', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion', 'Input_FechaRecepcion', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion', 'Input_HoraRecepcion', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_numOficio', 'Input_numOficio', 'arrInput_numOficio', 'text', '&nbsp;&nbsp;&nbsp;NÚMERO DE OFICIO:&nbsp;', 'Input_numOficio', 'placeholder="No. Oficio generado" data-idinei="1" style ="float:left;width:17%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion', 'Input_institucion', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE REMISIÓN:&nbsp;&nbsp;', 'Input_institucion', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        //+ CreaSelectLabel('nomAbogado', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado')
+        + CreaSelectLabel('nomAbogado' + idfrm, '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado', idfrm) + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción III </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Remisión</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE REMISIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionRemision', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'RemisionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'saveRemision', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+//forms para la edicion e isertar remisiones adair 16/12/2025
+function formRemisionCedula(action, id, idfrm) {
+
+    let nfrm = idfrm;
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_numOficio_C', 'Input_numOficio_C', 'arrInput_numOficio', 'text', '&nbsp;&nbsp;&nbsp;NÚMERO DE OFICIO:&nbsp;', 'Input_numOficio_C', 'placeholder="No. Oficio generado" data-idinei="1" style ="float:left;width:17%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion_C', 'Input_institucion_C', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE REMISIÓN:&nbsp;&nbsp;', 'Input_institucion_C', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabel('nomAbogado' + idfrm, '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado', idfrm) + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción III </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Remisión</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE REMISIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'RemisionPDF', 'btn btn-pinterest')
+       /* + crea_Botonei('button', 'Guardar', 'updateRemision', 'btn btn-success')*/
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+// Insertar 08/12/2025
+function InsertarRemisionCedula(action, id, idfrm) {
+
+    let nfrm = idfrm;
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_numOficio_C', 'Input_numOficio_C', 'arrInput_numOficio', 'text', '&nbsp;&nbsp;&nbsp;NÚMERO DE OFICIO:&nbsp;', 'Input_numOficio_C', 'placeholder="No. Oficio generado" data-idinei="1" style ="float:left;width:17%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion_C', 'Input_institucion_C', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE REMISIÓN:&nbsp;&nbsp;', 'Input_institucion_C', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabel('nomAbogado' + idfrm, '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado', idfrm) + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción III </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Remisión</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE REMISIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'RemisionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'insertRemision', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+        + CreaInputs('tipo_usuario', 'tipo_usuario', '', 'hidden')
+        + CreaInputs('genero', 'genero', '', 'hidden')
+        + CreaInputs('edad', 'edad', '', 'hidden')
+        + CreaInputs('via_interposicion', 'via_interposicion', '', 'hidden')
+        + CreaInputs('sexo', 'sexo', '', 'hidden')
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+//fin del bloque
+
+//Actualizacion de formatos 26/06/2025 Cris
+// David 17 07 2025 Actualice el label para mostrar correctamente la lista de abogados en el formulario
+function formIncompetencia(action, id, idfrm) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio', 'Input_folio', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion', 'Input_FechaRecepcion', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion', 'Input_HoraRecepcion', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_numOficio', 'Input_numOficio', 'arrInput_numOficio', 'text', '&nbsp;&nbsp;&nbsp;NÚMERO DE OFICIO:&nbsp;', 'Input_numOficio', 'placeholder="No. Oficio generado" data-idinei="1" style ="float:left;width:17%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion', 'Input_institucion', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE REMISIÓN:&nbsp;&nbsp;', 'Input_institucion', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        //+ CreaSelectLabel('nomAbogado', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado', 1)
+        + CreaSelectLabel('nomAbogado' + idfrm, '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado', idfrm) + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción IV </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Incompetencia</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE INCOMPETENCIA:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionIncompetencia', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'IncompetenciaPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'saveIncompetencia', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+    
+    return formualarioCompleto;
+}
+//forms para editar e insertar incompetencias adair 16/12/2025
+function formIncompetenciaCedula(action, id, idfrm) {
+
+    let nfrm = idfrm;
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_numOficio_C', 'Input_numOficio_C', 'arrInput_numOficio', 'text', '&nbsp;&nbsp;&nbsp;NÚMERO DE OFICIO:&nbsp;', 'Input_numOficio_C', 'placeholder="No. Oficio generado" data-idinei="1" style ="float:left;width:17%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion_C', 'Input_institucion_C', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE REMISIÓN:&nbsp;&nbsp;', 'Input_institucion_C', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabel('nomAbogado' + idfrm, '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado', idfrm) + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción IV </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Incompetencia</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE INCOMPETENCIA:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'IncompetenciaPDF', 'btn btn-pinterest')
+       /* + crea_Botonei('button', 'Guardar', 'updateIncompetencia', 'btn btn-success')*/
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+
+    return formualarioCompleto;
+}
+//insertar 08/12/2025
+function InsertarIncompetenciaCedula(action, id, idfrm) {
+
+    let nfrm = idfrm;
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_numOficio_C', 'Input_numOficio_C', 'arrInput_numOficio', 'text', '&nbsp;&nbsp;&nbsp;NÚMERO DE OFICIO:&nbsp;', 'Input_numOficio_C', 'placeholder="No. Oficio generado" data-idinei="1" style ="float:left;width:17%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_institucion_C', 'Input_institucion_C', 'arrInput_institucion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA INSTITUCIÓN EN CASO DE REMISIÓN:&nbsp;&nbsp;', 'Input_institucion_C', 'placeholder="Nombre de la Institución" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabel('nomAbogado' + idfrm, '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;NOMBRE DE LA PERSONA REMITENTE:&nbsp;&nbsp;', '', 'nomAbogado', idfrm) + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción IV </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Incompetencia</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE INCOMPETENCIA:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'RemisionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'insertIncompetencia', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+        + CreaInputs('tipo_usuario', 'tipo_usuario', '', 'hidden')
+        + CreaInputs('genero', 'genero', '', 'hidden')
+        + CreaInputs('edad', 'edad', '', 'hidden')
+        + CreaInputs('via_interposicion', 'via_interposicion', '', 'hidden')
+        + CreaInputs('sexo', 'sexo', '', 'hidden')
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+
+//fin del bloque
+
+function formAntecedente(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio', 'Input_folio', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion', 'Input_FechaRecepcion', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion', 'Input_HoraRecepcion', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp', 'Input_autoridadresp', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp', 'placeholder="Nombre de la Autoridad" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción V </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Antecedente / Copia de conocimiento</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE ANTECEDENTE:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionAntecedente', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'AntecedentePDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'saveAntecedente', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+//forms para editar y insertar antecedentes
+function InsertarAntecedenteCedula(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp_C', 'Input_autoridadresp_C', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp_C', 'placeholder="Nombre de la Autoridad" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción V </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Antecedente / Copia de conocimiento</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE ANTECEDENTE:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'AntecedentePDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'insertAntecedente', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+        + CreaInputs('tipo_usuario', 'tipo_usuario', '', 'hidden')
+        + CreaInputs('genero', 'genero', '', 'hidden')
+        + CreaInputs('edad', 'edad', '', 'hidden')
+        + CreaInputs('via_interposicion', 'via_interposicion', '', 'hidden')
+        + CreaInputs('sexo', 'sexo', '', 'hidden')
+
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+//insertar 08/12/2025
+function formAntecedenteCedula(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaInputs_Con_LabelID('Input_ID', 'Input_ID', '', 'text', 'ID:&nbsp;', 'textfield', 'placeholder="ID del expediente"', ' style ="margin-left: 65%;"')
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_folio_C', 'Input_folio_C', 'arrInput_folio', 'number', 'FOLIO:&nbsp;', 'Input_folio_C', 'placeholder="No. de folio" min="0" ', '')
+        + CreaBR()
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp_C', 'Input_autoridadresp_C', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp_C', 'placeholder="Nombre de la Autoridad" data-idinei="1" style ="float:left;width:30%!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66,<b> 77 fracción V </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Antecedente / Copia de conocimiento</b>.', 'style ="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo4', 'parrafo4', 'col-md-12 parrafo', 'EXPLICACIÓN DE ANTECEDENTE:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'AntecedentePDF', 'btn btn-pinterest')
+     /*   + crea_Botonei('button', 'Guardar', 'updateAntecedente', 'btn btn-success')*/
+        + '</div>'
+        + CreaInputs('lugarselect', 'lugarselect', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden')
+        + CreaInputs('id_personas', 'id_personas', '', 'hidden')
+
+    var fin_formulario = '</form>';
+
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+
+
+//fin del bloque
+
+// 25 06 2025 Cris: Modificacion del formulario de aportaciones
+//  Se cambio el formato incluyendo y eliminando nuevos campos. Se quito el registro de datos personales y el ID. Tambien se incluyo el boton de cargar y ver pdf.
+function formAportacion(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+
+    var cuerpo = '<div class="text-right">'
+        + '<div class="listapet">'
+        + '</div></div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion', 'Input_FechaRecepcion', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion', 'Input_HoraRecepcion', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_NombrePetAportacion', 'Input_NombrePetAportacion', 'arrInput_NombrePetAportacion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DEL PETICIONARIO:&nbsp;', 'Input_NombrePetAportacion', 'placeholder="NOMBRE DEL PETICIONARIO:" data-idinei="1" style ="float:left;width:480px!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp', 'Input_autoridadresp', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp', 'placeholder="AUTORIDAD PRESUNTAMENTE RESPONSABLE" data-idinei="1" style ="float:left;width:480px!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_ExpedienteAportacion', 'Input_ExpedienteAportacion', 'arrInput_ExpedienteAportacion', 'text', '&nbsp;&nbsp;&nbsp;EXPEDIENTE AL QUE APORTA:&nbsp;', 'Input_ExpedienteAportacion', 'placeholder="EXPEDIENTE AL QUE APORTA" maxlength="10" pattern="\\d*" oninput="this.value=this.value.replace(/[^0-9]/g,\'\');" style="float:left;width:100px!important;"', 'style="float:left;"') + Requeridos()
+        + '<span style="float:left; line-height:32px; font-size:24px; font-weight:bold; margin: 0 10px;">-</span>'
+        + CreaInputs_Con_Label('Input_year', 'Input_year', 'arrInput_year', 'text', '', 'Input_year', 'placeholder="año" data-idinei="1" maxlength="4" pattern="\\d*" oninput="this.value=this.value.replace(/[^0-9]/g,\'\');" style="float:left;width:100px!important;"', 'style="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('textfield12', 'textfield12', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66, <b>77 fracción V</b> del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Aportación</b>.', 'style="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'EXPLICACIÓN DE APORTACIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('JustificacionAportacion', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistroAportacion', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'AportacionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'saveAportacion', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden');
+
+    var fin_formulario = '</form>';
+
+    let formularioCompleto = formulario + cuerpo + fin_formulario;
+
+    //$('#municipioqueja').select2?.();
+
+    return formularioCompleto;
+}
+//forms para editar e insertar aportaciones
+
+function formAportacionCedula(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_NombrePetAportacion_C', 'Input_NombrePetAportacion_C', 'arrInput_NombrePetAportacion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DEL PETICIONARIO:&nbsp;', 'Input_NombrePetAportacion_C', 'placeholder="NOMBRE DEL PETICIONARIO:" data-idinei="1" style ="float:left;width:480px!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp_C', 'Input_autoridadresp_C', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp_C', 'placeholder="AUTORIDAD PRESUNTAMENTE RESPONSABLE" data-idinei="1" style ="float:left;width:480px!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_ExpedienteAportacion_C', 'Input_ExpedienteAportacion_C', 'arrInput_ExpedienteAportacion', 'text', '&nbsp;&nbsp;&nbsp;EXPEDIENTE AL QUE APORTA:&nbsp;', 'Input_ExpedienteAportacion_C', 'placeholder="EXPEDIENTE AL QUE APORTA" maxlength="10" pattern="\\d*" oninput="this.value=this.value.replace(/[^0-9]/g,\'\');" style="float:left;width:100px!important;"', 'style="float:left;"') + Requeridos()
+        + '<span style="float:left; line-height:32px; font-size:24px; font-weight:bold; margin: 0 10px;">-</span>'
+        + CreaInputs_Con_Label('Input_year', 'Input_year', 'arrInput_year', 'text', '', 'Input_year', 'placeholder="año" data-idinei="1" maxlength="4" pattern="\\d*" oninput="this.value=this.value.replace(/[^0-9]/g,\'\');" style="float:left;width:100px!important;"', 'style="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('textfield12', 'textfield12', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66, <b>77 fracción V</b> del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Aportación</b>.', 'style="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'EXPLICACIÓN DE APORTACIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'AportacionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'updateAportacion', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('Input_IdAportacion_C', 'Input_IdAportacion_C', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden');
+    // Campo oculto para enviar el Id_aportacion
+
+
+
+
+
+    var fin_formulario = '</form>';
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+//insert 08/12/2025
+function InsertarAportacionCedula(action, id) {
+
+    var arregloBlanco = [];
+
+    var formulario = '<form id="' + id + '" action="" method="" class="text-left">';
+    var cuerpo = '<div class="text-right">'
+        + CreaBR()
+        + CreaBR()
+        + CreaSelectLabelSelect2('Input_LugarHechos_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;LUGAR DE RECEPCIÓN:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_FechaRecepcion_C', 'Input_FechaRecepcion_C', '', 'date', '&nbsp;&nbsp;&nbsp;FECHA Y HORA DE RECEPCIÓN:&nbsp;', 'textfield', 'placeholder="fecha recepcion" style ="float:left; border-right: none !important;  border-left: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; height: 30px;"', ' style ="float:left;"') + Requeridos()
+        + CreaInputs_Con_Label('Input_HoraRecepcion_C', 'Input_HoraRecepcion_C', '', 'time', '', 'textfield', 'placeholder="hora recepcion" style ="float:left; border-left: none !important; border-right: 1px solid #767676 !important; border-bottom: 1px solid #767676 !important; border-top: 1px solid #767676 !important; border-radius: 0px; height: 30px;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_NombrePetAportacion_C', 'Input_NombrePetAportacion_C', 'arrInput_NombrePetAportacion', 'text', '&nbsp;&nbsp;&nbsp;NOMBRE DEL PETICIONARIO:&nbsp;', 'Input_NombrePetAportacion_C', 'placeholder="NOMBRE DEL PETICIONARIO:" data-idinei="1" style ="float:left;width:480px!important;"', ' style ="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_autoridadresp_C', 'Input_autoridadresp_C', 'arrInput_autoridadresp', 'text', '&nbsp;&nbsp;&nbsp;AUTORIDAD PRESUNTAMENTE RESPONSABLE:&nbsp;', 'Input_autoridadresp_C', 'placeholder="AUTORIDAD PRESUNTAMENTE RESPONSABLE" data-idinei="1" style ="float:left;width:480px!important;"', ' style ="float:left;"')
+        + CreaBR()
+        + CreaBR()
+        + CreaInputs_Con_Label('Input_ExpedienteAportacion_C', 'Input_ExpedienteAportacion_C', 'arrInput_ExpedienteAportacion', 'text', '&nbsp;&nbsp;&nbsp;EXPEDIENTE AL QUE APORTA:&nbsp;', 'Input_ExpedienteAportacion_C', 'placeholder="EXPEDIENTE AL QUE APORTA" maxlength="10" pattern="\\d*" oninput="this.value=this.value.replace(/[^0-9]/g,\'\');" style="float:left;width:100px!important;"', 'style="float:left;"') + Requeridos()
+        + '<span style="float:left; line-height:32px; font-size:24px; font-weight:bold; margin: 0 10px;">-</span>'
+        + CreaInputs_Con_Label('Input_year', 'Input_year', 'arrInput_year', 'text', '', 'Input_year', 'placeholder="año" data-idinei="1" maxlength="4" pattern="\\d*" oninput="this.value=this.value.replace(/[^0-9]/g,\'\');" style="float:left;width:100px!important;"', 'style="float:left;"') + Requeridos()
+        + CreaBR()
+        + CreaBR()
+        + '<div class="text-justify">'
+        + Crea_Parrafos('textfield12', 'textfield12', 'col-md-12 parrafo', 'Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, y VI, 59, 61, 62, 64, 66, <b>77 fracción V</b> del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica provisionalmente como: <b>Aportación</b>.', 'style="text-align: left"')
+        + CreaBR()
+        + Crea_Label('parrafo1', 'parrafo1', 'col-md-12 parrafo', 'EXPLICACIÓN DE APORTACIÓN:&nbsp;') + Requeridos()
+        + CreaTextArea('ExplicacionCedula', 'col-md-12 parrafo')
+        + CreaInput()
+        + CreaBR()
+        + crealert('ideleteUpload', 'danger', 'Archivo adjunto eliminado')
+        + '<div id="containerImages"></div >'
+        + CreaBR()
+        + CreaSelectLabelSelect2('sedeRegistro_C', '', arregloBlanco, '', '&nbsp;&nbsp;&nbsp;SEDE DE REGISTRO:&nbsp;', '', ' style ="float:left;"', ' style ="float:left; width:40%!important;"') + Requeridos()
+        + '</div>'
+        + CreaBR()
+        + '<div class="text-center">'
+        + CreaBR()
+        + CreaBR()
+        + crea_Botonei('button', 'Previsualizar PDF', 'AportacionPDF', 'btn btn-pinterest')
+        + crea_Botonei('button', 'Guardar', 'insertAportacion', 'btn btn-success')
+        + '</div>'
+        + CreaInputs('Input_IdAportacion_C', 'Input_IdAportacion_C', '', 'hidden')
+        + CreaInputs('idenlaceformatquejaei', 'idenlaceformatquejaei', '', 'hidden')
+        + CreaInputs('id_escritoigenerado', 'id_escritoigenerado', '', 'hidden');
+
+
+    var fin_formulario = '</form>';
+    let formualarioCompleto = formulario + cuerpo + fin_formulario;
+
+    return formualarioCompleto;
+}
+
+
+
+
+//fin del bloque
+
+
 function crea_Botonei(tipo, texto, id, clase, atributos = '') {
     return " <button id='" + id + "' class='" + clase + "' type='" + tipo + "' data-idfrmac='" + atributos + "' value='" + texto + "''>" + texto + "</button>";
 }
@@ -3145,7 +6805,501 @@ function CreaInput() {
         </div>
 `;
 }
+
+// Elección de los formularios a llenar
 let formularioqueja = `
+<div class="card-header eliminaformaes">
+    <h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
+</div>
+<div class="card-body eliminaformaes">
+    <div class="default-tab eliminaformaes">
+        <ul class="nav nav-tabs eliminaformaes" role="tablist">
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
+            </li>
+            <li class="nav-item eliminaformaes tab2">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_escrito" id="tab2">Alta Escrito inicial</a>
+            </li>
+            <li class="nav-item eliminaformaes tab3">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_acta" id="tab3">Alta Acta Circunstanciada</a>
+            </li>
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#altaqueja" id="tab4">Datos Complementarios</a>
+            </li>
+        </ul>
+
+        <div class="tab-content eliminaformaes">
+            <!-- TAB 1 - Datos Personales -->
+            <div class="tab-pane fade eliminaformaes" id="datospersonales" role="tabpanel">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven-dp" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#collapseDatosPersonales">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="collapseDatosPersonales" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven-dp">
+                                        <div class="accordion__body--text eliminaformaes">
+                                            <div class="cardpeque eliminaformaes">
+                                                <div class="cardpeque-body eliminaformaes">
+                                                    <div class="row eliminaformaes">
+                                                        <div class="col-xl-2 eliminaformaes">
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
+                                                                <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1</a>
+                                                            </div>
+                                                            <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px;border: none;">
+                                                                <i class="fas fa-user-plus eliminaformaes"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xl-10 eliminaformaes">
+                                                            <div class="tab-content eliminaformaes tabfrmPeticionarios">
+                                                                <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes">
+                                                                    <!-- Formulario del Peticionario -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2 - Escrito Inicial -->
+            <div class="tab-pane fade eliminaformaes" id="alta_escrito">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven-ei" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#collapseEscritoInicial">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos para generar Escrito Inicial</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="collapseEscritoInicial" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven-ei">
+                                        <div class="accordion__body--text eliminaformaes" id="divformularioEscritoInicial">
+                                            <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;">
+                                                <span style="color: red;">*</span> Campos Requeridos
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3 - Acta Circunstanciada -->
+            <div class="tab-pane fade eliminaformaes" id="alta_acta">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven-ac" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#collapseActaCircunstanciada">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos para generar Acta circunstanciada</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="collapseActaCircunstanciada" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven-ac">
+                                        <div class="accordion__body--text eliminaformaes">
+                                            <div class="cardpeque eliminaformaes">
+                                                <div class="cardpeque-body eliminaformaes">
+                                                    <div class="row eliminaformaes">
+                                                        <div class="col-xl-2 eliminaformaes">
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclassactac">
+                                                                <a href="#ref-frm-frmActacir1" data-toggle="pill" data-numactac="1" class="nav-link active show eliminaformaes linksfrmActaci">Acta circunstanciada 1</a>
+                                                            </div>
+                                                            <button class="eliminaformaes" id="addActac" style="margin-top: 5px;border: none;">
+                                                                <i class="fas fa-plus-circle eliminaformaes"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xl-10 eliminaformaes">
+                                                            <div class="tab-content eliminaformaes tabfrmActacircu">
+                                                                <div id="ref-frm-frmActacir1" class="tab-pane fade active show divformularioActacir eliminaformaes">
+                                                                    <div class="hoja_acta">
+                                                                        <div class="accordion__body--text eliminaformaes" id="divformularioActaCircunstanciada">
+                                                                            <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;">
+                                                                                <span style="color: red;">*</span> Campos Requeridos
+                                                                            </h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4 - Datos Complementarios -->
+            <div class="tab-pane active fade eliminaformaes" id="altaqueja">
+                <div class="pt-4 eliminaformaes">
+                    <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+                        <div id="izquierda" class="row col-6"></div>
+                        <div id="derecha" class="row col-6"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+let formulariorientacion = `
+<div class="card-header eliminaformaes">
+    <h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
+</div>
+
+<div class="card-body eliminaformaes">
+    <div class="default-tab eliminaformaes">
+        <ul class="nav nav-tabs eliminaformaes" role="tablist">
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
+            </li>
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#aorientacion" id="tab2">Alta de una Orientacion</a>
+            </li>
+           
+        </ul>
+
+         <div class="tab-content eliminaformaes">
+            <!-- TAB 1 - Datos Personales -->
+            <div class="tab-pane fade eliminaformaes" id="datospersonales" role="tabpanel">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven-dp" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#collapseDatosPersonales">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="collapseDatosPersonales" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven-dp">
+                                        <div class="accordion__body--text eliminaformaes">
+                                            <div class="cardpeque eliminaformaes">
+                                                <div class="cardpeque-body eliminaformaes">
+                                                    <div class="row eliminaformaes">
+                                                        <div class="col-xl-2 eliminaformaes">
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
+                                                                <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1</a>
+                                                            </div>
+                                                            <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px;border: none;">
+                                                                <i class="fas fa-user-plus eliminaformaes"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xl-10 eliminaformaes">
+                                                            <div class="tab-content eliminaformaes tabfrmPeticionarios">
+                                                                <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes">
+                                                                    <!-- Formulario del Peticionario -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade eliminaformaes" id="aorientacion" role="tabpanel">
+                <div class="pt-4 eliminaformaes">
+                    <div id="divformularioOrientacion"></div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade eliminaformaes" id="altaqueja">
+    <div class="pt-4 eliminaformaes">
+        <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+            <div id="izquierda" class="row col-6"></div>
+            <div id="derecha" class="row col-6"></div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+`;
+let formularioRemsion = `
+<div class="card-header eliminaformaes">
+    <h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
+</div>
+
+<div class="card-body eliminaformaes">
+    <div class="default-tab eliminaformaes">
+        <ul class="nav nav-tabs eliminaformaes" role="tablist">
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
+            </li>
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#aremision" id="tab6">Alta Remision</a>
+            </li>
+            
+        </ul>
+
+        <div class="tab-content eliminaformaes">
+            <div class="tab-pane fade eliminaformaes" id="datospersonales" role="tabpanel">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-header d-block eliminaformaes"></div>
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
+                                        <div class="accordion__body--text eliminaformaes">
+                                            <div class="cardpeque eliminaformaes">
+                                                <div class="cardpeque-body eliminaformaes">
+                                                    <div class="row eliminaformaes">
+                                                        <div class="col-xl-2 eliminaformaes">
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
+                                                                <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1</a>
+                                                            </div>
+                                                            <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px; border: none;">
+                                                                <i class="fas fa-user-plus eliminaformaes"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xl-10 eliminaformaes">
+                                                            <div class="tab-content eliminaformaes tabfrmPeticionarios">
+                                                                <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade eliminaformaes" id="aremision" role="tabpanel">
+                <div class="pt-4 eliminaformaes">
+                    <div id="divformularioremision"></div>
+                </div>
+            </div>
+
+            <div class="tab-pane active fade eliminaformaes" id="altaqueja">
+                <div class="pt-4 eliminaformaes">
+                    <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+                        <div id="izquierda" class="row col-6"></div>
+                        <div id="derecha" class="row col-6"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+let formularioIncompetencia = `
+<div class="card-header eliminaformaes">
+    <h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
+</div>
+
+<div class="card-body eliminaformaes">
+    <div class="default-tab eliminaformaes">
+        <ul class="nav nav-tabs eliminaformaes" role="tablist">
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
+            </li>
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#aIncompetencia" id="tab7">Alta Incompetencia</a>
+            </li>
+            
+        </ul>
+
+        <div class="tab-content eliminaformaes">
+            <div class="tab-pane fade eliminaformaes" id="datospersonales" role="tabpanel">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-header d-block eliminaformaes"></div>
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
+                                        <div class="accordion__body--text eliminaformaes">
+                                            <div class="cardpeque eliminaformaes">
+                                                <div class="cardpeque-body eliminaformaes">
+                                                    <div class="row eliminaformaes">
+                                                        <div class="col-xl-2 eliminaformaes">
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
+                                                                <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1</a>
+                                                            </div>
+                                                            <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px; border: none;">
+                                                                <i class="fas fa-user-plus eliminaformaes"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xl-10 eliminaformaes">
+                                                            <div class="tab-content eliminaformaes tabfrmPeticionarios">
+                                                                <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade eliminaformaes" id="aIncompetencia" role="tabpanel">
+                <div class="pt-4 eliminaformaes">
+                    <div id="divformularioIncompetencia"></div>
+                </div>
+            </div>
+
+            <div class="tab-pane active fade eliminaformaes" id="altaqueja">
+                <div class="pt-4 eliminaformaes">
+                    <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+                        <div id="izquierda" class="row col-6"></div>
+                        <div id="derecha" class="row col-6"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+let formularioAntecedente = `
+<div class="card-header eliminaformaes">
+    <h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
+</div>
+
+<div class="card-body eliminaformaes">
+    <div class="default-tab eliminaformaes">
+        <ul class="nav nav-tabs eliminaformaes" role="tablist">
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
+            </li>
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#aAntecedente" id="tab8">Alta Antecedente</a>
+            </li>
+            
+        </ul>
+
+        <div class="tab-content eliminaformaes">
+            <div class="tab-pane fade eliminaformaes" id="datospersonales" role="tabpanel">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-header d-block eliminaformaes"></div>
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
+                                        <div class="accordion__body--text eliminaformaes">
+                                            <div class="cardpeque eliminaformaes">
+                                                <div class="cardpeque-body eliminaformaes">
+                                                    <div class="row eliminaformaes">
+                                                        <div class="col-xl-2 eliminaformaes">
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
+                                                                <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1</a>
+                                                            </div>
+                                                            <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px; border: none;">
+                                                                <i class="fas fa-user-plus eliminaformaes"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xl-10 eliminaformaes">
+                                                            <div class="tab-content eliminaformaes tabfrmPeticionarios">
+                                                                <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade eliminaformaes" id="aAntecedente" role="tabpanel">
+                <div class="pt-4 eliminaformaes">
+                    <div id="divformularioAntecedente"></div>
+                </div>
+            </div>
+
+            <div class="tab-pane active fade eliminaformaes" id="altaqueja">
+                <div class="pt-4 eliminaformaes">
+                    <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+                        <div id="izquierda" class="row col-6"></div>
+                        <div id="derecha" class="row col-6"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+let formularioAportacion = `
+<div class="card-header eliminaformaes">
+    <h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
+</div>
+<div class="card-body eliminaformaes">
+    <div class="default-tab eliminaformaes">
+        <ul class="nav nav-tabs eliminaformaes" role="tablist">
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link eliminaformaes" data-toggle="tab" href="#aaportacion" id="tab9">Alta Aportación</a>
+            </li>
+        </ul>
+       <div class="tab-content eliminaformaes">
+            <div class="tab-pane fade eliminaformaes" id="aaportacion" role="tabpanel">
+                <div class="pt-4 eliminaformaes">
+                    <div id="divformularioaportacion"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+// se escribio asi pare diferenciar cuando se hace el cambio tablas cuando se toma una u otra opcion 07/05/2025 cris
+let formularioFisica = `
 <div class="card-header eliminaformaes">
 <h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
 </div>
@@ -3154,121 +7308,13 @@ let formularioqueja = `
         <ul class="nav nav-tabs eliminaformaes" role="tablist">
 
             <li class="nav-item eliminaformaes">
-            <a class="nav-link  eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
+                <a class="nav-link  eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
             </li>
-             <li class="nav-item eliminaformaes tab2">
-            <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_escrito" id="tab2">Alta Escrito inicial</a>
-            </li>
-            <li class="nav-item eliminaformaes tab3" >
-            <a class="nav-link eliminaformaes" data-toggle="tab" href="#alta_acta" id="tab3">Alta Acta Circunstanciada</a>
-            </li>
-            <li class="nav-item eliminaformaes">
-            <a class="nav-link active eliminaformaes" data-toggle="tab" href="#altaqueja" id="tab4">Datos Complementarios</a>
-            </li>
+          
+            
         </ul>
         <div class="tab-content eliminaformaes">
-        <div class="tab-pane fade show  eliminaformaes" id="datospersonales" role="tabpanel">
-                <!-- Inicio tabl vertical -->
-            <div class="col-md-12 eliminaformaes">
-                <div class="cardpeque eliminaformaes">
-                    <div class="card-header d-block eliminaformaes">
-                    </div>
-                    <div class="card-body eliminaformaes">
-                        <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
-                            <div class="accordion__item eliminaformaes">
-                                <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
-                                    <span class="accordion__header--icon eliminaformaes"></span>
-                                    <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
-                                    <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
-                                </div>
-                                <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
-                                    <div class="accordion__body--text eliminaformaes" >
-                                           
-                                            <div class="cardpeque eliminaformaes">
-                                            <div class="cardpeque-body eliminaformaes">
-                                                <div class="row eliminaformaes">
-
-                                                    <div class="col-xl-2 eliminaformaes">
-                                                        <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
-                                                            <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1
-                                                            </a>
-                                                        </div>
-                                                        <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px;border: none;">
-                                                            <i b-oo5lp8m93w="" class="fas fa-user-plus eliminaformaes"></i>
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="col-xl-10 eliminaformaes">
-                                                        <div class="tab-content eliminaformaes tabfrmPeticionarios">   
-                                                            <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <!-- Fin tab vertical -->
-        </div>
-        <div class="tab-pane active fade eliminaformaes" id="altaqueja">
-            <div class="pt-4 eliminaformaes">
-                        <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
-                                <div id="izquierda" class="row col-6" ></div>
-                                <div id="derecha" class="row col-6" ></div>
-                        </form>
-                </div>
-            </div>
-
-          <div class="tab-pane fade eliminaformaes" id="alta_escrito">
-            <div class="tab-content eliminaformaes">
-        <div class="tab-pane fade show active eliminaformaes" id="datosescritoinicial" role="tabpanel">
-                <!-- Inicio tabl vertical -->
-            <div class="col-md-12 eliminaformaes">
-                <div class="cardpeque eliminaformaes">
-                    <div class="card-header d-block eliminaformaes">
-                    </div>
-                    <div class="card-body eliminaformaes">
-                        <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
-                            <div class="accordion__item eliminaformaes">
-                                <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
-                                    <span class="accordion__header--icon eliminaformaes"></span>
-                                    <span class="accordion__header--text eliminaformaes">Datos para generar Escrito Inicial</span>
-                                    <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
-                                </div>
-                                <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
-                                    <div class="accordion__body--text eliminaformaes" id="divformularioEscritoInicial">
-                                       <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;padding"><span style="color: red;">*</span> Campos Requeridos</h3>
-                                    </div>
-                                </div>
-                            </div>
-
-                      
-
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-
-
-        </div>
-            </div>
-
-        <!-- Inicio actac -->
-         <div class="tab-pane fade eliminaformaes" id="alta_acta">
-             <div class="tab-content eliminaformaes">
-            <div class="tab-pane fade show active eliminaformaes" id="datosactacircunstanciada" role="tabpanel">
-                <!-- Inicio tabl vertical actac -->
+            <div class="tab-pane fade show  eliminaformaes" id="datospersonales" role="tabpanel">
                 <div class="col-md-12 eliminaformaes">
                     <div class="cardpeque eliminaformaes">
                         <div class="card-header d-block eliminaformaes">
@@ -3278,34 +7324,29 @@ let formularioqueja = `
                                 <div class="accordion__item eliminaformaes">
                                     <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
                                         <span class="accordion__header--icon eliminaformaes"></span>
-                                        <span class="accordion__header--text eliminaformaes">Datos para generar Acta circunstanciada</span>
+                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
                                         <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
                                     </div>
                                     <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
-                                        <div class="accordion__body--text eliminaformaes" >
-                                    
-                                                <div class="cardpeque eliminaformaes">
+                                        <div class="accordion__body--text eliminaformaes">
+
+                                            <div class="cardpeque eliminaformaes">
                                                 <div class="cardpeque-body eliminaformaes">
                                                     <div class="row eliminaformaes">
 
                                                         <div class="col-xl-2 eliminaformaes">
-                                                            <div class="nav flex-column nav-pills eliminaformaes divanclassactac">
-                                                                <a href="#ref-frm-frmActacir1" data-toggle="pill" data-numactac="1" class="nav-link active show eliminaformaes linksfrmActaci">Acta circunstanciada 1
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
+                                                                <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1
                                                                 </a>
                                                             </div>
-                                                            <button class="eliminaformaes" id="addActac" style="margin-top: 5px;border: none;">
-                                                                <i b-oo5lp8m93w="" class="fas fa-plus-circle eliminaformaes"></i>
+                                                            <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px;border: none;">
+                                                                <i b-oo5lp8m93w="" class="fas fa-user-plus eliminaformaes"></i>
                                                             </button>
                                                         </div>
 
                                                         <div class="col-xl-10 eliminaformaes">
-                                                            <div class="tab-content eliminaformaes tabfrmActacircu">   
-                                                                <div id="ref-frm-frmActacir1" class="tab-pane fade active show divformularioActacir eliminaformaes">
-                                                                    <div class ="hoja_acta">
-                                                                        <div class="accordion__body--text eliminaformaes" id="divformularioActaCircunstanciada">
-                                       <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;padding"><span style="color: red;">*</span> Campos Requeridos</h3>
-                                                                        </div>
-                                                                    <div>
+                                                            <div class="tab-content eliminaformaes tabfrmPeticionarios">
+                                                                <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -3323,151 +7364,156 @@ let formularioqueja = `
                         </div>
                     </div>
                 </div>
-                <!-- Fin tab vertical actac -->
             </div>
-        </div>
-        <!-- Fin actac -->
-</div>
-`;
-let formulariorientacion = `
-<div class="card-header eliminaformaes">
-<h4 class="card-title eliminaformaes">Alta de Orientación</h4>
-</div>
-<div class="card-body eliminaformaes">
-    <div class="default-tab eliminaformaes">
-        <ul class="nav nav-tabs eliminaformaes" role="tablist">
-            <li class="nav-item eliminaformaes">
-            <a class="nav-link active eliminaformaes" data-toggle="tab" href="#datospersonales">Registro de Datos Personales</a>
-            </li>
-            <li class="nav-item eliminaformaes">
-            <a class="nav-link eliminaformaes" data-toggle="tab" href="#aorientacion">Alta de una orientación</a>
-            </li>
-        </ul>
-        <div class="tab-content eliminaformaes">
-        <div class="tab-pane fade show active eliminaformaes" id="datospersonales" role="tabpanel">
-                <!-- Inicio tabl vertical -->
-            <div class="col-md-12 eliminaformaes">
-                <div class="cardpeque eliminaformaes">
-                    <div class="card-header d-block eliminaformaes">
-                    </div>
-                    <div class="card-body eliminaformaes">
-                        <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
-                            <div class="accordion__item eliminaformaes">
-                                <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
-                                    <span class="accordion__header--icon eliminaformaes"></span>
-                                    <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
-                                    <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
-                                </div>
-                                <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
-                                    <div class="accordion__body--text eliminaformaes">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion__item eliminaformaes">
-                                <div class="accordion__header collapsed accordion__header--info eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseTwo">
-                                    <span class="accordion__header--icon eliminaformaes"></span>
-                                    <span class="accordion__header--text eliminaformaes">Escrito de queja</span>
-                                    <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
-                                </div>
-                                <div id="header-bg_collapseTwo" class="collapse accordion__body eliminaformaes" data-parent="#accordion-seven">
-                                    <div class="accordion__body--text eliminaformaes">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tab-pane active fade eliminaformaes" id="altaqueja">
+                <div class="pt-4 eliminaformaes">
+                    <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+                        <div id="izquierda" class="row col-6"></div>
+                        <div id="derecha" class="row col-6"></div>
+                    </form>
+                </div>
+            </div>
 
+            <div class="tab-pane fade eliminaformaes" id="alta_escrito">
+                <div class="tab-content eliminaformaes">
+                    <div class="tab-pane fade show active eliminaformaes" id="datosescritoinicial" role="tabpanel">
+                        <div class="col-md-12 eliminaformaes">
+                            <div class="cardpeque eliminaformaes">
+                                <div class="card-header d-block eliminaformaes">
+                                </div>
+                                <div class="card-body eliminaformaes">
+                                    <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                        <div class="accordion__item eliminaformaes">
+                                            <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
+                                                <span class="accordion__header--icon eliminaformaes"></span>
+                                                <span class="accordion__header--text eliminaformaes">Datos para generar Escrito Inicial</span>
+                                                <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                            </div>
+                                            <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
+                                                <div class="accordion__body--text eliminaformaes" id="divformularioEscritoInicial">
+                                                    <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;padding"><span style="color: red;">*</span> Campos Requeridos</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                </div>
-                <!-- Fin tab vertical -->
-        </div>
-
-        <div class="tab-pane fade eliminaformaes" id="aorientacion">
-            <div class="pt-4 eliminaformaes">
-            <h4 class="eliminaformaes">Formulario Orientación</h4>
-                <p class="eliminaformaes">
-                    Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                </p>
-                <p class="eliminaformaes">
-                    Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 `;
-let formulariocanalizacion = `
-  <div class="card-header eliminaformaes">
-                    <h4 class="card-title eliminaformaes">Alta de Canalización</h4>
-                    </div>
-                    <div class="card-body eliminaformaes">
-                        <div class="default-tab eliminaformaes">
-                            <ul class="nav nav-tabs eliminaformaes" role="tablist">
-                                <li class="nav-item eliminaformaes">
-                                <a class="nav-link active eliminaformaes" data-toggle="tab" href="#datospersonales">Registro de Datos Personales</a>
-                                </li>
-                                <li class="nav-item eliminaformaes">
-                                <a class="nav-link eliminaformaes" data-toggle="tab" href="#acanallizacion">Alta de una canalización</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content eliminaformaes">
-                            <div class="tab-pane fade show active eliminaformaes" id="datospersonales" role="tabpanel">
-                                    <!-- Inicio tabl vertical -->
-                                <div class="col-md-12 eliminaformaes">
-                                    <div class="cardpeque eliminaformaes">
-                                        <div class="card-header d-block eliminaformaes">
-                                        </div>
-                                        <div class="card-body eliminaformaes">
-                                            <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
-                                                <div class="accordion__item eliminaformaes">
-                                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
-                                                        <span class="accordion__header--icon eliminaformaes"></span>
-                                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
-                                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
-                                                    </div>
-                                                    <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
-                                                        <div class="accordion__body--text eliminaformaes">
-                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="accordion__item eliminaformaes">
-                                                    <div class="accordion__header collapsed accordion__header--info eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseTwo">
-                                                        <span class="accordion__header--icon eliminaformaes"></span>
-                                                        <span class="accordion__header--text eliminaformaes">Escrito de queja</span>
-                                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
-                                                    </div>
-                                                    <div id="header-bg_collapseTwo" class="collapse accordion__body eliminaformaes" data-parent="#accordion-seven">
-                                                        <div class="accordion__body--text eliminaformaes">
-                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                                                        </div>
-                                                    </div>
-                                                </div>
+let formularioMoral = `
+<div class="card-header eliminaformaes">
+<h4 class="card-title eliminaformaes">Depende lo seleccionado</h4>
+</div>
+<div class="card-body eliminaformaes">
+    <div class="default-tab eliminaformaes">
+        <ul class="nav nav-tabs eliminaformaes" role="tablist">
 
+            <li class="nav-item eliminaformaes">
+                <a class="nav-link  eliminaformaes" data-toggle="tab" href="#datospersonales" id="tab1">Registro de Datos Personales</a>
+            </li>
+           
+           
+        </ul>
+        <div class="tab-content eliminaformaes">
+            <div class="tab-pane fade show  eliminaformaes" id="datospersonales" role="tabpanel">
+                <div class="col-md-12 eliminaformaes">
+                    <div class="cardpeque eliminaformaes">
+                        <div class="card-header d-block eliminaformaes">
+                        </div>
+                        <div class="card-body eliminaformaes">
+                            <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                <div class="accordion__item eliminaformaes">
+                                    <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
+                                        <span class="accordion__header--icon eliminaformaes"></span>
+                                        <span class="accordion__header--text eliminaformaes">Datos del Peticionario</span>
+                                        <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                    </div>
+                                    <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
+                                        <div class="accordion__body--text eliminaformaes">
+
+                                            <div class="cardpeque eliminaformaes">
+                                                <div class="cardpeque-body eliminaformaes">
+                                                    <div class="row eliminaformaes">
+
+                                                        <div class="col-xl-2 eliminaformaes">
+                                                            <div class="nav flex-column nav-pills eliminaformaes divanclasprticinariso">
+                                                                <a href="#ref-frm-frmDatosPersonales1" data-toggle="pill" data-numpetit="1" class="nav-link active show eliminaformaes linksfrmpetit">Peticionario 1
+                                                                </a>
+                                                            </div>
+                                                            <button class="eliminaformaes" id="addPeticionariodp" style="margin-top: 5px;border: none;">
+                                                                <i b-oo5lp8m93w="" class="fas fa-user-plus eliminaformaes"></i>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="col-xl-10 eliminaformaes">
+                                                            <div class="tab-content eliminaformaes tabfrmPeticionarios">
+                                                                <div id="ref-frm-frmDatosPersonales1" class="tab-pane fade active show divformularioDatosPersonales eliminaformaes">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </div>
+
+
                                         </div>
                                     </div>
-                                    </div>
-                                    <!-- Fin tab vertical -->
-                            </div>
+                                </div>
 
-                            <div class="tab-pane fade eliminaformaes" id="acanallizacion">
-                                <div class="pt-4 eliminaformaes">
-                                    <h4 class="eliminaformaes">Formulario canalización</h4>
-                                    <p class="eliminaformaes">
-                                        Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
-                                    </p>
-                                    <p class="eliminaformaes">
-                                            Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
-                                        </p>
-                                    </div>
                             </div>
-
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="tab-pane active fade eliminaformaes" id="altaqueja">
+                <div class="pt-4 eliminaformaes">
+                    <form id="frm_altaqueja" name="frm_altaqueja" class="row col-12">
+                        <div id="izquierda" class="row col-6"></div>
+                        <div id="derecha" class="row col-6"></div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tab-pane fade eliminaformaes" id="alta_escrito">
+                <div class="tab-content eliminaformaes">
+                    <div class="tab-pane fade show active eliminaformaes" id="datosescritoinicial" role="tabpanel">
+                        <div class="col-md-12 eliminaformaes">
+                            <div class="cardpeque eliminaformaes">
+                                <div class="card-header d-block eliminaformaes">
+                                </div>
+                                <div class="card-body eliminaformaes">
+                                    <div id="accordion-seven" class="accordion accordion-header-bg accordion-bordered eliminaformaes">
+                                        <div class="accordion__item eliminaformaes">
+                                            <div class="accordion__header accordion__header--tit eliminaformaes" data-toggle="collapse" data-target="#header-bg_collapseOne">
+                                                <span class="accordion__header--icon eliminaformaes"></span>
+                                                <span class="accordion__header--text eliminaformaes">Datos para generar Escrito Inicial</span>
+                                                <span class="accordion__header--indicator indicator_bordered eliminaformaes"></span>
+                                            </div>
+                                            <div id="header-bg_collapseOne" class="collapse accordion__body show eliminaformaes" data-parent="#accordion-seven">
+                                                <div class="accordion__body--text eliminaformaes" id="divformularioEscritoInicial">
+                                                    <h3 style="font-size: small; font-style: italic; color: black; font-weight: bold; text-align: right;padding"><span style="color: red;">*</span> Campos Requeridos</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 `;
 function arregloDocumentos() {
     var arreglo = [];
@@ -3515,6 +7561,7 @@ function arregloMeses() {
 
     return arreglo;
 }
+// retire el arreglo manual para que el año se actualice al año en curso de manera automatica con este ciclo
 function arregloAnio() {
     var arreglo = [];
     const objeto0 = { idSelect: 0, descripcion: '-- anio --' }
@@ -3531,10 +7578,11 @@ function arregloAnio() {
     arreglo.push(objeto2);
     arreglo.push(objeto3);
     arreglo.push(objeto4);
-    arreglo.push(objeto5);
+    arreglo.push(objeto5); arreglo.push(objeto);
 
     return arreglo;
 }
+
 function SeleccionMultiple() {
     var arreglo = [];
     const objeto0 = { idSelect: 0, descripcion: '-- Selecciona --' }
@@ -3671,24 +7719,40 @@ function Carga_Informacion_selec_quejas(nfrm) {
         $('.idEscrito_').val('2');
         $('#nomAbogado' + nfrm).val(idUser).trigger('change.select2');
         $("#nomAbogado" + nfrm).prop('disabled', true);
+        // david 17 07
+       //console.log('Lista de abogados:', data.lista3);
+
     });
 
 }
-function arreglo_Estados() {
+function arreglo_Estados(callback) {
     var arregloEdos = [];
-    $.getJSON("https://api.copomex.com/query/get_estado_clave?token=pruebas", function (copomex) {
-        console.log(copomex.response.estado_clave);
-        arregloEdos = copomex.response.estado_clave;
 
+    $.getJSON("https://api.copomex.com/query/get_estado_clave?token=a4e44c7e-6e9b-4c43-8a3b-a6900bb54cee")
+        .done(function (copomex) {
+            var estadoClave = copomex && copomex.response && copomex.response.estado_clave;
 
-        for (i = 0; i < arregloEdos.length; i++) {
-            var objeto0 = { idSelect: arregloEdos[i][0], descripcion: arregloEdos[i] };
-            arregloEdos.push(objeto0);
-        }
+            if (estadoClave && typeof estadoClave === 'object') {
+                for (var estado in estadoClave) {
+                    if (Object.prototype.hasOwnProperty.call(estadoClave, estado)) {
+                        arregloEdos.push({
+                            idSelect: estadoClave[estado],
+                            descripcion: estado
+                        });
+                    }
+                }
+            } else if (Array.isArray(estadoClave)) {
+                for (var i = 0; i < estadoClave.length; i++) {
+                    var par = estadoClave[i];
+                    arregloEdos.push({ idSelect: par[0], descripcion: par[1] });
+                }
+            }
 
-
-    })
-    return arregloEdos;
+            if (typeof callback === 'function') callback(arregloEdos);
+        })
+        .fail(function () {
+            if (typeof callback === 'function') callback([]);
+        });
 }
 function deleteFormulario() {
     $('.btnDelPetit').click(function (e) {
@@ -3790,7 +7854,8 @@ function Crear_Formulario_Queja() {
         + CreaBR()
         + Crea_Label('textfield8', 'textfield8', '', 'Observaciones: ')
         + CreaBR()
-        + CreaTextArea('observaciones', '', 'style="width:100%; height=180px"')
+        //se modifico el tamaño del cuadro de observaciones 23/05/2025 cris
+        + CreaTextArea('observaciones', '', 'style="width:100%; height:20%;"')
         + CreaBR()
         + CreaBR()
         + crea_Boton('button', 'Guardar', 'saveQueja', 'btn btn-success', 'guardarQueja()')
@@ -3804,10 +7869,15 @@ function Crear_Formulario_Queja() {
     $('#izquierda').append(formualarioCompleto);
     $('#derecha').append(formualarioCompleto1);
     $('#Abogadoqueja').select2();
-    $('#municipioqueja').attr("disabled","true");
+    //$('#municipioqueja').attr("disabled","true");
     $('#municipioqueja').select2();
     return formualarioCompleto;
 }
+
+//  Funcion para formulario de orientacion 
+
+
+
 // Método que recibe un elemento input date y un objeto date
 function chargeDateInputDate(elem, dateObject = new Date()) {
     var year = dateObject.getFullYear();
@@ -3815,7 +7885,7 @@ function chargeDateInputDate(elem, dateObject = new Date()) {
     var month = month > 9 ? month : "0" + month;
     var day = dateObject.getDate() > 9 ? dateObject.getDate() : "0" + dateObject.getDate();
     var dateFormat = year + "-" + month + "-" + day;
-    elem.value = dateFormat;
+   /* elem.value = dateFormat;*/
 }
 function traeInformacionDatosComplementarios(idqueja) {
     $('#izquierda').empty();
@@ -3827,9 +7897,10 @@ function traeInformacionDatosComplementarios(idqueja) {
     let iformdatosComplementariosQueja = 
     $('.formulariodatoscomplementariosqueja').empty()
     $('.formulariodatoscomplementariosqueja').append(iformdatosComplementariosQueja);*/
+    //url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogos",
     $.ajax({
         type: "POST",
-        url: "https://localhost:7126/AltaExpediente/RegresaListaCatalogos",
+        url: listacatalogos,
         data: { identificadorQueja: idqueja },
         dataType: "JSON",
         success: function (response) {
@@ -3866,7 +7937,6 @@ function traeInformacionDatosComplementarios(idqueja) {
                     $("#contenedor_Autoridades").html($("#contenedor_Autoridades").html() + DivPequeniosautoridad(response.informarcionC.informacioncomplementariaautoridad[i].nombre_autoridad, response.informarcionC.informacioncomplementariaautoridad[i].ambito, response.informarcionC.informacioncomplementariaautoridad[i].id_registro));
                 }
             }
-
 
             // $("#modaldatoscomplementariosqueja").modal("show");
 
@@ -3945,6 +8015,7 @@ function Seleccionar_ValorSelect(nombreSelect, valorPorDefecto) {
     $(nombreSelect + " > option[value='" + valorPorDefecto + "']").attr("selected", true);
 }
 function EnviarQueja() {
+    $('#municipioqueja').removeAttr("disabled");
     $("#enviarQueja").click(function (e) {
         e.preventDefault();
         if (validarCamposVaciosInput() || validarCamposVaciosSelect()) {
@@ -3959,7 +8030,7 @@ function EnviarQueja() {
         else {
             $.ajax({
                 type: "POST",
-                url: "https://localhost:7126/AltaExpediente/ActualizaEstatus",
+                url: actualizaestatus,
                 data: $('.formQueja').serialize(),
                 dataType: "JSON",
                 success: function (response) {
@@ -3970,7 +8041,9 @@ function EnviarQueja() {
                         showConfirmButton: false,
                         timer: 1500
                     });
+                    $('#municipioqueja').attr("disabled", "true");
                     $("#modaldatoscomplementariosqueja").modal("hide");
+                    
                     $.ajax({
                         type: "POST",
                         url: "BuscardorFormatos",
@@ -3990,6 +8063,7 @@ function EnviarQueja() {
 function guardarQueja() {
     $("#saveQueja").click(function (e) {
         e.preventDefault();
+
         if (validarCamposVaciosInput() || validarCamposVaciosSelect()) {
             Swal.fire({
                 position: 'center',
@@ -3999,39 +8073,105 @@ function guardarQueja() {
                 timer: 1500
             });
             frmincompleto("#tab4");
-        }
-        else {
+        } else {
             $("#CircunstanciasHechos").val($("#hechos").val());
-            //$("#hechos1").val($("#hechos").val());
 
             var form_data = new FormData();
-            form_data.append($('.formQueja').serialize());
-            form_data.append("abogado_desc", $("#documento_usuario").val());
-            form_data.append("estadoqueja_desc", $("#documento_usuario").val());
-            form_data.append("municipioqueja_desc", $("#documento_usuario").val());
-            form_data.append("sederegistro_desc", $("#documento_usuario").val());
-            form_data.append("viainterdesc", $("#documento_usuario").val());
+            var form_2 = $('.formQueja').serializeArray();
 
-            $.ajax({
-                type: "POST",
-                url: "https://localhost:7126/AltaExpediente/GuardarQueja",
-                data: form_data,
-                dataType: "JSON",
-                success: function (response) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Se ha Registrado la Información Correctamente',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    $("#modaldatoscomplementariosqueja").modal("hide");
-                    frmcompleto("#tab4");
-                }
+            var abogado = obtenerTextoSelectGenerico('#Abogadoqueja');
+            var estado = "Turno Preliminar";
+            var municipio = obtenerTextoSelectGenerico('#municipioqueja');
+            var sede = obtenerTextoSelectGenerico('#sedeRegistro');
+            var viainter = obtenerTextoSelectGenerico('#viainterpos');
+
+            form_data.append("abogado_desc", abogado);
+            form_data.append("estadoqueja_desc", estado);
+            form_data.append("municipioqueja_desc", municipio);
+            form_data.append("sederegistro_desc", sede);
+            form_data.append("viainterdesc", viainter);
+
+            form_2.forEach(function (fields) {
+                form_data.append(fields.name, fields.value);
             });
 
+            let json = formDataToJson(form_data);
+
+            // Validar antes de guardar
+            let idqueja = $("#idquejaDC").val();
+            console.log("expediente", idqueja);
+            obtenerEstatusExpediente(idqueja, function (estatusExpediente) {
+                if (!estatusExpediente) {
+                    console.log("No se recibió estatus del SP");
+                    return;
+                }
+
+                let estatusNormalizado = estatusExpediente.trim();
+
+                if (estatusNormalizado === "Completo" || estatusNormalizado === "NoAplica") {
+                    //Guardar solo si está completo
+                    $.ajax({
+                        type: "POST",
+                        url: guardaquejadqot,
+                        data: json,
+                        dataType: "JSON",
+                        success: function (response) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Se ha Registrado la Información Correctamente',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            $("#modaldatoscomplementariosqueja").modal("hide");
+                            frmcompleto("#tab4");
+                        }
+                    });
+                } else {
+                    // Bloquear si está incompleto
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No se puede guardar la queja',
+                        text: 'Falta acta circunstanciada.',
+                        confirmButtonText: 'Entendido'
+                    });
+                    $('#frm_altaqueja button[type="button"]').hide();
+                }
+            });
         }
     });
+}
+
+//Añadir abajo 
+
+function obtenerEstatusExpediente(idExpediente, callback) {
+    $.ajax({
+        type: "POST",
+        url: "/AltaExpediente/ValidarExpediente",
+        data: { idExpediente: idExpediente },
+        dataType: "JSON",
+        success: function (res) {
+            console.log("Respuesta completa del SP:", res);
+            if (callback) callback(res.estatus);
+        },
+        error: function () {
+            alert("Error al validar expediente.");
+            if (callback) callback(null);
+        }
+    });
+}
+function obtenerTextoSelectGenerico(select) {
+    var opcionSeleccionada = $(`${select} option:selected`);
+    var texto = opcionSeleccionada.text();
+    return texto
+}
+
+function formDataToJson(formData) {
+    let obj = {};
+    formData.forEach((value, key) => {
+        obj[key] = value;
+    });
+    return obj;
 }
 function validarCamposVaciosInput() {
     $("#parrafo").css("color", "#000000");

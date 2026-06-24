@@ -14,71 +14,100 @@
 </head>
 
 <body>
+    @*Ricardo 22-09-2025 Se agregó el contenedor div page-background para el fondo del pdf y otro para el contenido*@
+    <div class="page-background">
+        <div class="content">
 
 
-    <div>
-        <h1 style="font-family:Arial; text-align:center; ">
-            <b>
-                FE DE HECHOS
-            </b>
-        </h1>
+            <div>
+                <h1 style="font-family:Arial; text-align:center; ">
+                    <b>
+                       ACTA CIRCUNSTANCIADA
+                    </b>
+                </h1>
+            </div>
+
+            <div class="row">
+                <div style="margin-right:20px;margin-left:80px;">
+                    <p align="justify" style="font-family:Arial;">
+                        En @Model.Lugar , a los @Model.DiaFecha días del mes de @Model.Mes de @Model.Anio, el/la suscrito/a, abogado/a @Model.NomAbogado, en mi carácter de @Model.PuestoAbogado de la @Model.AreaAbogado la Comisión de Derechos Humanos del Estado de Puebla, con la fe pública que me confiere el artículo 21 y 31 de la Ley de de este Organismo, así como 7, 8, 9, 48, 59, 60, 61, 64 y 66 de su Reglamento Interno, publicados en el Periódico Oficial del Estado, respectivamente.
+                    </p>
+                    <p align="justify" style="font-family:Arial; font-weight:bold;">
+                        -.-.-.-.-.--.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.- C E R T I F I C O: -.-.-.-.-.--.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+                    </p>
+                    <p align="justify" style="font-family:Arial;">
+                        Que siendo las @Model.HoraInicio horas del día en que se actúa, encontrándome en las instalaciones que ocupa @Model.Ubicacion, donde procedo a entrevistarme con la persona que dijo llamarse @Model.NombrePet  a quien previa identificación de la persona suscrita, le hago saber que derivado de su queja deberá manifestar su deseo de ratificar la misma, a lo que en su uso de la voz la persona peticionaria <b>MANIFESTO:</b> @Model.Consentimiento ratifico la presente queja. Acto seguido, indico llamarse como ha quedado escrito, ser originario/a de @if (Model.OrigenPeticionarioExterno == "")
+                        {
+                            @Model.OrigenPeticionarioExterno
+                        }
+                        else
+                        {
+                            @Model.OrigenPet
+                        }, de @Model.EdadMostrar años de edad, que @Model.SabePet sabe leer y escribir por haber cursado hasta @Model.EscolaridadPet, con domicilio ubicado en calle @Model.CallePet número @Model.NumextPet con código postal @Model.CpPet en el municipio de @Model.MunicipioPet @Model.EstadoPet de ocupación @Model.OcupacionPet,con número de teléfono @Model.TelPet, correo electrónico, @Model.CorreoPet quien se identifica con @Model.IdentificacionPet y en relación a los hechos de la queja que nos ocupa, <b>MANIFESTÓ: </b>
+                    </p>
+
+                </div>
+                <div class="row">
+                    <div style="margin-right:20px;margin-left:80px;">
+                        <p align="justify" style="font-family:Arial;">
+                            Que es mi deseo ratificar la queja, precisando la fecha de los hechos @Model.FechaHechos a las @Model.HoraHechos encontrándome en @Model.UbiHechos la(s) autoridad(es) @Model.Autoridad @Model.Hechos que es todo lo que tiene que manifestar. <b>DOY FE.</b>-.-.-.-.-.--.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div style="margin-right:20px;margin-left:80px;">
+                            <p align="justify" style="font-family:Arial;">
+                                Dando por terminada la presente diligencia siendo las @Model.HoraTermino horas. del día en que se actúa. Lo anterior se hace constar para los efectos legales a que haya lugar, de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla <b> DOY FE.</b>---------------------------------------------------------------------------------------------------------------
+                            </p>
+
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <p align="center" style="font-family:Arial;">
+                                _____________________________
+                                <br />Lic.@Model.NomAbogado <br />
+                                Visitador(a) Adjunto(a)
+                            </p>
+                            @*  <p align="center" style="font-family:Arial;">
+                            @Model.fechaActual
+                            </p> *@
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <div class="row">
+                            <p align="center" style="font-family:Arial;">
+                                En caso de ser queja presencial
+                            </p>
+                            <br />
+                            <p align="center" style="font-family:Arial;">
+                                _____________________________
+                                <br />@Model.NombrePet
+                            </p>
+                            @*  <p align="center" style="font-family:Arial;">
+                            @Model.fechaActual
+                            </p> *@
+                        </div>
+
+
+                        <div class="row"><p align="right" style="font-family:Arial; "><b>Vo. Bo</b></p></div>
+
+
+
+                        <script>
+                            var ExportaDocumento = '@Url.Action("VerPDF", "Expediente")';
+                            var ExportaDocumentoacta = '@Url.Action("ActaPDF", "Expediente")';
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-
-    <div class="row">
-        <p align="justify" style="font-family:Arial;">
-            En  @Model.Lugar , a los @Model.DiaFecha días del mes de @Model.Mes de @Model.Anio, el/la suscrito/a, abogado/a @Model.NomAbogado, en mi carácter de @Model.PuestoAbogado de la @Model.AreaAbogado la Comisión de Derechos Humanos del Estado de Puebla, con la fe pública que me confiere el artículo 21 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, así como 30, 37, y 39 de su Reglamento Interno, publicados en el Periódico Oficial del Estado, respectivamente.
-        </p>
-        <p align="justify" style="font-family:Arial; font-weight:bold;">
-            -------------------------------------------- C E R T I F I C O: -------------------------------------------
-        </p>
-        <p align="justify" style="font-family:Arial;">
-            Que siendo las @Model.HoraInicio horas del día en que se actúa, me constituí en @Model.Ubicacion, donde atendí a quien dijo llamarse @Model.NombrePet  ante quien una vez que me identifiqué plenamente como servidor/a público/a adscrito/a a este Organismo Autónomo, con la respectiva identificación que esta Comisión de Derechos Humanos del Estado de Puebla me expidió, se le hizo de su conocimiento el motivo de la presente diligencia y enterado/a del mismo, se le solicitó su autorización para ser entrevistado/a, expresando que @Model.Consentimiento otorga su consentimiento para llevar a cabo la entrevista, por lo que se le exhortó para que
-            se conduzca con verdad ante el personal de la Comisión de Derechos Humanos del Estado de Puebla, comprometiéndose así hacerlo y al respecto <b>MANIFESTÓ:</b> Llamarse como ha quedado escrito, ser originario/a de @if (Model.OrigenPeticionarioExterno == "")
-            {
-                @Model.OrigenPeticionarioExterno
-            }
-            else
-            {
-                @Model.OrigenPet
-            }, de @Model.EdadPet años de edad, que @Model.SabePet sabe leer y escribir por haber cursado hasta @Model.EscolaridadPet, con domicilio ubicado en calle @Model.CallePet número @Model.NumextPet con código postal @Model.CpPet en el municipio de @Model.MunicipioPet @Model.EstadoPet de ocupación @Model.OcupacionPet,con número de teléfono @Model.TelPet, correo electrónico, @Model.CorreoPet identificándose ante el/la suscrito/a con @Model.IdentificacionPet y en relación a los hechos de la queja que nos ocupa, <b>DECLARO:</b>
-        </p>
-
-    </div>
-    <div class="row">
-
-        <p align="justify" style="font-family:Arial;">
-            Que el día @Model.FechaHechos a las @Model.HoraHechos estando en @Model.UbiHechos las  @Model.Hechos
-        </p>
-    </div>
-
-    <div class="row">
-        <p align="justify" style="font-family:Arial;">
-            dando por terminada la presente actuación a las @Model.HoraTermino horas. Hago constar lo anterior de conformidad con lo establecido en los numerales 31 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla para los efectos correspondientes ---------------------------------------------------------------------------------------------------------------DOY FE.
-        </p>
-
-    </div>
-    <br />
-    <br />
-    <div class="row">
-        <p align="center" style="font-family:Arial;">
-            _____________________________
-            <br />Lic. @Model.NomAbogado
-        </p>
-        <p align="center" style="font-family:Arial;">
-            @Model.fechaActual
-        </p>
-    </div>
-
-
-    <div class="row"><p align="right" style="font-family:Arial; "><b>Vo. Bo</b></p></div>
-
-
-
-    <script>
-        var ExportaDocumento = '@Url.Action("VerPDF", "Expediente")';
-        var ExportaDocumentoacta = '@Url.Action("ActaPDF", "Expediente")';
-    </script>
 </body>
 </html>
-
-

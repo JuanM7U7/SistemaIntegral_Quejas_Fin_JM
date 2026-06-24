@@ -116,7 +116,7 @@
                             {
 
                                 <div class="btn-group">
-                                    <button type="button" class="btn btndropdown dropdown-toggle" data-toggle="dropdown"> DQOT </button>
+                                    <button type="button" class="btn btndropdown dropdown-toggle" data-toggle="dropdown"> DQO </button>
                                     <div class="dropdown-menu dropoption dropdown-menu-right dropdown-menu menu-maximo">
 
                                         @if (User.IsInRole("ADMIN_DQOT"))
@@ -125,16 +125,20 @@
                                             <li><a class="dropdown-item" asp-controller="Expediente" asp-action="index">Alta de escrito inicial</a></li>
                                             </li>
                                             <li class="dropdown-submenu">
-                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Index_ADMIN_DQOT">Admin DQOT</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Index_ADMIN_DQOT">Admin DQO</a></li>
                                             </li>
                                             <li class="dropdown-submenu">
                                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Tomar turno</a></li>
                                             </li>
                                             <li class="dropdown-submenu">
-                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Bucador de ID´s</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Buscador de ID´s</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorCedulas">Buscador de ID´s de Calificación Provisional</a></li>
                                             </li>
 
-                                    }else if ( User.IsInRole("VA_DQOT"))
+                                    }
+                                    else if ( User.IsInRole("VA_DQOT"))
                                         {
                                             <li class="dropdown-submenu">
                                             <li><a class="dropdown-item" asp-controller="Expediente" asp-action="index">Alta de escrito inicial</a></li>
@@ -143,7 +147,10 @@
                                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Tomar turno</a></li>
                                             </li>
                                             <li class="dropdown-submenu">
-                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Bucador de ID´s</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Buscador de ID´s</a></li>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                            <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorCedulas">Buscador de ID´s de Calificación Provisional</a></li>
                                             </li>
                                         }
 
@@ -172,7 +179,15 @@
                                     </div>
                                 </div>
                             }
-
+                            @if (User.IsInRole("ADMIN_DQOT_ESPECIAL"))
+                            {
+                                <li class="dropdown-submenu">
+                                <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorFormatos">Buscador de ID´s</a></li>
+                                </li>
+                                <li class="dropdown-submenu">
+                                <li><a class="dropdown-item" asp-controller="Expediente" asp-action="BuscadorCedulas">Buscador de ID´s de Calificación Provisional</a></li>
+                                </li>
+                            }
 
                             <!--Fin Menú Dinámico-->
                         </div>
@@ -191,10 +206,10 @@
     </div>
     <!-- Navbar End -->
     <div class="alert alert-warning" id="alertUltimoConectado" role="alert">
-      Eres el último usuario conectado para atender los turnos de la DQOT
+      Eres el último usuario conectado para atender los turnos de la DQO
     </div>
     <div class="alert alert-danger" id="alertNoHayConectados" role="alert">
-        No hay usuarios conectados para atender los turnos de la DQOT
+        No hay usuarios conectados para atender los turnos de la DQO
     </div>
     <!-- Breadcrumb Start -->
     <div class="container-fluid mt-4">
@@ -208,7 +223,7 @@
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Inicio</a>
+                    <a class="breadcrumb-item text-dark" href="/Home/Index_ADMIN_DQOT_ESPECIAL">Inicio</a>
                     <a class="breadcrumb-item text-dark" href="#">Tarea</a>
                     <span class="breadcrumb-item active">Acción</span>
                 </nav>
@@ -266,7 +281,7 @@
         <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
             <div class="col-md-6 px-xl-0">
                 <p class="mb-md-0 text-center text-md-left text-secondary">
-                    &copy; <a class="text-primary" href="#">Copyright</a>. 2022 Todos los derechos reservados
+                    &copy; <a class="text-primary" href="#">Copyright</a>. 2026 Todos los derechos reservados
                     <a class="text-primary" target="_blank" href="https://www.cdhpuebla.org.mx/v1/"> CDH PUEBLA</a>
 
                 </p>

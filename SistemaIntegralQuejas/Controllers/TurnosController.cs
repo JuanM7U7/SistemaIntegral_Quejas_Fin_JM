@@ -24,7 +24,7 @@ namespace SistemaIntegralQuejas.Controllers
             return View();
         }
 
-        // Dibujar tabla VA DQOT
+        // Dibujar tabla VA DQO
         public ActionResult Turnos_Pendientes()
         {
 
@@ -98,13 +98,13 @@ namespace SistemaIntegralQuejas.Controllers
             }
         }
 
-        // Dibujar tabla para Administrador DQOT
+        // Dibujar tabla para Administrador DQO
         public ActionResult TurnosAdmin_TurnosTbl()
         {
             var turnosAdmin = TurnosRepo.GetTurnosAdmin();
             return Json(new { data = turnosAdmin });
         }
-        // Busqueda de turnos con filtros Administradores DQOT
+        // Busqueda de turnos con filtros Administradores DQO
         public ActionResult TblAdmin_Filtro_Turnos(IFormCollection form)
         {
             int status = Int32.Parse(form["status"]);

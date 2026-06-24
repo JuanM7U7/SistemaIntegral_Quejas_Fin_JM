@@ -1,0 +1,83 @@
+@model SistemaIntegralQuejas.Models.CedulaOrientacionModel
+
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>Cédula de Orientación</title>
+    <link href="~/css/pdfCedulaOrientacion.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <b>CÉDULA DE CALIFICACIÓN PROVISIONAL</b>
+    </header>
+    <div class="row">
+        <p align="right">
+            <b><br>ID: </b> @Model.IdEscrito
+            <b><br>FOLIO: </b> @Model.Folio
+            <br><br>
+            <b>
+                Heroica Puebla de Zaragoza a @Model.FechaActual.ToString("dd") de @Model.MesActual en @Model.FechaActual.ToString("yyyy")
+            </b>
+        </p>
+    </div>
+
+    <div style="margin-right:20px;margin-left:80px;">
+        <p align="justify" style="line-height: 2.0;">
+            <b><br>LUGAR DE RECEPCIÓN: </b> @Model.LugarRecepcion
+            <b><br>FECHA Y HORA DE RECEPCIÓN: </b> @Model.FechaRecepcion.ToString("dd/MM/yyyy") a las @Model.HoraRecepcion.ToString(@"hh\:mm") <b>Hrs</b>
+            <b><br>NOMBRE DEL(A) PETICIONARIO(A): </b> @Model.Peticionario
+            <b><br>AUTORIDAD PRESUNTAMENTE RESPONSABLE: </b>
+            @if (Model.Autoridad == "No proporcionado")
+            {
+                <i>@Model.Autoridad</i>
+            }
+            else
+            {
+                @Model.Autoridad
+            }
+            <b><br>NOMBRE DE LA INSTITUCIÓN EN CASO DE CANALIZACIÓN: </b>
+            @if (Model.Institucion == "No proporcionado")
+            {
+                <i>@Model.Institucion</i>
+            }
+            else
+            {
+                @Model.Institucion
+            }
+        </p>
+    </div>
+
+    <div class="row" style="margin:0px, 20px, 0px, 20px" align="justify">
+        <br>
+        <p align="justify" style="margin-left:80px;">
+            Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, 59, 61, 62, 64, 66,<b> 77 fracción II </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica como: <b>Orientación</b>.
+        </p>
+    </div>
+        <div class="row" style="margin:0px, 20px, 0px, 20px">
+    <p align="center" style="font-size:16px;margin-left:80px;">
+        <br><br><br>
+        <table>
+            <tr style="vertical-align: top" height="130px">
+                <td><b> ELABORÓ</b> </td>
+                <td><b> AUTORIZÓ</b> </td>
+            </tr>
+            <tr style="vertical-align: center" height="100px">
+                    <td>
+                        <b>
+                            <br>@Model.Abogado <br><br>
+                            VISITADOR(A) ADJUNTO(A) ADSCRITO(A) A LA DIRECCIÓN DE QUEJAS Y ORIENTACIÓN
+                        </b>
+                    </td>
+                <td>
+                    <b>LCDA. MÓNICA GONZÁLEZ PIGGEONOUNTT<br><br>DIRECTOR(A) DE QUEJAS Y ORIENTACIÓN</b>
+                </td>
+            </tr>
+        </table>
+    </p>
+</div>
+
+
+    </body>
+</html>

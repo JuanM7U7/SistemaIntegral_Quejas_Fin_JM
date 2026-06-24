@@ -1,0 +1,142 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Apellido Paterno",
+    "Antes": "Vallet",
+    "Despues": "Valle",
+    "FechaHora": "2026-04-17 13:41:40",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Tipo Usuario",
+    "Antes": "Peticionario",
+    "Despues": "Quejoso",
+    "FechaHora": "2026-04-17 13:41:40",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Tipo Usuario",
+    "Antes": "Peticionario",
+    "Despues": "Quejoso",
+    "FechaHora": "2026-04-17 13:43:02",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "0",
+    "Despues": "1",
+    "FechaHora": "2026-04-17 13:49:08",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Tipo Usuario",
+    "Antes": "Peticionario",
+    "Despues": "Quejoso",
+    "FechaHora": "2026-04-17 13:49:08",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "0",
+    "Despues": "1",
+    "FechaHora": "2026-04-17 14:02:55",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Tipo Usuario",
+    "Antes": "Peticionario",
+    "Despues": "Quejoso",
+    "FechaHora": "2026-04-17 14:02:55",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "0",
+    "Despues": "1",
+    "FechaHora": "2026-04-17 14:09:11",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Tipo Usuario",
+    "Antes": "Peticionario",
+    "Despues": "Quejoso",
+    "FechaHora": "2026-04-17 14:09:11",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "1",
+    "Despues": "0",
+    "FechaHora": "2026-04-17 14:11:36",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "0",
+    "Despues": "1",
+    "FechaHora": "2026-04-17 14:21:37",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "1",
+    "Despues": "0",
+    "FechaHora": "2026-04-17 14:22:06",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "0",
+    "Despues": "1",
+    "FechaHora": "2026-04-17 14:24:06",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Edad",
+    "Antes": "1",
+    "Despues": "0",
+    "FechaHora": "2026-04-17 14:24:25",
+    "Usuario": "EJB",
+    "IP": ""
+  }
+]

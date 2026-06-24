@@ -1,0 +1,22 @@
+[
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Apellido Paterno",
+    "Antes": "Valle",
+    "Despues": "Vallet",
+    "FechaHora": "2026-04-17 13:33:13",
+    "Usuario": "EJB",
+    "IP": ""
+  },
+  {
+    "Apartado": "Datos Personales",
+    "Tipo": "Modificación",
+    "Campo": "Tipo Usuario",
+    "Antes": "Peticionario",
+    "Despues": "Quejoso",
+    "FechaHora": "2026-04-17 13:33:13",
+    "Usuario": "EJB",
+    "IP": ""
+  }
+]

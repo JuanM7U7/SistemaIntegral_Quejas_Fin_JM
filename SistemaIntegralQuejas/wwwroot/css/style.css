@@ -3023,7 +3023,7 @@ input[type=button].btn-block {
   overflow: hidden;
   border-top: 1px solid #e9ecef;
 }
-
+/*Aqui podemos econtrar el diseño de el botón de DQO, el que contiene el "Alta de escrito inicial", "Tomar turno", "Buscador de ID's"*/
 .dropdown-item {
   display: block;
   width: 100%;
@@ -3051,7 +3051,7 @@ input[type=button].btn-block {
   pointer-events: none;
   background-color: transparent;
 }
-
+/*Diseño de la barra superior en un tono oscuro*/
 .dropdown-menu.show {
   display: block;
 }
@@ -10215,9 +10215,12 @@ tr.shown td.details-control {
 #swal2-textarea::placeholder{
     color: black;
 }
-#swal2-select{
+
+#swal2-select {
     max-width: 85%;
 }
+
+
 .btnDelActac {
     border: none;
     background-color: red;
@@ -10400,3 +10403,19 @@ tr.shown td.details-control {
     }
 }
 
+/*Estilos inputs cedulas hora y fecha*/
+#Input_FechaRecepcion_C,
+#Input_HoraRecepcion_C {
+    background-color: #f0f0f0; /* gris claro */
+    color: #000000; /* texto en negro */
+    border: 1px solid #767676; /* borde consistente */
+    height: 30px; /* altura uniforme */
+}
+
+#Input_FechaRecepcion,
+#Input_HoraRecepcion {
+    background-color: #f0f0f0; /* gris claro */
+    color: #000000; /* texto en negro */
+    border: 1px solid #767676; /* borde consistente */
+    height: 30px; /* altura uniforme */
+}

@@ -182,23 +182,22 @@
 
 <body>
     @foreach (var itemp in Model)
-{
-    <div class="container receipt-wrap" id="receipt-wrap">
-        <div class="row rowpapa">
-            <div class="receipt-main col-xs-12 col-sm-12 col-md-12">
-                <div class="row">
-                    <div class="col-xs-2 col-sm-2 col-md-2">
-                        <div class="receipt-left">
-                            
+    {
+        <div class="container receipt-wrap" id="receipt-wrap">
+            <div class="row rowpapa">
+                <div class="receipt-main col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2">
+                            <div class="receipt-left">
+                            </div>
                         </div>
-                    </div>                
                         <div class="cedula-completo">
                             <h5 class="Fecha_Imp"><b>Fecha de impresión: <br>@itemp.fechactual</b></h5>
                             <br><h5 class="titulodoc">CÉDULA DE MODIFICACIÓN POR VISITADURÍA GENERAL</h5>
-                           <div class="linea"></div>
+                            <div class="linea"></div>
                         </div>
 
-                        <h5 class="NOEXP titulos"><b></b>@itemp.Expediente - 2024 <p> ID: @itemp.id</p></h5>
+                        <h5 class="NOEXP titulos"><b></b>@itemp.Expediente <p> ID: @itemp.id</p></h5>
                         <div class="cedula-left">
                             <h5 class="FOR titulos"><b>FECHA Y HORA DE REGISTRO:</b><p>@itemp.fecha_Hora_registro</p></h5>
                             <h5 class="FRVG titulos"><b>FECHA DE RECEPCIÓN EN VISITADURÍA:</b><p>@itemp.fecha_RFV</p></h5>
@@ -211,32 +210,48 @@
                             <h5 class="FOR titulos"><b>FECHA TURNO ABOGADO(A):</b><p> @itemp.fecha_TA  </p></h5>
                             <h5 class="FOR titulos"><b>FECHA CALIFICACIÓN:</b><p> @itemp.fecha_calificacion  </p></h5>
                             <h5 class="PROG titulos"><b>PROGRAMA:</b><p> @itemp.programa  </p></h5>
-                            <h5 class="PROG titulos"><b>FECHA ÚLT. MODIFICACIÓN: </b><p>@itemp.fecha_calificacion</p></h5>
+                            <h5 class="PROG titulos"><b>FECHA ÚLT. MODIFICACIÓN: </b><p>@itemp.FECHA_ULTIMA_MODIFI</p></h5>
                         </div>
 
                         <div class="cedula-completo1">
-                    <h5 class="titulodocsec">PETICIONARIOS(AS)</h5>
-                        <div class="linea"></div>
-                           <table>
-                               <thead>
-                                    <th>ID DEL PETICIONARIO(A)</th>
+                            <h5 class="titulodocsec">PETICIONARIOS(AS)</h5>
+                            <div class="linea"></div>
+                            <table>
+                                <thead>
+                                <th>ID DEL PETICIONARIO(A)</th>
                                 <th>TIPO DEL PETICIONARIO(A)</th>
                                 <th>NOMBRE DEL PETICIONARIO(A)</th>
-                               </thead>
-                               <tbody>
-                                    @foreach (var itemuser in @itemp.listpet)
+                                </thead>
+                                <tbody>
+                                    @* @foreach (var itemuser in @itemp.listpet)
+                                {
+                                <tr>
+                                <td>@itemuser.id</td>
+                                <td>@itemuser.tipopet (a)</td>
+                                <td>@itemuser.nombrepet</td>
+                                </tr>
+                                } *@
+                                    @if (itemp.listpet != null && itemp.listpet.Any())
+                                    {
+                                        foreach (var itemuser in itemp.listpet)
+                                        {
+                                            <tr>
+                                                <td>@itemuser.id</td>
+                                                <td>@itemuser.tipopet (a)</td>
+                                                <td>@itemuser.nombrepet</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
                                     {
                                         <tr>
-                                            <td>@itemuser.id</td>
-                                            <td>@itemuser.tipopet (a)</td>
-                                            <td>@itemuser.nombrepet</td>
+                                            <td colspan="3"><em>No hay peticionarios registrados.</em></td>
                                         </tr>
-                                        
                                     }
                                 </tbody>
-                           </table>
-                    </div>
-               <div class="cedula-completo">
+                            </table>
+                        </div>
+                        <div class="cedula-completo">
                             <h5 class="titulodocsec">AUTORIDAD(ES) / HECHOS VIOLATORIOS</h5>
                             <div class="linea"></div>
                             <table>
@@ -281,11 +296,11 @@
                             <div class="linea"></div>
                             <table>
                                 <thead>
-                                    <th>FECHA</th>
-                                    <th>CLAVE</th>
-                                    <th>CAUSA</th>
-                                    <th>ACTO RESTITUIDO</th>
-                                    <th>OBSERVACIONES</th>
+                                <th>FECHA</th>
+                                <th>CLAVE</th>
+                                <th>CAUSA</th>
+                                <th>ACTO RESTITUIDO</th>
+                                <th>OBSERVACIONES</th>
                                 </thead>
                                 <tbody>
 
@@ -318,7 +333,7 @@
                         </div>
 
                     </div>
-                     </div>
+                </div>
             </div>
 
             <div class="datosfinales">
@@ -334,5 +349,5 @@
             </div>
         </div>
 
-}
+    }
 </body>
