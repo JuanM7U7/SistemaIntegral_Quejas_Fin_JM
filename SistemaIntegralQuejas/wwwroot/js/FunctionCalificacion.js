@@ -328,8 +328,11 @@ function mostrarResTblFormatos(response,response1) {
                 'mRender': function (data, type, full) {
                     var sel = "";
                     if (full.otro != '') {
-
-                        btnEscritook = `Se turnó a : ${full.otro} <input type="button" value="Returnar ID" id="returnaIDS-${full.id} " class="returnaIDS"></>`;
+                        if (full.status === 'Concluido') {
+                            btnEscritook = `Se turnó a : ${full.otro}`;
+                        } else {
+                            btnEscritook = `Se turnó a : ${full.otro} <input type="button" value="Returnar ID" id="returnaIDS-${full.id}" class="returnaIDS">`;
+                        }
                         $('[id *= "returnaIDS"]').on('click', function () {
                             //alert(this.id);
                             for (var i = 0; i < response1.length; i++) {
