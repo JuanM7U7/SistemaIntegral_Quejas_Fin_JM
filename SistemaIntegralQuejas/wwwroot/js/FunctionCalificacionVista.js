@@ -5893,7 +5893,26 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
 
                         document.getElementById(`fechaCausa${tipo}_${rowIdx}`).value = formattedDate;
                     }
- 
+
+                    // ====================================================================================
+                    // 🛠️ PARCHE DE INYECCIÓN DE CAUSA PARA EL GRUPO 11_2 (CLAVE Y TEXTO LARGO)
+                    // ====================================================================================
+                    var $selectClave = $(`#causaccatcve${tipo}_${rowIdx}`);
+                    var $selectCausa = $(`#causaccat${tipo}_${rowIdx}`);
+
+                    if (data.causac === "11_2") {
+                        // Inyectar en el selector pequeño de la Clave si no existe
+                        if ($selectClave.find('option[value="11_2"]').length === 0) {
+                            $selectClave.append(new Option("11_2", "11_2", true, true));
+                        }
+                        // Inyectar en el selector grande de la Descripción si no existe
+                        if ($selectCausa.find('option[value="11_2"]').length === 0) {
+                            $selectCausa.append(new Option("POR INCOMPETENCIA - CONFLICTOS ENTRE PARTICULARES", "11_2", true, true));
+                        }
+                    }
+                    // ====================================================================================
+
+
                     //$(`#fechaCausa_${rowIdx}`).val(data.fechac);
                     $(`#causaccat${tipo}_${rowIdx}`).val(data.causac).trigger('change');
                     $(`#causaccatcve${tipo}_${rowIdx}`).val(data.causac).trigger('change');
@@ -5901,6 +5920,18 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
                     $(`#ActoRest${tipo}_${rowIdx}`).val(data.acto_rest);
                     $(`#ObsConclu${tipo}_${rowIdx}`).val(data.obs);
                     Habilita_Acto_Rest(data.causac);
+
+                    // ====================================================================================
+                    // 🔒 BLOQUEO DE CONTROLES SI YA ESTÁ CONCLUIDO (tipo diferente de 'E')
+                    // ====================================================================================
+                    if (tipo !== 'E') {
+                        $(`#fechaCausa${tipo}_${rowIdx}`).prop('disabled', true);
+                        $selectClave.prop('disabled', true);
+                        $selectCausa.prop('disabled', true);
+                        $(`#ObsConclu${tipo}_${rowIdx}`).prop('disabled', true);
+                    }
+                    // ====================================================================================
+
                 });
             },
             order: [1, 'desc'],
