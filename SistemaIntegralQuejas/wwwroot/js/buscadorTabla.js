@@ -3566,7 +3566,22 @@ function mostrarResTblFormatos(response) {
     })
 }
 
-
+//metodo auxiliar que valida los campos no proporcionado en datos personales AE
+function esValido(valor, tipo = "texto") {
+    if (tipo === "texto") {
+        // Acepta cualquier texto distinto de vacío o null
+        return valor !== '' && valor !== null;
+    }
+    if (tipo === "numero") {
+        // Acepta cualquier número válido (>=0)
+        return valor !== null && !isNaN(Number(valor));
+    }
+    if (tipo === "fecha") {
+        // Acepta cualquier fecha distinta de vacío o null
+        return valor !== '' && valor !== null;
+    }
+    return false; // Si el tipo no coincide
+}
 
 //metodo creado por GITP
 function EstatusFormatos(full) {
@@ -3591,34 +3606,67 @@ function EstatusFormatos(full) {
     //FIN DATOS COMPLEMENTARIOS
 
     //DE PETICIONARIO
-    //full.agravQuej.lPeticionario.docIdentificatorio
-    if (full.agravQuej.length > 0) {//AgravQuej
-        Cont = 0;
-        for (var i = 0; i < full.agravQuej.length; i++) {
+    if (full.agravQuej.length > 0) {
+        let Cont = 0;
+        const totalPeticionarios = full.agravQuej.reduce((acc, q) => acc + q.lPeticionario.length, 0);
+
+        for (let i = 0; i < full.agravQuej.length; i++) {
             if (full.agravQuej[i].lPeticionario.length > 0) {
-                for (var e = 0; e < full.agravQuej[i].lPeticionario.length; e++) {
-                    if (full.agravQuej[i].lPeticionario[e].docIdentificatorio != '' && full.agravQuej[i].lPeticionario[e].nombre != '' && full.agravQuej[i].lPeticionario[e].apellidoPat != '' && full.agravQuej[i].lPeticionario[e].apellidoMat != ''
-                        && full.agravQuej[i].lPeticionario[e].apellidoPat != '' && full.agravQuej[i].lPeticionario[e].codigoPostal != '' && full.agravQuej[i].lPeticionario[e].estado != '' && full.agravQuej[i].lPeticionario[e].colonia != ''
-                        && full.agravQuej[i].lPeticionario[e].municipio != '' && full.agravQuej[i].lPeticionario[e].ciudad != '' && full.agravQuej[i].lPeticionario[e].calle != '' && full.agravQuej[i].lPeticionario[e].numExterior != ''
-                        && full.agravQuej[i].lPeticionario[e].numInterior != '' && full.agravQuej[i].lPeticionario[e].fechaNacimiento != '' && full.agravQuej[i].lPeticionario[e].edad != '' && full.agravQuej[i].lPeticionario[e].telefono != ''
-                        && full.agravQuej[i].lPeticionario[e].email != '' && full.agravQuej[i].lPeticionario[e].tipoUsuario != '' && full.agravQuej[i].lPeticionario[e].fkSexo != 0 && full.agravQuej[i].lPeticionario[e].genero != ''
-                        /*&& full.agravQuej[i].lPeticionario[e].nacionalidad != ''*/ && full.agravQuej[i].lPeticionario[e].sabeLeer != '' && full.agravQuej[i].lPeticionario[e].fkEscolaridad != '' && full.agravQuej[i].lPeticionario[e].fkEstadoConyugal != ''
-                        && full.agravQuej[i].lPeticionario[e].fkOcupacion != '' && full.agravQuej[i].lPeticionario[e].fkDiscapacidad != '' && full.agravQuej[i].lPeticionario[e].fkGrupoSocial != '' && full.agravQuej[i].lPeticionario[e].hablaLenguai != '') {
-                        if (full.agravQuej[i].lPeticionario[e].violenciaVm == 1 && full.agravQuej[i].lPeticionario[e].canalizacionVm != '' && full.agravQuej[i].lPeticionario[e].embarazadaVm != '' && full.agravQuej[i].lPeticionario[e].ingresosMensuales != ''
-                            && full.agravQuej[i].lPeticionario[e].fkHijosVivos != '' && full.agravQuej[i].lPeticionario[e].fkModalidadViolencia <= 8 && full.agravQuej[i].lPeticionario[e].fkTipoViolencia <= 8 && full.agravQuej[i].lPeticionario[e].fkRelacionAgresor != 8) {
-                            Cont++;
-                        } else if (full.agravQuej[i].lPeticionario[e].violenciaVm == 0) {
-                            Cont++;
-                        }
+                for (let e = 0; e < full.agravQuej[i].lPeticionario.length; e++) {
+                    const pet = full.agravQuej[i].lPeticionario[e];
+                    console.log("=== Validando peticionario ===", pet);
+
+                    const camposTextoOk =
+                        esValido(pet.docIdentificatorio, "texto") &&
+                        esValido(pet.nombre, "texto") &&
+                        esValido(pet.apellidoPat, "texto") &&
+                        esValido(pet.apellidoMat, "texto") &&
+                        esValido(pet.codigoPostal, "texto") &&
+                        esValido(pet.estado, "texto") &&
+                        esValido(pet.colonia, "texto") &&
+                        esValido(pet.municipio, "texto") &&
+                        esValido(pet.ciudad, "texto") &&
+                        esValido(pet.calle, "texto") &&
+                        esValido(pet.numExterior, "texto") &&
+                        esValido(pet.numInterior, "texto") &&
+                        esValido(pet.fechaNacimiento, "fecha") &&
+                        esValido(pet.edad, "texto") &&
+                        esValido(pet.telefono, "texto") &&
+                        esValido(pet.email, "texto") &&
+                        esValido(pet.tipoUsuario, "texto") &&
+                        esValido(pet.genero, "texto") &&
+                        esValido(pet.sabeLeer, "texto") &&
+                        esValido(pet.hablaLenguai, "texto");
+
+                    const camposNumericosOk =
+                        esValido(pet.fkSexo, "numero") &&
+                        esValido(pet.fkEscolaridad, "numero") &&
+                        esValido(pet.fkEstadoConyugal, "numero") &&
+                        esValido(pet.fkOcupacion, "numero") &&
+                        esValido(pet.fkDiscapacidad, "numero") &&
+                        esValido(pet.fkGrupoSocial, "numero");
+
+                    // Ajuste clave: si violenciaVm == 0, siempre cuenta como válido
+                    if (pet.violenciaVm === 0) {
+                        Cont++;
+                    } else if (camposTextoOk && camposNumericosOk && pet.violenciaVm === 1) {
+                        Cont++;
+                    } else {
+                        console.warn("Peticionario incompleto (según reglas actuales):", pet);
                     }
                 }
             }
         }
-        if (Cont === full.agravQuej.length) { contador++; } else {
-            estatus = estatus + 'Datos Personales <br>';
+
+        console.log("Total peticionarios:", totalPeticionarios, "Cont válidos:", Cont);
+
+        if (Cont === totalPeticionarios) {
+            contador++;
+        } else {
+            estatus += 'Datos Personales <br>';
         }
     } else {
-        estatus = estatus + 'Datos Personales <br>';
+        estatus += 'Datos Personales <br>';
     }
     //FIN DE PETICIONARIO
 
