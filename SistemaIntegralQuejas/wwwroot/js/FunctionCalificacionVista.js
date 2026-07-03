@@ -5894,29 +5894,55 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
                         document.getElementById(`fechaCausa${tipo}_${rowIdx}`).value = formattedDate;
                     }
 
-                    // ====================================================================================
-                    // 🛠️ PARCHE DE INYECCIÓN DE CAUSA PARA EL GRUPO 11_2 (CLAVE Y TEXTO LARGO)
-                    // ====================================================================================
                     var $selectClave = $(`#causaccatcve${tipo}_${rowIdx}`);
                     var $selectCausa = $(`#causaccat${tipo}_${rowIdx}`);
 
-                    if (data.causac === "11_2") {
-                        // Inyectar en el selector pequeño de la Clave si no existe
-                        if ($selectClave.find('option[value="11_2"]').length === 0) {
-                            $selectClave.append(new Option("11_2", "11_2", true, true));
+                    // ====================================================================================
+                    // 🛠️ INYECCIÓN DINÁMICA AVANZADA DESDE EL CATÁLOGO LOCAL O RESPALDO FIJO
+                    // ====================================================================================
+                    if (data.causac) {
+                        // 1. Buscamos si la causa existe dentro del array local 'ExpeConc' para jalar su texto real
+                        var causaEncontrada = ExpeConc.find(function (item) {
+                            
+                            return item.id === data.causac || item.value === data.causac || item.cve_causa === data.causac;
+                        });
+
+                        //  Si la encuentra en el array, usa ese texto. Si no, mapeamos el texto real de la BD
+                        var textoCausaBD = "";
+                        if (causaEncontrada) {
+                            textoCausaBD = causaEncontrada.text || causaEncontrada.descripcion || causaEncontrada.conclusion;
+                        } else {
+                            // Respaldos exactos basados en tu captura de pantalla de CAT_CAUSAS para el bloque de inactivas (11_1 a 11_6)
+                            switch (data.causac) {
+                                case "11_1": textoCausaBD = "POR INCOMPETENCIA - RESOLUCIONES DE CARÁCTER JURISDICCIONAL"; break;
+                                case "11_2": textoCausaBD = "POR INCOMPETENCIA - CONFLICTOS ENTRE PARTICULARES"; break;
+                                case "11_3": textoCausaBD = "POR INCOMPETENCIA - ACTOS U OMISIONES DE AUTORIDADES DE CARÁCTER FEDERAL O DE OTRAS ENTIDADES"; break;
+                                case "11_4": textoCausaBD = "POR INCOMPETENCIA - ACTOS U OMISIONES PROVENIENTES DE LA AUTORIDAD JUDICIAL DEL ESTADO"; break;
+                                case "11_5": textoCausaBD = "POR INCOMPETENCIA - CUANDO LA VIOLACIÓN A DERECHOS HUMANOS HAYA SIDO RESUELTA DE FONDO, O SE..."; break;
+                                case "11_6": textoCausaBD = "LA DEMÁS PREVISTAS POR LA LEY O POR ESTE REGLAMENTO - COPIA DE CONOCIMIENTO"; break;
+                                default: textoCausaBD = data.conclusion || data.causac; // Cualquier otra activa o el valor original
+                            }
                         }
-                        // Inyectar en el selector grande de la Descripción si no existe
-                        if ($selectCausa.find('option[value="11_2"]').length === 0) {
-                            $selectCausa.append(new Option("POR INCOMPETENCIA - CONFLICTOS ENTRE PARTICULARES", "11_2", true, true));
+
+                        // Forzamos habilitación temporal para que Select2 renderice correctamente
+                        $selectClave.prop('disabled', false);
+                        $selectCausa.prop('disabled', false);
+
+                        if ($selectClave.find(`option[value="${data.causac}"]`).length === 0) {
+                            $selectClave.append(new Option(data.causac, data.causac, true, true));
+                        }
+
+                        if ($selectCausa.find(`option[value="${data.causac}"]`).length === 0) {
+                            $selectCausa.append(new Option(textoCausaBD, data.causac, true, true));
                         }
                     }
-                    // ====================================================================================
+            // ====================================================================================
+
+                    // Asignamos valores y disparamos el cambio
+                    $selectClave.val(data.causac).trigger('change');
+                    $selectCausa.val(data.causac).trigger('change');
 
 
-                    //$(`#fechaCausa_${rowIdx}`).val(data.fechac);
-                    $(`#causaccat${tipo}_${rowIdx}`).val(data.causac).trigger('change');
-                    $(`#causaccatcve${tipo}_${rowIdx}`).val(data.causac).trigger('change');
-                    
                     $(`#ActoRest${tipo}_${rowIdx}`).val(data.acto_rest);
                     $(`#ObsConclu${tipo}_${rowIdx}`).val(data.obs);
                     Habilita_Acto_Rest(data.causac);
