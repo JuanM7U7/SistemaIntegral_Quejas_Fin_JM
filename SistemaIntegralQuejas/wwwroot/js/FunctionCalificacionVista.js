@@ -2771,7 +2771,7 @@ function updateDatosPeticionarios(idpeticionarioActual, modo) {
                     timer: 3000
                 }).then(function () {
 
-                    // Guarda en la memoria del navegador que ID ya tienen un peticonario confirmado y lo guarda -Fred 03/07/2026
+                    // Guarda en la memoria del navegador que ID ya tienen un peticonario confirmado y lo guarda -Fred 03/07/2026 
                     if (!window.iddatospeti) {
                         window.iddatospeti = [];
                     }
