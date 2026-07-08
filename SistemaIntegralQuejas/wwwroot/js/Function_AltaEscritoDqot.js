@@ -590,6 +590,8 @@ let tipoPeticionarioSeleccionado = "";
     });
     //METODO INSERTAR ORIENTACION
     $(document).on('click', '#insertOrientacion', function () {
+        // Deshabilitar el botón 
+        $('#insertOrientacion').prop('disabled', true);
         let tablaReferencia = "ORIENTACION";
         // Validación general
         if (
@@ -898,6 +900,8 @@ let tipoPeticionarioSeleccionado = "";
     //bloque para actualizar e insertar remisiones
     //INSERTAR REMISION 08/12/2025
     $(document).on('click', '#insertRemision', function () {
+        // Deshabilitar el botón 
+        $('#insertRemision').prop('disabled', true);
         let tablaReferencia = "REMISION";
         // Validación general: Se hace un arreglo de los campos con su nombre
         let campos = [
@@ -1249,7 +1253,8 @@ let tipoPeticionarioSeleccionado = "";
             let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
             let petName = pet ? pet.nombrepeti.trim() : '';
             if (!petName) {
-                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim();
+                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim(); 
+
             }
 
             dataIncompetencia.append('Input_Peticionario', petName);
@@ -1355,6 +1360,8 @@ let tipoPeticionarioSeleccionado = "";
     //bloque actualizar e insertar incompetencia
     //INSERT INCOMPETENCIA 08/12/2025
     $(document).on('click', '#insertIncompetencia', function () {
+        // Deshabilitar el botón 
+        $('#insertIncompetencia').prop('disabled', true);
         let tablaReferencia = "INCOMPETENCIA";
         // Validación general: Se hace un arreglo de los campos con su nombre
         let campos = [
@@ -1821,6 +1828,8 @@ let tipoPeticionarioSeleccionado = "";
     //bloque para actualiza e insertar antecedente
     //INSERTAR ANTECEDENTE 08/12/2025
     $(document).on('click', '#insertAntecedente', function () {
+        // Deshabilitar el botón 
+        $('#insertAntecedente').prop('disabled', true);
         let tablaReferencia = "ANTECEDENTE";
         // Validación general: Se hace un arreglo de los campos con su nombre
         let campos = [
