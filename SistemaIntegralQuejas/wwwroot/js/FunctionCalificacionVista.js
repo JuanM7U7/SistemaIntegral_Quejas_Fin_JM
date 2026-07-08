@@ -948,14 +948,38 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                     $(`#confi_peticiona${tipo}`).prop('checked', true).trigger('change'); $(`#confi_peticiona${tipo}`).removeClass('pulsacionrellow');
                 }
                 for (var i = 0; i < contadorpeticionarios; i++) {
-                    console.log(contadorpeticionarios);
-                    var coincidencias = iddatospeti.filter(p => p.id_peticionario === response.informarcionC.informacioncomplementariapeticionario[i].id_registro && p.tipoPet == response.informarcionC.informacioncomplementariapeticionario[i].tipo);
+                    console.log(contadorpeticionarios); // -Fred 03/07/2026 INICIO mismo if pero le ageue nuevos datos para reforzar la condición 
+                    var pet = response.informarcionC.informacioncomplementariapeticionario[i];
+
+                    var coincidencias = window.iddatospeti.filter(p =>
+                        Number(p.id_peticionario) === Number(pet.id_registro)
+                    );
+
                     var validpet = false;
 
-                    if (coincidencias.length !== 0) {
-                        validpet = coincidencias[0].datospet == 1;
+                    if (coincidencias.length > 0) {
+                        validpet =
+                            coincidencias[0].datospet == 1 ||
+                            coincidencias[0].datospet == '1' ||
+                            coincidencias[0].datospet == true ||
+                            coincidencias[0].datospet == 'True';
                     }
-                    $(`#contenedor_Usuarios${tipo}`).html($(`#contenedor_Usuarios${tipo}`).html() + DivPequenioss(response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g,''), response.informarcionC.informacioncomplementariapeticionario[i].curp, response.informarcionC.informacioncomplementariapeticionario[i].id_registro, response.informarcionC.informacioncomplementariapeticionario[i].tipo, response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet, validpet, idqueja, response.informarcionC.informacioncomplementariapeticionario[i].conreg));
+
+                    console.log('Peticionario:', pet.id_registro, 'validpet:', validpet); // -Fred 03/07/2026 Fin 
+                    $(`#contenedor_Usuarios${tipo}`).html(
+                        $(`#contenedor_Usuarios${tipo}`).html() + DivPequenioss(
+                            response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''),
+                            response.informarcionC.informacioncomplementariapeticionario[i].curp,
+                            response.informarcionC.informacioncomplementariapeticionario[i].id_registro,
+                            response.informarcionC.informacioncomplementariapeticionario[i].tipo,
+                            response.informarcionC.informacioncomplementariapeticionario[i].idtip_compet,
+                            false, // statusComplemento del que ya tienen lo dejo, no modifique más que lo que esta comentado esta parte así estaba solo que se ve modificación por que esta separado
+                            // ya tenias todo solo era llamarlo
+                            idqueja,
+                            response.informarcionC.informacioncomplementariapeticionario[i].conreg, // cambio
+                            validpet // confirmado del que ya tenian y separe para que me fuera más facil ver todo
+                        )
+                    );
                 }
                 switch (tipo) {
                     case 'V':
@@ -1318,16 +1342,41 @@ function DivPequenioss(
     var div = '';
     console.log("Estatus complento: " + statusComplemento);
     console.log("Confirmado: " + confirmado);
-
-    // 🔥 SI YA CONFIRMÓ → NO HAY BOTÓN CONFIRMAR
-    let btnConfirmar = (confirmado == 1) ? '' : `
+    confirmado = (confirmado === 1 || confirmado === '1' || confirmado === true || confirmado === 'True') ? 1 : 0; //-Fred 03/07/2026 confirmano que tienen arriba
+    // 🔥 SI YA CONFIRMÓ → NO HAY BOTÓN CONFIRMAR //Editado por -Fred  para que sea independiente
+    // taba así: let btnConfirmar = (confirmado == 1) ? '' : ` ↙️
+    let btnConfirmar = `
         <button id="myBtn" type='button'
             onclick='editFormatDatosPersonalesCalificacion(${idpeticionario}, ${idtip_compet}, "Concluido", "False")'
             class='btn btn-link margin-iconbf'>
             <span class="fa fa-search color-muted fa-1x"></span>
         </button>
     `;
+    //-Fred 03/07/2026 Inicio para agregar nuevas condiciones de ocultar los botones tome la idea del boton de arriba para que no los agreguemos todo 1 por 1
+    let btnEditar = (confirmado == 1) ? '' : `
+    <button type='button'
+        onclick='editFormatDatosPersonalesCalificacion(${idpeticionario}, ${idtip_compet}, "", "True")'
+        class='btn btn-link margin-iconbf btn-editar-eliminar'>
+        <span class="fa fa-pencil color-muted fa-1x"></span>
+    </button>
+    `;
 
+    let btnEditarBloqueado = (confirmado == 1) ? '' : `
+    <button type='button'
+        onclick='warnningpet()'
+        class='btn btn-link margin-iconbf btn-editar-eliminar'>
+        <span class="fa fa-pencil color-muted fa-1x"></span>
+    </button>
+    `;
+
+    let btnEliminar = (confirmado == 1) ? '' : `
+    <button type='button'
+        onclick='eliminaFormatoDatosPeronsales(${idtip_compet}, this)'
+        class='btn btn-link margin-iconbf btn-editar-eliminar'>
+        <span class="fa fa-trash color-muted fa-1x"></span>
+    </button>
+    `;
+    // //-Fred 03/07/2026 Fin para agregar nuevas condiciones de ocultar los botones
     if (numrep <= 1 && statusComplemento === false) {
         div = `
             <div id='Divpequenios'>
@@ -1348,21 +1397,13 @@ function DivPequenioss(
                         </span>
 
                         <!-- LÁPIZ -->
-                        <button id="myBtn" type='button'
-                            onclick='editFormatDatosPersonalesCalificacion(${idpeticionario}, ${idtip_compet}, "", "True")'
-                            class='btn btn-link margin-iconbf'>
-                            <span class="fa fa-pencil color-muted fa-1x"></span>
-                        </button>
+                        ${btnEditar}
 
                         <!-- 🔥 CONFIRMAR CONTROLADO -->
                         ${btnConfirmar}
 
                         <!-- ELIMINAR -->
-                        <button id="myBtn" type='button'
-                            onclick='eliminaFormatoDatosPeronsales(${idtip_compet}, this)'
-                            class='btn btn-link margin-iconbf'>
-                            <span class="fa fa-trash color-muted fa-1x"></span>
-                        </button>
+                        ${btnEliminar}
 
                     </p>
                 </div>
@@ -1387,21 +1428,13 @@ function DivPequenioss(
                         </span>
 
                         <!-- LÁPIZ BLOQUEADO -->
-                        <button id="myBtn" type='button'
-                            onclick='warnningpet()'
-                            class='btn btn-link margin-iconbf'>
-                            <span class="fa fa-pencil color-muted fa-1x"></span>
-                        </button>
+                        ${btnEditarBloqueado}
 
                         <!-- 🔥 CONFIRMAR CONTROLADO -->
                         ${btnConfirmar}
 
                         <!-- ELIMINAR -->
-                        <button id="myBtn" type='button'
-                            onclick='eliminaFormatoDatosPeronsales(${idtip_compet}, this)'
-                            class='btn btn-link margin-iconbf'>
-                            <span class="fa fa-trash color-muted fa-1x"></span>
-                        </button>
+                        ${btnEliminar}
 
                     </p>
                 </div>
@@ -1428,11 +1461,7 @@ function DivPequenioss(
                         <!-- 🔥 SOLO CONFIRMAR SI NO ESTÁ CONFIRMADO -->
                         ${btnConfirmar}
 
-                        <button id="myBtn" type='button'
-                            onclick='eliminaFormatoDatosPeronsales(${idtip_compet}, this)'
-                            class='btn btn-link margin-iconbf'>
-                            <span class="fa fa-trash color-muted fa-1x"></span>
-                        </button>
+                        ${btnEliminar}
 
                     </p>
                 </div>
@@ -2742,6 +2771,33 @@ function updateDatosPeticionarios(idpeticionarioActual, modo) {
                     timer: 3000
                 }).then(function () {
 
+                    // Guarda en la memoria del navegador que ID ya tienen un peticonario confirmado y lo guarda -Fred 03/07/2026 
+                    if (!window.iddatospeti) {
+                        window.iddatospeti = [];
+                    }
+
+                    let idpeticionarioActual = Number($('#idpeticionarioi1').val());
+                    let tipoPetActual = $('input[name=qatu_petit-frmDatosPersonales1]:checked').val();
+
+                    let existente = window.iddatospeti.find(p =>
+                        Number(p.id_peticionario) === idpeticionarioActual
+                    );
+
+                    if (existente) {
+                        existente.datospet = 1;
+                        if (!existente.tipoPet) {
+                            existente.tipoPet = tipoPetActual;
+                        }
+                    } else {
+                        window.iddatospeti.push({
+                            id_peticionario: idpeticionarioActual,
+                            datospet: 1,
+                            tipoPet: tipoPetActual
+                        });
+                    }
+
+                    console.log('IDDATOSPETI ACTUALIZADO:', window.iddatospeti);
+                    // Oculta el boton el cambio lo hace por separado para cada peticionario, si detecta que no se confirmo lo deja 
                     $('button[id^=validapeticionario]').hide();
 
                     $('#contenedor_AutoridadesE').html('');
