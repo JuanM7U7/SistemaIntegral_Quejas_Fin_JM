@@ -6727,10 +6727,21 @@ $(document).ready(function () {
             var tipo = $(this).find('input[id^="tipautoE_"]:checked').val();
             var autoridad = $(this).find('select[id^="autoridadresE_"]').val();
             var hecho = $(this).find('select[name^="hechvio"]').val();
-            if (autoridad !== '99' && hecho !== '99' && typeof autoridad != 'undefined' && typeof hecho != 'undefined') {
+            // Para que no guarde una autoridad inexistente en ambos casos, autoridad primaria ni secundaria -Fred 10/07/2026 :3
+            var idAutoridad = parseInt(autoridad, 10);
+            var idHecho = parseInt(hecho, 10);
+
+            if (
+                !isNaN(idAutoridad) &&
+                idAutoridad > 0 &&
+                idAutoridad !== 99 &&
+                idAutoridad !== 999 &&
+                !isNaN(idHecho) &&
+                idHecho !== 99
+            ) {
                 AutRe_HecVioT.push({
-                    autoridad: autoridad,
-                    hecho: hecho,
+                    autoridad: idAutoridad,
+                    hecho: idHecho,
                     idquejaE: idquejaE,
                     idAutoHec: x,
                     tipoA: tipo
@@ -7248,10 +7259,21 @@ function GuardPrel() {
         var tipo = $(this).find('input[id^="tipautoE_"]:checked').val();
         var autoridad = $(this).find('select[id^="autoridadresE_"]').val();
         var hecho = $(this).find('select[name^="hechvio"]').val();
-        if (autoridad !== '99' && hecho !== '99' && typeof autoridad != 'undefined' && typeof hecho != 'undefined') {
+        // Para que no guarde una autoridad inexistente en ambos casos, autoridad primaria ni secundaria -Fred 10/07/2026 :3
+        var idAutoridad = parseInt(autoridad, 10);
+        var idHecho = parseInt(hecho, 10);
+
+        if (
+            !isNaN(idAutoridad) &&
+            idAutoridad > 0 &&
+            idAutoridad !== 99 &&
+            idAutoridad !== 999 &&
+            !isNaN(idHecho) &&
+            idHecho !== 99
+        ) {
             AutRe_HecVioT.push({
-                autoridad: autoridad,
-                hecho: hecho,
+                autoridad: idAutoridad,
+                hecho: idHecho,
                 idquejaE: idquejaE,
                 idAutoHec: x,
                 tipoA: tipo
