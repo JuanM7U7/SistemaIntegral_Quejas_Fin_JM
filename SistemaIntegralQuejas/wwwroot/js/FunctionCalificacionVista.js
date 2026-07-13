@@ -5500,31 +5500,22 @@ function Habilita_Acto_Rest(causac)
 
 
 }
-function Concluirexpediente(fechaturno,fechacalif) {
+function Concluirexpediente(fechaturno, fechacalif) {
 
-    /*Obtener   Causas de Cncllusión*/
+    /* Obtener Causas de Conclusión */
     var Causasc = [];
     var idquejaE = $('#idquejaE').val();
-    var viainterposE = $('#viainterposE').val();
-    //DATOS SELECT
-    var formQueja = $(this).serializeArray();
-    //TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
+    var viainterposE = $('#viainterposE').val(); // <--- Aquí se captura del HTML
+
+    // TABLA AUTORIDADES RESPONSABLES - HECHOS VIOLATORIOS
     var status = false;
     $('#tablaconcluE tbody tr').each(function (x) {
-        x = x + 1;
-        //var autoridad = $(this).find('select[name="autoridadres"]').val();
         var fechac = $(this).find('input[id^="fechaCausaE_"]').val();
         var causac = $(this).find('select[id^="causaccatE_"] option:selected').val();
-
         var actorest = $(this).find('textarea[id^="ActoRestE_"]').val();
         var obs = $(this).find('textarea[id^="ObsConcluE_"]').val();
 
-
-
-
-        //obs.trim() != '')
         if (fechac.trim() !== '' && causac.trim() !== '99') {
-
             if (causac.trim() == '5_1' || causac.trim() == '5_2' || causac.trim() == '7_0' || causac.trim() == '9_2') {
                 if (actorest.trim() != '') {
                     Causasc.push({
@@ -5534,8 +5525,7 @@ function Concluirexpediente(fechaturno,fechacalif) {
                         actorestitu: actorest,
                         observa: obs
                     });
-                }
-                else {
+                } else {
                     status = true;
                 }
             } else {
@@ -5550,101 +5540,76 @@ function Concluirexpediente(fechaturno,fechacalif) {
         } else {
             status = true;
         }
-
     });
 
-
-    formDQOT = {
+    var formDQOT = {
         tablaCausasc: Causasc,
         longitudtabla1: Causasc.length,
         idexp: idquejaE
-
     };
 
-    if (viainterposE == 1 || viainterposE == 2 || viainterposE == 4 || viainterposE == 5 || viainterposE == 8) {
-        $.ajax({
-            type: "post",
-            url: 'VerificarPeticionariosAgrav',
-            content: "application/json; charset=utf-8",
-            data: { idqueja: idquejaE },
-            dataType: "json",
-            success: function (data) {
+    // 1. SIEMPRE validamos los peticionarios primero
+    $.ajax({
+        type: "post",
+        url: 'VerificarPeticionariosAgrav',
+        content: "application/json; charset=utf-8",
+        data: { idqueja: idquejaE },
+        dataType: "json",
+        success: function (data) {
+
+            // Aseguramos la lectura limpia de la vía usando la variable definida arriba
+            var viaLimpia = $.trim(viainterposE);
+
+            // =========================================================================
+            // 🔥 CONTROL DE LA VÍA 7 (EXCEPCIÓN DE AGRAVIADO)
+            // =========================================================================
+            if (viaLimpia == "7") {
+                // Buscamos cuántos peticionarios hay en el DOM de forma segura
+                var contenedor = $('#contenedor_UsuariosE');
+                var numPeticionarios = (contenedor.length > 0) ? contenedor.children().length : 0;
+
+                if (numPeticionarios === 0) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Sin peticionarios',
+                        text: 'Para la vía de interposición de oficio se requiere registrar al menos un peticionario.',
+                        showConfirmButton: true
+                    });
+                    return; // 🛑 Frena el proceso y NO guarda
+                }
+            } else {
+                // Para cualquier otra vía, exige a fuerzas el Agraviado desde el backend
                 if (data.mensaje === 'error') {
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
                         title: 'Sin peticionario de tipo agraviado',
-                        text: 'Favor de agregar peticionario de tipo agraviado.',
+                        text: 'Favor de agregar un peticionario de tipo agraviado.',
                         showConfirmButton: true
                     });
-                    return;
-                }
-
-                if (status) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Tienes que completar todos los campos requeridos para poder concluir el expediente',
-                        timer: 2000
-                    });
-                } else {
-                    var fechac1 = $("#tablaconcluE").find("input[id^='fechaCausaE_']").val();
-                    var fechacalifi = fechacalif.split('/');
-                    var fechacalifi2 = fechacalifi[2] + '-' + fechacalifi[1] + '-' + fechacalifi[0];
-                    var fechacalifi3 = new Date(fechacalifi2);
-                    var fecha_Conclu = new Date(fechac1);
-                    console.log("Fecha califi:" + fechacalifi3 + "Fecha conclu:" + fecha_Conclu);
-
-                    if (fecha_Conclu.getTime() < fechacalifi3.getTime()) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'La fecha de conclusión no puede ser menor a la fecha de calificación, por favor verifica tu información antes de continuar',
-                            timer: 5000
-                        });
-                    } else {
-
-                        $.ajax({
-                            type: "POST",
-                            url: "ConcluirExpediente",
-                            data: formDQOT,
-                            dataType: "JSON",
-                            success: function (response) {
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: 'Expediente Concluido',
-                                    showConfirmButton: true,
-                                }).then((result) => {
-                                    /* Read more about isConfirmed, isDenied below */
-                                    if (result.isConfirmed) {
-                                        window.location.reload();
-                                    }
-                                });
-
-                                console.log("Concluido");
-                            }
-                        })
-                    }
+                    return; // 🛑 Frena el proceso y NO guarda
                 }
             }
-        });
-    } else {
+            // =========================================================================
 
-        if (status) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Tienes que completar todos los campos requeridos para poder concluir el expediente',
-                timer: 2000
-            });
-        } else {
+            // 2. Si pasó los peticionarios, revisamos que las filas de la tabla estén completas
+            if (status) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Tienes que completar todos los campos requeridos para poder concluir el expediente',
+                    timer: 2000
+                });
+                return;
+            }
+
+            // 3. Validación de Fechas
             var fechac1 = $("#tablaconcluE").find("input[id^='fechaCausaE_']").val();
             var fechacalifi = fechacalif.split('/');
             var fechacalifi2 = fechacalifi[2] + '-' + fechacalifi[1] + '-' + fechacalifi[0];
             var fechacalifi3 = new Date(fechacalifi2);
             var fecha_Conclu = new Date(fechac1);
-            console.log("Fecha califi:" + fechacalifi3 + "Fecha conclu:" + fecha_Conclu);
 
             if (fecha_Conclu.getTime() < fechacalifi3.getTime()) {
                 Swal.fire({
@@ -5654,7 +5619,7 @@ function Concluirexpediente(fechaturno,fechacalif) {
                     timer: 5000
                 });
             } else {
-
+                // 4. Si todo es correcto, guardamos la conclusión del expediente
                 $.ajax({
                     type: "POST",
                     url: "ConcluirExpediente",
@@ -5667,18 +5632,15 @@ function Concluirexpediente(fechaturno,fechacalif) {
                             title: 'Expediente Concluido',
                             showConfirmButton: true,
                         }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
                                 window.location.reload();
                             }
                         });
-
-                        console.log("Concluido");
                     }
-                })
+                });
             }
         }
-    }
+    });
 }
 
 function RecuperaDaAutHec(id, version, callback) {

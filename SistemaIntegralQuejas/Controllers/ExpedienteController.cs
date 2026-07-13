@@ -8451,26 +8451,30 @@ namespace SistemaIntegralQuejas.Controllers
             }
             return Json(new { mensaje = mensaje });
         }
-        
+
         public ActionResult VerificarPeticionariosAgrav(string idqueja)
         {
-            string mensaje = "";
-            String query = "";
-
-            query = "EXEC Sp_obtener_peticionarios_agraviados '" + idqueja + "';";
+            string mensaje = "error"; // Por defecto, bloqueado hasta que se demuestre lo contrario
+            string query = "EXEC Sp_obtener_peticionarios_agraviados '" + idqueja + "';";
 
             var data_abog_dqot = GetDatosGeneral(query);
+
             if (data_abog_dqot.Rows.Count > 0)
             {
                 foreach (DataRow row in data_abog_dqot.Rows)
                 {
-                    mensaje = row["TIPO_USUARIO"].ToString();
+                    string tipoUsuario = row["TIPO_USUARIO"].ToString().Trim().ToUpper();
+
+                    // Lo único que importa es que al menos UNO sea AGRAVIADO
+                    if (tipoUsuario == "AGRAVIADO")
+                    {
+                        mensaje = "AGRAVIADO";
+                        break; // Ya encontramos el requisito, dejamos de buscar y aprobamos
+                    }
                 }
             }
-            else
-            {
-                mensaje = "error";
-            }
+
+            // Si nunca encontró un "AGRAVIADO", 'mensaje' seguirá valiendo "error"
             return Json(new { mensaje = mensaje });
         }
         // Fin obtener datos de tabla Diligencias
