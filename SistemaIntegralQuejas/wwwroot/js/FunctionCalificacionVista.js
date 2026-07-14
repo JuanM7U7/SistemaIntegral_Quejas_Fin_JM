@@ -6746,7 +6746,7 @@ $(document).ready(function () {
             var tipo = $(this).find('input[id^="tipautoE_"]:checked').val();
             var autoridad = $(this).find('select[id^="autoridadresE_"]').val();
             var hecho = $(this).find('select[name^="hechvio"]').val();
-            // Para que no guarde una autoridad inexistente en ambos casos, autoridad primaria ni secundaria -Fred 10/07/2026 :3
+           
             var idAutoridad = parseInt(autoridad, 10);
             var idHecho = parseInt(hecho, 10);
 
@@ -7278,7 +7278,7 @@ function GuardPrel() {
         var tipo = $(this).find('input[id^="tipautoE_"]:checked').val();
         var autoridad = $(this).find('select[id^="autoridadresE_"]').val();
         var hecho = $(this).find('select[name^="hechvio"]').val();
-        // Para que no guarde una autoridad inexistente en ambos casos, autoridad primaria ni secundaria -Fred 10/07/2026 :3
+      
         var idAutoridad = parseInt(autoridad, 10);
         var idHecho = parseInt(hecho, 10);
 
