@@ -7,7 +7,7 @@ namespace SistemaIntegralQuejas.Models
         public string LugarRecepcion { get; set; }
         public DateTime FechaRecepcion { get; set; }
         public TimeSpan HoraRecepcion { get; set; }
-        public string Peticionario { get; set; }
+        public List<PeticionarioModel> Peticionarios { get; set; } = new List<PeticionarioModel>();
         public string Autoridad { get; set; }
         public string Institucion { get; set; }
         public string Explicacion { get; set; }
