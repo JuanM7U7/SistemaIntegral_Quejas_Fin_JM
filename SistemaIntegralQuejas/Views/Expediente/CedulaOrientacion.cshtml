@@ -27,7 +27,11 @@
         <p align="justify" style="line-height: 2.0;">
             <b><br>LUGAR DE RECEPCIÓN: </b> @Model.LugarRecepcion
             <b><br>FECHA Y HORA DE RECEPCIÓN: </b> @Model.FechaRecepcion.ToString("dd/MM/yyyy") a las @Model.HoraRecepcion.ToString(@"hh\:mm") <b>Hrs</b>
-            <b><br>NOMBRE DEL(A) PETICIONARIO(A): </b> @Model.Peticionario
+            <b><br>NOMBRE DEL(A) PETICIONARIO(A): </b> @foreach (var peticionario in Model.Peticionarios)
+            {
+                <br />
+                @peticionario.NombreCompleto
+            }
             <b><br>AUTORIDAD PRESUNTAMENTE RESPONSABLE: </b>
             @if (Model.Autoridad == "No proporcionado")
             {

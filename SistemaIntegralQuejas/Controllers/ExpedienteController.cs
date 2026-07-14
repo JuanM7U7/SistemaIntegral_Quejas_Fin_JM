@@ -2419,7 +2419,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             };
         }
-            // David 29 07 2025: Controlador obtiene info del petit en la alta de orientacion el cual hizo la alta (documento = 1 en la BD)
+        // Cambio Adair 130726 : Controlador obtiene info del petit en la alta de orientacion el cual hizo la alta (documento = 1 en la BD)
         private CedulaOrientacionModel ObtenerDatosCedulaOrientacion(string idEscrito)
         {
             using (var conn = new SqlConnection(conexionsql.ConnectionStrng()))
@@ -2427,12 +2427,33 @@ namespace SistemaIntegralQuejas.Controllers
                 conn.Open();
 
                 string sql = @"
-            SELECT TOP 1 Id_escrito, Folio, Lugar_hechos, Fecha_recepcion, Hora_recepcion, Peticionario, 
-                         Autoridad, Institucion, Explicacion, Abogado
-            FROM ORIENTACION
-            WHERE id_escrito = @IdEscrito AND Documento = 'SI'
-            ORDER BY id_orientacion DESC";
-                // Obtiene el registro del petit segun coincida el id de escrito generado y que haya sido quien dio la alta (btn guardar)
+            SELECT 
+                O.Id_escrito,
+                O.Folio,
+                O.Lugar_hechos,
+                O.Fecha_recepcion,
+                O.Hora_recepcion,
+                O.Autoridad,
+                O.Institucion,
+                O.Explicacion,
+                O.Abogado,
+
+                RR.Nombre,
+                RR.APELLIDO_PAT,
+                RR.APELLIDO_MAT
+
+            FROM ORIENTACION O
+
+            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                ON CP.ID_EXPEDIENTE = O.Id_escrito
+
+            LEFT JOIN REG_RECEPCION RR
+                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+
+            WHERE O.Id_escrito = @IdEscrito
+              AND O.Documento = 'SI'
+
+            ORDER BY O.Id_orientacion DESC;";
 
                 using (var cmd = new SqlCommand(sql, conn))
                 {
@@ -2440,32 +2461,52 @@ namespace SistemaIntegralQuejas.Controllers
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
-                        {
-                            return new CedulaOrientacionModel
-                            {
-                                IdEscrito = reader["Id_escrito"]?.ToString(),
-                                Folio = reader["Folio"]?.ToString(),
-                                LugarRecepcion = reader["Lugar_hechos"]?.ToString(),
-                                FechaRecepcion = (DateTime)(reader["Fecha_recepcion"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["Fecha_recepcion"])),
-                                HoraRecepcion = (TimeSpan)(reader["Hora_recepcion"] == DBNull.Value ? (TimeSpan?)null : (TimeSpan)reader["Hora_recepcion"]),
-                                Peticionario = reader["Peticionario"]?.ToString(),
-                                Autoridad = reader["Autoridad"]?.ToString(),
-                                Institucion = reader["Institucion"]?.ToString(),
-                                Explicacion = reader["Explicacion"]?.ToString(),
-                                Abogado = reader["Abogado"]?.ToString()?.ToUpper()
-                                // Estos datos extraidos se utilizaran para hacer el llenado de campos en la rotativa - pdf de la alta
+                        var modelo = new CedulaOrientacionModel();
 
-                            };
+                        while (reader.Read())
+                        {
+                            // Datos generales de la cédula (solo una vez)
+                            if (string.IsNullOrEmpty(modelo.IdEscrito))
+                            {
+                                modelo.IdEscrito = reader["Id_escrito"]?.ToString();
+                                modelo.Folio = reader["Folio"]?.ToString();
+                                modelo.LugarRecepcion = reader["Lugar_hechos"]?.ToString();
+
+                                modelo.FechaRecepcion = reader["Fecha_recepcion"] == DBNull.Value
+                                    ? default
+                                    : Convert.ToDateTime(reader["Fecha_recepcion"]);
+
+                                modelo.HoraRecepcion = reader["Hora_recepcion"] == DBNull.Value
+                                    ? default
+                                    : (TimeSpan)reader["Hora_recepcion"];
+
+                                modelo.Autoridad = reader["Autoridad"]?.ToString();
+                                modelo.Institucion = reader["Institucion"]?.ToString();
+                                modelo.Explicacion = reader["Explicacion"]?.ToString();
+                                modelo.Abogado = reader["Abogado"]?.ToString()?.ToUpper();
+                            }
+
+                            // Agregar todos los peticionarios
+                            if (reader["Nombre"] != DBNull.Value)
+                            {
+                                modelo.Peticionarios.Add(new PeticionarioModel
+                                {
+                                    Nombre = reader["Nombre"]?.ToString(),
+                                    ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
+                                    ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()
+                                });
+                            }
                         }
+
+                        return modelo;
                     }
                 }
             }
 
-            return null;
+
         }
 
-            // Cris y David 06 08 2025: Controlador que hace una peticion de busqueda de datos de la alta realizada en la tabla de remision
+        // Cambio Adair 130726 : Controlador que hace una peticion de busqueda de datos de la alta realizada en la tabla de remision
         private CedulaRemisionModel ObtenerDatosCedulaRemision(string idEscrito)
         {
             using (var conn = new SqlConnection(conexionsql.ConnectionStrng()))
@@ -2473,12 +2514,34 @@ namespace SistemaIntegralQuejas.Controllers
                 conn.Open();
 
                 string sql = @"
-            SELECT TOP 1 Id_escrito, Folio, Lugar_hechos, Fecha_recepcion, Hora_recepcion, Peticionario, 
-                         Numero_oficio, Institucion, Remitente, Explicacion, Abogado
-            FROM REMISION
-            WHERE Id_escrito = @IdEscrito AND documento = 'SI'
-            ORDER BY Id_remision DESC";
-                // Obtiene el registro del petit segun coincida el id de escrito generado y que haya sido quien dio la alta (btn guardar)
+            SELECT 
+                R.Id_escrito,
+                R.Folio,
+                R.Lugar_hechos,
+                R.Fecha_recepcion,
+                R.Hora_recepcion,
+                R.Numero_oficio,
+                R.Institucion,
+                R.Remitente,
+                R.Explicacion,
+                R.Abogado,
+
+                RR.Nombre,
+                RR.APELLIDO_PAT,
+                RR.APELLIDO_MAT
+
+            FROM REMISION R
+
+            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                ON CP.ID_EXPEDIENTE = R.Id_escrito
+
+            LEFT JOIN REG_RECEPCION RR
+                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+
+            WHERE R.Id_escrito = @IdEscrito
+              AND R.Documento = 'SI'
+
+            ORDER BY R.Id_remision DESC;";
 
                 using (var cmd = new SqlCommand(sql, conn))
                 {
@@ -2486,46 +2549,88 @@ namespace SistemaIntegralQuejas.Controllers
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
-                        {
-                            return new CedulaRemisionModel
-                            {
-                                IdEscrito = reader["Id_escrito"]?.ToString(),
-                                Folio = reader["Folio"]?.ToString(),
-                                LugarRecepcion = reader["Lugar_hechos"]?.ToString(),
-                                FechaRecepcion = (DateTime)(reader["Fecha_recepcion"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["Fecha_recepcion"])),
-                                HoraRecepcion = (TimeSpan)(reader["Hora_recepcion"] == DBNull.Value ? (TimeSpan?)null : (TimeSpan)reader["Hora_recepcion"]),
-                                Peticionario = reader["Peticionario"]?.ToString(),
-                                Oficio = reader["Numero_oficio"]?.ToString(),
-                                Institucion = reader["Institucion"]?.ToString(),
-                                Remitente = reader["Remitente"]?.ToString(),
-                                Explicacion = reader["Explicacion"]?.ToString(),
-                                Abogado = reader["Abogado"]?.ToString()?.ToUpper()
-                                // Estos datos extraidos se utilizaran para hacer el llenado de campos en la rotativa - pdf de la alta
+                        var modelo = new CedulaRemisionModel();
 
-                            };
+                        while (reader.Read())
+                        {
+                            // Datos generales (solo una vez)
+                            if (string.IsNullOrEmpty(modelo.IdEscrito))
+                            {
+                                modelo.IdEscrito = reader["Id_escrito"]?.ToString();
+                                modelo.Folio = reader["Folio"]?.ToString();
+                                modelo.LugarRecepcion = reader["Lugar_hechos"]?.ToString();
+
+                                modelo.FechaRecepcion = reader["Fecha_recepcion"] == DBNull.Value
+                                    ? default
+                                    : Convert.ToDateTime(reader["Fecha_recepcion"]);
+
+                                modelo.HoraRecepcion = reader["Hora_recepcion"] == DBNull.Value
+                                    ? default
+                                    : (TimeSpan)reader["Hora_recepcion"];
+
+                                modelo.Oficio = reader["Numero_oficio"]?.ToString();
+                                modelo.Institucion = reader["Institucion"]?.ToString();
+                                modelo.Remitente = reader["Remitente"]?.ToString();
+                                modelo.Explicacion = reader["Explicacion"]?.ToString();
+                                modelo.Abogado = reader["Abogado"]?.ToString()?.ToUpper();
+                            }
+
+                            // Agregar todos los peticionarios
+                            if (reader["Nombre"] != DBNull.Value)
+                            {
+                                modelo.Peticionarios.Add(new PeticionarioModel
+                                {
+                                    Nombre = reader["Nombre"]?.ToString(),
+                                    ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
+                                    ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()
+                                });
+                            }
                         }
+
+                        return modelo;
                     }
                 }
             }
 
-            return null;
         }
 
-        // Cris y David 06 08 2025: Controlador que hace una peticion de busqueda de datos de la alta realizada en la tabla de incompetencia
+        // Cambio Adair 130726 : Controlador que hace una peticion de busqueda de datos de la alta realizada en la tabla de incompetencia
         private CedulaIncompetenciaModel ObtenerDatosCedulaIncompetencia(string idEscrito)
         {
             using (var conn = new SqlConnection(conexionsql.ConnectionStrng()))
             {
                 conn.Open();
 
-                  string sql = @"
-                    SELECT TOP 1 Id_escrito, Folio, Lugar_hechos, Fecha_recepcion, Hora_recepcion, Peticionario, 
-                                 Numero_oficio, Institucion, Remitente, Explicacion, Abogado
-                    FROM INCOMPETENCIA
-                    WHERE Id_escrito = @IdEscrito AND Documento = 'SI'
-                    ORDER BY Id_incompetencia DESC";
-                // Obtiene el registro del petit segun coincida el id de escrito generado y que haya sido quien dio la alta (btn guardar)
+                string sql = @"
+            SELECT 
+                I.Id_escrito,
+                I.Folio,
+                I.Lugar_hechos,
+                I.Fecha_recepcion,
+                I.Hora_recepcion,
+                I.Numero_oficio,
+                I.Institucion,
+                I.Remitente,
+                I.Explicacion,
+                I.Abogado,
+
+                RR.Nombre,
+                RR.APELLIDO_PAT,
+                RR.APELLIDO_MAT
+
+            FROM INCOMPETENCIA I
+
+            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                ON CP.ID_EXPEDIENTE = I.Id_escrito
+
+            LEFT JOIN REG_RECEPCION RR
+                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+
+            WHERE I.Id_escrito = @IdEscrito 
+              AND I.Documento = 'SI'
+
+            ORDER BY I.Id_incompetencia DESC";
+
 
                 using (var cmd = new SqlCommand(sql, conn))
                 {
@@ -2533,33 +2638,53 @@ namespace SistemaIntegralQuejas.Controllers
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
-                        {
-                            return new CedulaIncompetenciaModel
-                            {
-                                IdEscrito = reader["Id_escrito"]?.ToString(),
-                                Folio = reader["Folio"]?.ToString(),
-                                LugarRecepcion = reader["Lugar_hechos"]?.ToString(),
-                                FechaRecepcion = (DateTime)(reader["Fecha_recepcion"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["Fecha_recepcion"])),
-                                HoraRecepcion = (TimeSpan)(reader["Hora_recepcion"] == DBNull.Value ? (TimeSpan?)null : (TimeSpan)reader["Hora_recepcion"]),
-                                Peticionario = reader["Peticionario"]?.ToString(),
-                                Oficio = reader["Numero_oficio"]?.ToString(),
-                                Institucion = reader["Institucion"]?.ToString(),
-                                Remitente = reader["Remitente"]?.ToString(),
-                                Explicacion = reader["Explicacion"]?.ToString(),
-                                Abogado = reader["Abogado"]?.ToString()?.ToUpper()
-                                // Estos datos extraidos se utilizaran para hacer el llenado de campos en la rotativa - pdf de la alta
+                        var modelo = new CedulaIncompetenciaModel();
 
-                            };
+                        while (reader.Read())
+                        {
+                            // Datos generales de la cédula (se cargan una sola vez)
+                            if (string.IsNullOrEmpty(modelo.IdEscrito))
+                            {
+                                modelo.IdEscrito = reader["Id_escrito"]?.ToString();
+                                modelo.Folio = reader["Folio"]?.ToString();
+                                modelo.LugarRecepcion = reader["Lugar_hechos"]?.ToString();
+
+                                modelo.FechaRecepcion = reader["Fecha_recepcion"] == DBNull.Value
+                                    ? default
+                                    : Convert.ToDateTime(reader["Fecha_recepcion"]);
+
+                                modelo.HoraRecepcion = reader["Hora_recepcion"] == DBNull.Value
+                                    ? default
+                                    : (TimeSpan)reader["Hora_recepcion"];
+
+                                modelo.Oficio = reader["Numero_oficio"]?.ToString();
+                                modelo.Institucion = reader["Institucion"]?.ToString();
+                                modelo.Remitente = reader["Remitente"]?.ToString();
+                                modelo.Explicacion = reader["Explicacion"]?.ToString();
+                                modelo.Abogado = reader["Abogado"]?.ToString()?.ToUpper();
+                            }
+
+                            // Agregar todos los peticionarios del expediente
+                            if (reader["Nombre"] != DBNull.Value)
+                            {
+                                modelo.Peticionarios.Add(new PeticionarioModel
+                                {
+                                    Nombre = reader["Nombre"]?.ToString(),
+                                    ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
+                                    ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()
+                                });
+                            }
                         }
+
+                        return modelo;
                     }
                 }
             }
 
-            return null;
+
         }
 
-        // Cris y David 06 08 2025: Controlador que hace una peticion de busqueda de datos de la alta realizada en la tabla de antecedente
+        // Cambio Adair 130726 : Controlador que hace una peticion de busqueda de datos de la alta realizada en la tabla de antecedente
         private CedulaAntecedenteModel ObtenerDatosCedulaAntecedente(string idEscrito)
         {
             using (var conn = new SqlConnection(conexionsql.ConnectionStrng()))
@@ -2567,12 +2692,33 @@ namespace SistemaIntegralQuejas.Controllers
                 conn.Open();
 
                 string sql = @"
-                    SELECT TOP 1 ID_escrito, Folio, Lugar_hechos, Fecha_recepcion, Hora_recepcion,
-		                Autoridad, Peticionario, Explicacion, Abogado
-                    FROM ANTECEDENTE
-                    WHERE Id_escrito = @IdEscrito AND documento = 'SI'
-                    ORDER BY Id_antecedente DESC";
-                // Obtiene el registro del petit segun coincida el id de escrito generado y que haya sido quien dio la alta (btn guardar)
+            SELECT 
+                A.ID_escrito,
+                A.Folio,
+                A.Lugar_hechos,
+                A.Fecha_recepcion,
+                A.Hora_recepcion,
+                A.Autoridad,
+                A.Explicacion,
+                A.Abogado,
+
+                RR.Nombre,
+                RR.APELLIDO_PAT,
+                RR.APELLIDO_MAT
+
+            FROM ANTECEDENTE A
+
+            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                ON CP.ID_EXPEDIENTE = A.ID_escrito
+
+            LEFT JOIN REG_RECEPCION RR
+                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+
+            WHERE A.Id_escrito = @IdEscrito 
+              AND A.documento = 'SI'
+
+            ORDER BY A.Id_antecedente DESC";
+
 
                 using (var cmd = new SqlCommand(sql, conn))
                 {
@@ -2580,28 +2726,48 @@ namespace SistemaIntegralQuejas.Controllers
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
-                        {
-                            return new CedulaAntecedenteModel
-                            {
-                                IdEscrito = reader["ID_escrito"]?.ToString(),
-                                Folio = reader["Folio"]?.ToString(),
-                                LugarRecepcion = reader["lugar_hechos"]?.ToString(),
-                                FechaRecepcion = (DateTime)(reader["Fecha_recepcion"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["Fecha_recepcion"])),
-                                HoraRecepcion = (TimeSpan)(reader["Hora_recepcion"] == DBNull.Value ? (TimeSpan?)null : (TimeSpan)reader["Hora_recepcion"]),
-                                Peticionario = reader["Peticionario"]?.ToString(),
-                                Autoridad = reader["Autoridad"]?.ToString(),
-                                Explicacion = reader["Explicacion"]?.ToString(),
-                                Abogado = reader["Abogado"]?.ToString()?.ToUpper()
-                                // Estos datos extraidos se utilizaran para hacer el llenado de campos en la rotativa - pdf de la alta
+                        var modelo = new CedulaAntecedenteModel();
 
-                            };
+                        while (reader.Read())
+                        {
+                            // Datos generales de la cédula
+                            if (string.IsNullOrEmpty(modelo.IdEscrito))
+                            {
+                                modelo.IdEscrito = reader["ID_escrito"]?.ToString();
+                                modelo.Folio = reader["Folio"]?.ToString();
+                                modelo.LugarRecepcion = reader["Lugar_hechos"]?.ToString();
+
+                                modelo.FechaRecepcion = reader["Fecha_recepcion"] == DBNull.Value
+                                    ? default
+                                    : Convert.ToDateTime(reader["Fecha_recepcion"]);
+
+                                modelo.HoraRecepcion = reader["Hora_recepcion"] == DBNull.Value
+                                    ? default
+                                    : (TimeSpan)reader["Hora_recepcion"];
+
+                                modelo.Autoridad = reader["Autoridad"]?.ToString();
+                                modelo.Explicacion = reader["Explicacion"]?.ToString();
+                                modelo.Abogado = reader["Abogado"]?.ToString()?.ToUpper();
+                            }
+
+                            // Agrega los peticionarios
+                            if (reader["Nombre"] != DBNull.Value)
+                            {
+                                modelo.Peticionarios.Add(new PeticionarioModel
+                                {
+                                    Nombre = reader["Nombre"]?.ToString(),
+                                    ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
+                                    ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()
+                                });
+                            }
                         }
+
+                        return modelo;
                     }
                 }
             }
 
-            return null;
+
         }
 
         // Cris y David 06 08 2025: Controlador que hace una peticion de busqueda de datos de la alta realizada en la tabla de aportacion
