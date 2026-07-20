@@ -27,11 +27,8 @@
         <p align="justify" style="line-height: 2.0;">
             <b><br>LUGAR DE RECEPCIÓN: </b> @Model.LugarRecepcion
             <b><br>FECHA Y HORA DE RECEPCIÓN: </b> @Model.FechaRecepcion.ToString("dd/MM/yyyy") a las @Model.HoraRecepcion.ToString(@"hh\:mm") <b>Hrs</b>
-            <b><br>NOMBRE DEL(A) PETICIONARIO(A): </b> @foreach (var peticionario in Model.Peticionarios)
-            {
-                <br />
-                @peticionario.NombreCompleto
-            }
+            <b><br>NOMBRE DEL(A) PETICIONARIO(A): </b>
+            @string.Join(", ", Model.Peticionarios.Select(p => p.NombreCompleto))
             <b><br>AUTORIDAD PRESUNTAMENTE RESPONSABLE: </b>
             @if (Model.Autoridad == "No proporcionado")
             {
@@ -54,7 +51,6 @@
     </div>
 
     <div class="row" style="margin:0px, 20px, 0px, 20px" align="justify">
-        <br>
         <p align="justify" style="margin-left:80px;">
             Con fundamento en lo dispuesto por los artículos 1, 2, 3, 4, 5 y 25 de la Ley de la Comisión de Derechos Humanos del Estado de Puebla, 48 fracciones II, IV, 59, 61, 62, 64, 66,<b> 77 fracción II </b>del Reglamento Interno de la Comisión de Derechos Humanos del Estado de Puebla, se califica como: <b>Orientación</b>.
         </p>
