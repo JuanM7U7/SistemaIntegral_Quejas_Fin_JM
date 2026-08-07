@@ -53,12 +53,14 @@
             z-index: 1000;
         }
 
-        #gameCanvas {
+     /*    --------------------------------- Balon del mundial-------------------------------------------
+            #gameCanvas {
             display: block;
             cursor: pointer;
             max-width: 100%;
             height: auto;
         }
+                 --------------------------------- Balon del mundial------------------------------------------- */
 
         /* === MEDIA QUERIES PARA RESPONSIVE (ESCAPADOS CON @@ PARA RAZOR) === */
 
@@ -127,10 +129,12 @@
                     </authentication>
                 </div>
 
-                <div id="ball-easter-egg">
+                @*  ---------------------  Balon del mundial  ---------------------
+                    <div id="ball-easter-egg">
                     <div id="score-board">0</div>
                     <canvas id="gameCanvas" width="160" height="200"></canvas>
-                </div>
+                </div> 
+                --------------------------- Balon del mundial ----------------------*@
 
             </div>
         </div>
@@ -140,7 +144,8 @@
     <script src="~/js/plugins/popper.js"></script>
     <script src="~/js/functionlogin.js"></script>
 
-    <script>
+@*   ----------------------------------------------------------  Balon del mundial ------------------------------------------------------------------------ *@
+@*     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreBoard = document.getElementById('score-board');
@@ -261,7 +266,8 @@
         });
 
         update();
-    </script>
+    </script> *@
+    @*   ----------------------------------------------------------  Balon del mundial ------------------------------------------------------------------------ *@
 
 </body>
 </html>
