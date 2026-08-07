@@ -259,9 +259,21 @@ let tipoPeticionarioSeleccionado = "";
     /// Modificacion Cris 28.07.2025 Ajuste a los cambios en los campos del formulario
 
     $(document).on('click', '#saveOrientacion', function () {
-        // Deshabilitar el botón 
-        $('#saveOrientacion').prop('disabled', true);
-        // Validación general antes de iniciar
+
+        let boton = $(this);
+
+        console.count("CLICK ORIENTACION");
+
+        // Evita doble clic
+        if (boton.prop('disabled')) {
+            return;
+        }
+
+        boton.prop('disabled', true);
+
+
+        // ================= VALIDACIONES =================
+
         if (
             !$('#Input_Peticionario').val() ||
             !$('#Input_ID').val() ||
@@ -271,6 +283,9 @@ let tipoPeticionarioSeleccionado = "";
             !$('#Input_HoraRecepcion').val() ||
             !$('#sedeRegistro').val()
         ) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -278,24 +293,35 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
+
             frmincompleto("#tab2");
             return;
         }
 
-        // Validacion campos no requeridos pero vacios - agrega un default
+
+        // Campos opcionales con valor por defecto
+
         let defaultOrientacionText = 'No proporcionado';
+
         if (
             !$('#Input_autoridadresp').val() ||
             !$('#Input_institucion').val()
         ) {
+
             $('#Input_autoridadresp').val(defaultOrientacionText);
             $('#Input_institucion').val(defaultOrientacionText);
+
         }
+
 
         let peticionarios = $('.linksfrmpetit');
         let totalPeticionarios = peticionarios.length;
 
+
         if (totalPeticionarios === 0) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -303,152 +329,299 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
+
             return;
         }
 
-        // Obtenemos el peticionario seleccionado en el select de orientación
-        let peticionarioSeleccionado = $('#Input_Peticionario').find('option:selected').text().trim();
 
-        let peticionariosData = [];
+        // ================= SOLO PRIMER PETICIONARIO =================
 
-        for (let i = 1; i <= totalPeticionarios; i++) {
-            let dataOrientacionInd = new FormData();
+        let i = 1;
 
-            // Campos generales
-            dataOrientacionInd.append('Input_ID', $('#Input_ID').val() || '');
-            dataOrientacionInd.append('Input_folio', $('#Input_folio').val() || '');
-            dataOrientacionInd.append('Input_LugarHechos', $('#Input_LugarHechos').val() || '');
-            dataOrientacionInd.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text() || '');
-            dataOrientacionInd.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val() || '');
-            dataOrientacionInd.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val() || '');
-            dataOrientacionInd.append('Input_autoridadresp', $('#Input_autoridadresp').val() || '');
-            dataOrientacionInd.append('Input_institucion', $('#Input_institucion').val() || '');
-            dataOrientacionInd.append('ExplicacionOrientacion', $('#ExplicacionOrientacion').val() || '');
-            dataOrientacionInd.append('sedeRegistro', $('#sedeRegistro').val() || '');
-            dataOrientacionInd.append('sederegistro_desc', $('#sedeRegistro option:selected').text() || '');
-            dataOrientacionInd.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text() || '');
-            dataOrientacionInd.append('usuarioL', $('#usuarioL').text() || '');
+        let dataOrientacion = new FormData();
 
-            // Obtener id complemento peticionario para buscar nombre en peticionariosGuardados
-            let idComplemento = $(`#idcomplementopet${i}`).val();
 
-            // Buscar el peticionario en arreglo guardado
-            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
+        // Campos generales
 
-            let petName = pet ? pet.nombrepeti.trim() : '';
-            if (!petName) {
-                // Si por alguna razón no existe, tratar de obtenerlo desde el select (fallback)
-                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim() || '';
-            }
+        dataOrientacion.append('Input_ID', $('#Input_ID').val() || '');
+        dataOrientacion.append('Input_folio', $('#Input_folio').val() || '');
 
-            dataOrientacionInd.append('Input_Peticionario', petName);
+        dataOrientacion.append(
+            'Input_LugarHechos',
+            $('#Input_LugarHechos').val() || ''
+        );
 
-            let idPersona = pet ? pet.idpeticionario : '';  // O ajusta según tu estructura real
-            dataOrientacionInd.append('id_personas', idPersona);
+        dataOrientacion.append(
+            'Input_LugarHechosDescripcion',
+            $('#Input_LugarHechos option:selected').text() || ''
+        );
 
-            // Aquí agregamos el campo documento
-            if (petName === peticionarioSeleccionado) {
-                dataOrientacionInd.append('documento', 'SI');
-            } else {
-                dataOrientacionInd.append('documento', 'NO');
-            }
+        dataOrientacion.append(
+            'Input_FechaRecepcion',
+            $('#Input_FechaRecepcion').val() || ''
+        );
 
-            // Edad
-            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
-            // Si 'edad' es "No proporcionado" asigna un nulo
-            if (edad === "No proporcionado" || edad.trim() === "") {
-                edad = null;
-            } else {
-                edad = parseInt(edad) || null; // Verifica que sea un entero
-            }
-            dataOrientacionInd.append('edad', edad);
+        dataOrientacion.append(
+            'Input_HoraRecepcion',
+            $('#Input_HoraRecepcion').val() || ''
+        );
 
-            // Sexo
-            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
-            let sexoTexto = '';
-            if (sexoId === '1') sexoTexto = 'Masculino';
-            else if (sexoId === '2') sexoTexto = 'Femenino';
-            else if (sexoId === '3') sexoTexto = 'No proporcionado';
-            dataOrientacionInd.append('sexo', sexoTexto);
+        dataOrientacion.append(
+            'Input_autoridadresp',
+            $('#Input_autoridadresp').val() || ''
+        );
 
-            // Género
-            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
-            if (genero === 'Otro') {
-                let generoOtro = ($(`#ogenero_petit-frmDatosPersonales${i}`).val() || '').trim();
-                genero = generoOtro.length > 0 ? generoOtro : '';
-            }
-            dataOrientacionInd.append('genero', genero);
+        dataOrientacion.append(
+            'Input_institucion',
+            $('#Input_institucion').val() || ''
+        );
 
-            // Tipo usuario
-            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
-            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
-            dataOrientacionInd.append('tipo_usuario', tipoUsuario);
+        dataOrientacion.append(
+            'ExplicacionOrientacion',
+            $('#ExplicacionOrientacion').val() || ''
+        );
 
-            // Solo el primer peticionario incluye el archivo PDF
-            if (i === 1) {
-                let archivo = $('#pdfEscritoi')[0]?.files[0];
-                if (archivo) {
-                    dataOrientacionInd.append('pdfEscritoi', archivo);
-                }
-            }
+        dataOrientacion.append(
+            'sedeRegistro',
+            $('#sedeRegistro').val() || ''
+        );
 
-            // DEBUG: Mostrar datos en consola
-            for (let pair of dataOrientacionInd.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
+        dataOrientacion.append(
+            'sederegistro_desc',
+            $('#sedeRegistro option:selected').text() || ''
+        );
 
-            peticionariosData.push(dataOrientacionInd);
+        dataOrientacion.append(
+            'select_viainterposicionc',
+            $('#select_viainterposicionc option:selected').text() || ''
+        );
+
+        dataOrientacion.append(
+            'usuarioL',
+            $('#usuarioL').text() || ''
+        );
+
+
+        // ================= PETICIONARIO =================
+
+        let idComplemento = $(`#idcomplementopet${i}`).val();
+
+
+        let pet = peticionariosGuardados.find(
+            p => p.idcomplementopet == idComplemento
+        );
+
+
+        let petName = pet
+            ? pet.nombrepeti.trim()
+            : '';
+
+
+        if (!petName) {
+
+            petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`)
+                .find('option:selected')
+                .text()
+                .trim() || '';
+
         }
 
-        // Variables para control de respuestas
-        let enviados = 0;
-        let errores = 0;
 
-        peticionariosData.forEach(function (formData) {
-            $.ajax({
-                type: 'POST',
-                url: '/AltaExpediente/GuardarOrientacion',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    console.log('Respuesta del servidor:', res);
-                    enviados++;
-                    if (res.status !== true) errores++;
-                    console.warn('Error en registro individual:', res);
-                    if (enviados === peticionariosData.length) {
-                        if (errores === 0) {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Todos los datos se guardaron correctamente',
-                                showConfirmButton: false,
-                                timer: 2500
-                            });
-                            frmcompleto("#tab2");
-                        } else {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Algunos registros no se guardaron correctamente',
-                                text: 'Verifica la información ingresada',
-                                timer: 3000
-                            });
-                        }
-                    }
-                },
-                error: function () {
-                    errores++;
-                    enviados++;
-                    if (enviados === peticionariosData.length) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error de red',
-                            text: 'Hubo errores al guardar uno o más registros.'
-                        });
-                    }
+        dataOrientacion.append(
+            'Input_Peticionario',
+            petName
+        );
+
+
+        let idPersona = pet
+            ? pet.idpeticionario
+            : '';
+
+
+        dataOrientacion.append(
+            'id_personas',
+            idPersona
+        );
+
+
+        let peticionarioSeleccionado =
+            $('#Input_Peticionario')
+                .find('option:selected')
+                .text()
+                .trim();
+
+
+        dataOrientacion.append(
+            'documento',
+            petName === peticionarioSeleccionado ? 'SI' : 'NO'
+        );
+
+
+        // ================= DATOS PERSONALES =================
+
+        let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
+
+
+        if (
+            edad === "No proporcionado" ||
+            edad.trim() === ""
+        ) {
+
+            edad = null;
+
+        } else {
+
+            edad = parseInt(edad) || null;
+
+        }
+
+
+        dataOrientacion.append('edad', edad);
+
+
+
+        let sexoId =
+            $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`)
+                .val();
+
+
+        let sexoTexto = '';
+
+        if (sexoId === '1')
+            sexoTexto = 'Masculino';
+
+        else if (sexoId === '2')
+            sexoTexto = 'Femenino';
+
+        else if (sexoId === '3')
+            sexoTexto = 'No proporcionado';
+
+
+        dataOrientacion.append(
+            'sexo',
+            sexoTexto
+        );
+
+
+
+        let genero =
+            $(`#genero_petit-frmDatosPersonales${i}`)
+                .val() || '';
+
+
+        if (genero === 'Otro') {
+
+            genero =
+                $(`#ogenero_petit-frmDatosPersonales${i}`)
+                    .val()
+                    .trim();
+
+        }
+
+
+        dataOrientacion.append(
+            'genero',
+            genero
+        );
+
+        let tipoUsuarioRaw =
+            $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`)
+                .val() || '';
+
+
+        let tipoUsuario =
+            tipoUsuarioRaw === 'Peticionario'
+                ? 'Quejoso'
+                : tipoUsuarioRaw;
+
+
+        dataOrientacion.append(
+            'tipo_usuario',
+            tipoUsuario
+        );
+
+        // Archivo
+
+        let archivo = $('#pdfEscritoi')[0]?.files[0];
+
+
+        if (archivo) {
+
+            dataOrientacion.append(
+                'pdfEscritoi',
+                archivo
+            );
+
+        }
+
+        // DEBUG
+
+        for (let pair of dataOrientacion.entries()) {
+
+            console.log(pair[0] + ': ' + pair[1]);
+
+        }
+
+        console.count("ENVIANDO AJAX ORIENTACION");
+
+        // ================= UN SOLO ENVIO =================
+
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/AltaExpediente/GuardarOrientacion',
+
+            data: dataOrientacion,
+
+            contentType: false,
+
+            processData: false,
+
+
+            success: function (res) {
+
+                console.log('Respuesta servidor:', res);
+
+
+                if (res.status === true) {
+
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Los datos se guardaron correctamente',
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+
+
+                    frmcompleto("#tab2");
+
+
+                } else {
+
+
+                    Swal.fire({
+
+                        icon: 'warning',
+
+                        title: 'No se pudo guardar',
+
+                        text: res.mensaje || 'Verifica la información ingresada'
+
+                    });
+
+
                 }
-            });
+
+
+            },
+
+
         });
+
+
     });
     //bloque para actualizar e insertar orientaciones
     //metodo update orientacion 21/10/25
@@ -729,7 +902,21 @@ let tipoPeticionarioSeleccionado = "";
     /// Modificacion David 17 07 2025: Cambio en la info del formdata, pdf adjunto y campos requeridos
 
     $(document).on('click', '#saveRemision', function () {
-        // Validación general
+
+        let boton = $(this);
+
+        console.count("CLICK REMISION");
+
+        // Evitar doble clic
+        if (boton.prop('disabled')) {
+            return;
+        }
+
+        boton.prop('disabled', true);
+
+
+        // ================= VALIDACIONES =================
+
         if (
             !$('#Input_Peticionario').val() ||
             !$('#Input_ID').val() ||
@@ -742,6 +929,9 @@ let tipoPeticionarioSeleccionado = "";
             !$('#ExplicacionRemision').val() ||
             !$('#sedeRegistro').val()
         ) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -749,14 +939,20 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
+
             frmincompleto("#tab5");
             return;
         }
 
+
         let peticionarios = $('.linksfrmpetit');
         let totalPeticionarios = peticionarios.length;
 
+
         if (totalPeticionarios === 0) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -764,138 +960,312 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
+
             return;
         }
 
-        let peticionarioSeleccionado = $('#Input_Peticionario option:selected').text().trim();
 
-        let peticionariosData = [];
+        // ================= SOLO PRIMER PETICIONARIO =================
 
-        for (let i = 1; i <= totalPeticionarios; i++) {
-            let formData = new FormData();
+        let i = 1;
 
-            // Datos generales del formulario
-            formData.append('Input_ID', $('#Input_ID').val());
-            formData.append('Input_folio', $('#Input_folio').val());
-            formData.append('Input_LugarHechos', $('#Input_LugarHechos').val());
-            formData.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text());
-            formData.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val());
-            formData.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val());
-            formData.append('Input_numOficio', $('#Input_numOficio').val());
-            formData.append('Input_institucion', $('#Input_institucion').val());
-            formData.append('nomAbogado', $('#nomAbogado2 option:selected').text());
-            formData.append('ExplicacionRemision', $('#ExplicacionRemision').val());
-            formData.append('sedeRegistro', $('#sedeRegistro').val());
-            formData.append('sederegistro_desc', $('#sedeRegistro option:selected').text());
-            formData.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
-            formData.append('usuarioL', $('#usuarioL').text());
+        let formData = new FormData();
 
-            // Peticionario
-            let idComplemento = $(`#idcomplementopet${i}`).val();
-            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
-            let petName = pet ? pet.nombrepeti.trim() : '';
-            if (!petName) {
-                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim();
-            }
 
-            formData.append('Input_Peticionario', petName);
-            formData.append('id_personas', pet ? pet.idpeticionario : '');
+        // Datos generales
 
-            // Documento
-            if (petName === peticionarioSeleccionado) {
-                formData.append('documento', 'SI');
-            } else {
-                formData.append('documento', 'NO');
-            }
+        formData.append('Input_ID', $('#Input_ID').val());
+        formData.append('Input_folio', $('#Input_folio').val());
 
-            // Datos personales
-            // Edad
-            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
-            // Si 'edad' es "No proporcionado" asigna un nulo
-            if (edad === "No proporcionado" || edad.trim() === "") {
-                edad = null;
-            } else {
-                edad = parseInt(edad) || null; // Verifica que sea un entero
-            }
-            formData.append('edad', edad);
+        formData.append(
+            'Input_LugarHechos',
+            $('#Input_LugarHechos').val()
+        );
 
-            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
-            let sexoTexto = '';
-            if (sexoId === '1') sexoTexto = 'Masculino';
-            else if (sexoId === '2') sexoTexto = 'Femenino';
-            else sexoTexto = 'No proporcionado';
-            formData.append('sexo', sexoTexto);
+        formData.append(
+            'Input_LugarHechosDescripcion',
+            $('#Input_LugarHechos option:selected').text()
+        );
 
-            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
-            if (genero === 'Otro') {
-                let otroGenero = $(`#ogenero_petit-frmDatosPersonales${i}`).val().trim();
-                genero = otroGenero || '';
-            }
-            formData.append('genero', genero);
+        formData.append(
+            'Input_FechaRecepcion',
+            $('#Input_FechaRecepcion').val()
+        );
 
-            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
-            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
-            formData.append('tipo_usuario', tipoUsuario);
+        formData.append(
+            'Input_HoraRecepcion',
+            $('#Input_HoraRecepcion').val()
+        );
 
-            // PDF solo para el primer peticionario
-            if (i === 1) {
-                let archivo = $('#pdfEscritoi')[0]?.files[0];
-                if (archivo) {
-                    formData.append('pdfEscritoi', archivo);
-                }
-            }
+        formData.append(
+            'Input_numOficio',
+            $('#Input_numOficio').val()
+        );
 
-            peticionariosData.push(formData);
+        formData.append(
+            'Input_institucion',
+            $('#Input_institucion').val()
+        );
+
+        formData.append(
+            'nomAbogado',
+            $('#nomAbogado2 option:selected').text()
+        );
+
+        formData.append(
+            'ExplicacionRemision',
+            $('#ExplicacionRemision').val()
+        );
+
+        formData.append(
+            'sedeRegistro',
+            $('#sedeRegistro').val()
+        );
+
+        formData.append(
+            'sederegistro_desc',
+            $('#sedeRegistro option:selected').text()
+        );
+
+        formData.append(
+            'select_viainterposicionc',
+            $('#select_viainterposicionc option:selected').text()
+        );
+
+        formData.append(
+            'usuarioL',
+            $('#usuarioL').text()
+        );
+
+        // ================= PETICIONARIO =================
+
+
+        let idComplemento =
+            $(`#idcomplementopet${i}`).val();
+
+
+        let pet =
+            peticionariosGuardados.find(
+                p => p.idcomplementopet == idComplemento
+            );
+
+
+        let petName = pet
+            ? pet.nombrepeti.trim()
+            : '';
+
+
+        if (!petName) {
+
+            petName =
+                $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`)
+                    .find('option:selected')
+                    .text()
+                    .trim();
+
         }
 
-        // Enviar los datos
-        let enviados = 0;
-        let errores = 0;
 
-        peticionariosData.forEach(function (formData) {
-            $.ajax({
-                type: 'POST',
-                url: '/AltaExpediente/GuardarRemision',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    enviados++;
-                    if (!res.status) errores++;
+        formData.append(
+            'Input_Peticionario',
+            petName
+        );
 
-                    if (enviados === peticionariosData.length) {
-                        if (errores === 0) {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Todos los datos se guardaron correctamente',
-                                showConfirmButton: false,
-                                timer: 2500
-                            });
-                            frmcompleto("#tab6");
-                        } else {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Algunos registros no se guardaron correctamente',
-                                text: 'Verifica la información ingresada',
-                                timer: 3000
-                            });
-                        }
-                    }
-                },
-                error: function () {
-                    errores++;
-                    enviados++;
-                    if (enviados === peticionariosData.length) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error de red',
-                            text: 'Hubo errores al guardar uno o más registros.'
-                        });
-                    }
+
+        formData.append(
+            'id_personas',
+            pet ? pet.idpeticionario : ''
+        );
+
+
+        let peticionarioSeleccionado =
+            $('#Input_Peticionario option:selected')
+                .text()
+                .trim();
+
+
+        formData.append(
+            'documento',
+            petName === peticionarioSeleccionado ? 'SI' : 'NO'
+        );
+
+
+        // ================= DATOS PERSONALES =================
+
+        let edad =
+            $(`#edad_petit-frmDatosPersonales${i}`)
+                .val() || '';
+
+
+        if (
+            edad === "No proporcionado" ||
+            edad.trim() === ""
+        ) {
+
+            edad = null;
+
+        } else {
+
+            edad = parseInt(edad) || null;
+
+        }
+
+
+        formData.append(
+            'edad',
+            edad
+        );
+
+
+
+        let sexoId =
+            $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`)
+                .val();
+
+
+        let sexoTexto = 'No proporcionado';
+
+
+        if (sexoId === '1')
+            sexoTexto = 'Masculino';
+
+        else if (sexoId === '2')
+            sexoTexto = 'Femenino';
+
+
+        formData.append(
+            'sexo',
+            sexoTexto
+        );
+
+
+
+        let genero =
+            $(`#genero_petit-frmDatosPersonales${i}`)
+                .val() || '';
+
+
+        if (genero === 'Otro') {
+
+            genero =
+                $(`#ogenero_petit-frmDatosPersonales${i}`)
+                    .val()
+                    .trim() || '';
+
+        }
+
+
+        formData.append(
+            'genero',
+            genero
+        );
+
+
+
+        let tipoUsuarioRaw =
+            $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`)
+                .val() || '';
+
+
+        let tipoUsuario =
+            tipoUsuarioRaw === 'Peticionario'
+                ? 'Quejoso'
+                : tipoUsuarioRaw;
+
+
+        formData.append(
+            'tipo_usuario',
+            tipoUsuario
+        );
+
+
+        // ================= ARCHIVO =================
+
+        let archivo =
+            $('#pdfEscritoi')[0]?.files[0];
+
+
+        if (archivo) {
+
+            formData.append(
+                'pdfEscritoi',
+                archivo
+            );
+
+        }
+
+        // DEBUG
+
+        for (let pair of formData.entries()) {
+
+            console.log(pair[0] + ': ' + pair[1]);
+
+        }
+
+        console.count("ENVIANDO AJAX REMISION");
+
+        // ================= UN SOLO POST =================
+
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/AltaExpediente/GuardarRemision',
+
+            data: formData,
+
+            contentType: false,
+
+            processData: false,
+
+
+            success: function (res) {
+
+                console.log(
+                    "Respuesta servidor:",
+                    res
+                );
+
+
+                if (res.status === true) {
+
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Los datos se guardaron correctamente',
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+
+
+                    frmcompleto("#tab6");
+
+
+                } else {
+
+
+                    Swal.fire({
+
+                        icon: 'warning',
+
+                        title: 'No se pudo guardar',
+
+                        text: res.mensaje || 'Verifica la información ingresada'
+
+                    });
+
+
                 }
-            });
+
+
+            },
+
+
+
         });
+
+
     });
     //bloque para actualizar e insertar remisiones
     //INSERTAR REMISION 08/12/2025
@@ -1179,7 +1549,20 @@ let tipoPeticionarioSeleccionado = "";
     /// Modificacion David 17 07 2025: Cambio en la info del formdata, pdf adjunto y campos requeridos
 
     $(document).on('click', '#saveIncompetencia', function () {
-        // Validación general
+
+        let boton = $(this);
+
+        console.count("CLICK INCOMPETENCIA");
+
+        // Evitar doble clic
+        if (boton.prop('disabled')) {
+            return;
+        }
+
+        boton.prop('disabled', true);
+
+        // ================= VALIDACIONES =================
+
         if (
             !$('#Input_ID').val() ||
             !$('#Input_Peticionario').val() ||
@@ -1190,6 +1573,9 @@ let tipoPeticionarioSeleccionado = "";
             !$('#ExplicacionIncompetencia').val() ||
             !$('#sedeRegistro').val()
         ) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -1197,24 +1583,34 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
+
             frmincompleto("#tab5");
             return;
         }
 
-        // Validacion campos no requeridos pero vacios - agrega un default
+        // Campos opcionales
+
         let defaultIncompetenciaText = 'No proporcionado';
+
         if (
             !$('#Input_numOficio').val() ||
             !$('#Input_institucion').val()
         ) {
+
             $('#Input_numOficio').val(defaultIncompetenciaText);
             $('#Input_institucion').val(defaultIncompetenciaText);
+
         }
+
 
         let peticionarios = $('.linksfrmpetit');
         let totalPeticionarios = peticionarios.length;
 
+
         if (totalPeticionarios === 0) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -1222,139 +1618,309 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
+
             return;
         }
 
-        let peticionarioSeleccionado = $('#Input_Peticionario option:selected').text().trim();
+        // ================= SOLO PRIMER PETICIONARIO =================
 
-        let peticionariosData = [];
+        let i = 1;
 
-        for (let i = 1; i <= totalPeticionarios; i++) {
-            let dataIncompetencia = new FormData();
+        let dataIncompetencia = new FormData();
 
-            // Datos generales del formulario
-            dataIncompetencia.append('Input_ID', $('#Input_ID').val());
-            dataIncompetencia.append('Input_folio', $('#Input_folio').val());
-            dataIncompetencia.append('Input_LugarHechos', $('#Input_LugarHechos').val());
-            dataIncompetencia.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text());
-            dataIncompetencia.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val());
-            dataIncompetencia.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val());
-            dataIncompetencia.append('Input_numOficio', $('#Input_numOficio').val());
-            dataIncompetencia.append('Input_institucion', $('#Input_institucion').val());
-            dataIncompetencia.append('nomAbogado', $('#nomAbogado3 option:selected').text());
-            dataIncompetencia.append('ExplicacionIncompetencia', $('#ExplicacionIncompetencia').val());
-            dataIncompetencia.append('sedeRegistro', $('#sedeRegistro').val());
-            dataIncompetencia.append('sederegistro_desc', $('#sedeRegistro option:selected').text());
-            dataIncompetencia.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
-            dataIncompetencia.append('usuarioL', $('#usuarioL').text());
 
-            // Peticionario
-            let idComplemento = $(`#idcomplementopet${i}`).val();
-            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
-            let petName = pet ? pet.nombrepeti.trim() : '';
-            if (!petName) {
-                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim(); 
+        // Datos generales
 
-            }
+        dataIncompetencia.append(
+            'Input_ID',
+            $('#Input_ID').val()
+        );
 
-            dataIncompetencia.append('Input_Peticionario', petName);
-            dataIncompetencia.append('id_personas', pet ? pet.idpeticionario : '');
+        dataIncompetencia.append(
+            'Input_folio',
+            $('#Input_folio').val()
+        );
 
-            // Documento
-            if (petName === peticionarioSeleccionado) {
-                dataIncompetencia.append('documento', 'SI');
-            } else {
-                dataIncompetencia.append('documento', 'NO');
-            }
+        dataIncompetencia.append(
+            'Input_LugarHechos',
+            $('#Input_LugarHechos').val()
+        );
 
-            // Datos personales
-            // Edad
-            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
-            // Si 'edad' es "No proporcionado" asigna un nulo
-            if (edad === "No proporcionado" || edad.trim() === "") {
-                edad = null;
-            } else {
-                edad = parseInt(edad) || null; // Verifica que sea un entero
-            }
-            dataIncompetencia.append('edad', edad);
+        dataIncompetencia.append(
+            'Input_LugarHechosDescripcion',
+            $('#Input_LugarHechos option:selected').text()
+        );
 
-            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
-            let sexoTexto = '';
-            if (sexoId === '1') sexoTexto = 'Masculino';
-            else if (sexoId === '2') sexoTexto = 'Femenino';
-            else sexoTexto = 'No proporcionado';
-            dataIncompetencia.append('sexo', sexoTexto);
+        dataIncompetencia.append(
+            'Input_FechaRecepcion',
+            $('#Input_FechaRecepcion').val()
+        );
 
-            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
-            if (genero === 'Otro') {
-                let otroGenero = $(`#ogenero_petit-frmDatosPersonales${i}`).val().trim();
-                genero = otroGenero || '';
-            }
-            dataIncompetencia.append('genero', genero);
+        dataIncompetencia.append(
+            'Input_HoraRecepcion',
+            $('#Input_HoraRecepcion').val()
+        );
 
-            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
-            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
-            dataIncompetencia.append('tipo_usuario', tipoUsuario);
+        dataIncompetencia.append(
+            'Input_numOficio',
+            $('#Input_numOficio').val()
+        );
 
-            // PDF solo para el primer peticionario
-            if (i === 1) {
-                let archivo = $('#pdfEscritoi')[0]?.files[0];
-                if (archivo) {
-                    dataIncompetencia.append('pdfEscritoi', archivo);
-                }
-            }
+        dataIncompetencia.append(
+            'Input_institucion',
+            $('#Input_institucion').val()
+        );
 
-            peticionariosData.push(dataIncompetencia);
+        dataIncompetencia.append(
+            'nomAbogado',
+            $('#nomAbogado3 option:selected').text()
+        );
+
+        dataIncompetencia.append(
+            'ExplicacionIncompetencia',
+            $('#ExplicacionIncompetencia').val()
+        );
+
+        dataIncompetencia.append(
+            'sedeRegistro',
+            $('#sedeRegistro').val()
+        );
+
+        dataIncompetencia.append(
+            'sederegistro_desc',
+            $('#sedeRegistro option:selected').text()
+        );
+
+        dataIncompetencia.append(
+            'select_viainterposicionc',
+            $('#select_viainterposicionc option:selected').text()
+        );
+
+        dataIncompetencia.append(
+            'usuarioL',
+            $('#usuarioL').text()
+        );
+
+        // ================= PETICIONARIO =================
+
+        let idComplemento =
+            $(`#idcomplementopet${i}`).val();
+
+
+        let pet =
+            peticionariosGuardados.find(
+                p => p.idcomplementopet == idComplemento
+            );
+
+
+        let petName = pet
+            ? pet.nombrepeti.trim()
+            : '';
+
+
+        if (!petName) {
+
+            petName =
+                $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`)
+                    .find('option:selected')
+                    .text()
+                    .trim();
+
         }
 
-        // Enviar los datos
-        let enviados = 0;
-        let errores = 0;
 
-        peticionariosData.forEach(function (dataIncompetencia) {
-            $.ajax({
-                type: 'POST',
-                url: '/AltaExpediente/GuardarIncompetencia',
-                data: dataIncompetencia,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    enviados++;
-                    if (!res.status) errores++;
+        dataIncompetencia.append(
+            'Input_Peticionario',
+            petName
+        );
 
-                    if (enviados === peticionariosData.length) {
-                        if (errores === 0) {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Todos los datos se guardaron correctamente',
-                                showConfirmButton: false,
-                                timer: 2500
-                            });
-                            frmcompleto("#tab6");
-                        } else {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Algunos registros no se guardaron correctamente',
-                                text: 'Verifica la información ingresada',
-                                timer: 3000
-                            });
-                        }
-                    }
-                },
-                error: function () {
-                    errores++;
-                    enviados++;
-                    if (enviados === peticionariosData.length) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error de red',
-                            text: 'Hubo errores al guardar uno o más registros.'
-                        });
-                    }
+
+        dataIncompetencia.append(
+            'id_personas',
+            pet ? pet.idpeticionario : ''
+        );
+
+
+
+        let peticionarioSeleccionado =
+            $('#Input_Peticionario option:selected')
+                .text()
+                .trim();
+
+        dataIncompetencia.append(
+            'documento',
+            petName === peticionarioSeleccionado ? 'SI' : 'NO'
+        );
+
+        // ================= DATOS PERSONALES =================
+
+        let edad =
+            $(`#edad_petit-frmDatosPersonales${i}`)
+                .val() || '';
+
+
+        if (
+            edad === "No proporcionado" ||
+            edad.trim() === ""
+        ) {
+
+            edad = null;
+
+        } else {
+
+            edad = parseInt(edad) || null;
+
+        }
+
+        dataIncompetencia.append(
+            'edad',
+            edad
+        );
+
+        let sexoId =
+            $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`)
+                .val();
+
+
+        let sexoTexto = 'No proporcionado';
+
+
+        if (sexoId === '1')
+            sexoTexto = 'Masculino';
+
+        else if (sexoId === '2')
+            sexoTexto = 'Femenino';
+
+
+
+        dataIncompetencia.append(
+            'sexo',
+            sexoTexto
+        );
+
+
+        let genero =
+            $(`#genero_petit-frmDatosPersonales${i}`)
+                .val() || '';
+
+
+
+        if (genero === 'Otro') {
+
+            genero =
+                $(`#ogenero_petit-frmDatosPersonales${i}`)
+                    .val()
+                    .trim() || '';
+
+        }
+
+
+        dataIncompetencia.append(
+            'genero',
+            genero
+        );
+
+        let tipoUsuarioRaw =
+            $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`)
+                .val() || '';
+
+
+
+        let tipoUsuario =
+            tipoUsuarioRaw === 'Peticionario'
+                ? 'Quejoso'
+                : tipoUsuarioRaw;
+
+
+
+        dataIncompetencia.append(
+            'tipo_usuario',
+            tipoUsuario
+        );
+
+        // ================= ARCHIVO =================
+
+        let archivo =
+            $('#pdfEscritoi')[0]?.files[0];
+
+
+        if (archivo) {
+
+            dataIncompetencia.append(
+                'pdfEscritoi',
+                archivo
+            );
+
+        }
+        // DEBUG
+
+        for (let pair of dataIncompetencia.entries()) {
+
+            console.log(pair[0] + ': ' + pair[1]);
+
+        }
+
+        console.count("ENVIANDO AJAX INCOMPETENCIA");
+
+        // ================= UN SOLO ENVIO =================
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/AltaExpediente/GuardarIncompetencia',
+
+            data: dataIncompetencia,
+
+            contentType: false,
+
+            processData: false,
+
+
+            success: function (res) {
+
+                console.log(
+                    "Respuesta servidor:",
+                    res
+                );
+
+
+                if (res.status === true) {
+
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Los datos se guardaron correctamente',
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+
+
+                    frmcompleto("#tab6");
+
+
+                } else {
+
+
+                    Swal.fire({
+
+                        icon: 'warning',
+
+                        title: 'No se pudo guardar',
+
+                        text: res.mensaje || 'Verifica la información ingresada'
+
+                    });
+
+
                 }
-            });
+
+
+            },
+
         });
+
+
     });
 
     //bloque actualizar e insertar incompetencia
@@ -1661,7 +2227,21 @@ let tipoPeticionarioSeleccionado = "";
     /// David: Modificacion 27 06 2025: Ajuste a los cambios en los campos del formulario de Antecedente
     /// Modificacion Cris y David 16 07 2025: Cambio en la info del formdata, pdf adjunto y campos requeridos
     $(document).on('click', '#saveAntecedente', function () {
-        // Validación general antes de iniciar
+
+        let boton = $(this);
+
+        console.count("CLICK EN GUARDAR");
+
+        // Evita doble clic
+        if (boton.prop('disabled')) {
+            return;
+        }
+
+        // Deshabilitar inmediatamente
+        boton.prop('disabled', true);
+
+        // ================= VALIDACIONES =================
+
         if (
             !$('#Input_ID').val() ||
             !$('#Input_Peticionario').val() ||
@@ -1672,6 +2252,9 @@ let tipoPeticionarioSeleccionado = "";
             !$('#Input_HoraRecepcion').val() ||
             !$('#sedeRegistro').val()
         ) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -1679,14 +2262,20 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
-            frmincompleto("#tab5"); // Indicador visual
+
+            frmincompleto("#tab5");
             return;
         }
+
 
         let peticionarios = $('.linksfrmpetit');
         let totalPeticionarios = peticionarios.length;
 
+
         if (totalPeticionarios === 0) {
+
+            boton.prop('disabled', false);
+
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -1694,136 +2283,275 @@ let tipoPeticionarioSeleccionado = "";
                 showConfirmButton: false,
                 timer: 3000
             });
+
             return;
         }
 
-        let peticionarioSeleccionado = $('#Input_Peticionario').find('option:selected').text().trim();
-        let peticionariosData = [];
+        // ================= SOLO PRIMER PETICIONARIO =================
 
-        for (let i = 1; i <= totalPeticionarios; i++) {
-            let dataAntecedente = new FormData();
+        let i = 1;
 
-            // Campos originales
-            dataAntecedente.append('Input_ID', $('#Input_ID').val());
-            dataAntecedente.append('Input_folio', $('#Input_folio').val());
-            dataAntecedente.append('Input_LugarHechos', $('#Input_LugarHechos').val());
-            dataAntecedente.append('Input_LugarHechosDescripcion', $('#Input_LugarHechos option:selected').text());
-            dataAntecedente.append('Input_FechaRecepcion', $('#Input_FechaRecepcion').val());
-            dataAntecedente.append('Input_HoraRecepcion', $('#Input_HoraRecepcion').val());
-            dataAntecedente.append('Input_autoridadresp', $('#Input_autoridadresp').val());
-            dataAntecedente.append('ExplicacionAntecedente', $('#ExplicacionAntecedente').val());
-            dataAntecedente.append('sedeRegistro', $('#sedeRegistro').val());
-            dataAntecedente.append('sederegistro_desc', $('#sedeRegistro option:selected').text());
-            dataAntecedente.append('select_viainterposicionc', $('#select_viainterposicionc option:selected').text());
-            dataAntecedente.append('usuarioL', $('#usuarioL').text());
+        let dataAntecedente = new FormData();
 
-            // Peticionario dinámico
-            let idComplemento = $(`#idcomplementopet${i}`).val();
-            let pet = peticionariosGuardados.find(p => p.idcomplementopet == idComplemento);
 
-            let petName = pet ? pet.nombrepeti.trim() : '';
-            if (!petName) {
-                petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`).find('option:selected').text().trim() || '';
-            }
+        dataAntecedente.append('Input_ID', $('#Input_ID').val());
+        dataAntecedente.append('Input_folio', $('#Input_folio').val());
 
-            dataAntecedente.append('Input_Peticionario', petName);
+        dataAntecedente.append(
+            'Input_LugarHechos',
+            $('#Input_LugarHechos').val()
+        );
 
-            let idPersona = pet ? pet.idpeticionario : '';
-            dataAntecedente.append('id_personas', idPersona);
+        dataAntecedente.append(
+            'Input_LugarHechosDescripcion',
+            $('#Input_LugarHechos option:selected').text()
+        );
 
-            // Campo documento
-            dataAntecedente.append('documento', petName === peticionarioSeleccionado ? 'SI' : 'NO');
+        dataAntecedente.append(
+            'Input_FechaRecepcion',
+            $('#Input_FechaRecepcion').val()
+        );
 
-            // Edad
-            // Edad
-            let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
-            // Si 'edad' es "No proporcionado" asigna un nulo
-            if (edad === "No proporcionado" || edad.trim() === "") {
-                edad = null;
-            } else {
-                edad = parseInt(edad) || null; // Verifica que sea un entero
-            }
-            dataAntecedente.append('edad', edad);
+        dataAntecedente.append(
+            'Input_HoraRecepcion',
+            $('#Input_HoraRecepcion').val()
+        );
 
-            // Sexo
-            let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
-            let sexoTexto = '';
-            if (sexoId === '1') sexoTexto = 'Masculino';
-            else if (sexoId === '2') sexoTexto = 'Femenino';
-            else if (sexoId === '3') sexoTexto = 'No proporcionado';
-            dataAntecedente.append('sexo', sexoTexto);
+        dataAntecedente.append(
+            'Input_autoridadresp',
+            $('#Input_autoridadresp').val()
+        );
 
-            // Género
-            let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
-            if (genero === 'Otro') {
-                let generoOtro = ($(`#ogenero_petit-frmDatosPersonales${i}`).val() || '').trim();
-                genero = generoOtro.length > 0 ? generoOtro : '';
-            }
-            dataAntecedente.append('genero', genero);
+        dataAntecedente.append(
+            'ExplicacionAntecedente',
+            $('#ExplicacionAntecedente').val()
+        );
 
-            // Tipo usuario
-            let tipoUsuarioRaw = $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`).val() || '';
-            let tipoUsuario = tipoUsuarioRaw === 'Peticionario' ? 'Quejoso' : tipoUsuarioRaw;
-            dataAntecedente.append('tipo_usuario', tipoUsuario);
+        dataAntecedente.append(
+            'sedeRegistro',
+            $('#sedeRegistro').val()
+        );
 
-            // Archivo solo para el primer peticionario
-            if (i === 1) {
-                let archivo = $('#pdfEscritoi')[0]?.files[0];
-                if (archivo) {
-                    dataAntecedente.append('pdfEscritoi', archivo);
-                }
-            }
+        dataAntecedente.append(
+            'sederegistro_desc',
+            $('#sedeRegistro option:selected').text()
+        );
 
-            peticionariosData.push(dataAntecedente);
+        dataAntecedente.append(
+            'select_viainterposicionc',
+            $('#select_viainterposicionc option:selected').text()
+        );
+
+        dataAntecedente.append(
+            'usuarioL',
+            $('#usuarioL').text()
+        );
+
+        // ================= PETICIONARIO =================
+
+        let idComplemento = $(`#idcomplementopet${i}`).val();
+
+        let pet = peticionariosGuardados.find(
+            p => p.idcomplementopet == idComplemento
+        );
+
+
+        let petName = pet
+            ? pet.nombrepeti.trim()
+            : '';
+
+
+        if (!petName) {
+
+            petName = $(`#frmDatosPersonales${i} select[name="Input_Peticionario"]`)
+                .find('option:selected')
+                .text()
+                .trim();
+
         }
 
-        let enviados = 0;
-        let errores = 0;
 
-        peticionariosData.forEach(function (formData) {
-            $.ajax({
-                type: 'POST',
-                url: '/AltaExpediente/GuardarAntecedente',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    enviados++;
-                    if (res.status !== true) errores++;
+        dataAntecedente.append(
+            'Input_Peticionario',
+            petName
+        );
 
-                    if (enviados === peticionariosData.length) {
-                        if (errores === 0) {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Todos los datos se guardaron correctamente',
-                                showConfirmButton: false,
-                                timer: 2500
-                            });
-                            frmcompleto("#tab6"); // Indicador visual de formulario completo
-                        } else {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Algunos registros no se guardaron correctamente',
-                                text: 'Verifica la información ingresada',
-                                timer: 3000
-                            });
-                        }
-                    }
-                },
-                error: function () {
-                    errores++;
-                    enviados++;
-                    if (enviados === peticionariosData.length) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error de red',
-                            text: 'Hubo errores al guardar uno o más registros.'
-                        });
-                    }
+
+        let idPersona = pet
+            ? pet.idpeticionario
+            : '';
+
+
+        dataAntecedente.append(
+            'id_personas',
+            idPersona
+        );
+
+
+        let peticionarioSeleccionado = $('#Input_Peticionario')
+            .find('option:selected')
+            .text()
+            .trim();
+
+
+        dataAntecedente.append(
+            'documento',
+            petName === peticionarioSeleccionado ? 'SI' : 'NO'
+        );
+
+        // ================= DATOS PERSONALES =================
+
+        let edad = $(`#edad_petit-frmDatosPersonales${i}`).val() || '';
+
+        if (
+            edad === "No proporcionado" ||
+            edad.trim() === ""
+        ) {
+
+            edad = null;
+
+        } else {
+
+            edad = parseInt(edad) || null;
+
+        }
+
+
+        dataAntecedente.append(
+            'edad',
+            edad
+        );
+
+
+        let sexoId = $(`input[name="radsexo_petit-frmDatosPersonales${i}"]:checked`).val();
+
+        let sexoTexto = '';
+
+        if (sexoId === '1')
+            sexoTexto = 'Masculino';
+
+        else if (sexoId === '2')
+            sexoTexto = 'Femenino';
+
+        else if (sexoId === '3')
+            sexoTexto = 'No proporcionado';
+
+
+        dataAntecedente.append(
+            'sexo',
+            sexoTexto
+        );
+
+
+        let genero = $(`#genero_petit-frmDatosPersonales${i}`).val() || '';
+
+
+        if (genero === 'Otro') {
+
+            genero =
+                $(`#ogenero_petit-frmDatosPersonales${i}`)
+                    .val()
+                    .trim();
+
+        }
+
+
+        dataAntecedente.append(
+            'genero',
+            genero
+        );
+
+
+        let tipoUsuarioRaw =
+            $(`input[name="qatu_petit-frmDatosPersonales${i}"]:checked`)
+                .val() || '';
+
+
+        let tipoUsuario =
+            tipoUsuarioRaw === 'Peticionario'
+                ? 'Quejoso'
+                : tipoUsuarioRaw;
+
+
+        dataAntecedente.append(
+            'tipo_usuario',
+            tipoUsuario
+        );
+
+        // ================= ARCHIVO =================
+
+        let archivo = $('#pdfEscritoi')[0]?.files[0];
+
+
+        if (archivo) {
+
+            dataAntecedente.append(
+                'pdfEscritoi',
+                archivo
+            );
+
+        }
+
+        console.count("ENVIANDO AJAX");
+
+        // ================= UN SOLO ENVIO =================
+
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/AltaExpediente/GuardarAntecedente',
+
+            data: dataAntecedente,
+
+            contentType: false,
+
+            processData: false,
+
+
+            success: function (res) {
+
+
+                if (res.status === true) {
+
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Los datos se guardaron correctamente',
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+
+
+                    frmcompleto("#tab6");
+
+
+                } else {
+
+
+                    Swal.fire({
+
+                        icon: 'warning',
+
+                        title: 'No se pudo guardar',
+
+                        text: res.mensaje || 'Verifica la información ingresada'
+
+                    });
+
+
                 }
-            });
+
+
+            },
+
+
+
+
         });
+
+
     });
     //bloque para actualiza e insertar antecedente
     //INSERTAR ANTECEDENTE 08/12/2025
