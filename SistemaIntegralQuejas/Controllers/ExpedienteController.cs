@@ -2446,6 +2446,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             LEFT JOIN COMPLEMENTO_PETICIONARIO CP
                 ON CP.ID_EXPEDIENTE = O.Id_escrito
+                AND CP.STATUS = 1
 
             LEFT JOIN REG_RECEPCION RR
                 ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
@@ -2532,8 +2533,9 @@ namespace SistemaIntegralQuejas.Controllers
 
             FROM REMISION R
 
-            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
-                ON CP.ID_EXPEDIENTE = R.Id_escrito
+             LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+               ON CP.ID_EXPEDIENTE = R.Id_escrito
+               AND CP.STATUS = 1
 
             LEFT JOIN REG_RECEPCION RR
                 ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
@@ -2622,6 +2624,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             LEFT JOIN COMPLEMENTO_PETICIONARIO CP
                 ON CP.ID_EXPEDIENTE = I.Id_escrito
+                AND CP.STATUS = 1
 
             LEFT JOIN REG_RECEPCION RR
                 ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
@@ -2710,6 +2713,7 @@ namespace SistemaIntegralQuejas.Controllers
 
             LEFT JOIN COMPLEMENTO_PETICIONARIO CP
                 ON CP.ID_EXPEDIENTE = A.ID_escrito
+                AND CP.STATUS = 1
 
             LEFT JOIN REG_RECEPCION RR
                 ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
