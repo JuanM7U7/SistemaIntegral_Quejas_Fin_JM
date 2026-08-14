@@ -2427,34 +2427,41 @@ namespace SistemaIntegralQuejas.Controllers
                 conn.Open();
 
                 string sql = @"
-            SELECT 
-                O.Id_escrito,
-                O.Folio,
-                O.Lugar_hechos,
-                O.Fecha_recepcion,
-                O.Hora_recepcion,
-                O.Autoridad,
-                O.Institucion,
-                O.Explicacion,
-                O.Abogado,
+                    SELECT 
+                        O.Id_escrito,
+                        O.Folio,
+                        O.Lugar_hechos,
+                        O.Fecha_recepcion,
+                        O.Hora_recepcion,
+                        O.Autoridad,
+                        O.Institucion,
+                        O.Explicacion,
+                        O.Abogado,
 
-                RR.Nombre,
-                RR.APELLIDO_PAT,
-                RR.APELLIDO_MAT
+                        CP.TIPO_USUARIO,
+                        RR.Nombre,
+                        RR.APELLIDO_PAT,
+                        RR.APELLIDO_MAT
 
-            FROM ORIENTACION O
+                    FROM ORIENTACION O
 
-            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
-                ON CP.ID_EXPEDIENTE = O.Id_escrito
-                AND CP.STATUS = 1
+                     LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                    ON CP.ID_EXPEDIENTE = O.Id_escrito
+                    AND CP.STATUS = 1
 
-            LEFT JOIN REG_RECEPCION RR
-                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+                  LEFT JOIN REG_RECEPCION RR
+                    ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
 
-            WHERE O.Id_escrito = @IdEscrito
-              AND O.Documento = 'SI'
+                    WHERE O.Id_escrito = @IdEscrito
+                      AND O.Documento = 'SI'
+                      AND O.Id_orientacion = (
+                          SELECT MAX(R2.Id_orientacion)
+                          FROM ORIENTACION R2
+                          WHERE R2.Id_escrito = @IdEscrito
+                            AND R2.Documento = 'SI'
+                      )
 
-            ORDER BY O.Id_orientacion DESC;";
+                    ORDER BY O.Id_orientacion DESC;";
 
                 using (var cmd = new SqlCommand(sql, conn))
                 {
@@ -2492,6 +2499,7 @@ namespace SistemaIntegralQuejas.Controllers
                             {
                                 modelo.Peticionarios.Add(new PeticionarioModel
                                 {
+                                    TipoUsuario = reader["TIPO_USUARIO"]?.ToString(),
                                     Nombre = reader["Nombre"]?.ToString(),
                                     ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
                                     ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()
@@ -2515,35 +2523,43 @@ namespace SistemaIntegralQuejas.Controllers
                 conn.Open();
 
                 string sql = @"
-            SELECT 
-                R.Id_escrito,
-                R.Folio,
-                R.Lugar_hechos,
-                R.Fecha_recepcion,
-                R.Hora_recepcion,
-                R.Numero_oficio,
-                R.Institucion,
-                R.Remitente,
-                R.Explicacion,
-                R.Abogado,
+                SELECT 
+                    R.Id_escrito,
+                    R.Folio,
+                    R.Lugar_hechos,
+                    R.Fecha_recepcion,
+                    R.Hora_recepcion,
+                    R.Numero_oficio,
+                    R.Institucion,
+                    R.Remitente,
+                    R.Explicacion,
+                    R.Abogado,
 
-                RR.Nombre,
-                RR.APELLIDO_PAT,
-                RR.APELLIDO_MAT
+                    CP.TIPO_USUARIO,
 
-            FROM REMISION R
+                    RR.Nombre,
+                    RR.APELLIDO_PAT,
+                    RR.APELLIDO_MAT
 
-             LEFT JOIN COMPLEMENTO_PETICIONARIO CP
-               ON CP.ID_EXPEDIENTE = R.Id_escrito
-               AND CP.STATUS = 1
+                   FROM REMISION R
 
-            LEFT JOIN REG_RECEPCION RR
-                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+                  LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                    ON CP.ID_EXPEDIENTE = R.Id_escrito
+                    AND CP.STATUS = 1
 
-            WHERE R.Id_escrito = @IdEscrito
-              AND R.Documento = 'SI'
+                  LEFT JOIN REG_RECEPCION RR
+                    ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
 
-            ORDER BY R.Id_remision DESC;";
+                    WHERE R.Id_escrito = @IdEscrito
+                      AND R.Documento = 'SI'
+                      AND R.Id_remision = (
+                          SELECT MAX(R2.Id_remision)
+                          FROM REMISION R2
+                          WHERE R2.Id_escrito = @IdEscrito
+                            AND R2.Documento = 'SI'
+                      )
+
+                    ORDER BY R.Id_remision DESC;";
 
                 using (var cmd = new SqlCommand(sql, conn))
                 {
@@ -2577,11 +2593,12 @@ namespace SistemaIntegralQuejas.Controllers
                                 modelo.Abogado = reader["Abogado"]?.ToString()?.ToUpper();
                             }
 
-                            // Agregar todos los peticionarios
+                           // Agregar todos los peticionarios
                             if (reader["Nombre"] != DBNull.Value)
                             {
                                 modelo.Peticionarios.Add(new PeticionarioModel
                                 {
+                                    TipoUsuario = reader["TIPO_USUARIO"]?.ToString(),
                                     Nombre = reader["Nombre"]?.ToString(),
                                     ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
                                     ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()
@@ -2604,35 +2621,43 @@ namespace SistemaIntegralQuejas.Controllers
                 conn.Open();
 
                 string sql = @"
-            SELECT 
-                I.Id_escrito,
-                I.Folio,
-                I.Lugar_hechos,
-                I.Fecha_recepcion,
-                I.Hora_recepcion,
-                I.Numero_oficio,
-                I.Institucion,
-                I.Remitente,
-                I.Explicacion,
-                I.Abogado,
+                    SELECT 
+                        I.Id_escrito,
+                        I.Folio,
+                        I.Lugar_hechos,
+                        I.Fecha_recepcion,
+                        I.Hora_recepcion,
+                        I.Numero_oficio,
+                        I.Institucion,
+                        I.Remitente,
+                        I.Explicacion,
+                        I.Abogado,
 
-                RR.Nombre,
-                RR.APELLIDO_PAT,
-                RR.APELLIDO_MAT
+                        CP.TIPO_USUARIO,
 
-            FROM INCOMPETENCIA I
+                        RR.Nombre,
+                        RR.APELLIDO_PAT,
+                        RR.APELLIDO_MAT
 
-            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
-                ON CP.ID_EXPEDIENTE = I.Id_escrito
-                AND CP.STATUS = 1
+                    FROM INCOMPETENCIA I
 
-            LEFT JOIN REG_RECEPCION RR
-                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+                     LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                       ON CP.ID_EXPEDIENTE = I.Id_escrito
+                       AND CP.STATUS = 1
 
-            WHERE I.Id_escrito = @IdEscrito 
-              AND I.Documento = 'SI'
+                     LEFT JOIN REG_RECEPCION RR
+                       ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
 
-            ORDER BY I.Id_incompetencia DESC";
+                       WHERE I.Id_escrito = @IdEscrito
+                         AND I.Documento = 'SI'
+                         AND I.Id_incompetencia = (
+                             SELECT MAX(R2.Id_incompetencia)
+                             FROM INCOMPETENCIA R2
+                             WHERE R2.Id_escrito = @IdEscrito
+                               AND R2.Documento = 'SI'
+                         )
+
+                    ORDER BY I.Id_incompetencia DESC";
 
 
                 using (var cmd = new SqlCommand(sql, conn))
@@ -2667,11 +2692,12 @@ namespace SistemaIntegralQuejas.Controllers
                                 modelo.Abogado = reader["Abogado"]?.ToString()?.ToUpper();
                             }
 
-                            // Agregar todos los peticionarios del expediente
+                            // Agregar todos los peticionarios
                             if (reader["Nombre"] != DBNull.Value)
                             {
                                 modelo.Peticionarios.Add(new PeticionarioModel
                                 {
+                                    TipoUsuario = reader["TIPO_USUARIO"]?.ToString(),
                                     Nombre = reader["Nombre"]?.ToString(),
                                     ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
                                     ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()
@@ -2695,33 +2721,41 @@ namespace SistemaIntegralQuejas.Controllers
                 conn.Open();
 
                 string sql = @"
-            SELECT 
-                A.ID_escrito,
-                A.Folio,
-                A.Lugar_hechos,
-                A.Fecha_recepcion,
-                A.Hora_recepcion,
-                A.Autoridad,
-                A.Explicacion,
-                A.Abogado,
+                    SELECT 
+                        A.ID_escrito,
+                        A.Folio,
+                        A.Lugar_hechos,
+                        A.Fecha_recepcion,
+                        A.Hora_recepcion,
+                        A.Autoridad,
+                        A.Explicacion,
+                        A.Abogado,
 
-                RR.Nombre,
-                RR.APELLIDO_PAT,
-                RR.APELLIDO_MAT
+                        CP.TIPO_USUARIO,
 
-            FROM ANTECEDENTE A
+                        RR.Nombre,
+                        RR.APELLIDO_PAT,
+                        RR.APELLIDO_MAT
 
-            LEFT JOIN COMPLEMENTO_PETICIONARIO CP
-                ON CP.ID_EXPEDIENTE = A.ID_escrito
-                AND CP.STATUS = 1
+                    FROM ANTECEDENTE A
 
-            LEFT JOIN REG_RECEPCION RR
-                ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
+                     LEFT JOIN COMPLEMENTO_PETICIONARIO CP
+                           ON CP.ID_EXPEDIENTE = A.Id_escrito
+                           AND CP.STATUS = 1
 
-            WHERE A.Id_escrito = @IdEscrito 
-              AND A.documento = 'SI'
+                         LEFT JOIN REG_RECEPCION RR
+                           ON RR.ID_REGISTRO = CP.FK_REG_RECEPCION
 
-            ORDER BY A.Id_antecedente DESC";
+                           WHERE A.Id_escrito = @IdEscrito
+                             AND A.Documento = 'SI'
+                             AND A.Id_antecedente = (
+                                 SELECT MAX(R2.Id_antecedente)
+                                 FROM ANTECEDENTE R2
+                                 WHERE R2.Id_escrito = @IdEscrito
+                                   AND R2.Documento = 'SI'
+                             )
+
+                    ORDER BY A.Id_antecedente DESC";
 
 
                 using (var cmd = new SqlCommand(sql, conn))
@@ -2754,11 +2788,12 @@ namespace SistemaIntegralQuejas.Controllers
                                 modelo.Abogado = reader["Abogado"]?.ToString()?.ToUpper();
                             }
 
-                            // Agrega los peticionarios
+                            // Agregar todos los peticionarios
                             if (reader["Nombre"] != DBNull.Value)
                             {
                                 modelo.Peticionarios.Add(new PeticionarioModel
                                 {
+                                    TipoUsuario = reader["TIPO_USUARIO"]?.ToString(),
                                     Nombre = reader["Nombre"]?.ToString(),
                                     ApellidoPaterno = reader["APELLIDO_PAT"]?.ToString(),
                                     ApellidoMaterno = reader["APELLIDO_MAT"]?.ToString()

@@ -28,7 +28,11 @@
             <b><br>LUGAR DE RECEPCIÓN: </b> @Model.LugarRecepcion
             <b><br>FECHA Y HORA DE RECEPCIÓN: </b> @Model.FechaRecepcion.ToString("dd/MM/yyyy") a las @Model.HoraRecepcion.ToString(@"hh\:mm") <b>Hrs</b>
             <b><br>NOMBRE DEL(A) PETICIONARIO(A): </b>
-            @string.Join(", ", Model.Peticionarios.Select(p => p.NombreCompleto))
+            @foreach (var peticionario in Model.Peticionarios)
+            {
+                <br />
+                @peticionario.NombreCompleto
+            }
             <b><br>NÚMERO DE OFICIO: </b>
             @if (Model.Oficio == "No proporcionado")
             {

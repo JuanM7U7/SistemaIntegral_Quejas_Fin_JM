@@ -23,11 +23,28 @@ namespace SistemaIntegralQuejas.Models
 
     public class PeticionarioModel
     {
+        public string TipoUsuario { get; set; }
+
         public string Nombre { get; set; }
+
         public string ApellidoPaterno { get; set; }
+
         public string ApellidoMaterno { get; set; }
 
-        public string NombreCompleto =>
-            $"{Nombre} {ApellidoPaterno} {ApellidoMaterno}".Trim();
+        public string NombreCompleto
+        {
+            get
+            {
+                string prefijo = TipoUsuario switch
+                {
+                    "Peticionario" => "(Q) ",
+                    "Agraviado" => "(A) ",
+                    "Quejoso" => "(SIN TIPO) ",
+                    _ => ""
+                };
+
+                return $"{prefijo}{Nombre} {ApellidoPaterno} {ApellidoMaterno}".Trim();
+            }
+        }
     }
 }
