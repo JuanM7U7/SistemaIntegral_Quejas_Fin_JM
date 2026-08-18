@@ -1969,6 +1969,19 @@ function eliminaFormatoDatosPeronsales(idcomplemento) {
 
 }
 function DivPequeniosautoridad(nombrepeticionario, curp, idpeticionario) {
+    // Convertir a string, quitar espacios y obtener la primera letra en mayúscula
+    var primeraLetra = idpeticionario ? String(idpeticionario).trim().charAt(0).toUpperCase() : '';
+
+    // Determinar el ámbito según la primera letra
+    var ambito = '';
+    if (primeraLetra === 'M') {
+        ambito = 'Municipal';
+    } else if (primeraLetra === 'E') {
+        ambito = 'Estatal';
+    } else {
+        ambito = curp || ''; // Valor por defecto si no es M o E
+    }
+
     var div =
    `<div id='Divpequenios'>
         <div class="dummy dummy-text">
@@ -1979,7 +1992,7 @@ function DivPequeniosautoridad(nombrepeticionario, curp, idpeticionario) {
                         <span class="tooltipbox-text">
                             <span style="color:black;font-weight: bold;">Infromación de la autoridad</span><br>
                             ID DE LA AUTORIDAD.: ${idpeticionario}<br>
-                            ÁMBITO:${curp}<br>
+                            ÁMBITO:${ambito}<br>
                             NOMBRE:${nombrepeticionario}<br>
                         </span>
                     </span>

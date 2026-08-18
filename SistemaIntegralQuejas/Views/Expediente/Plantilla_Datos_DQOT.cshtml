@@ -210,7 +210,7 @@
                                         foreach (var itemuser in itemp.listaut)
                                         {
                                             <tr>
-                                                <td>@itemuser.idautoridad</td>
+                                                <td>@Html.Raw(itemuser.idautoridad)</td>
                                                 <td>@itemuser.ambito</td>
                                                 <td>@itemuser.nombre</td>
                                             </tr>

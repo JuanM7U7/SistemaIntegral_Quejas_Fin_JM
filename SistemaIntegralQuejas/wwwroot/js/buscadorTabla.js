@@ -8018,6 +8018,19 @@ function DivPequenios(nombrepeticionario, curp, idpeticionario) {
     return div;
 }
 function DivPequeniosautoridad(nombrepeticionario, curp, idpeticionario) {
+    // Convertir a string, quitar espacios y obtener la primera letra en mayúscula
+    var primeraLetra = idpeticionario ? String(idpeticionario).trim().charAt(0).toUpperCase() : '';
+
+    // Determinar el ámbito según la primera letra
+    var ambito = '';
+    if (primeraLetra === 'M') {
+        ambito = 'Municipal';
+    } else if (primeraLetra === 'E') {
+        ambito = 'Estatal';
+    } else {
+        ambito = curp || ''; // Valor por defecto si no es M o E
+    }
+
     var div = "<div id='Divpequenios'>"
         +
         `
@@ -8025,7 +8038,7 @@ function DivPequeniosautoridad(nombrepeticionario, curp, idpeticionario) {
 			<p><span class="tooltipbox tooltipbox-effect-1"><span class="tooltipbox-item">${nombrepeticionario}</span><span class="tooltipbox-content clearfix">
             <span class="tooltipbox-text"><span style="color:black;font-weight: bold;">Infromación de la autoridad</span><br>
              ID DE LA AUTORIDAD.: ${idpeticionario}<br>
-             ÁMBITO:${curp}<br>
+             ÁMBITO:${ambito}<br>
              NOMBRE:${nombrepeticionario}<br>
             </span></span></span></p>
 			</div>
