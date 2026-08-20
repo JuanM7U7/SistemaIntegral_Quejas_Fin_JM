@@ -2066,7 +2066,7 @@ function mostrarTablaCedulas(response) {
 
                         if (row.estatus === 'Completo') {
                             contenido = `
-                    <div><strong>${pet.tipo_usuario}: ${pet.nombre}</strong></div>
+                    <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
                     <button type='button' title='Ver ${pet.tipo_usuario}'
                         class='btn btn-link margin-iconbf'
                         onclick='verFormatoDP(${peticionarioStr})'>
@@ -2076,7 +2076,7 @@ function mostrarTablaCedulas(response) {
                         } else {
                             if (!expiro) {
                                 contenido = `
-                        <div><strong>${pet.tipo_usuario}: ${pet.nombre}</strong></div>
+                        <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
                         <button type='button' title='Editar ${pet.tipo_usuario}'
                             class='btn btn-link margin-iconbf'
                             onclick='verFormatoDP(${peticionarioStr})'>
@@ -2095,7 +2095,7 @@ function mostrarTablaCedulas(response) {
                     `;
                             } else {
                                 contenido = `
-                        <div><strong>${pet.tipo_usuario}: ${pet.nombre}</strong></div>
+                        <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
                         <button type='button' title='Ver ${pet.tipo_usuario}'
                             class='btn btn-link margin-iconbf'
                             onclick='verFormatoDP(${peticionarioStr})'>
