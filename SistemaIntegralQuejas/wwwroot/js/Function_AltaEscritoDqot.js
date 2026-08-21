@@ -8337,12 +8337,16 @@ function arregloIdentificación() {
     var arreglo = [];
     const objeto0 = { idSelect: 0, descripcion: '-- identificación --' }
     const objeto = { idSelect: 1, descripcion: 'INE' }
-    const objeto1 = { idSelect: 2, descripcion: 'no proporcionada' }
+    const objeto1 = { idSelect: 2, descripcion: 'No proporcionada' }
+    const objeto2 = { idSelect: 3, descripcion: 'Licencia de conducir' }
+    const objeto3 = { idSelect: 4, descripcion: 'Pasaporte' }
 
 
     arreglo.push(objeto0);
     arreglo.push(objeto);
     arreglo.push(objeto1);
+    arreglo.push(objeto2);
+    arreglo.push(objeto3);
 
     return arreglo;
 
