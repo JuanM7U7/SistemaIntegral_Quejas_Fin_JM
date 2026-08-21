@@ -2437,7 +2437,7 @@ function formatearFilaExpandidaCedula(data) {
             peticionariosHtml += `
                 <tr>
                     <td>${pet.tipo_usuario}</td>
-                    <td>${pet.nombre}</td>
+                    <td>${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</td>
                     <td>
                         <button type='button' title='Ver ${pet.tipo_usuario}'
                             class='btn btn-link margin-iconbf'
