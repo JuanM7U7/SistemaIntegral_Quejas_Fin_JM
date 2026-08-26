@@ -438,7 +438,6 @@ namespace SistemaIntegralQuejas.Models
         {
             mensaje = "";
             informacioncomplementaria lista = new informacioncomplementaria();
-            SqlDataReader lector;
 
             try
             {
@@ -448,33 +447,58 @@ namespace SistemaIntegralQuejas.Models
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = query;
                     cmd.Connection = conn;
-                    lector = cmd.ExecuteReader();
 
-                    informacioncomplementaria modelo;
+                    // Se ejecutan las subconsultas de peticionario y autoridad
                     List<informacioncomplementariapeticionario> modelo1 = datoscomplementariospeticionario(query1, ref mensaje);
                     List<informacioncomplementariaautoridad> modelo2 = datoscomplementariosautoridad(query2, ref mensaje);
-                    while (lector.Read())
+
+                    using (SqlDataReader lector = cmd.ExecuteReader())
                     {
-                        lista = new informacioncomplementaria(int.Parse(lector[0].ToString()), int.Parse(lector[1].ToString()), lector[2].ToString(), lector[3].ToString(), int.Parse(lector[4].ToString()), int.Parse(lector[5].ToString()), modelo1, modelo2, int.Parse(lector[6].ToString()), int.Parse(lector[7].ToString()), lector[8].ToString(),
-                            lector[9] != DBNull.Value ? int.Parse(lector[9].ToString()) : 99,
-    lector[10] != DBNull.Value ? int.Parse(lector[10].ToString()) : 99,
-    lector[11] != DBNull.Value ? int.Parse(lector[11].ToString()) : 99,
-    lector[12] != DBNull.Value ? int.Parse(lector[12].ToString()) : 99,
-    lector[13] != DBNull.Value ? int.Parse(lector[13].ToString()) : 99,
-    lector[14] != DBNull.Value ? int.Parse(lector[14].ToString()) : 99,
-    lector[15] != DBNull.Value ? lector[15].ToString() : "PASO-ERRONEO-FAVOR-VERIFICARLO-ADMINISTRADOR",
-                            lector[16] != DBNull.Value ? lector[16].ToString() : "NO");
+                        while (lector.Read())
+                        {
+                            // Funciones locales para parsear con seguridad contra nulos
+                            int ParseInt(object val, int valorDefecto = 0) =>
+                                val != DBNull.Value && int.TryParse(val.ToString(), out int res) ? res : valorDefecto;
+
+                            string ParseString(object val, string valorDefecto = "") =>
+                                val != DBNull.Value ? val.ToString() : valorDefecto;
+
+                            int idExpediente = ParseInt(lector[0]);
+                            int idAbogado = ParseInt(lector[1]);
+                            string hechos = ParseString(lector[2]);
+                            string fechaRegistro = ParseString(lector[3]);
+                            int idSede = ParseInt(lector[4]);
+                            int lugarHechos = ParseInt(lector[5]);
+                            int viaInter = ParseInt(lector[6]);
+                            int claveVisitaduria = ParseInt(lector[7], 99);
+                            string observaciones = ParseString(lector[8]);
+
+                            int idEspecializado = ParseInt(lector[9], 99);
+                            int idTrasOpPub = ParseInt(lector[10], 99);
+                            int idTipoQueja = ParseInt(lector[11], 99);
+                            int idMateria = ParseInt(lector[12], 99);
+                            int idNivRiesgo = ParseInt(lector[13], 99);
+                            int idPrograma = ParseInt(lector[14], 99);
+                            string estatusDesc = ParseString(lector[15], "PASO-ERRONEO-FAVOR-VERIFICARLO-ADMINISTRADOR");
+                            string fechaUltMod = ParseString(lector[16], "NO");
+
+                            lista = new informacioncomplementaria(
+                                idExpediente, idAbogado, hechos, fechaRegistro, idSede, lugarHechos,
+                                modelo1, modelo2, viaInter, claveVisitaduria, observaciones,
+                                idEspecializado, idTrasOpPub, idTipoQueja, idMateria, idNivRiesgo, idPrograma,
+                                estatusDesc, fechaUltMod
+                            );
+                        }
                     }
 
                     return lista;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-
+                // Guardamos el error real en mensaje para no silenciar la falla
+                mensaje = ex.Message;
             }
-
 
             return lista;
         }
