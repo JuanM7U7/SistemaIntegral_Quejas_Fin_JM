@@ -2674,20 +2674,12 @@ function editFormatDatosPersonalesCalificacion(idregistro, idcomplemento, estatu
 }
 function updateDatosPeticionarios(idpeticionarioActual, modo) {
 
-    // Guardamos el modo actual en el formulario para saber qué hacer al guardar
+    // Guardar el modo actual en el formulario
     $('#frmDatosPersonales1').data('modo', modo);
-    // ============================================
-    // MODOS:
-    // VER      = lupa
-    // EDITAR   = lápiz
-    // NUEVO    = +
-    // ============================================
 
-    // 🔥 VALIDAR SI YA ESTÁ CONFIRMADO
+    // Validar si ya está confirmado
     let yaConfirmado = false;
-
     if (window.iddatospeti && Array.isArray(window.iddatospeti)) {
-
         yaConfirmado = window.iddatospeti.some(p =>
             Number(p.id_peticionario) === Number(idpeticionarioActual) &&
             (p.datospet === 'True' || p.datospet === 1)
@@ -2697,221 +2689,192 @@ function updateDatosPeticionarios(idpeticionarioActual, modo) {
     // ============================================
     // CONTROL VISUAL SEGÚN EL MODO
     // ============================================
-
-    // ============================================
-    // 🔍 LUPA
-    // ============================================
     if (modo === 'VER') {
-
-        // 🔒 solo visualizar
         $('#frmDatosPersonales1')
             .find('input:not([type=hidden]), select, textarea')
             .prop('disabled', true);
 
-        // 🔥 si YA fue confirmado ocultar botón
         if (yaConfirmado) {
-
             $('button[id^=validapeticionario]').hide();
-
         } else {
-
-            // si NO ha sido confirmado mostrar botón
             $('button[id^=validapeticionario]').show();
         }
     }
 
-    // ============================================
-    // ✏️ EDITAR PRUEBA HITHUB
-    // ============================================
     if (modo === 'EDITAR') {
-
-        // SÍ editar
         $('#frmDatosPersonales1')
             .find('input:not([type=hidden]), select, textarea')
             .prop('disabled', false);
 
-        // NO confirmar
         $('button[id^=validapeticionario]').hide();
     }
 
-    // ============================================
-    // ➕ NUEVO
-    // ============================================
     if (modo === 'NUEVO') {
-
         $('#frmDatosPersonales1')[0].reset();
-
-        // 🔥 NUEVO REGISTRO
         $('#idpeticionarioi1').val(0);
         $('#idcomplementopet1').val(0);
 
-        // SÍ editar
         $('#frmDatosPersonales1')
             .find('input:not([type=hidden]), select, textarea')
             .prop('disabled', false);
 
-        // NO confirmar
         $('button[id^=validapeticionario]').hide();
     }
+}
 
-    $('button[id^=validapeticionario]').off('click').on('click', function (e) {
+// ============================================
+// EVENTO: BOTÓN VALIDAR PETICIONARIO
+// ============================================
+$(document).off('click', 'button[id^=validapeticionario]').on('click', 'button[id^=validapeticionario]', function (e) {
+    e.preventDefault();
 
-        e.preventDefault();
+    var idquejaE = $('#idquejaE').val();
+    var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
+    var idpeticionarioi = $('#idpeticionarioi1').val();
+    var Titulo_Modal = $('#Titulo_Modal').html();
+    var TipoPet = $('input[name=qatu_petit-frmDatosPersonales1]:checked').val();
 
-        var idquejaE = $('#idquejaE').val();
+    $.ajax({
+        type: "POST",
+        url: "ActualizaDatoscompementariosPetVAV",
+        data: {
+            idqueja: idquejaE,
+            status: 1,
+            peticionario: idpeticionarioi,
+            tipope: TipoPet
+        },
+        dataType: "JSON",
+        success: function (response) {
+            Swal.fire({
+                position: 'center',
+                icon: 'info',
+                title: 'Se han validado los datos del peticionario.',
+                showConfirmButton: false,
+                timer: 3000
+            }).then(function () {
+                if (!window.iddatospeti) window.iddatospeti = [];
+
+                let idpeticionarioActual = Number($('#idpeticionarioi1').val());
+                let tipoPetActual = $('input[name=qatu_petit-frmDatosPersonales1]:checked').val();
+
+                let existente = window.iddatospeti.find(p => Number(p.id_peticionario) === idpeticionarioActual);
+
+                if (existente) {
+                    existente.datospet = 1;
+                    if (!existente.tipoPet) existente.tipoPet = tipoPetActual;
+                } else {
+                    window.iddatospeti.push({
+                        id_peticionario: idpeticionarioActual,
+                        datospet: 1,
+                        tipoPet: tipoPetActual
+                    });
+                }
+
+                $('button[id^=validapeticionario]').hide();
+                $('#contenedor_AutoridadesE').html('');
+                $('#contenedor_UsuariosE').html('');
+                $('#modalFormPeticionario').modal('hide');
+
+                var expedi = 'PENDIENTE';
+                if (!Titulo_Modal.includes('Calificación')) {
+                    expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
+                    $("#defaultOpenCa").html('Modificación');
+                } else {
+                    $("#defaultOpenCa").html('Calificación');
+                }
+
+                obtenerDQOTModifica(idquejaE, Fecha_TurnoVGE, 'E', expedi);
+            });
+        }
+    });
+});
+
+// ============================================
+// EVENTO: SUBMIT DEL FORMULARIO
+// ============================================
+$(document).off('submit', '#frmDatosPersonales1').on('submit', '#frmDatosPersonales1', function (e) {
+    e.preventDefault();
+
+    let modo = $(this).data('modo');
+    if (modo === 'VER') return;
+    if (validaTxt() || validaNumero()) return;
+
+    let numFrm = 1;
+    let idForm = '#frmDatosPersonales' + numFrm;
+    let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
+    let idPeticionario = Number($('#idpeticionarioi1').val());
+
+    $('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:disabled').prop('disabled', false);
+    $('#idquejagenerado, #versioncomplementopeticionario').prop('disabled', false);
+
+    // Función interna para realizar el guardado en /Expediente/GuardarDataComplPeticionario
+    function procesarGuardado() {
+        $(idForm).find('input, select, textarea').prop('disabled', false).prop('readonly', false);
         var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
-        var idpeticionarioi = $('#idpeticionarioi1').val();
         var Titulo_Modal = $('#Titulo_Modal').html();
-        var TipoPet = $('input[name=qatu_petit-frmDatosPersonales1]:checked').val();
 
         $.ajax({
-            type: "POST",
-            url: "ActualizaDatoscompementariosPetVAV",
-            data: {
-                idqueja: idquejaE,
-                status: 1,
-                peticionario: idpeticionarioi,
-                tipope: TipoPet
-            },
-            dataType: "JSON",
-            success: function (response) {
+            type: "post",
+            url: '/Expediente/GuardarDataComplPeticionario',
+            data: $(idForm).serialize() + '&nombreS=' + nombre + '&idquejagenerado=' + $('#idquejaE').val(),
+            dataType: "json",
+            success: function (data) {
+                if (data.idpeticionario > 0 && data.idcomplemento > 0) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Información del peticionario Actualizada de manera Correcta',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function () {
+                        $('#confi_peticionaE').prop('checked', false).trigger('change').removeClass('pulsacionrellow').prop('disabled', true);
+                        confirmdatos($('#idquejaE').val(), '', '', '3');
+                        $('#contenedor_AutoridadesE').html('');
+                        $('#contenedor_UsuariosE').html('');
+                        $('#modalFormPeticionario').modal('hide');
 
-                Swal.fire({
-                    position: 'center',
-                    icon: 'info',
-                    title: 'Se han validado los datos del peticionario.',
-                    showConfirmButton: false,
-                    timer: 3000
-                }).then(function () {
-
-                    // Guarda en la memoria del navegador que ID ya tienen un peticonario confirmado y lo guarda -Fred 03/07/2026 
-                    if (!window.iddatospeti) {
-                        window.iddatospeti = [];
-                    }
-
-                    let idpeticionarioActual = Number($('#idpeticionarioi1').val());
-                    let tipoPetActual = $('input[name=qatu_petit-frmDatosPersonales1]:checked').val();
-
-                    let existente = window.iddatospeti.find(p =>
-                        Number(p.id_peticionario) === idpeticionarioActual
-                    );
-
-                    if (existente) {
-                        existente.datospet = 1;
-                        if (!existente.tipoPet) {
-                            existente.tipoPet = tipoPetActual;
+                        var expedi = 'PENDIENTE';
+                        if (!Titulo_Modal.includes('Calificación')) {
+                            expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
                         }
-                    } else {
-                        window.iddatospeti.push({
-                            id_peticionario: idpeticionarioActual,
-                            datospet: 1,
-                            tipoPet: tipoPetActual
-                        });
-                    }
 
-                    console.log('IDDATOSPETI ACTUALIZADO:', window.iddatospeti);
-                    // Oculta el boton el cambio lo hace por separado para cada peticionario, si detecta que no se confirmo lo deja 
-                    $('button[id^=validapeticionario]').hide();
-
-                    $('#contenedor_AutoridadesE').html('');
-                    $('#contenedor_UsuariosE').html('');
-
-                    $('#modalFormPeticionario').modal('hide');
-
-                    var expedi = 'PENDIENTE';
-
-                    if (!Titulo_Modal.includes('Calificación')) {
-
-                        expedi = Titulo_Modal.replace('Modificación del Exp: ', '');
-
-                        $("#defaultOpenCa").html('');
-                        $("#defaultOpenCa").html('Modificación');
-
-                    } else {
-
-                        $("#defaultOpenCa").html('');
-                        $("#defaultOpenCa").html('Calificación');
-                    }
-
-                    obtenerDQOTModifica(
-                        idquejaE,
-                        Fecha_TurnoVGE,
-                        'E',
-                        expedi
-                    );
-                });
+                        obtenerDQOTModifica($('#idquejaE').val(), Fecha_TurnoVGE, 'E', expedi);
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error al actualizar los datos, informe al área de sistemas',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
             }
         });
-    });
+    }
 
-    // ============================================
-    // SUBMIT FORMULARIO
-    // ============================================
-
-    $(document).off('submit', '#frmDatosPersonales1').on('submit', '#frmDatosPersonales1', function (e) {
-
-        e.preventDefault();
-
-        // 🔥 SI ES SOLO VISUALIZAR NO GUARDA
-        if (modo === 'VER') {
-            return;
-        }
-
-        // Validaciones
-        if (validaTxt() || validaNumero()) {
-            return;
-        }
-
-        let numFrm = 1;
-
-        let idForm = '#frmDatosPersonales' + numFrm;
-
-        let nombre = $('#nombre_petit-frmDatosPersonales1 option:selected').text();
-
-        $('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:disabled')
-            .prop('disabled', false);
-
-        $('#idquejagenerado, #versioncomplementopeticionario')
-            .prop('disabled', false);
-
-        // ============================================
-        // VERIFICAR PETICIONARIOS
-        // ============================================
-
+    // SI ES EDICIÓN (modo 'EDITAR' o idpeticionario > 0), OMITIR LA VERIFICACIÓN DE REPETIDOS Y GUARDAR DIRECTO
+    if (modo === 'EDITAR' || idPeticionario > 0) {
+        procesarGuardado();
+    } else {
+        // SI ES NUEVO REGISTRO, VALIDAR SI YA EXISTE COMO QUEJOSO / AGRAVIADO
         $.ajax({
             type: "post",
             url: 'VerificarPeticionarios',
             content: "application/json; charset=utf-8",
             data: $(idForm).serialize() + '&nombreS=' + nombre,
             dataType: "json",
-
             success: function (data) {
-
-                // ============================================
-                // VALIDACIÓN REPETIDOS
-                // ============================================
-
                 if (data.mensaje !== 'error') {
-
                     var titulo = '', texto = '';
-
                     if (nombre !== '') {
-
                         titulo = 'El peticionario "' + nombre + '" ya se encuentra registrado como quejoso.';
-
                     } else {
-
                         titulo = 'El peticionario ya se encuentra registrado como ';
-
-                        if ($('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:checked').val() === 'quejoso    ') {
-
-                            titulo += 'quejoso.';
-
-                        } else {
-
-                            titulo += 'agraviado.';
-                        }
-
+                        titulo += ($('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:checked').val() === 'quejoso') ? 'quejoso.' : 'agraviado.';
                         texto = 'Favor de seleccionar otro tipo de usuario.';
                     }
 
@@ -2922,104 +2885,13 @@ function updateDatosPeticionarios(idpeticionarioActual, modo) {
                         text: texto,
                         showConfirmButton: true
                     });
-
                     return;
                 }
-
-                // ============================================
-                // HABILITAR CAMPOS
-                // ============================================
-
-                $(idForm).find('input, select, textarea').prop('disabled', false).prop('readonly', false);
-
-                var Fecha_TurnoVGE = $("#Fecha_TurnoVGE").val();
-
-                var Titulo_Modal = $('#Titulo_Modal').html();
-
-                // ============================================
-                // GUARDAR
-                // ============================================
-
-                $.ajax({
-                    type: "post",
-                    url: '/Expediente/GuardarDataComplPeticionario',
-                    data: $(idForm).serialize() + '&nombreS=' + nombre
-                     + '&idquejagenerado=' + $('#idquejaE').val(),
-                    dataType: "json",
-
-                    success: function (data) {
-                        console.log("SUCCESS");
-                        console.log(data);
-                        if (data.idpeticionario > 0 && data.idcomplemento > 0) {
-
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Información del peticionario Actualizada de manera Correcta',
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(function () {
-
-                                $('#confi_peticionaE')
-                                    .prop('checked', false)
-                                    .trigger('change');
-
-                                $('#confi_peticionaE')
-                                    .removeClass('pulsacionrellow');
-
-                                $('#confi_peticionaE')
-                                    .prop('disabled', true);
-
-                                confirmdatos(
-                                    $('#idquejaE').val(),
-                                    '',
-                                    '',
-                                    '3'
-                                );
-
-                                $('#contenedor_AutoridadesE').html('');
-                                $('#contenedor_UsuariosE').html('');
-
-                                $('#modalFormPeticionario').modal('hide');
-
-                                var expedi = 'PENDIENTE';
-
-                                if (!Titulo_Modal.includes('Calificación')) {
-
-                                    expedi = Titulo_Modal.replace(
-                                        'Modificación del Exp: ',
-                                        ''
-                                    );
-                                }
-
-                                obtenerDQOTModifica(
-                                    $('#idquejaE').val(),
-                                    Fecha_TurnoVGE,
-                                    'E',
-                                    expedi
-                                );
-                            });
-
-                        } else {
-
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'error',
-                                title: 'Error al actualizar los datos, informe al área de sistemas',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        }
-                    },
-                    error: function (xhr) {
-                        console.log(xhr.responseText);
-                    }
-                });
-
+                procesarGuardado();
             }
         });
-    });
-}
+    }
+});
 function formPeticionario(idformulario) {
 
     //let eliminarform = document.querySelectorAll('.eliminaformaes');
