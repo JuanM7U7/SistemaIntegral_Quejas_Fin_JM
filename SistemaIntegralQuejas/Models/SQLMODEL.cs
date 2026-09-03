@@ -488,6 +488,12 @@ namespace SistemaIntegralQuejas.Models
                                 idEspecializado, idTrasOpPub, idTipoQueja, idMateria, idNivRiesgo, idPrograma,
                                 estatusDesc, fechaUltMod
                             );
+
+                            // 2. 🟢 Se asigna la fecha por NOMBRE de columna sin alterar el constructor:
+                            if (lector["FECHA_DE_CREACION"] != DBNull.Value)
+                            {
+                                lista.FECHA_DE_CREACION = lector["FECHA_DE_CREACION"].ToString();
+                            }
                         }
                     }
 

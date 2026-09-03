@@ -3214,6 +3214,9 @@ namespace SistemaIntegralQuejas.Controllers
         public string estatus_Expediente { get; set; }
         public string fecha_mod { get; set; }
 
+        // 🟢 Propiedad agregada para recibir la fecha de la tabla Memorandum JM
+        public string FECHA_DE_CREACION { get; set; }
+
         public List<informacioncomplementariapeticionario> informacioncomplementariapeticionario { get; set; }
         public List<informacioncomplementariaautoridad> informacioncomplementariaautoridad { get; set; }
 
@@ -3240,7 +3243,7 @@ namespace SistemaIntegralQuejas.Controllers
             this.id_programa = id_programa;
             this.estatus_Expediente = statusexp;
             this.fecha_mod = fecha_mod;
-		}
+        }
     }
 
     public class informacioncomplementariapeticionario

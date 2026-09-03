@@ -673,8 +673,13 @@ function obtenerDQOT(idqueja, fecRecep, tipo) {
             let fechaFormateada = parseFecha(response.informarcionC.fecha_registro);
             document.getElementById(`Fecha_Registro${tipo}`).value = fechaFormateada;
         }
-        if (fecRecep != null) {
-            console.log(fecRecep);  
+        if (response.informarcionC && response.informarcionC.fechA_DE_CREACION) {
+            // 🟢 Si viene la fecha de la BD (Memorandum), la formateamos y la asignamos
+            let fechaBD = parseFecha(response.informarcionC.fechA_DE_CREACION);
+            document.getElementById(`Fecha_TurnoVG${tipo}`).value = fechaBD;
+            console.log("Fecha asignada desde la BD:", response.informarcionC.FECHA_DE_CREACION);
+        } else if (fecRecep != null) {
+            // 🟡 Respando por si la BD viene nula
             let fechaFormateada = parseFecha(fecRecep);
             document.getElementById(`Fecha_TurnoVG${tipo}`).value = fechaFormateada;
         }
@@ -894,39 +899,33 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                 $('#guardadropre').prop('hidden', false); $('#cont_petE').prop('hidden', false); $('#cont_pet_descE').prop('hidden', false); $('#confi_peticionaE').prop('hidden', false);
             }
 
-            var date = new Date();
-            if (fecRecep != null) {
+            const infoC = response.informarcionC || {};
 
-                let formatoValidoFTVG = normalizaFecha(fecRecep);
+            // 🟢 1. Extraemos la fecha probando los casings posibles para evitar fallos de C#
+            let fechaCreacionMemo = infoC.fechA_DE_CREACION;
 
-                // Fecha Turno VG
-                document.getElementById(`Fecha_TurnoVG${tipo}`).value = formatoValidoFTVG;
+            if (fechaCreacionMemo) {
+                // Asignamos la fecha formateada al input correspondiente al tipo (ej: Fecha_TurnoVGV)
+                let fechaBD = parseFecha(fechaCreacionMemo);
+                $(`#Fecha_TurnoVG${tipo}`).val(fechaBD);
 
-                // =========================================================================
-                // 🚀 CONTROL INTERNO ASÍNCRONO DE FECHA DE REGISTRO
-                // =========================================================================
-                if (tipo === 'V' || tipo === 'M' || tipo === 'E') {
-                    // Le damos un pequeño retraso para permitir que el método paralelo 'obtenerDQOT' asigne la fecha primero
-                    setTimeout(function () {
-                        var fechaOriginalDQO = $("#Fecha_Registro").val();
+                console.log("Fecha de memorándum asignada con éxito:", fechaBD);
+            } else if (fecRecep) {
+                // Si la BD no la trae, asignamos fecRecep para que no quede vacío
+                $(`#Fecha_TurnoVG${tipo}`).val(normalizaFecha(fecRecep));
+            }
 
-                        if (fechaOriginalDQO && fechaOriginalDQO !== "undefined" && fechaOriginalDQO !== "") {
-                            $(`#Fecha_Registro${tipo}`).val(fechaOriginalDQO);
-                        } else if (response.informarcionC && response.informarcionC.fecha_registro != null) {
-                            // Si por alguna razón extrema fallara, usa la de la BD
-                            let fechaFormateada = parseFecha(response.informarcionC.fecha_registro);
-                            $(`#Fecha_Registro${tipo}`).val(fechaFormateada);
-                        }
-                    }, 100); // 100 milisegundos bastan para ganarle al hilo de ejecución
-                }
-                // =========================================================================
+            // 🟢 2. CONTROL ASÍNCRONO PARA FECHA DE REGISTRO
+            if (['V', 'M', 'E'].includes(tipo)) {
+                setTimeout(function () {
+                    var fechaOriginalDQO = $("#Fecha_Registro").val();
 
-                console.log("fecha regreso", formatoValidoFTVG);
-
-            } else {
-
-                $(`#Fecha_TurnoVG${tipo}`).val('');
-                $(`#Fecha_Registro${tipo}`).val('');
+                    if (fechaOriginalDQO && fechaOriginalDQO !== "undefined" && fechaOriginalDQO !== "") {
+                        $(`#Fecha_Registro${tipo}`).val(fechaOriginalDQO);
+                    } else if (infoC.fecha_registro) {
+                        $(`#Fecha_Registro${tipo}`).val(parseFecha(infoC.fecha_registro));
+                    }
+                }, 100);
             }
             $(`#idqueja${tipo}`).val(response.informarcionC.id_expediente);
             $(`#hechos${tipo}`).val(response.informarcionC.hechos);
@@ -948,7 +947,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                     $(`#confi_peticiona${tipo}`).prop('checked', true).trigger('change'); $(`#confi_peticiona${tipo}`).removeClass('pulsacionrellow');
                 }
                 for (var i = 0; i < contadorpeticionarios; i++) {
-                    console.log(contadorpeticionarios); // -Fred 03/07/2026 INICIO mismo if pero le ageue nuevos datos para reforzar la condición 
+                    console.log(contadorpeticionarios); 
                     var pet = response.informarcionC.informacioncomplementariapeticionario[i];
 
                     var coincidencias = window.iddatospeti.filter(p =>
@@ -965,7 +964,7 @@ function obtenerDQOTModifica(idqueja, fecRecep, tipo, expedienten) {
                             coincidencias[0].datospet == 'True';
                     }
 
-                    console.log('Peticionario:', pet.id_registro, 'validpet:', validpet); // -Fred 03/07/2026 Fin 
+                    console.log('Peticionario:', pet.id_registro, 'validpet:', validpet); 
                     $(`#contenedor_Usuarios${tipo}`).html(
                         $(`#contenedor_Usuarios${tipo}`).html() + DivPequenioss(
                             response.informarcionC.informacioncomplementariapeticionario[i].nombre_peticionario.replace(/No Proporcionado/g, ''),
@@ -6485,6 +6484,7 @@ function GuardarAp() {
 
     // 🔹 CAMBIO — forzar lectura del campo aunque esté deshabilitado
     $('#Fecha_TurnoVGE').prop('disabled', false);
+    $('#Fecha_TurnoVGE').val(normalizaFecha(dataBD.FECHA_DE_CREACION));
 
     //DATOS DQO
     formDQOT = {
