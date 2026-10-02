@@ -5584,7 +5584,7 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { idcomplemento = idcomp, idpeticionario = idPetit, idqueja = 1, tipousuario = tipouser, nombrepet = nombre + ' ' + apellidop + ' ' + apellidom });
 
         }
-        // -Fred 09/04/2026
+       
         public async Task<ActionResult> GetDataPeticionario(IFormCollection form)
         {
             string curp = form["curp"].ToString();
