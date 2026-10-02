@@ -2029,17 +2029,25 @@ function mostrarTablaCedulas(response) {
                     let fechaBase = activos[0]?.fecha_registro || row.dp_fecha_registro || row.fecha_recepcion;
                     let ahora = new Date();
                     let diferenciaHoras = fechaBase ? (ahora - new Date(fechaBase)) / (1000 * 60 * 60) : 0;
-                    let expiro = diferenciaHoras > 72;
+                    let expiro = diferenciaHoras >= 72;
 
                     // NUEVA CONDICIÓN: si estatus_columna y todos los peticionarios están en 0
-                    if (Number(row.estatus_columna) === 0 && eliminados.length > 0 && activos.length === 0) {
-                        contenido = `
-                           <button type='button' title='Agregar nuevo peticionario'
-                            onclick='agregarDatosPersonalesCedula(${row.id_escrito})'
-                            class='btn btn-link margin-iconbf'>
-                            <span class='fa fa-user-plus color-muted fa-2x'></span>
-                           </button>
-                        `;
+                    if (
+                        Number(row.estatus_columna) === 0 &&
+                        eliminados.length > 0 &&
+                        activos.length === 0
+                    ) {
+                        if (!expiro) {
+                            contenido = `
+                               <button type='button' title='Agregar nuevo peticionario'
+                                onclick='agregarDatosPersonalesCedula(${row.id_escrito})'
+                                class='btn btn-link margin-iconbf'>
+                                <span class='fa fa-user-plus color-muted fa-2x'></span>
+                               </button>
+                            `;
+                        } else {
+                            contenido = `<span class="badge badge-secondary">No disponible para su modificación</span>`;
+                        }
                     } else if (row.tipo_cedula === 'Aportación') {
                         contenido = `<span class="badge badge-secondary">N/A</span>`;
                     } else if (activos.length > 1) {
@@ -2052,10 +2060,10 @@ function mostrarTablaCedulas(response) {
                         // Construir badges por cada tipo
                         let badges = Object.entries(conteoPorTipo).map(([tipo, cantidad]) => {
                             return `
-                    <span class="badge badge-info" style="margin-right:5px;">
-                        ${cantidad} ${tipo}${cantidad > 1 ? 's' : ''} activos
-                    </span>
-                `;
+                                <span class="badge badge-info" style="margin-right:5px;">
+                                    ${cantidad} ${tipo}${cantidad > 1 ? 's' : ''} activos
+                                </span>
+                            `;
                         }).join('');
 
                         contenido = `<div>${badges}</div>`;
@@ -2066,42 +2074,42 @@ function mostrarTablaCedulas(response) {
 
                         if (row.estatus === 'Completo') {
                             contenido = `
-                    <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
-                    <button type='button' title='Ver ${pet.tipo_usuario}'
-                        class='btn btn-link margin-iconbf'
-                        onclick='verFormatoDP(${peticionarioStr})'>
-                        <span class='fa fa-search color-muted fa-2x'></span>
-                    </button>
-                `;
+                            <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
+                            <button type='button' title='Ver ${pet.tipo_usuario}'
+                                class='btn btn-link margin-iconbf'
+                                onclick='verFormatoDP(${peticionarioStr})'>
+                                <span class='fa fa-search color-muted fa-2x'></span>
+                            </button>
+                        `;
                         } else {
                             if (!expiro) {
                                 contenido = `
-                        <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
-                        <button type='button' title='Editar ${pet.tipo_usuario}'
-                            class='btn btn-link margin-iconbf'
-                            onclick='verFormatoDP(${peticionarioStr})'>
-                            <span class='fa fa-pencil color-muted fa-2x'></span>
-                        </button>
-                        <button type='button' title='Eliminar ${pet.tipo_usuario}'
-                            class='btn btn-link margin-iconbf'
-                            onclick="validaYEliminaFormatoDatosPersonales('${pet.idCompPeticionario}', ${grupoStr})">
-                            <span class='fa fa-trash color-danger fa-2x'></span>
-                        </button>
-                        <button type='button' title='Agregar nuevo ${pet.tipo_usuario}'
-                            onclick='agregarDatosPersonalesCedula(${row.id_escrito})'
-                            class='btn btn-link margin-iconbf'>
-                            <span class='fa fa-user-plus color-muted fa-2x'></span>
-                        </button>
-                    `;
+                                    <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
+                                    <button type='button' title='Editar ${pet.tipo_usuario}'
+                                        class='btn btn-link margin-iconbf'
+                                        onclick='verFormatoDP(${peticionarioStr})'>
+                                        <span class='fa fa-pencil color-muted fa-2x'></span>
+                                    </button>
+                                    <button type='button' title='Eliminar ${pet.tipo_usuario}'
+                                        class='btn btn-link margin-iconbf'
+                                        onclick="validaYEliminaFormatoDatosPersonales('${pet.idCompPeticionario}', ${grupoStr})">
+                                        <span class='fa fa-trash color-danger fa-2x'></span>
+                                    </button>
+                                    <button type='button' title='Agregar nuevo ${pet.tipo_usuario}'
+                                        onclick='agregarDatosPersonalesCedula(${row.id_escrito})'
+                                        class='btn btn-link margin-iconbf'>
+                                        <span class='fa fa-user-plus color-muted fa-2x'></span>
+                                    </button>
+                                `;
                             } else {
                                 contenido = `
-                        <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
-                        <button type='button' title='Ver ${pet.tipo_usuario}'
-                            class='btn btn-link margin-iconbf'
-                            onclick='verFormatoDP(${peticionarioStr})'>
-                            <span class='fa fa-search color-muted fa-2x'></span>
-                        </button>
-                    `;
+                                    <div><strong>${pet.tipo_usuario}: ${pet.nombre} ${pet.apellidoPaterno || ''} ${pet.apellidoMaterno || ''}</strong></div>
+                                    <button type='button' title='Ver ${pet.tipo_usuario}'
+                                        class='btn btn-link margin-iconbf'
+                                        onclick='verFormatoDP(${peticionarioStr})'>
+                                        <span class='fa fa-search color-muted fa-2x'></span>
+                                    </button>
+                                `;
                             }
                         }
                     } else {
@@ -2133,7 +2141,7 @@ function mostrarTablaCedulas(response) {
                     let fechaBase = row.cedula?.fecha_registro || row.dp_fecha_registro || row.fecha_recepcion;
                     let ahora = new Date();
                     let diferenciaHoras = fechaBase ? (ahora - new Date(fechaBase)) / (1000 * 60 * 60) : 0;
-                    let expiro = diferenciaHoras > 72;
+                    let expiro = diferenciaHoras >= 72;
 
                     if (estatus === 'Completo') {
                         if (row.cedula) {
@@ -2151,12 +2159,7 @@ function mostrarTablaCedulas(response) {
                     } else {
                         // Mostrar botón de Agregar Cédula si no ha expirado
                         // O si estatus_columna = 0 y todos los peticionarios.statusdp = 0
-                        if (
-                            !expiro ||
-                            (Number(row.estatus_columna) === 0 &&
-                                row.peticionarios &&
-                                row.peticionarios.every(p => Number(p.statusdp) === 0))
-                        ) {
+                        if (!expiro) {
                             const rowSinCedula = JSON.stringify(row).replace(/"/g, '&quot;');
                             return `
                                 <button type='button' title='Agregar Cédula'
@@ -2168,6 +2171,7 @@ function mostrarTablaCedulas(response) {
                         }
 
                         return `<span class="badge badge-secondary">No disponible para su modificación</span>`;
+
                     }
                 }
             },
