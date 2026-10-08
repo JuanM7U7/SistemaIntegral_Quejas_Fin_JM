@@ -6385,19 +6385,14 @@ function HabilEdi(id, identif, tipo) {
 function ElimFilaTab(nomTab, elemento) {
     console.log("Borrando la fila al instante...");
 
-    // 1. Obtenemos la tabla
+    // Obtenemos la tabla
     var table = $(nomTab).DataTable();
 
-    // 2. Buscamos exactamente qué fila contiene el botón que presionaste
+    // Buscamos exactamente qué fila contiene el botón que presionaste
     var row = $(elemento).closest('tr');
 
-    // 3. Borramos la fila de DataTables y redibujamos
+    // Borramos la fila de DataTables y redibujamos
     table.row(row).remove().draw(false);
-
-    // 4. Actualizamos índices si tienes la función
-    if (typeof actualizarIndices === 'function') {
-        actualizarIndices(nomTab);
-    }
 }
 function fechaISO(fecha) {
     if (!fecha) return '';
@@ -6663,7 +6658,6 @@ $(document).ready(function () {
             });
 
             console.log(MedCaute);
-            console.log("aqui se ejecuta al modificar el expediente");
         }
 
         //DILIGENCIAS

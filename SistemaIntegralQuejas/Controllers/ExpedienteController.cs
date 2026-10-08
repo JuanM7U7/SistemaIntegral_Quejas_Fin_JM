@@ -3824,7 +3824,23 @@ namespace SistemaIntegralQuejas.Controllers
             return Json(new { estatus = statusresp });
 
         }
+        private string GenerarHtmlSemaforo(int numero, int minimo, int maximo, int tipo)
+        {
+            string color = "dark";
+            if (numero <= minimo) color = "verde";
+            else if (numero > minimo && numero < maximo) color = "amarillo";
+            else if (numero >= maximo) color = "rojo";
 
+            string circulos = "";
+            if (color == "rojo") circulos = "<span class=\"luces-circulo rojo\"></span><span class=\"luces-circulo\"></span><span class=\"luces-circulo\"></span>";
+            else if (color == "amarillo") circulos = "<span class=\"luces-circulo\"></span><span class=\"luces-circulo amarillo\"></span><span class=\"luces-circulo\"></span>";
+            else if (color == "verde") circulos = "<span class=\"luces-circulo\"></span><span class=\"luces-circulo\"></span><span class=\"luces-circulo verde\"></span>";
+            else circulos = "<span class=\"luces-circulo\"></span><span class=\"luces-circulo\"></span><span class=\"luces-circulo\"></span>";
+
+            string colSem = (tipo == 1) ? "c2c3e50" : (tipo == 2) ? "c58aab9" : "c000000";
+
+            return $"<div class=\"contenedor-semaforo\"><div class=\"semaforo {colSem}\">{circulos}</div></div><small><strong>{numero} días</strong></small>";
+        }
         [HttpPost]
         public ActionResult listadovisitadorGeneral(int vis, int idabogado)
         {
@@ -3858,34 +3874,28 @@ namespace SistemaIntegralQuejas.Controllers
             List<TblActac> arreglo_actac = new List<TblActac>();
             String query = "exec Sp_Select_id_turnados_vgs " + visitaduria + " ," + idAbogado + "";
             var data = GetDatosGeneral(query);
+
             foreach (DataRow row in data.Rows)
             {
                 TablaGenerica itemformatos = new TablaGenerica();
-                //itemformatos.IdUnionFormatosQueja = Convert.ToInt32(row["ID_UNION_FORMATOS_QUEJA"]);
                 itemformatos.Id = Convert.ToInt32(row["id_expediente"]);
                 itemformatos.Expediente = row["expediente"].ToString();
                 itemformatos.FechaTurno = (row["fechaturnovisitaduria"]).ToString();
-                itemformatos.FechaRecep= (row["fecharecepfis"]).ToString(); 
+                itemformatos.FechaRecep = (row["fecharecepfis"]).ToString();
                 itemformatos.Status = (row["status"]).ToString();
                 itemformatos.otro = (row["abogadot"]).ToString();
+
                 #region FechaRecep
                 if ((row["fecharecepfis"]).ToString() != "")
                 {
                     itemformatos.FechaRecep = (row["fecharecepfis"]).ToString();
                 }
-                else 
+                else
                 {
                     itemformatos.FechaRecep = "<div class=\"badge status-badge\" style=\"background-color:#c06500;color:white;\">Sin Fecha de Recepción</div >";
                 }
-                if ((row["fechaturnovisitaduriaelectronico"]).ToString() != "")
-                {
-                   //itemformatos.FechaRecep = (row["fechaturnovisitaduriaelectronico"]).ToString();
-                }
-                else
-                {
-                    //itemformatos.FechaRecep = "<div class=\"badge status-badge\" style=\"background-color:#c06500;color:white;\">Sin Fecha de Recepción</div >";
-                }
                 #endregion
+
                 #region FechaCalific
                 if ((row["fecha_calificacion"]).ToString() != "")
                 {
@@ -3896,6 +3906,7 @@ namespace SistemaIntegralQuejas.Controllers
                     itemformatos.FechaCalific = "<div class=\"badge status-badge\" style=\"background-color:#c06500;color:white;\">Sin Fecha de Calificación</div >";
                 }
                 #endregion
+
                 #region FechaTunAbo
                 if ((row["fechaturnoabogadovg"]).ToString() != "")
                 {
@@ -3907,90 +3918,74 @@ namespace SistemaIntegralQuejas.Controllers
                 }
                 #endregion
 
-                string paso = "";
-                string mensaje = "";
-                query = "EXEC Sp_GetPaso_ExpedienteSolo " + itemformatos.Id + "";
-                paso = conexionsql.ObtenerReader(query);
-                //CONCLUIDO
-                query = "exec RegistrarConcluidos " + itemformatos.Id;
-                itemformatos.Concluido = conexionsql.ObtenerReader(query);
-                //FIN CONCLUIDO
-
-
-
-                    if (itemformatos.FechaCalific.Contains("Sin"))
-                    {
-                        if (!itemformatos.FechaTunAbo.Contains("Sin"))
-                        {
-                            DateTime fechaUno = Convert.ToDateTime(itemformatos.FechaTunAbo);
-                            DateTime fechaDos = DateTime.Now;
-                            TimeSpan difFechas = fechaDos - fechaUno;
-                            int diasTrans = difFechas.Days;
-                            //SEMAFORO 1
-                            query = "exec semaforo " + diasTrans + "," + 2 + "," + 4 + "," + 1;
-                            itemformatos.semaforo1 = conexionsql.ObtenerReader(query) + "<small><strong> sin calificar</strong></small>";
-                            //FIN SEMAFORO 1
-                            //SEMAFORO 2
-                            string resultado = "";
-                            if (diasTrans < 0)
-                            {
-                                query = "exec semaforo " + 21 + "," + 10 + "," + 21 + "," + 1;
-                                resultado = conexionsql.ObtenerReader(query).Replace("21", diasTrans.ToString());
-                            }
-                            else
-                            {
-                                query = "exec semaforo " + diasTrans + "," + 10 + "," + 21 + "," + 1;
-                                resultado = conexionsql.ObtenerReader(query);
-                            }
-
-                            itemformatos.semaforo2 = resultado + "<small><strong> sin actuaciones</strong></small>";
-                            //FIN SEMAFORO 2
-                        }
-                    }
-                    else
-                    {
-
-                    if (paso == "Calificado"|| paso == "Concluido")
-                    {
-                        itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Calificado</div>";
-                        itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";
-                    }
-                    else
-                    {
-                        itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Calificado</div>";  //04-06-2026
-                        itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";
-                    }
-                    }
-                    listformatos.Add(itemformatos);
+                // 🔥 EVALUAR COLUMNA esta_concluido QUE VIENE DE SQL
+                if (row["esta_concluido"].ToString() == "1")
+                {
+                    itemformatos.Concluido = "<div class=\"badge status-badge badge-success\">Concluido</div>";
+                }
+                else
+                {
+                    itemformatos.Concluido = "<div class=\"badge status-badge\" style=\"background-color:#c06500;color:white;\">Sin Concluir</div>";
                 }
 
-                switch (visitaduria)
+                // 🔥 LÓGICA DE SEMÁFOROS PURA EN C# (CERO VIAJES A SQL)
+                if (itemformatos.FechaCalific.Contains("Sin"))
                 {
-                    case 1:
-                        query = "GET_ABOGADOS 'VAV','PVG'";
-                        data = GetDatosGeneral(query);
-                        break;
-                    case 2:
-                        query = "GET_ABOGADOS 'VAV','SVG'";
-                        data = GetDatosGeneral(query);
-                        break;
-                    case 3:
-                        query = "GET_ABOGADOS 'VAV','TVG'";
-                        data = GetDatosGeneral(query);
-                        break;
-                    case 4:
-                        query = "GET_ABOGADOS 'VAV','CVG'";
-                        data = GetDatosGeneral(query);
-                        break;
-                    default:
-                        break;
+                    if (!itemformatos.FechaTunAbo.Contains("Sin"))
+                    {
+                        DateTime fechaUno = Convert.ToDateTime(itemformatos.FechaTunAbo);
+                        DateTime fechaDos = DateTime.Now;
+                        int diasTrans = (fechaDos - fechaUno).Days;
 
+                        itemformatos.semaforo1 = GenerarHtmlSemaforo(diasTrans, 2, 4, 1) + "<small><strong> sin calificar</strong></small>";
+
+                        string resultado = "";
+                        if (diasTrans < 0)
+                        {
+                            resultado = GenerarHtmlSemaforo(21, 10, 21, 1).Replace("21", diasTrans.ToString());
+                        }
+                        else
+                        {
+                            resultado = GenerarHtmlSemaforo(diasTrans, 10, 21, 1);
+                        }
+                        itemformatos.semaforo2 = resultado + "<small><strong> sin actuaciones</strong></small>";
+                    }
+                }
+                else
+                {
+                    itemformatos.semaforo1 = "<div class=\"badge status-badge badge-success\">Calificado</div>";
+                    itemformatos.semaforo2 = "<div class=\"badge status-badge badge-success\">Con Actuaciones</div>";
+                }
+
+                listformatos.Add(itemformatos);
             }
+
+            switch (visitaduria)
+            {
+                case 1:
+                    query = "GET_ABOGADOS 'VAV','PVG'";
+                    data = GetDatosGeneral(query);
+                    break;
+                case 2:
+                    query = "GET_ABOGADOS 'VAV','SVG'";
+                    data = GetDatosGeneral(query);
+                    break;
+                case 3:
+                    query = "GET_ABOGADOS 'VAV','TVG'";
+                    data = GetDatosGeneral(query);
+                    break;
+                case 4:
+                    query = "GET_ABOGADOS 'VAV','CVG'";
+                    data = GetDatosGeneral(query);
+                    break;
+                default:
+                    break;
+            }
+
             foreach (DataRow row in data.Rows)
             {
                 selectGenerico itemformatos = new selectGenerico();
 
-                // 🔥 VALIDAR COLUMNAS
                 if (data.Columns.Contains("nombre"))
                 {
                     itemformatos.s1 = row["nombre"].ToString();
