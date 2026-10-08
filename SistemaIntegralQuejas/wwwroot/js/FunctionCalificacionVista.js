@@ -6602,19 +6602,31 @@ $(document).ready(function () {
             var banderaFechaMedida = false;
 
             $('#tablaMedCuateTE tbody tr').each(function (index) {
-                // index es la posición actual (0, 1, 2...). Lo usaremos para reasignar un ID limpio
-                var x = index + 1;
 
-                // Usamos ^= ("empieza con") para ignorar el número viejo del ID y evitar que truene
+                // 🔥 ESCUDO 1: Brincar la fila falsa de "No hay registros" de DataTables
+                if ($(this).find('.dataTables_empty').length > 0) {
+                    return true;
+                }
+
+                // 🔥 ESCUDO 2: Rescatar el ID REAL de la Base de Datos o el ID temporal del botón "Agregar"
+                var x = 0; // 0 por defecto para que C# sepa que es nuevo si no encuentra ID
+                var inputOficio = $(this).find('input[id^="noOficioE_"]');
+
+                if (inputOficio.length > 0) {
+                    var partes = inputOficio.attr('id').split('_');
+                    if (partes.length > 1) {
+                        x = partes[1]; // Recupera el sufijo exacto (ej. de noOficioE_85 saca el 85)
+                    }
+                }
+
                 var fechaEmision = $(this).find('input[id^="fechaEmisionE_"]').val() || '';
                 var archivoEmision = $(this).find('input[id^="archivoEmisionruta_"]').val() || '';
                 var fechaAtencion = $(this).find('input[id^="fechaAtencionE_"]').val() || '';
                 var archivoAtencion = $(this).find('input[id^="archivoAtencionRuta_"]').val() || '';
-                var noOficioT = $(this).find('input[id^="noOficioE_"]').val() || '';
+                var noOficioT = inputOficio.val() || '';
                 var obsEmision = $(this).find('textarea[id^="obsEmisionE_"]').val() || '';
                 var obsAtencion = $(this).find('textarea[id^="obsAtencionE_"]').val() || '';
 
-                // Buscamos el checkbox/radio dentro de ESTA fila directamente
                 var banderaEstatus = $(this).find('input[id^="cumplioE1_"]').is(':checked');
 
                 if (banderaEstatus) {
@@ -6635,7 +6647,7 @@ $(document).ready(function () {
                             archivoAtencion: archivoAtencion,
                             obsEmision: obsEmision,
                             obsAtencion: obsAtencion,
-                            idMedCaut: x,
+                            idMedCaut: x, // Mandamos el ID original o nuevo para el Upsert de C#
                             status: 1
                         });
                     }
@@ -6651,15 +6663,14 @@ $(document).ready(function () {
                         archivoAtencion: '',
                         obsEmision: obsEmision,
                         obsAtencion: '',
-                        idMedCaut: x,
+                        idMedCaut: x, // Mandamos el ID original o nuevo para el Upsert de C#
                         status: 0
                     });
                 }
             });
 
-            console.log(MedCaute);
+            console.log("MEDIDAS A GUARDAR:", MedCaute);
         }
-
         //DILIGENCIAS
         var Diligen = [];
 
