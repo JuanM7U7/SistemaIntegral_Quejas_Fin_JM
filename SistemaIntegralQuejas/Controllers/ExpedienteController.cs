@@ -2158,8 +2158,14 @@ namespace SistemaIntegralQuejas.Controllers
 
                 // Agregar Titular del area a la visitaduria que se le asigno
                 // Obtener Titular del área (Visitador General)
+                // Modificación para el encargado de despacho -Fred 12/10/2026
                 var idAreaDestino = Convert.ToInt32(row["FK_AREA_DESTINATARIO"]);
-                string query_titulardes = @"SELECT TOP 1 * FROM USUARIOS WHERE FK_ID_AREA = " + idAreaDestino + @" AND CARGO_DOCUMENTOS LIKE '%VISITADOR%'";
+
+                string query_titulardes = @" SELECT TOP 1 * FROM USUARIOS WHERE FK_ID_AREA = " + idAreaDestino + @" AND (CARGO_DOCUMENTOS LIKE '%VISITADOR%' OR CARGO_DOCUMENTOS LIKE '%ENCARGAD%DESPACHO%') ORDER BY
+                CASE
+                    WHEN CARGO_DOCUMENTOS LIKE '%ENCARGAD%DESPACHO%' THEN 0 ELSE 1
+                END";
+
 
                 var data_titulardes = GetDatosGeneral(query_titulardes);
 
@@ -2880,10 +2886,15 @@ namespace SistemaIntegralQuejas.Controllers
         }
 
 
+
         public IActionResult GenerarFormatoRechazo([FromBody] FormatoRechazoRequest model) // PDF Rechazado -Fred
         {
             if (model == null)
                 return BadRequest();
+
+            // Evitar errores si las listas llegan nulas
+            model.Observaciones ??= new List<ObservacionRequest>();
+            model.IdsAceptados ??= new List<string>();
 
             // Actualizar rechazados
             foreach (var obs in model.Observaciones)
@@ -2891,8 +2902,9 @@ namespace SistemaIntegralQuejas.Controllers
                 string query = $"exec Sp_Update_Status_Expediente '{obs.IdExpediente}','8'";
                 conexionsql.InsertUpdateDeleteRegresaid(query);
             }
-            // si no hay observaciones -> solo aceptados
-            if (model.Observaciones == null || model.Observaciones.Count == 0)
+
+            // Si no hay observaciones -> solo aceptados
+            if (model.Observaciones.Count == 0)
             {
                 foreach (var id in model.IdsAceptados)
                 {
@@ -2902,14 +2914,18 @@ namespace SistemaIntegralQuejas.Controllers
 
                 return Json(new { soloAceptados = true });
             }
+
             // Obtener datos del Director(a) de Quejas
-            string query_direct = @"SELECT TOP 1 * 
-            FROM USUARIOS 
-            WHERE ROL = 'ADMIN_DQOT' 
-            AND CARGO_DOCUMENTOS LIKE '%DIRECTOR%'";
+            string query_direct = @"
+        SELECT TOP 1 *
+        FROM USUARIOS
+        WHERE ROL = 'ADMIN_DQOT'
+          AND CARGO_DOCUMENTOS LIKE '%DIRECTOR%'";
+
             var data_direct = GetDatosGeneral(query_direct);
 
             Usuario direct = null;
+
             foreach (DataRow rowDirect in data_direct.Rows)
             {
                 direct = new Usuario
@@ -2922,8 +2938,11 @@ namespace SistemaIntegralQuejas.Controllers
                 };
             }
 
-            // Obtener Visitador General según la Visitaduría
-            string query_visitador = @"SELECT TOP 1 * FROM USUARIOS WHERE FK_ID_AREA = '" + model.AreaId + @"'AND CARGO_DOCUMENTOS LIKE '%VISITADOR%'";
+            // Obtener responsable de la Visitaduría
+            string query_visitador = @" SELECT TOP 1 * FROM USUARIOS WHERE FK_ID_AREA = '" + model.AreaId + @"' AND ( CARGO_DOCUMENTOS LIKE '%VISITADOR%' OR CARGO_DOCUMENTOS LIKE '%ENCARGAD%DESPACHO%' ) ORDER BY
+            CASE
+                WHEN CARGO_DOCUMENTOS LIKE '%ENCARGAD%DESPACHO%' THEN 0 ELSE 1
+            END";
 
             var data_visitador = GetDatosGeneral(query_visitador);
 
@@ -2941,7 +2960,7 @@ namespace SistemaIntegralQuejas.Controllers
                 };
             }
 
-            //Obtener el area de la visitaduria
+            // Obtener el área de la Visitaduría
             string query_area = "exec Sp_GetDataAreas '" + model.AreaId + "'";
             var data_area = GetDatosGeneral(query_area);
 
@@ -2950,6 +2969,13 @@ namespace SistemaIntegralQuejas.Controllers
             foreach (DataRow row in data_area.Rows)
             {
                 nombreArea = row["DESCRIPCION"].ToString().ToUpper();
+            }
+
+            if (visitador == null)
+            {
+                return BadRequest(
+                    $"No se encontró un responsable para el área {model.AreaId}."
+                );
             }
 
             // Construir PDF
@@ -2963,20 +2989,17 @@ namespace SistemaIntegralQuejas.Controllers
                 SegundaParte = model.SegundaParte,
                 TerceraParte = model.TerceraParte,
                 listado = model.Observaciones
-                .Select(o => new listadoObservaciones(o.IdExpediente, o.Justificacion))
-                .ToList(),
+                    .Select(o => new listadoObservaciones(o.IdExpediente, o.Justificacion))
+                    .ToList(),
                 DirectQuejas = direct,
                 Visitador = visitador
             };
-
 
             pdfModel.Add(itemPdf);
 
             return new ViewAsPdf("verPDFRechazo", pdfModel)
             {
-                PageSize = Rotativa.AspNetCore.Options.Size.Letter,
-                PageMargins = { Left = 20, Right = 20 },
-                CustomSwitches = " --page-offset 0 --header-html " + rutaencabezado + " --header-spacing 30 --margin-bottom 4cm --footer-spacing 7 --footer-html " + rutapie + " --footer-right Página-[page]/[toPage]  --footer-font-size 8 --footer-font-name Arial "
+                PageSize = Rotativa.AspNetCore.Options.Size.Letter, PageMargins = { Left = 20, Right = 20 }, CustomSwitches = " --page-offset 0 --header-html " + rutaencabezado + " --header-spacing 30 --margin-bottom 4cm --footer-spacing 7 --footer-html " + rutapie + " --footer-right Página-[page]/[toPage] --footer-font-size 8 --footer-font-name Arial "
             };
         }
 
