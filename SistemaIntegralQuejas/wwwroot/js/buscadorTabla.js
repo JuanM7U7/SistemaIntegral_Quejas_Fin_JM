@@ -390,13 +390,23 @@ function verFormatoDP(row, estatus) {
         actualizarDatosPeticionariosCedulas(idComplementoPetit, index);
         $('.frmEditDatosPersonales button[type="submit"]').show();
 
-        const botonId = '#submitForm-' + index;
-        const estatusF = estatus || calcularEstatus(row);
+        const botonId = '#submitForm-' + index; const estatusF = estatus || calcularEstatusGrupo(row);
+        let fechaBase = activos[0]?.fecha_registro;
 
         if (estatusF === 'Completo' || estatusF === 'Eliminado') {
             $(botonId).hide();
+
         } else if (estatusF === 'Incompleto') {
-            $(botonId).show();
+
+            // Fecha de referencia, respetando el orden de prioridad const fechaBase = row.activos?.[0]?.fecharegistro || row.dpfecharegistro || row.fecharecepcion;
+
+            const ahora = new Date();
+
+            const diferenciaHoras = fechaBase ? (ahora - new Date(fechaBase)) / (1000 * 60 * 60) : 0;
+
+            const expiro = diferenciaHoras >= 72;
+
+            if (expiro) { $(botonId).hide(); } else { $(botonId).show(); }
         }
 
         chkNoproporcinado();
