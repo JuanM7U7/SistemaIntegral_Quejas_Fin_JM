@@ -2806,36 +2806,37 @@ $(document).off('submit', '#frmDatosPersonales1').on('submit', '#frmDatosPersona
     if (modo === 'EDITAR' || idPeticionario > 0) {
         procesarGuardado();
     } else {
-        // SI ES NUEVO REGISTRO, VALIDAR SI YA EXISTE COMO QUEJOSO / AGRAVIADO
-        $.ajax({
-            type: "post",
-            url: 'VerificarPeticionarios',
-            content: "application/json; charset=utf-8",
-            data: $(idForm).serialize() + '&nombreS=' + nombre,
-            dataType: "json",
-            success: function (data) {
-                if (data.mensaje !== 'error') {
-                    var titulo = '', texto = '';
-                    if (nombre !== '') {
-                        titulo = 'El peticionario "' + nombre + '" ya se encuentra registrado como quejoso.';
-                    } else {
-                        titulo = 'El peticionario ya se encuentra registrado como ';
-                        titulo += ($('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:checked').val() === 'quejoso') ? 'quejoso.' : 'agraviado.';
-                        texto = 'Favor de seleccionar otro tipo de usuario.';
-                    }
+        //// SI ES NUEVO REGISTRO, VALIDAR SI YA EXISTE COMO QUEJOSO / AGRAVIADO
+        //$.ajax({
+        //    type: "post",
+        //    url: 'VerificarPeticionarios',
+        //    content: "application/json; charset=utf-8",
+        //    // 👇 AQUÍ ESTÁ EL CAMBIO: Agregamos el ID del expediente a los datos que se envían
+        //    data: $(idForm).serialize() + '&nombreS=' + nombre + '&idquejaE=' + $('#idquejaE').val(),
+        //    dataType: "json",
+        //    success: function (data) {
+        //        if (data.mensaje !== 'error') {
+        //            var titulo = '', texto = '';
+        //            if (nombre !== '') {
+        //                titulo = 'El peticionario "' + nombre + '" ya se encuentra registrado como quejoso.';
+        //            } else {
+        //                titulo = 'El peticionario ya se encuentra registrado como ';
+        //                titulo += ($('input[type=radio][name="qatu_petit-frmDatosPersonales1"]:checked').val() === 'quejoso') ? 'quejoso.' : 'agraviado.';
+        //                texto = 'Favor de seleccionar otro tipo de usuario.';
+        //            }
 
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: titulo,
-                        text: texto,
-                        showConfirmButton: true
-                    });
-                    return;
-                }
+        //            Swal.fire({
+        //                position: 'center',
+        //                icon: 'error',
+        //                title: titulo,
+        //                text: texto,
+        //                showConfirmButton: true
+        //            });
+        //            return;
+        //        }
                 procesarGuardado();
-            }
-        });
+        //    }
+        //});
     }
 });
 function formPeticionario(idformulario) {
