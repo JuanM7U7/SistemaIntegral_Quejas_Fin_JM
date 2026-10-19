@@ -390,7 +390,7 @@ function verFormatoDP(row, estatus) {
         actualizarDatosPeticionariosCedulas(idComplementoPetit, index);
         $('.frmEditDatosPersonales button[type="submit"]').show();
 
-        const botonId = '#submitForm-' + index; const estatusF = estatus || calcularEstatusGrupo(row);
+        const botonId = '#submitForm-' + index; const estatusF = estatus || calcularEstatus(row);
         let fechaBase = activos[0]?.fecha_registro;
 
         if (estatusF === 'Completo' || estatusF === 'Eliminado') {
