@@ -5545,7 +5545,7 @@ function LlenarTabAutReHecVio(tablaAutRe_HecVioT, tipo, id, version) {
                 {
                     'mRender': function (data, type, full) {
                         if (tipo === 'E') {
-                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i>`;
+                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}", this)'></i>`;
                         } else {
                             return '';
                         }
@@ -5661,7 +5661,7 @@ function LlenarTabConclu(tablaAutRe_HecVioT, tipo, id, fechaturno, fechacalif) {
                 {
                     'mRender': function (data, type, full) {
                         if (tipo === 'E') {
-                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}")'></i>`;
+                             return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaAutRe_HecVioT}", this)'></i>`;
                         } else {
                             return '';
                         }
@@ -5918,7 +5918,7 @@ function LlenartablaMedCuate(tablaMedCuateT, tipo, id, version) {
                     'mRender': function (data, type, full) {
 
                         if (tipo === 'E') {
-                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("#tablaMedCuateT${tipo}", this)'></i>`;
+                            return `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaMedCuateT}", this)'></i>`;
                         } else {
                             return '';
                         }
@@ -6089,7 +6089,7 @@ function LlenartablaDilig(tablaDilig, tipo, id, version) {
                     'mRender': function (data, type, full, meta) {
                         var del='';
                         if (tipo === 'E') {
-                            del = `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}")'></i>`;
+                            del = `<i class='btn fa fa-trash delete-btn' onclick='ElimFilaTab("${tablaDilig}", this)'></i>`;
                         }
                         return CreaInputs(`diligenArreg${tipo}_${meta.row}`, `diligenArreg${tipo}_${meta.row}`, '', 'hidden') + del + `<i class='btn fa fa-pencil-square-o' onclick='DetDilig("modalDilig","tipodilig${tipo}_${meta.row}", ${meta.row}, ${id}, "${tipo}")'></i>`;
                     }
@@ -6383,17 +6383,30 @@ function HabilEdi(id, identif, tipo) {
             break;
     }
 }
-function ElimFilaTab(nomTab, elemento) {
-    console.log("Borrando la fila al instante...");
+window.ElimFilaTab = function (nomTab, elemento) {
+    console.log("Elemento clickeado:", elemento); // Aquí veremos si dice 'undefined' o si es un nodo HTML
+    try {
+        var table = $(nomTab).DataTable();
+        var row = $(elemento).closest('tr');
 
-    // Obtenemos la tabla
-    var table = $(nomTab).DataTable();
+        // Soporte por si la tabla es responsiva y el botón está en una fila hija
+        if (row.hasClass('child')) {
+            row = row.prev('.parent');
+        }
 
-    // Buscamos exactamente qué fila contiene el botón que presionaste
-    var row = $(elemento).closest('tr');
+        if (row.length === 0) {
+            console.warn("No se encontró la fila (tr).");
+            return;
+        }
 
-    // Borramos la fila de DataTables y redibujamos
-    table.row(row).remove().draw(false);
+        table.row(row).remove().draw(false);
+
+        if (typeof actualizarIndices === 'function') {
+            actualizarIndices(nomTab);
+        }
+    } catch (error) {
+        console.error("Error fatal al intentar eliminar:", error);
+    }
 }
 function fechaISO(fecha) {
     if (!fecha) return '';

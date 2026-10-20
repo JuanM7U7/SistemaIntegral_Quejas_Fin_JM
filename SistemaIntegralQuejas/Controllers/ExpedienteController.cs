@@ -8006,7 +8006,7 @@ namespace SistemaIntegralQuejas.Controllers
 
                 /*Actualizacion de tabla de autoridad y Hechos Violatorios*/
                 /*Actualizacion de tabla de medidas Cautelares*/
-                query = "Sp_deleteMedcaut " + idqueja;
+                query = "exec Sp_deleteMedcaut " + idqueja;
                 mensaje = ejecutaInsertUpdate(query);
 
 
